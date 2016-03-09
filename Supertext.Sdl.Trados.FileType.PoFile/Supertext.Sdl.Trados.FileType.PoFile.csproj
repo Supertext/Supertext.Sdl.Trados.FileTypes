@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="DotNetWrappers\DotNetFactory.cs" />
     <Compile Include="DotNetWrappers\IDotNetFactory.cs" />
-    <Compile Include="DotNetWrappers\IStreamReader.cs" />
+    <Compile Include="DotNetWrappers\IReader.cs" />
     <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />
     <Compile Include="PoFileParser.cs" />

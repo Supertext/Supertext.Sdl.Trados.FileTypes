@@ -11,7 +11,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         private readonly IDotNetFactory _dotNetFactory;
         private IPersistentFileConversionProperties _fileConversionProperties;
-        private IStreamReader _streamReader;
+        private IReader _streamReader;
 
         public PoFileParser(IDotNetFactory dotNetFactory)
         {

@@ -4,7 +4,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
     {
         public IReader CreateStreamReader(string filePath)
         {
-            return new ReaderWrapper(filePath);
+            return new StreamReaderWrapper(filePath);
         }
     }
 }
