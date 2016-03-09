@@ -2,9 +2,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
 {
     public class DotNetFactory : IDotNetFactory
     {
-        public IStreamReader CreateStreamReader(string filePath)
+        public IReader CreateStreamReader(string filePath)
         {
-            return new StreamReaderWrapper(filePath);
+            return new ReaderWrapper(filePath);
         }
     }
 }

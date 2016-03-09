@@ -64,6 +64,7 @@
     <Compile Include="DotNetWrappers\IStreamReader.cs" />
     <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />
+    <Compile Include="PoFileParser.cs" />
     <Compile Include="PoFileSniffer.cs" />
     <Compile Include="PoFileTypeResources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
 {
-    public class StreamReaderWrapper : IStreamReader
+    public class StreamReaderWrapper : IReader
     {
         private readonly StreamReader _streamReader;
 
@@ -11,14 +11,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
             _streamReader = new StreamReader(filePath);
         }
 
+        public bool EndOfStream => _streamReader.EndOfStream;
+
+        public string ReadLine()
+        {
+            return _streamReader.ReadLine();
+        }
+
         public void Dispose()
         {
             _streamReader.Dispose();
         }
 
-        public string ReadLine()
+        public void Close()
         {
-            return _streamReader.ReadLine();
+            _streamReader.Close();
         }
     }
 }

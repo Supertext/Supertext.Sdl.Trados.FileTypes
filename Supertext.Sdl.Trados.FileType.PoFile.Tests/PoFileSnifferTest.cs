@@ -269,7 +269,7 @@ thisiswrong
             return testee;
         }
 
-        private class StringReaderWrapper : IStreamReader
+        private class StringReaderWrapper : IReader
         {
             private readonly StringReader _stringReader;
 
@@ -286,6 +286,11 @@ thisiswrong
             public string ReadLine()
             {
                 return _stringReader.ReadLine();
+            }
+
+            public void Close()
+            {
+                _stringReader.Close();
             }
         }
     }

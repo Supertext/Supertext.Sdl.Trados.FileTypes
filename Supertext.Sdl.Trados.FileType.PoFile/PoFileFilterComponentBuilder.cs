@@ -52,7 +52,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IFileExtractor BuildFileExtractor(string name)
         {
-            throw new NotImplementedException();
+            var parser = new PoFileParser(new DotNetFactory());
+            var extractor = FileTypeManager.BuildFileExtractor(FileTypeManager.BuildNativeExtractor(parser), this);
+            return extractor;
         }
 
         public IFileGenerator BuildFileGenerator(string name)
