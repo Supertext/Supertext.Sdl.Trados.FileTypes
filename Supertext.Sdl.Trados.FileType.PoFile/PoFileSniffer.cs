@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Sdl.Core.Globalization;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -12,47 +10,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public class PoFileSniffer : INativeFileSniffer
     {
         private readonly IDotNetFactory _dotNetFactory;
+        private readonly ILinePattern _startingLinePattern;
 
-        public PoFileSniffer(IDotNetFactory dotNetFactory)
+        public PoFileSniffer(IDotNetFactory dotNetFactory, ILinePattern startingLinePattern)
         {
             _dotNetFactory = dotNetFactory;
+            _startingLinePattern = startingLinePattern;
         }
 
-        private static LinePattern GetLinePatternRules()
-        {
-            var start = new LinePattern(string.Empty);
-            var msgid = new LinePattern(@"msgid\s+"".*""");
-            var msgstr = new LinePattern(@"msgstr\s+"".*""");
-            var text = new LinePattern("\"");
-            var comment = new LinePattern("#");
-
-            start
-                .MustBeFollowedBy(msgid)
-                .CanBeFollowedBy(comment);
-
-            msgid
-                .MustBeFollowedBy(msgstr)
-                .CanBeFollowedBy(text);
-
-            msgstr
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid);
-
-            text
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgstr)
-                .CanBeFollowedBy(msgid);
-
-            comment
-                .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid);
-
-            return start;
-        }
-
-        private static LinePattern GetApplyingLinePattern(LinePattern lastLinePattern, string currentLine)
+        private static ILinePattern GetApplyingLinePattern(ILinePattern lastLinePattern, string currentLine)
         {
             if (lastLinePattern.MandatoryFollowingLinePattern != null &&
                 lastLinePattern.MandatoryFollowingLinePattern.IsApplyingTo(currentLine))
@@ -67,7 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public SniffInfo Sniff(string nativeFilePath, Language suggestedSourceLanguage, Codepage suggestedCodepage,
             INativeTextLocationMessageReporter messageReporter, ISettingsGroup settingsGroup)
         {
-            var lastLinePattern = GetLinePatternRules();
+            var lastLinePattern = _startingLinePattern;
 
             using (var reader = _dotNetFactory.CreateStreamReader(nativeFilePath))
             {
@@ -116,46 +82,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
 
             return new SniffInfo {IsSupported = true};
-        }
-
-        private class LinePattern
-        {
-            private const string LineStartPattern = "^";
-            private readonly List<LinePattern> _possibleFollowingLinePatterns;
-            private LinePattern _mandatoryFollowingLinePattern;
-            private readonly Regex _pattern;
-
-            public LinePattern(string pattern)
-            {
-                _pattern = new Regex(LineStartPattern + pattern);
-                _possibleFollowingLinePatterns = new List<LinePattern>();
-            }
-
-            public IEnumerable<LinePattern> PossibleFollowingLinePatterns => _possibleFollowingLinePatterns;
-
-            public LinePattern MandatoryFollowingLinePattern => _mandatoryFollowingLinePattern;
-
-            public LinePattern CanBeFollowedBy(LinePattern linePattern)
-            {
-                _possibleFollowingLinePatterns.Add(linePattern);
-                return this;
-            }
-
-            public LinePattern MustBeFollowedBy(LinePattern linePattern)
-            {
-                _mandatoryFollowingLinePattern = linePattern;
-                return this;
-            }
-
-            public bool IsApplyingTo(string line)
-            {
-                return _pattern.IsMatch(line);
-            }
-
-            public override string ToString()
-            {
-                return _pattern.ToString();
-            }
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public INativeFileSniffer BuildFileSniffer(string name)
         {
-            return new PoFileSniffer(new DotNetFactory());
+            return new PoFileSniffer(new DotNetFactory(), LinePatternRules.GetPoFileLinePatternRules());
         }
 
         public IFileExtractor BuildFileExtractor(string name)
