@@ -1,7 +1,6 @@
 ﻿using System;
 using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
-using Sdl.FileTypeSupport.Framework.Core.Utilities.Properties;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
@@ -47,7 +46,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public INativeFileSniffer BuildFileSniffer(string name)
         {
-            return new PoFileSniffer(new DotNetFactory(), LinePatternRules.GetPoFileLinePatternRules());
+            return new PoFileSniffer(new DotNetFactory(), LinePatternRules.GetPoFileStartingLinePattern());
         }
 
         public IFileExtractor BuildFileExtractor(string name)

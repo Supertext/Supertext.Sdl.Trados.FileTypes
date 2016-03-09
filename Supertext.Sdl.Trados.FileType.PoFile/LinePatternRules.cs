@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public static class LinePatternRules
     {
-        public static LinePattern GetPoFileLinePatternRules()
+        public static LinePattern GetPoFileStartingLinePattern()
         {
             var start = new LinePattern(String.Empty);
             var msgid = new LinePattern(@"msgid\s+"".*""");
