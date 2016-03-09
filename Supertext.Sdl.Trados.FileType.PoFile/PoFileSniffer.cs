@@ -18,73 +18,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _dotNetFactory = dotNetFactory;
         }
 
-        public SniffInfo Sniff(string nativeFilePath, Language suggestedSourceLanguage, Codepage suggestedCodepage,
-            INativeTextLocationMessageReporter messageReporter, ISettingsGroup settingsGroup)
-        {
-            var sniffInfo = new SniffInfo();
-
-            var lastLinePattern = GetLineRules();
-
-            using (var reader = _dotNetFactory.CreateStreamReader(nativeFilePath))
-            {
-                string currentLine;
-                var lineNumber = 0;
-
-                while ((currentLine = reader.ReadLine()) != null)
-                {
-                    ++lineNumber;
-
-                    if (string.IsNullOrWhiteSpace(currentLine))
-                    {
-                        continue;
-                    }
-
-                    if (lastLinePattern.MandatoryFollowingLinePattern != null &&
-                        lastLinePattern.MandatoryFollowingLinePattern.IsApplyingTo(currentLine))
-                    {
-                        lastLinePattern = lastLinePattern.MandatoryFollowingLinePattern;
-                        continue;
-                    }
-                 
-                    var currentLinePattern = lastLinePattern.PossibleFollowingLinePatterns.FirstOrDefault(
-                            linePattern => linePattern.IsApplyingTo(currentLine));
-                    
-
-                    if (lastLinePattern.MandatoryFollowingLinePattern != null && currentLinePattern != null)
-                    {
-                        continue;
-                    }
-
-                    if (lastLinePattern.MandatoryFollowingLinePattern == null && currentLinePattern != null)
-                    {
-                        lastLinePattern = currentLinePattern;
-                        continue;
-                    }
-
-                    sniffInfo.IsSupported = false;
-                    messageReporter.ReportMessage(this, nativeFilePath,
-                        ErrorLevel.Error, PoFileTypeResources.Sniffer_Message,
-                        lineNumber + ": " + currentLine);
-
-                    return sniffInfo;
-                }
-
-                if (lastLinePattern.MandatoryFollowingLinePattern != null)
-                {
-                    sniffInfo.IsSupported = false;
-                    messageReporter.ReportMessage(this, nativeFilePath,
-                        ErrorLevel.Error, PoFileTypeResources.Sniffer_Message,
-                        "end" );
-
-                    return sniffInfo;
-                }
-
-                sniffInfo.IsSupported = true;
-                return sniffInfo;
-            }
-        }
-
-        private static LinePattern GetLineRules()
+        private static LinePattern GetLinePatternRules()
         {
             var start = new LinePattern(string.Empty);
             var msgid = new LinePattern(@"msgid\s+"".*""");
@@ -118,16 +52,82 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return start;
         }
 
+        private static LinePattern GetApplyingLinePattern(LinePattern lastLinePattern, string currentLine)
+        {
+            if (lastLinePattern.MandatoryFollowingLinePattern != null &&
+                lastLinePattern.MandatoryFollowingLinePattern.IsApplyingTo(currentLine))
+            {
+                return lastLinePattern.MandatoryFollowingLinePattern;
+            }
+
+            return lastLinePattern.PossibleFollowingLinePatterns.FirstOrDefault(
+                linePattern => linePattern.IsApplyingTo(currentLine));
+        }
+
+        public SniffInfo Sniff(string nativeFilePath, Language suggestedSourceLanguage, Codepage suggestedCodepage,
+            INativeTextLocationMessageReporter messageReporter, ISettingsGroup settingsGroup)
+        {
+            var lastLinePattern = GetLinePatternRules();
+
+            using (var reader = _dotNetFactory.CreateStreamReader(nativeFilePath))
+            {
+                string currentLine;
+                var lineNumber = 0;
+
+                while ((currentLine = reader.ReadLine()) != null)
+                {
+                    ++lineNumber;
+
+                    if (string.IsNullOrWhiteSpace(currentLine))
+                    {
+                        continue;
+                    }
+
+                    var currentLinePattern = GetApplyingLinePattern(lastLinePattern, currentLine);
+
+                    if (currentLinePattern == null)
+                    {
+                        messageReporter.ReportMessage(this, nativeFilePath,
+                            ErrorLevel.Error, PoFileTypeResources.Sniffer_Unexpected_Line,
+                            lineNumber + ": " + currentLine);
+
+                        return new SniffInfo {IsSupported = false};
+                    }
+
+                    if (lastLinePattern.MandatoryFollowingLinePattern != null &&
+                        !currentLinePattern.Equals(lastLinePattern.MandatoryFollowingLinePattern))
+                    {
+                        continue;
+                    }
+
+                    lastLinePattern = currentLinePattern;
+                }
+            }
+
+            if (lastLinePattern.MandatoryFollowingLinePattern != null)
+            {
+                messageReporter.ReportMessage(this, nativeFilePath,
+                    ErrorLevel.Error,
+                    string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
+                        lastLinePattern.MandatoryFollowingLinePattern),
+                    "End of file");
+
+                return new SniffInfo {IsSupported = false};
+            }
+
+            return new SniffInfo {IsSupported = true};
+        }
+
         private class LinePattern
         {
-            private const string StartPattern = "^";
+            private const string LineStartPattern = "^";
             private readonly List<LinePattern> _possibleFollowingLinePatterns;
             private LinePattern _mandatoryFollowingLinePattern;
             private readonly Regex _pattern;
 
             public LinePattern(string pattern)
             {
-                _pattern = new Regex(StartPattern + pattern);
+                _pattern = new Regex(LineStartPattern + pattern);
                 _possibleFollowingLinePatterns = new List<LinePattern>();
             }
 
@@ -150,6 +150,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             public bool IsApplyingTo(string line)
             {
                 return _pattern.IsMatch(line);
+            }
+
+            public override string ToString()
+            {
+                return _pattern.ToString();
             }
         }
     }

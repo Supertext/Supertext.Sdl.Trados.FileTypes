@@ -121,10 +121,14 @@
   <data name="PoFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PoFileIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Sniffer_Location" xml:space="preserve">
+  <data name="Sniffer_MandatoryLineNotFound" xml:space="preserve">
     <value>Somewhere</value>
   </data>
-  <data name="Sniffer_Message" xml:space="preserve">
-    <value>Expected keywords (msgid, msgstr) not found</value>
+  <data name="Sniffer_Unexpected_End_Of_File" xml:space="preserve">
+    <value>Reached end of file but expected to find line with following starting pattern {0}</value>
+    <comment>{0}: line start pattern</comment>
+  </data>
+  <data name="Sniffer_Unexpected_Line" xml:space="preserve">
+    <value>Found unexpected line</value>
   </data>
 </root>
