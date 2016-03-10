@@ -6,18 +6,18 @@ using System.Xml;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public class LineParser : ILineParser, ILineValidationSession
+    public class LineParser : ILineParser, ILineValidationSession, ILineParsingSession
     {
         private static readonly LinePattern Start;
         private LinePattern _lastLinePattern;
 
         static LineParser()
         {
-            Start = new LinePattern(string.Empty);
-            var msgid = new LinePattern(@"msgid\s+"".*""");
-            var msgstr = new LinePattern(@"msgstr\s+"".*""");
-            var text = new LinePattern("\"");
-            var comment = new LinePattern("#");
+            Start = new LinePattern(LineType.Start, string.Empty, string.Empty);
+            var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
+            var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
+            var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
+            var comment = new LinePattern(LineType.Comment, "#", @"#[\s:,.|]\s*(.*)");
 
             Start
                 .MustBeFollowedBy(msgid)
@@ -45,7 +45,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public string NextMandatoryLinePattern => _lastLinePattern.MandatoryFollowingLinePattern?.ToString() ?? string.Empty;
 
-        public ILineValidationSession StartValidationSession()
+        public ILineValidationSession StartLineValidationSession()
+        {
+            _lastLinePattern = Start;
+            return this;
+        }
+
+        public ILineParsingSession StartLineParsingSession()
         {
             _lastLinePattern = Start;
             return this;
@@ -74,6 +80,20 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return _lastLinePattern.MandatoryFollowingLinePattern == null;
         }
 
+        public IParseResult Parse(string line)
+        {
+            var applyingLinePattern = GetApplyingLinePattern(_lastLinePattern, line);
+
+            if (applyingLinePattern == null)
+            {
+                return null;
+            }
+
+            _lastLinePattern = applyingLinePattern;
+
+            return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line));
+        }
+
         private static LinePattern GetApplyingLinePattern(LinePattern lastLinePattern, string currentLine)
         {
             if (lastLinePattern.MandatoryFollowingLinePattern != null &&
@@ -88,16 +108,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private class LinePattern
         {
-            private const string LineStartPattern = "^";
+            private const string StartOfStringPattern = "^";
             private readonly List<LinePattern> _possibleFollowingLinePatterns;
+            private readonly Regex _lineStartRegex;
+            private readonly Regex _lineContentRegex;
             private LinePattern _mandatoryFollowingLinePattern;
-            private readonly Regex _pattern;
 
-            public LinePattern(string pattern)
+            public LinePattern(LineType lineType, string lineStartPattern, string lineContentPattern)
             {
-                _pattern = new Regex(LineStartPattern + pattern);
+                LineType = lineType;
+
+                _lineStartRegex = new Regex(StartOfStringPattern + lineStartPattern);
+                _lineContentRegex = new Regex(lineContentPattern);
                 _possibleFollowingLinePatterns = new List<LinePattern>();
             }
+
+            public LineType LineType { get; }
 
             public IEnumerable<LinePattern> PossibleFollowingLinePatterns => _possibleFollowingLinePatterns;
 
@@ -117,12 +143,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public bool IsApplyingTo(string line)
             {
-                return _pattern.IsMatch(line);
+                return _lineStartRegex.IsMatch(line);
+            }
+
+            public string GetContent(string line)
+            {
+                var match = _lineContentRegex.Match(line);
+                return match.Groups[1].Value;
             }
 
             public override string ToString()
             {
-                return _pattern.ToString();
+                return _lineStartRegex.ToString();
             }
         }
     }

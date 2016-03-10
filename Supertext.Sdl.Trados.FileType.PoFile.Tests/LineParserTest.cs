@@ -16,7 +16,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
             var result = lineValidationSession.Check(@"msgid ""The msgid text""");
@@ -30,7 +30,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
             var result = lineValidationSession.Check(@"#: a comment");
@@ -44,7 +44,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
 
             // Act
@@ -59,7 +59,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid """"");
 
             // Act
@@ -74,7 +74,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
             lineValidationSession.Check(@"msgstr """"");
 
@@ -90,7 +90,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
             lineValidationSession.Check(@"msgstr ""The msgstr text""");
 
@@ -106,7 +106,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
             lineValidationSession.Check(@"msgstr ""The msgstr text""");
 
@@ -122,7 +122,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
             lineValidationSession.Check(@"msgstr """"");
             lineValidationSession.Check(@"""The text""");
@@ -139,7 +139,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
             lineValidationSession.Check(@"msgstr """"");
             lineValidationSession.Check(@"""The text""");
@@ -156,7 +156,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid """"");
             lineValidationSession.Check(@"""The text""");
 
@@ -172,7 +172,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
             lineValidationSession.Check(@"msgstr """"");
             lineValidationSession.Check(@"""The text""");
@@ -189,7 +189,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"#: a comment");
 
             // Act
@@ -204,7 +204,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"#: a comment");
 
             // Act
@@ -219,7 +219,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
             var result = lineValidationSession.Check(@"#: a comment");
@@ -239,7 +239,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"#: a comment");
             lineValidationSession.Check(@"#, a following comment");
             lineValidationSession.Check(@"msgid ""The msgid text""");
@@ -256,7 +256,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
 
             // Act
@@ -271,7 +271,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
 
             // Act
@@ -286,7 +286,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
             var result = lineValidationSession.IsEndValid();
@@ -300,7 +300,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"#: a comment");
             lineValidationSession.Check(@"#, a following comment");
             lineValidationSession.Check(@"msgid ""The msgid text""");
@@ -319,8 +319,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         [Test]
         public void NextMandatoryLinePattern_WhenMandortyLinePatternExpected_ShouldReturnPattern()
         {
+            // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
 
             // Act
@@ -333,8 +334,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         [Test]
         public void NextMandatoryLinePattern_WhenNoMandortyLinePatternExpected_ShouldReturnEmptyString()
         {
+            // Arrange
             var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
+            var lineValidationSession = testee.StartLineValidationSession();
             lineValidationSession.Check(@"msgid ""The msgid text""");
             lineValidationSession.Check(@"msgstr ""The msgstr text""");
 
@@ -344,5 +346,69 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             result.Should().BeEmpty();
         }
+
+        [Test]
+        public void Parse_WhenMsgidLine_ShouldReturnMessageIdTypeAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+
+            // Act
+            var result = lineParsingSession.Parse(@"msgid ""The msgid text""");
+
+            // Assert
+            result.LineType.Should().Be(LineType.MessageId);
+            result.LineContent.Should().Be("The msgid text");
+        }
+
+        [Test]
+        public void Parse_WhenMsgstrLine_ShouldReturnMessageStringTypeAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid ""The msgid text""");
+
+            // Act
+            var result = lineParsingSession.Parse(@"msgstr ""The msgstr text""");
+
+            // Assert
+            result.LineType.Should().Be(LineType.MessageString);
+            result.LineContent.Should().Be("The msgstr text");
+        }
+
+        [Test]
+        public void Parse_WhenTextLine_ShouldReturnTextTypeAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid """"");
+
+            // Act
+            var result = lineParsingSession.Parse(@"""The text""");
+
+            // Assert
+            result.LineType.Should().Be(LineType.Text);
+            result.LineContent.Should().Be("The text");
+        }
+
+        [Test]
+        public void Parse_WhenCommentLine_ShouldReturnCommentTypeAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+
+            // Act
+            var result = lineParsingSession.Parse(@"#: some comment");
+
+            // Assert
+            result.LineType.Should().Be(LineType.Comment);
+            result.LineContent.Should().Be("some comment");
+        }
+
+
     }
 }

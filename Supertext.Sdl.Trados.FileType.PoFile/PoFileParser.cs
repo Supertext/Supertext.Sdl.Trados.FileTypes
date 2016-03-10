@@ -36,6 +36,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public void StartOfInput()
         {
             _streamReader = _dotNetFactory.CreateStreamReader(_fileConversionProperties.OriginalFilePath);
+            
         }
 
         public void EndOfInput()

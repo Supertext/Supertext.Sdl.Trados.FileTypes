@@ -64,7 +64,11 @@
     <Compile Include="DotNetWrappers\IReader.cs" />
     <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
     <Compile Include="ILineParser.cs" />
+    <Compile Include="ILineParsingSession.cs" />
     <Compile Include="ILineValidationSession.cs" />
+    <Compile Include="IParseResult.cs" />
+    <Compile Include="LineType.cs" />
+    <Compile Include="ParseResult.cs" />
     <Compile Include="LineParser.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />
     <Compile Include="PoFileParser.cs" />

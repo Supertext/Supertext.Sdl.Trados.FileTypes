@@ -183,7 +183,7 @@ msgstr ""The msgstr text""
             var dotNetFactoryMock = A.Fake<IDotNetFactory>();
 
             var lineParserMock = A.Fake<ILineParser>();
-            A.CallTo(() => lineParserMock.StartValidationSession()).Returns(_lineValidationSession);
+            A.CallTo(() => lineParserMock.StartLineValidationSession()).Returns(_lineValidationSession);
 
             var streamReaderFake = new StringReaderWrapper(testString);
             A.CallTo(() => dotNetFactoryMock.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
