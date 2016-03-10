@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
@@ -7,7 +9,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public class LineParser : ILineParser, ILineValidationSession
     {
         private static readonly LinePattern Start;
-        private ILinePattern _lastLinePattern;
+        private LinePattern _lastLinePattern;
 
         static LineParser()
         {
@@ -41,7 +43,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 .CanBeFollowedBy(msgid);
         }
 
-        private static ILinePattern GetApplyingLinePattern(ILinePattern lastLinePattern, string currentLine)
+        private static LinePattern GetApplyingLinePattern(LinePattern lastLinePattern, string currentLine)
         {
             if (lastLinePattern.MandatoryFollowingLinePattern != null &&
                 lastLinePattern.MandatoryFollowingLinePattern.IsApplyingTo(currentLine))
@@ -81,17 +83,45 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             return _lastLinePattern.MandatoryFollowingLinePattern == null;
         }
-    }
 
-    public interface ILineParser
-    {
-        ILineValidationSession StartValidationSession();
-    }
+        private class LinePattern
+        {
+            private const string LineStartPattern = "^";
+            private readonly List<LinePattern> _possibleFollowingLinePatterns;
+            private LinePattern _mandatoryFollowingLinePattern;
+            private readonly Regex _pattern;
 
-    public interface ILineValidationSession
-    {
-        bool Check(string line);
+            public LinePattern(string pattern)
+            {
+                _pattern = new Regex(LineStartPattern + pattern);
+                _possibleFollowingLinePatterns = new List<LinePattern>();
+            }
 
-        bool IsEndValid();
+            public IEnumerable<LinePattern> PossibleFollowingLinePatterns => _possibleFollowingLinePatterns;
+
+            public LinePattern MandatoryFollowingLinePattern => _mandatoryFollowingLinePattern;
+
+            public LinePattern CanBeFollowedBy(LinePattern linePattern)
+            {
+                _possibleFollowingLinePatterns.Add(linePattern);
+                return this;
+            }
+
+            public LinePattern MustBeFollowedBy(LinePattern linePattern)
+            {
+                _mandatoryFollowingLinePattern = linePattern;
+                return this;
+            }
+
+            public bool IsApplyingTo(string line)
+            {
+                return _pattern.IsMatch(line);
+            }
+
+            public override string ToString()
+            {
+                return _pattern.ToString();
+            }
+        }
     }
 }
