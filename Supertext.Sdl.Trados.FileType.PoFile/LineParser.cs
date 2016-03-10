@@ -4,12 +4,12 @@ using System.Xml;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public class LineValidator : ILineValidator, ILineValidationSession
+    public class LineParser : ILineParser, ILineValidationSession
     {
         private static readonly LinePattern Start;
         private ILinePattern _lastLinePattern;
 
-        static LineValidator()
+        static LineParser()
         {
             Start = new LinePattern(string.Empty);
             var msgid = new LinePattern(@"msgid\s+"".*""");
@@ -59,13 +59,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return this;
         }
 
-        public ILineInfo Check(string line)
+        public bool Check(string line)
         {
             var applyingLinePattern = GetApplyingLinePattern(_lastLinePattern, line);
 
             if (applyingLinePattern == null)
             {
-                return new LineInfo();
+                return false;
             }
 
             if (applyingLinePattern.Equals(_lastLinePattern.MandatoryFollowingLinePattern) ||
@@ -74,37 +74,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 _lastLinePattern = applyingLinePattern;
             }
 
-            return new LineInfo
-            {
-                IsValid = true
-            };
+            return true;
         }
 
         public bool IsEndValid()
         {
             return _lastLinePattern.MandatoryFollowingLinePattern == null;
         }
-
-        private class LineInfo : ILineInfo
-        {
-            public bool IsValid { get; set; }
-        }
     }
 
-    public interface ILineValidator
+    public interface ILineParser
     {
         ILineValidationSession StartValidationSession();
     }
 
     public interface ILineValidationSession
     {
-        ILineInfo Check(string line);
+        bool Check(string line);
 
         bool IsEndValid();
-    }
-
-    public interface ILineInfo
-    {
-        bool IsValid { get; }
     }
 }

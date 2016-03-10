@@ -65,7 +65,7 @@
     <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
     <Compile Include="ILinePattern.cs" />
     <Compile Include="LinePattern.cs" />
-    <Compile Include="LineValidator.cs" />
+    <Compile Include="LineParser.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />
     <Compile Include="PoFileParser.cs" />
     <Compile Include="PoFileSniffer.cs" />

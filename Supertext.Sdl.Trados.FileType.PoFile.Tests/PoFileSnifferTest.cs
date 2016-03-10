@@ -265,7 +265,7 @@ thisiswrong
             var dotNetFactoryMock = A.Fake<IDotNetFactory>();
             var streamReaderFake = new StringReaderWrapper(testString);
             A.CallTo(() => dotNetFactoryMock.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
-            var testee = new PoFileSniffer(dotNetFactoryMock, new LineValidator());
+            var testee = new PoFileSniffer(dotNetFactoryMock, new LineParser());
             return testee;
         }
 

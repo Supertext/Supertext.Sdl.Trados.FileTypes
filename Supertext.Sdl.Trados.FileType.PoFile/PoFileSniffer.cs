@@ -1,4 +1,3 @@
-using System.Linq;
 using Sdl.Core.Globalization;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -9,18 +8,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public class PoFileSniffer : INativeFileSniffer
     {
         private readonly IDotNetFactory _dotNetFactory;
-        private readonly ILineValidator _lineValidator;
+        private readonly ILineParser _lineParser;
 
-        public PoFileSniffer(IDotNetFactory dotNetFactory, ILineValidator lineValidator)
+        public PoFileSniffer(IDotNetFactory dotNetFactory, ILineParser lineParser)
         {
             _dotNetFactory = dotNetFactory;
-            _lineValidator = lineValidator;
+            _lineParser = lineParser;
         }
 
         public SniffInfo Sniff(string nativeFilePath, Language suggestedSourceLanguage, Codepage suggestedCodepage,
             INativeTextLocationMessageReporter messageReporter, ISettingsGroup settingsGroup)
         {
-            ILineValidationSession lineValidationSession = _lineValidator.StartValidationSession();
+            ILineValidationSession lineValidationSession = _lineParser.StartValidationSession();
 
             using (var reader = _dotNetFactory.CreateStreamReader(nativeFilePath))
             {
@@ -36,16 +35,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                         continue;
                     }
 
-                    var currentLineInfo = lineValidationSession.Check(currentLine);
+                    var isValidLine = lineValidationSession.Check(currentLine);
 
-                    if (!currentLineInfo.IsValid)
+                    if (isValidLine)
                     {
-                        messageReporter.ReportMessage(this, nativeFilePath,
-                            ErrorLevel.Error, PoFileTypeResources.Sniffer_Unexpected_Line,
-                            lineNumber + ": " + currentLine);
-
-                        return new SniffInfo {IsSupported = false};
+                        continue;
                     }
+
+                    messageReporter.ReportMessage(this, nativeFilePath,
+                        ErrorLevel.Error, PoFileTypeResources.Sniffer_Unexpected_Line,
+                        lineNumber + ": " + currentLine);
+
+                    return new SniffInfo {IsSupported = false};
                 }
             }
 
