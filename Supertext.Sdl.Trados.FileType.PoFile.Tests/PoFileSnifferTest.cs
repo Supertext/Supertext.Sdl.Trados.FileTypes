@@ -90,7 +90,7 @@ msgid ""The msgid text""
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
             A.CallTo(() => _lineValidationSession.IsEndValid()).Returns(false);
-            A.CallTo(() => _lineValidationSession.NextMandatoryLinePattern).Returns("msgstr");
+            A.CallTo(() => _lineValidationSession.NextExpectedLineDescription).Returns("msgstr");
 
             // Act
             testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);

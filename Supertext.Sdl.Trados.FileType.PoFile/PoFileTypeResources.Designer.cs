@@ -71,16 +71,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Somewhere.
-        /// </summary>
-        internal static string Sniffer_MandatoryLineNotFound {
-            get {
-                return ResourceManager.GetString("Sniffer_MandatoryLineNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reached end of file but expected to find line with following starting pattern {0}.
+        ///   Looks up a localized string similar to Reached end of file but expected to find line with following line {0}.
         /// </summary>
         internal static string Sniffer_Unexpected_End_Of_File {
             get {

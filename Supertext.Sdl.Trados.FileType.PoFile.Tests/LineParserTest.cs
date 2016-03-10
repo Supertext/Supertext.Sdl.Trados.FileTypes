@@ -317,7 +317,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void NextMandatoryLinePattern_WhenMandortyLinePatternExpected_ShouldReturnPattern()
+        public void NextExpectedLineDescription_WhenMandortyLinePatternExpected_ShouldReturnPattern()
         {
             // Arrange
             var testee = new LineParser();
@@ -325,14 +325,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             lineValidationSession.Check(@"msgid ""The msgid text""");
 
             // Act
-            var result = lineValidationSession.NextMandatoryLinePattern;
+            var result = lineValidationSession.NextExpectedLineDescription;
 
             // Assert
             result.Should().NotBeEmpty();
         }
 
         [Test]
-        public void NextMandatoryLinePattern_WhenNoMandortyLinePatternExpected_ShouldReturnEmptyString()
+        public void NextExpectedLineDescription_WhenNoMandortyLinePatternExpected_ShouldReturnEmptyString()
         {
             // Arrange
             var testee = new LineParser();
@@ -341,7 +341,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             lineValidationSession.Check(@"msgstr ""The msgstr text""");
 
             // Act
-            var result = lineValidationSession.NextMandatoryLinePattern;
+            var result = lineValidationSession.NextExpectedLineDescription;
 
             // Assert
             result.Should().BeEmpty();

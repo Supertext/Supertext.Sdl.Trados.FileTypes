@@ -6,6 +6,6 @@
 
         bool IsEndValid();
 
-        string NextMandatoryLinePattern { get; }
+        string NextExpectedLineDescription { get; }
     }
 }
