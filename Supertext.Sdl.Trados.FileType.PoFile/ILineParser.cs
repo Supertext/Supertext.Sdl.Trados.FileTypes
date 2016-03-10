@@ -3,5 +3,7 @@
     public interface ILineParser
     {
         ILineValidationSession StartLineValidationSession();
+
+        ILineParsingSession StartLineParsingSession();
     }
 }

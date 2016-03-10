@@ -66,8 +66,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LineParserTest.cs" />
+    <Compile Include="PoFileParserTest.cs" />
     <Compile Include="PoFileSnifferTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringReaderWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

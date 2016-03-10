@@ -1,11 +1,11 @@
-﻿using System.IO;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using Sdl.Core.Globalization;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
+using static System.String;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {
@@ -18,7 +18,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private Codepage _testCodepage;
         private INativeTextLocationMessageReporter _messageReporterMock;
         private ISettingsGroup _settingsGroupMock;
-        private ILineValidationSession _lineValidationSession;
+        private ILineValidationSession _lineValidationSessionMock;
 
 
         [SetUp]
@@ -28,7 +28,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _testCodepage = new Codepage();
             _messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
             _settingsGroupMock = A.Fake<ISettingsGroup>();
-            _lineValidationSession = A.Fake<ILineValidationSession>();
+            _lineValidationSessionMock = A.Fake<ILineValidationSession>();
         }
 
         [Test]
@@ -44,8 +44,8 @@ msgid ""The msgid text""
 msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSession.IsEndValid()).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(true);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -66,8 +66,8 @@ msgstr ""The msgstr text""
 msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSession.IsEndValid()).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(false);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -88,9 +88,9 @@ msgstr ""The msgstr text""
 msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSession.IsEndValid()).Returns(false);
-            A.CallTo(() => _lineValidationSession.NextExpectedLineDescription).Returns("msgstr");
+            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.NextExpectedLineDescription).Returns("msgstr");
 
             // Act
             testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -115,9 +115,9 @@ msgid ""The msgid text""
 somethingwrong
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSession.Check("#: a comment")).Returns(true);
-            A.CallTo(() => _lineValidationSession.Check(@"msgid ""The msgid text""")).Returns(true);
-            A.CallTo(() => _lineValidationSession.Check("somethingwrong")).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.Check("#: a comment")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.Check(@"msgid ""The msgid text""")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.Check("somethingwrong")).Returns(false);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -137,9 +137,9 @@ somethingwrong
 ";
 
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSession.Check("#: a comment")).Returns(true);
-            A.CallTo(() => _lineValidationSession.Check(@"msgid ""The msgid text""")).Returns(true);
-            A.CallTo(() => _lineValidationSession.Check("somethingwrong")).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.Check("#: a comment")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.Check(@"msgid ""The msgid text""")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.Check("somethingwrong")).Returns(false);
 
             // Act
             testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -169,13 +169,13 @@ msgstr ""The msgstr text""
 
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
 
             // Act
             testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
 
             // Assert
-            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(5));
+            A.CallTo(() => _lineValidationSessionMock.Check(string.Empty)).MustNotHaveHappened();
         }
 
         private PoFileSniffer CreateTestee(string testString)
@@ -183,37 +183,12 @@ msgstr ""The msgstr text""
             var dotNetFactoryMock = A.Fake<IDotNetFactory>();
 
             var lineParserMock = A.Fake<ILineParser>();
-            A.CallTo(() => lineParserMock.StartLineValidationSession()).Returns(_lineValidationSession);
+            A.CallTo(() => lineParserMock.StartLineValidationSession()).Returns(_lineValidationSessionMock);
 
             var streamReaderFake = new StringReaderWrapper(testString);
             A.CallTo(() => dotNetFactoryMock.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
 
             return new PoFileSniffer(dotNetFactoryMock, lineParserMock);
-        }
-
-        private class StringReaderWrapper : IReader
-        {
-            private readonly StringReader _stringReader;
-
-            public StringReaderWrapper(string text)
-            {
-                _stringReader = new StringReader(text);
-            }
-
-            public void Dispose()
-            {
-                _stringReader.Dispose();
-            }
-
-            public string ReadLine()
-            {
-                return _stringReader.ReadLine();
-            }
-
-            public void Close()
-            {
-                _stringReader.Close();
-            }
         }
     }
 }

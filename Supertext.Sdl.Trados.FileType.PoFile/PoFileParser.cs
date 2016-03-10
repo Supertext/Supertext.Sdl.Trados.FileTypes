@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
@@ -12,7 +13,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private readonly IDotNetFactory _dotNetFactory;
         private readonly ILineParser _lineParser;
         private IPersistentFileConversionProperties _fileConversionProperties;
-        private IReader _streamReader;
+        private IReader _reader;
+        private ILineParsingSession _lineParsingSession;
 
         public PoFileParser(IDotNetFactory dotNetFactory, ILineParser lineParser)
         {
@@ -35,19 +37,73 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void StartOfInput()
         {
-            _streamReader = _dotNetFactory.CreateStreamReader(_fileConversionProperties.OriginalFilePath);
-            
+            _reader = _dotNetFactory.CreateStreamReader(_fileConversionProperties.OriginalFilePath);
+            _lineParsingSession = _lineParser.StartLineParsingSession();
         }
 
         public void EndOfInput()
         {
-            _streamReader.Close();
+            _reader.Close();
         }
 
         public bool ParseNext()
         {
+            string currentLine;
+            var textExtractor = new TextExtractor();
+
+            while ((currentLine = _reader.ReadLine()) != null)
+            {
+                if (string.IsNullOrWhiteSpace(currentLine))
+                {
+                    continue;
+                }
+
+                var parseResult = _lineParsingSession.Parse(currentLine);
+
+                textExtractor.Process(parseResult);
+
+                if (textExtractor.IsTextComplete)
+                {
+                    Output.Text(PropertiesFactory.CreateTextProperties(textExtractor.Text));
+                    return true;
+                }
+            }
 
             return false;
+        }
+
+        private class TextExtractor
+        {
+            private readonly StringBuilder _textBuilder;
+            private bool _processingText;
+
+            public TextExtractor()
+            {
+                _textBuilder = new StringBuilder();
+                _processingText = false;
+            }
+
+            public bool IsTextComplete { get; private set; }
+
+            public string Text { get; private set; }
+
+            public void Process(IParseResult parseResult)
+            {
+                if (parseResult.LineType != LineType.Text && _processingText)
+                {
+                    Text = _textBuilder.ToString();
+                    IsTextComplete = true;
+                }
+                else if (parseResult.LineType == LineType.Text && _processingText)
+                {
+                    _textBuilder.Append(parseResult.LineContent);
+                }
+                else if (parseResult.LineType == LineType.MessageId)
+                {
+                    _textBuilder.Append(parseResult.LineContent);
+                    _processingText = true;
+                }
+            }
         }
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
@@ -63,13 +119,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposing || _streamReader == null)
+            if (!disposing || _reader == null)
             {
                 return;
             }
 
-            _streamReader.Dispose();
-            _streamReader = null;
+            _reader.Dispose();
+            _reader = null;
         }
     }
 }
