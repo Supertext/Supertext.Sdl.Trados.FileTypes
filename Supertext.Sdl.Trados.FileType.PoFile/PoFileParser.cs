@@ -10,12 +10,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public class PoFileParser : INativeFileParser, INativeContentCycleAware, ISettingsAware
     {
         private readonly IDotNetFactory _dotNetFactory;
+        private readonly ILineValidator _lineValidator;
+        private ILinePattern _lastLinePattern;
         private IPersistentFileConversionProperties _fileConversionProperties;
         private IReader _streamReader;
 
-        public PoFileParser(IDotNetFactory dotNetFactory)
+        public PoFileParser(IDotNetFactory dotNetFactory, ILineValidator lineValidator)
         {
             _dotNetFactory = dotNetFactory;
+            _lineValidator = lineValidator;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -43,7 +46,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public bool ParseNext()
         {
-            throw new NotImplementedException();
+
+            return false;
         }
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)

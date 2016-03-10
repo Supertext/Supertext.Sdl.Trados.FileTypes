@@ -46,12 +46,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public INativeFileSniffer BuildFileSniffer(string name)
         {
-            return new PoFileSniffer(new DotNetFactory(), LinePatternRules.GetPoFileStartingLinePattern());
+            return new PoFileSniffer(new DotNetFactory(), new LineValidator());
         }
 
         public IFileExtractor BuildFileExtractor(string name)
         {
-            var parser = new PoFileParser(new DotNetFactory());
+            var parser = new PoFileParser(new DotNetFactory(), new LineValidator());
             var extractor = FileTypeManager.BuildFileExtractor(FileTypeManager.BuildNativeExtractor(parser), this);
             return extractor;
         }

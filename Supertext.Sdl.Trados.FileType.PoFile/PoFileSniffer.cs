@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using Sdl.Core.Globalization;
 using Sdl.Core.Settings;
@@ -10,30 +9,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public class PoFileSniffer : INativeFileSniffer
     {
         private readonly IDotNetFactory _dotNetFactory;
-        private readonly ILinePattern _startingLinePattern;
+        private readonly ILineValidator _lineValidator;
 
-        public PoFileSniffer(IDotNetFactory dotNetFactory, ILinePattern startingLinePattern)
+        public PoFileSniffer(IDotNetFactory dotNetFactory, ILineValidator lineValidator)
         {
             _dotNetFactory = dotNetFactory;
-            _startingLinePattern = startingLinePattern;
-        }
-
-        private static ILinePattern GetApplyingLinePattern(ILinePattern lastLinePattern, string currentLine)
-        {
-            if (lastLinePattern.MandatoryFollowingLinePattern != null &&
-                lastLinePattern.MandatoryFollowingLinePattern.IsApplyingTo(currentLine))
-            {
-                return lastLinePattern.MandatoryFollowingLinePattern;
-            }
-
-            return lastLinePattern.PossibleFollowingLinePatterns.FirstOrDefault(
-                linePattern => linePattern.IsApplyingTo(currentLine));
+            _lineValidator = lineValidator;
         }
 
         public SniffInfo Sniff(string nativeFilePath, Language suggestedSourceLanguage, Codepage suggestedCodepage,
             INativeTextLocationMessageReporter messageReporter, ISettingsGroup settingsGroup)
         {
-            var lastLinePattern = _startingLinePattern;
+            ILineValidationSession lineValidationSession = _lineValidator.StartValidationSession();
 
             using (var reader = _dotNetFactory.CreateStreamReader(nativeFilePath))
             {
@@ -49,9 +36,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                         continue;
                     }
 
-                    var currentLinePattern = GetApplyingLinePattern(lastLinePattern, currentLine);
+                    var currentLineInfo = lineValidationSession.Check(currentLine);
 
-                    if (currentLinePattern == null)
+                    if (!currentLineInfo.IsValid)
                     {
                         messageReporter.ReportMessage(this, nativeFilePath,
                             ErrorLevel.Error, PoFileTypeResources.Sniffer_Unexpected_Line,
@@ -59,23 +46,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                         return new SniffInfo {IsSupported = false};
                     }
-
-                    if (lastLinePattern.MandatoryFollowingLinePattern != null &&
-                        !currentLinePattern.Equals(lastLinePattern.MandatoryFollowingLinePattern))
-                    {
-                        continue;
-                    }
-
-                    lastLinePattern = currentLinePattern;
                 }
             }
 
-            if (lastLinePattern.MandatoryFollowingLinePattern != null)
+            if (!lineValidationSession.IsEndValid())
             {
                 messageReporter.ReportMessage(this, nativeFilePath,
                     ErrorLevel.Error,
                     string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
-                        lastLinePattern.MandatoryFollowingLinePattern),
+                        "test"),
                     "End of file");
 
                 return new SniffInfo {IsSupported = false};
