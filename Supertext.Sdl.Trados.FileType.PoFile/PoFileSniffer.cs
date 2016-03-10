@@ -19,7 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public SniffInfo Sniff(string nativeFilePath, Language suggestedSourceLanguage, Codepage suggestedCodepage,
             INativeTextLocationMessageReporter messageReporter, ISettingsGroup settingsGroup)
         {
-            ILineValidationSession lineValidationSession = _lineParser.StartValidationSession();
+            var lineValidationSession = _lineParser.StartValidationSession();
 
             using (var reader = _dotNetFactory.CreateStreamReader(nativeFilePath))
             {

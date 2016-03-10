@@ -43,18 +43,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 .CanBeFollowedBy(msgid);
         }
 
-        private static LinePattern GetApplyingLinePattern(LinePattern lastLinePattern, string currentLine)
-        {
-            if (lastLinePattern.MandatoryFollowingLinePattern != null &&
-                lastLinePattern.MandatoryFollowingLinePattern.IsApplyingTo(currentLine))
-            {
-                return lastLinePattern.MandatoryFollowingLinePattern;
-            }
-
-            return lastLinePattern.PossibleFollowingLinePatterns.FirstOrDefault(
-                linePattern => linePattern.IsApplyingTo(currentLine));
-        }
-
         public ILineValidationSession StartValidationSession()
         {
             _lastLinePattern = Start;
@@ -82,6 +70,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public bool IsEndValid()
         {
             return _lastLinePattern.MandatoryFollowingLinePattern == null;
+        }
+
+        private static LinePattern GetApplyingLinePattern(LinePattern lastLinePattern, string currentLine)
+        {
+            if (lastLinePattern.MandatoryFollowingLinePattern != null &&
+                lastLinePattern.MandatoryFollowingLinePattern.IsApplyingTo(currentLine))
+            {
+                return lastLinePattern.MandatoryFollowingLinePattern;
+            }
+
+            return lastLinePattern.PossibleFollowingLinePatterns.FirstOrDefault(
+                linePattern => linePattern.IsApplyingTo(currentLine));
         }
 
         private class LinePattern

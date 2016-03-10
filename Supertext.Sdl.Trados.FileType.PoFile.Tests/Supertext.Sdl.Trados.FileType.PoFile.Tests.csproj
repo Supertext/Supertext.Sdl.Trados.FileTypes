@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LineParserTest.cs" />
     <Compile Include="PoFileSnifferTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

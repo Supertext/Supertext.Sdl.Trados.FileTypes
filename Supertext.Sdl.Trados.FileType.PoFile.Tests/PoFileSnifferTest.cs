@@ -14,259 +14,152 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     {
         private const string TestFilePath = "sample_file_ok";
 
+        private Language _testLanguage;
+        private Codepage _testCodepage;
+        private INativeTextLocationMessageReporter _messageReporterMock;
+        private ISettingsGroup _settingsGroupMock;
+        private ILineValidationSession _lineValidationSession;
+
+
+        [SetUp]
+        public void SetUp()
+        {
+            _testLanguage = new Language();
+            _testCodepage = new Codepage();
+            _messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
+            _settingsGroupMock = A.Fake<ISettingsGroup>();
+            _lineValidationSession = A.Fake<ILineValidationSession>();
+        }
+
         [Test]
-        public void Sniff_WhenFileFormatIsOk_ShouldReturnIsSupported()
+        public void Sniff_WhenAllLinesAreValid_ShouldReturnIsSupportedTrue()
         {
             // Arrange
             var testString = @"
-#: /var/www/blog/wp-content/themes/supertext2014/tag.php:21
-#, php-format
-msgid ""Schlagwort-Archiv: %s""
-msgstr ""Archives par mot-clé: %s""
+#: a comment
+msgid ""The msgid text""
+msgstr ""The msgstr text""
 
-#: /var/www/blog/wp-content/themes/supertext2014/sidebar.php:1
-msgid ""Supersozial""
-msgstr ""Supersocial""
+msgid ""The msgid text""
+msgstr ""The msgstr text""
 ";
-
             var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
+            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSession.IsEndValid()).Returns(true);
 
             // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
+            var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
 
             // Assert
             result.IsSupported.Should().BeTrue();
         }
 
         [Test]
-        public void Sniff_WhenCommentIsWrongPlace_ShouldReturnIsNotSupported()
+        public void Sniff_WhenEndIsInvalid_ShouldReturnIsSupportedFalse()
         {
             // Arrange
             var testString = @"
-msgid ""Schlagwort-Archiv: %s""
-#: /var/www/blog/wp-content/themes/supertext2014/tag.php:21
-msgstr ""Archives par mot-clé: %s""
-";
+#: a comment
+msgid ""The msgid text""
+msgstr ""The msgstr text""
 
+msgid ""The msgid text""
+";
             var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
+            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSession.IsEndValid()).Returns(false);
 
             // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
+            var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
 
             // Assert
             result.IsSupported.Should().BeFalse();
         }
 
         [Test]
-        public void Sniff_WhenMsgstrIsBeforeMsgid_ShouldReturnIsNotSupported()
+        public void Sniff_WhenOneLineIsInvalid_ShouldReturnIsSupportedFalse()
         {
             // Arrange
             var testString = @"
-msgid ""Supersozial""
-msgstr ""Supersocial""
-
-msgstr ""Archives par mot-clé: %s""
-msgid ""Schlagwort-Archiv: %s""
+#: a comment
+msgid ""The msgid text""
+somethingwrong
 ";
-
             var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
+            A.CallTo(() => _lineValidationSession.Check("#: a comment")).Returns(true);
+            A.CallTo(() => _lineValidationSession.Check(@"msgid ""The msgid text""")).Returns(true);
+            A.CallTo(() => _lineValidationSession.Check("somethingwrong")).Returns(false);
 
             // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
+            var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
 
             // Assert
             result.IsSupported.Should().BeFalse();
         }
 
         [Test]
-        public void Sniff_WhenMsgidIsFollowedByTextAndEndOfFile_ShouldReturnIsNotSupported()
+        public void Sniff_WhenOneLineIsInvalid_ShouldReportWhichLineHasError()
         {
             // Arrange
             var testString = @"
-msgid """"
-""Supersozial""
+#: a comment
+msgid ""The msgid text""
+somethingwrong
 ";
 
             var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
+            A.CallTo(() => _lineValidationSession.Check("#: a comment")).Returns(true);
+            A.CallTo(() => _lineValidationSession.Check(@"msgid ""The msgid text""")).Returns(true);
+            A.CallTo(() => _lineValidationSession.Check("somethingwrong")).Returns(false);
 
             // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
+            testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
 
             // Assert
-            result.IsSupported.Should().BeFalse();
-        }
-
-        [Test]
-        public void Sniff_WhenMsgidIsFollowedByTextButNoMsgstr_ShouldReturnIsNotSupported()
-        {
-            // Arrange
-            var testString = @"
-#: /var/www/blog/wp-content/themes/supertext2014/tag.php:21
-#, php-format
-msgid ""Schlagwort-Archiv: %s""
-
-#: /var/www/blog/wp-content/themes/supertext2014/sidebar.php:1
-msgid ""Supersozial""
-msgstr ""Supersocial""
-";
-
-            var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
-
-            // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
-
-            // Assert
-            result.IsSupported.Should().BeFalse();
-        }
-
-
-        [Test]
-        public void Sniff_WhenLineHasUnexpectedStart_ShouldReturnIsNotSupported()
-        {
-            // Arrange
-            var testString = @"
-msgid ""Supersozial""
-msgstr ""Supersocial""
-
-thisiswrong
-";
-
-            var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
-
-            // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
-
-            // Assert
-            result.IsSupported.Should().BeFalse();
-        }
-
-        [Test]
-        public void Sniff_WhenMsgidIsNotFollowedByText_ShouldReturnIsNotSupported()
-        {
-            // Arrange
-            var testString = @"
-msgid thisiswrong
-msgstr ""Supersocial""
-";
-
-            var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
-
-            // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
-
-            // Assert
-            result.IsSupported.Should().BeFalse();
-        }
-
-        [Test]
-        public void Sniff_WhenMsgstrIsNotFollowedByText_ShouldReturnIsNotSupported()
-        {
-            // Arrange
-            var testString = @"
-msgid ""Supersozial""
-msgstr thisiswrong
-";
-
-            var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
-
-            // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
-
-            // Assert
-            result.IsSupported.Should().BeFalse();
-        }
-
-        [Test]
-        public void Sniff_WhenNoMsgidAndMsgstrExists_ShouldReturnIsNotSupported()
-        {
-            // Arrange
-            var testString = @"
-#: /var/www/blog/wp-content/themes/supertext2014/tag.php:21
-#, php-format
-";
-
-            var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
-
-            // Act
-            var result = testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
-
-            // Assert
-            result.IsSupported.Should().BeFalse();
-        }
-
-        [Test]
-        public void Sniff_WhenFormatWrong_ShouldReportWhichLineHasError()
-        {
-            // Arrange
-            var testString = @"
-msgid ""Supersozial""
-msgstr ""Supersocial""
-
-thisiswrong
-";
-
-            var testee = CreateTestee(testString);
-            var language = new Language();
-            var codepage = new Codepage();
-            var messageReporterMock = A.Fake<INativeTextLocationMessageReporter>();
-            var settingsGroupMock = A.Fake<ISettingsGroup>();
-
-            // Act
-            testee.Sniff(TestFilePath, language, codepage, messageReporterMock, settingsGroupMock);
-
-            // Assert
-            A.CallTo(() => messageReporterMock.ReportMessage(
+            A.CallTo(() => _messageReporterMock.ReportMessage(
                 testee,
                 TestFilePath,
-                ErrorLevel.Error, 
+                ErrorLevel.Error,
                 A<string>.Ignored,
-                "5: thisiswrong"
+                "4: somethingwrong"
                 )).MustHaveHappened();
         }
 
-        private static PoFileSniffer CreateTestee(string testString)
+        [Test]
+        public void Sniff_ShouldIgnoreEmptyLines()
+        {
+            // Arrange
+            var testString = @"
+
+#: a comment
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+
+";
+            var testee = CreateTestee(testString);
+            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
+
+            // Act
+            testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
+
+            // Assert
+            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(5));
+        }
+
+        private PoFileSniffer CreateTestee(string testString)
         {
             var dotNetFactoryMock = A.Fake<IDotNetFactory>();
+
+            var lineParserMock = A.Fake<ILineParser>();
+            A.CallTo(() => lineParserMock.StartValidationSession()).Returns(_lineValidationSession);
+
             var streamReaderFake = new StringReaderWrapper(testString);
             A.CallTo(() => dotNetFactoryMock.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
-            var testee = new PoFileSniffer(dotNetFactoryMock, new LineParser());
-            return testee;
+
+            return new PoFileSniffer(dotNetFactoryMock, lineParserMock);
         }
 
         private class StringReaderWrapper : IReader
