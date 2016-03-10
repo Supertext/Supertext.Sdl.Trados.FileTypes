@@ -43,6 +43,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 .CanBeFollowedBy(msgid);
         }
 
+        public string NextMandatoryLinePattern => _lastLinePattern.MandatoryFollowingLinePattern?.ToString() ?? string.Empty;
+
         public ILineValidationSession StartValidationSession()
         {
             _lastLinePattern = Start;
@@ -100,7 +102,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             public IEnumerable<LinePattern> PossibleFollowingLinePatterns => _possibleFollowingLinePatterns;
 
             public LinePattern MandatoryFollowingLinePattern => _mandatoryFollowingLinePattern;
-
+           
             public LinePattern CanBeFollowedBy(LinePattern linePattern)
             {
                 _possibleFollowingLinePatterns.Add(linePattern);

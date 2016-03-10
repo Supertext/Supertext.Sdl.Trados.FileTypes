@@ -77,6 +77,35 @@ msgid ""The msgid text""
         }
 
         [Test]
+        public void Sniff_WhenEndIsInvalid_ShouldReportExpectedPattern()
+        {
+            // Arrange
+            var testString = @"
+#: a comment
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+
+msgid ""The msgid text""
+";
+            var testee = CreateTestee(testString);
+            A.CallTo(() => _lineValidationSession.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSession.IsEndValid()).Returns(false);
+            A.CallTo(() => _lineValidationSession.NextMandatoryLinePattern).Returns("msgstr");
+
+            // Act
+            testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
+
+            // Assert
+            A.CallTo(() => _messageReporterMock.ReportMessage(
+                testee,
+                TestFilePath,
+                ErrorLevel.Error,
+                A<string>.That.Contains("msgstr"),
+                A<string>.Ignored
+                )).MustHaveHappened();
+        }
+
+        [Test]
         public void Sniff_WhenOneLineIsInvalid_ShouldReturnIsSupportedFalse()
         {
             // Arrange

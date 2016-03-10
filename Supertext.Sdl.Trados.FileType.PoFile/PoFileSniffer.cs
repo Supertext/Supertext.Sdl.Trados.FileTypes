@@ -55,7 +55,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 messageReporter.ReportMessage(this, nativeFilePath,
                     ErrorLevel.Error,
                     string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
-                        "test"),
+                        lineValidationSession.NextMandatoryLinePattern),
                     "End of file");
 
                 return new SniffInfo {IsSupported = false};

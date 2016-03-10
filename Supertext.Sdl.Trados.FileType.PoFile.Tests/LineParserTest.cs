@@ -215,7 +215,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMultipleLinesInCorrectOrderAreChecked_ShouldAlwaysReturnTrue()
+        public void Check_WhenMultipleLinesInCorrectOrder_ShouldAlwaysReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -235,7 +235,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMultipleLinesInIncorrectOrderAreChecked_ShouldReturnFalseAtFaultyLine()
+        public void Check_WhenMultipleLinesInIncorrectOrder_ShouldReturnFalseAtFaultyLine()
         {
             // Arrange
             var testee = new LineParser();
@@ -246,21 +246,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Act
             var result = lineValidationSession.Check(@"#: a comment");
-
-            // Assert
-            result.Should().BeFalse();
-        }
-
-        [Test]
-        public void Check_WhenMsgstrIsMissingUntilEnd_ShouldReturnFalse()
-        {
-            // Arrange
-            var testee = new LineParser();
-            var lineValidationSession = testee.StartValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-
-            // Act
-            var result = lineValidationSession.IsEndValid();
 
             // Assert
             result.Should().BeFalse();
@@ -282,7 +267,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenReachedEndRightAfterValidationStart_ShoudReturnFalse()
+        public void IsEndValid_WhenMsgstrIsMissingUntilEnd_ShouldReturnFalse()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartValidationSession();
+            lineValidationSession.Check(@"msgid ""The msgid text""");
+
+            // Act
+            var result = lineValidationSession.IsEndValid();
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsEndValid_WhenReachedEndRightAfterValidationStart_ShoudReturnFalse()
         {
             // Arrange
             var testee = new LineParser();
@@ -293,6 +293,56 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Assert
             result.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsEndValid_WhenAllIsValid_ShoudReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartValidationSession();
+            lineValidationSession.Check(@"#: a comment");
+            lineValidationSession.Check(@"#, a following comment");
+            lineValidationSession.Check(@"msgid ""The msgid text""");
+            lineValidationSession.Check(@"msgstr ""The msgstr text""");
+            lineValidationSession.Check(@"#: a comment");
+            lineValidationSession.Check(@"msgid ""The second msgid text""");
+            lineValidationSession.Check(@"msgstr ""The second msgstr text""");
+
+            // Act
+            var result = lineValidationSession.IsEndValid();
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void NextMandatoryLinePattern_WhenMandortyLinePatternExpected_ShouldReturnPattern()
+        {
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartValidationSession();
+            lineValidationSession.Check(@"msgid ""The msgid text""");
+
+            // Act
+            var result = lineValidationSession.NextMandatoryLinePattern;
+
+            // Assert
+            result.Should().NotBeEmpty();
+        }
+
+        [Test]
+        public void NextMandatoryLinePattern_WhenNoMandortyLinePatternExpected_ShouldReturnEmptyString()
+        {
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartValidationSession();
+            lineValidationSession.Check(@"msgid ""The msgid text""");
+            lineValidationSession.Check(@"msgstr ""The msgstr text""");
+
+            // Act
+            var result = lineValidationSession.NextMandatoryLinePattern;
+
+            // Assert
+            result.Should().BeEmpty();
         }
     }
 }
