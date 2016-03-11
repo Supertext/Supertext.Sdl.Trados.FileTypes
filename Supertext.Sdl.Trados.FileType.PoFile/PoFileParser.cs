@@ -10,19 +10,32 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IDotNetFactory _dotNetFactory;
+        private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
         private IPersistentFileConversionProperties _fileConversionProperties;
         private IReader _reader;
         private ILineParsingSession _lineParsingSession;
+        private byte _progressInPercent;
+        private int _totalNumberOfLines;
+        private int _numberOfProcessedLines;
 
-        public PoFileParser(IDotNetFactory dotNetFactory, ILineParser lineParser)
+        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser)
         {
-            _dotNetFactory = dotNetFactory;
+            _fileHelper = fileHelper;
             _lineParser = lineParser;
         }
 
         public bool IsMessageIdSource { get; private set; }
+
+        public byte ProgressInPercent
+        {
+            get { return _progressInPercent; }
+            set
+            {
+                _progressInPercent = value;
+                OnProgress(_progressInPercent);
+            }
+        }
 
         public void SetFileProperties(IFileProperties properties)
         {
@@ -61,10 +74,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override void BeforeParsing()
         {
-            _reader = _dotNetFactory.CreateStreamReader(_fileConversionProperties.OriginalFilePath);
+            _reader = _fileHelper.CreateStreamReader(_fileConversionProperties.OriginalFilePath);
             _lineParsingSession = _lineParser.StartLineParsingSession();
 
-            OnProgress(0);
+            _totalNumberOfLines = _fileHelper.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
+            _numberOfProcessedLines = 0;
+
+            ProgressInPercent = 0;
         }
 
         protected override bool DuringParsing()
@@ -74,6 +90,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             while ((currentLine = _reader.ReadLine()) != null)
             {
+                ProgressInPercent = (byte) ((++_numberOfProcessedLines * 100) / _totalNumberOfLines);
+
                 if (string.IsNullOrWhiteSpace(currentLine))
                 {
                     continue;
@@ -98,6 +116,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         protected override void AfterParsing()
         {
             _reader.Close();
+            ProgressInPercent = 100;
         }
 
         private class TextExtractor

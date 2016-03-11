@@ -180,15 +180,15 @@ msgstr ""The msgstr text""
 
         private PoFileSniffer CreateTestee(string testString)
         {
-            var dotNetFactoryMock = A.Fake<IDotNetFactory>();
+            var fileHelper = A.Fake<IFileHelper>();
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineValidationSession()).Returns(_lineValidationSessionMock);
 
             var streamReaderFake = new StringReaderWrapper(testString);
-            A.CallTo(() => dotNetFactoryMock.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
+            A.CallTo(() => fileHelper.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
 
-            return new PoFileSniffer(dotNetFactoryMock, lineParserMock);
+            return new PoFileSniffer(fileHelper, lineParserMock);
         }
     }
 }

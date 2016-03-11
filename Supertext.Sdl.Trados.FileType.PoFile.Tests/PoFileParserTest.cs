@@ -164,15 +164,46 @@ msgstr ""The msgstr text""
             A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 0))).MustHaveHappened();
         }
 
+        [Test]
+        public void ParseNext_WhenMultipleLines_ShouldUpdateProgressForEachLine()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+
+";
+            var testee = CreateTestee(testString);
+
+            var handler = A.Fake<EventHandler<ProgressEventArgs>>();
+            testee.Progress += handler;
+
+            // Act
+            testee.ParseNext();
+
+            //Assert
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 0))).MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 10))).MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 20))).MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 30))).MustHaveHappened();
+        }
+
         private PoFileParser CreateTestee(string testString)
         {
-            var dotNetFactoryMock = A.Fake<IDotNetFactory>();
+            var fileHelper = A.Fake<IFileHelper>();
+            A.CallTo(() => fileHelper.GetTotalNumberOfLines(TestFilePath)).Returns(CountNewlines(testString));
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
 
             var streamReaderFake = new StringReaderWrapper(testString);
-            A.CallTo(() => dotNetFactoryMock.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
+            A.CallTo(() => fileHelper.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
 
             var persistentFileConversionPropertiesMock = A.Fake<IPersistentFileConversionProperties>();
             A.CallTo(() => persistentFileConversionPropertiesMock.OriginalFilePath).Returns(TestFilePath);
@@ -180,7 +211,7 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(dotNetFactoryMock, lineParserMock)
+            var testee = new PoFileParser(fileHelper, lineParserMock)
             {
                 PropertiesFactory = _propertiesFactoryMock,
                 Output = _nativeExtractionContentHandlerMock
@@ -189,6 +220,20 @@ msgstr ""The msgstr text""
             testee.SetFileProperties(filePropertiesMock);
 
             return testee;
+        }
+
+        private static int CountNewlines(string input)
+        {
+            var length = input.Length;
+            var counter = 0;
+            for (var i = 0; i < length; ++i)
+            {
+                if (input[i] == '\n')
+                {
+                    ++counter;
+                }
+            }
+            return counter;
         }
     }
 }

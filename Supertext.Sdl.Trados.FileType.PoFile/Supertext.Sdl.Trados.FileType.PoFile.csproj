@@ -59,8 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DotNetWrappers\DotNetFactory.cs" />
-    <Compile Include="DotNetWrappers\IDotNetFactory.cs" />
+    <Compile Include="DotNetWrappers\FileHelper.cs" />
+    <Compile Include="DotNetWrappers\IFileHelper.cs" />
     <Compile Include="DotNetWrappers\IReader.cs" />
     <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
     <Compile Include="ILineParser.cs" />

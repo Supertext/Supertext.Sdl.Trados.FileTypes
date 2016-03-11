@@ -7,12 +7,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileSniffer : INativeFileSniffer
     {
-        private readonly IDotNetFactory _dotNetFactory;
+        private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
 
-        public PoFileSniffer(IDotNetFactory dotNetFactory, ILineParser lineParser)
+        public PoFileSniffer(IFileHelper fileHelper, ILineParser lineParser)
         {
-            _dotNetFactory = dotNetFactory;
+            _fileHelper = fileHelper;
             _lineParser = lineParser;
         }
 
@@ -21,7 +21,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var lineValidationSession = _lineParser.StartLineValidationSession();
 
-            using (var reader = _dotNetFactory.CreateStreamReader(nativeFilePath))
+            using (var reader = _fileHelper.CreateStreamReader(nativeFilePath))
             {
                 string currentLine;
                 var lineNumber = 0;
