@@ -52,7 +52,6 @@ msgstr ""The msgstr text""
 
 ";
             var testee = CreateTestee(testString);
-            testee.StartOfInput();
 
             // Act
             testee.ParseNext();
@@ -73,7 +72,6 @@ msgid ""The msgid text""
 msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
-            testee.StartOfInput();
 
             var textPropertiesMock1 = A.Fake<ITextProperties>();
             A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid text")).Returns(textPropertiesMock1);
@@ -96,7 +94,6 @@ msgid ""The msgid text""
 msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
-            testee.StartOfInput();
 
             var textPropertiesMock = A.Fake<ITextProperties>();
             A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid text")).Returns(textPropertiesMock);
@@ -109,7 +106,28 @@ msgstr ""The msgstr text""
         }
 
         [Test]
-        public void ParseNext_WhenTextToBeTranslatedIsOnMultipleLines_ShouldAddAllText()
+        [Ignore("Not yet ready")]
+        public void ParseNext_WhenMsgstrNeedsToBeTranslated_ShouldAddMsgstrText()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+";
+            var testee = CreateTestee(testString);
+
+            var textPropertiesMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr text")).Returns(textPropertiesMock);
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(textPropertiesMock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenTextToBeTranslatedIsOnMultipleLines_ShouldTakeAllText()
         {
             // Arrange
             var testString = @"
@@ -119,7 +137,6 @@ msgid """"
 msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
-            testee.StartOfInput();
 
             var textPropertiesMock = A.Fake<ITextProperties>();
             A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The textThe second text")).Returns(textPropertiesMock);
@@ -129,6 +146,22 @@ msgstr ""The msgstr text""
 
             // Assert
             A.CallTo(() => _nativeExtractionContentHandlerMock.Text(textPropertiesMock)).MustHaveHappened();
+        }
+        
+        [Test]
+        public void ParseNext_WhenFirstCalled_ShouldResetProgressToZero()
+        {
+            // Arrange
+            var testee = CreateTestee(string.Empty);
+
+            var handler = A.Fake<EventHandler<ProgressEventArgs>>();
+            testee.Progress += handler;
+
+            // Act
+            testee.ParseNext();
+
+            //Assert
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 0))).MustHaveHappened();
         }
 
         private PoFileParser CreateTestee(string testString)
