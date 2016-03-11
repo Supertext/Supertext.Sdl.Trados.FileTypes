@@ -67,6 +67,7 @@
     <Compile Include="ILineParsingSession.cs" />
     <Compile Include="ILineValidationSession.cs" />
     <Compile Include="IParseResult.cs" />
+    <Compile Include="IUserSettings.cs" />
     <Compile Include="LineType.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="LineParser.cs" />

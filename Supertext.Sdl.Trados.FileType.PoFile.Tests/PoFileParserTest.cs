@@ -15,6 +15,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private ILineParsingSession _lineParsingSessionMock;
         private IPropertiesFactory _propertiesFactoryMock;
         private INativeExtractionContentHandler _nativeExtractionContentHandlerMock;
+        private IUserSettings _userSettingsMock;
 
         [SetUp]
         public void SetUp()
@@ -34,7 +35,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 .Returns(new ParseResult(LineType.Comment, "a comment"));
 
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
+
             _nativeExtractionContentHandlerMock = A.Fake<INativeExtractionContentHandler>();
+
+            _userSettingsMock = A.Fake<IUserSettings>();
+            A.CallTo(() => _userSettingsMock.LineTypeToTranslate).Returns(LineType.MessageId);
         }
 
         [Test]
@@ -106,7 +111,6 @@ msgstr ""The msgstr text""
         }
 
         [Test]
-        [Ignore("Not yet ready")]
         public void ParseNext_WhenMsgstrNeedsToBeTranslated_ShouldAddMsgstrText()
         {
             // Arrange
@@ -118,6 +122,8 @@ msgstr ""The msgstr text""
 
             var textPropertiesMock = A.Fake<ITextProperties>();
             A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr text")).Returns(textPropertiesMock);
+
+            A.CallTo(() => _userSettingsMock.LineTypeToTranslate).Returns(LineType.MessageString);
 
             // Act
             testee.ParseNext();
@@ -211,7 +217,7 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelper, lineParserMock)
+            var testee = new PoFileParser(fileHelper, lineParserMock, _userSettingsMock)
             {
                 PropertiesFactory = _propertiesFactoryMock,
                 Output = _nativeExtractionContentHandlerMock

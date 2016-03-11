@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Text;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -12,6 +13,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
+        private readonly IUserSettings _userSettings;
         private IPersistentFileConversionProperties _fileConversionProperties;
         private IReader _reader;
         private ILineParsingSession _lineParsingSession;
@@ -19,13 +21,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private int _totalNumberOfLines;
         private int _numberOfProcessedLines;
 
-        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser)
+        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
             _fileHelper = fileHelper;
             _lineParser = lineParser;
+            _userSettings = defaultUserSettings;
         }
-
-        public bool IsMessageIdSource { get; private set; }
 
         public byte ProgressInPercent
         {
@@ -52,31 +53,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
-            IsMessageIdSource = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing || _reader == null)
-            {
-                return;
-            }
-
-            _reader.Dispose();
-            _reader = null;
+            _userSettings.UpdateWith(settingsBundle, configurationId);
         }
 
         protected override void BeforeParsing()
         {
             _reader = _fileHelper.CreateStreamReader(_fileConversionProperties.OriginalFilePath);
             _lineParsingSession = _lineParser.StartLineParsingSession();
-
             _totalNumberOfLines = _fileHelper.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _numberOfProcessedLines = 0;
 
@@ -86,11 +69,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         protected override bool DuringParsing()
         {
             string currentLine;
-            var textExtractor = new TextExtractor();
+            var textExtractor = new TextExtractor(_userSettings.LineTypeToTranslate);
 
             while ((currentLine = _reader.ReadLine()) != null)
             {
-                ProgressInPercent = (byte) ((++_numberOfProcessedLines * 100) / _totalNumberOfLines);
+                ProgressInPercent = (byte) (++_numberOfProcessedLines * 100 / _totalNumberOfLines);
 
                 if (string.IsNullOrWhiteSpace(currentLine))
                 {
@@ -110,21 +93,29 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return true;
             }
 
+            if (!string.IsNullOrEmpty(textExtractor.Text))
+            {
+                Output.Text(PropertiesFactory.CreateTextProperties(textExtractor.Text));
+            }
+
             return false;
         }
 
         protected override void AfterParsing()
         {
             _reader.Close();
+            _reader.Dispose();
             ProgressInPercent = 100;
         }
 
         private class TextExtractor
         {
+            private readonly LineType _lineTypeToTranslate;
             private bool _processingText;
 
-            public TextExtractor()
+            public TextExtractor(LineType lineTypeToTranslate)
             {
+                _lineTypeToTranslate = lineTypeToTranslate;
                 _processingText = false;
             }
 
@@ -142,7 +133,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 {
                     Text += parseResult.LineContent;
                 }
-                else if (parseResult.LineType == LineType.MessageId)
+                else if (parseResult.LineType == _lineTypeToTranslate)
                 {
                     Text += parseResult.LineContent;
                     _processingText = true;
