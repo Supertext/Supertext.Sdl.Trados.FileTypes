@@ -2,7 +2,7 @@
 {
     public interface ILineValidationSession
     {
-        bool Check(string line);
+        bool IsValid(string line);
 
         bool IsEndValid();
 

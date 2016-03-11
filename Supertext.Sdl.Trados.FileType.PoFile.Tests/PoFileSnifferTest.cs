@@ -44,7 +44,7 @@ msgid ""The msgid text""
 msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
             A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(true);
 
             // Act
@@ -66,7 +66,7 @@ msgstr ""The msgstr text""
 msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
             A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(false);
 
             // Act
@@ -88,7 +88,7 @@ msgstr ""The msgstr text""
 msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
             A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(false);
             A.CallTo(() => _lineValidationSessionMock.NextExpectedLineDescription).Returns("msgstr");
 
@@ -115,9 +115,9 @@ msgid ""The msgid text""
 somethingwrong
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSessionMock.Check("#: a comment")).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.Check(@"msgid ""The msgid text""")).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.Check("somethingwrong")).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.IsValid("#: a comment")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(@"msgid ""The msgid text""")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid("somethingwrong")).Returns(false);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -137,9 +137,9 @@ somethingwrong
 ";
 
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSessionMock.Check("#: a comment")).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.Check(@"msgid ""The msgid text""")).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.Check("somethingwrong")).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.IsValid("#: a comment")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(@"msgid ""The msgid text""")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid("somethingwrong")).Returns(false);
 
             // Act
             testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -169,13 +169,13 @@ msgstr ""The msgstr text""
 
 ";
             var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSessionMock.Check(A<string>.Ignored)).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
 
             // Act
             testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
 
             // Assert
-            A.CallTo(() => _lineValidationSessionMock.Check(string.Empty)).MustNotHaveHappened();
+            A.CallTo(() => _lineValidationSessionMock.IsValid(string.Empty)).MustNotHaveHappened();
         }
 
         private PoFileSniffer CreateTestee(string testString)

@@ -19,7 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
-            var result = lineValidationSession.Check(@"msgid ""The msgid text""");
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Assert
             result.Should().BeTrue();
@@ -33,7 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
-            var result = lineValidationSession.Check(@"#: a comment");
+            var result = lineValidationSession.IsValid(@"#: a comment");
 
             // Assert
             result.Should().BeTrue();
@@ -45,10 +45,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Act
-            var result = lineValidationSession.Check(@"msgstr ""The msgstr text""");
+            var result = lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
 
             // Assert
             result.Should().BeTrue();
@@ -60,10 +60,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid """"");
+            lineValidationSession.IsValid(@"msgid """"");
 
             // Act
-            var result = lineValidationSession.Check(@"""The msgid text""");
+            var result = lineValidationSession.IsValid(@"""The msgid text""");
 
             // Assert
             result.Should().BeTrue();
@@ -75,11 +75,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr """"");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr """"");
 
             // Act
-            var result = lineValidationSession.Check(@"""The msgstr text""");
+            var result = lineValidationSession.IsValid(@"""The msgstr text""");
 
             // Assert
             result.Should().BeTrue();
@@ -91,11 +91,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr ""The msgstr text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
 
             // Act
-            var result = lineValidationSession.Check(@"#: a comment");
+            var result = lineValidationSession.IsValid(@"#: a comment");
 
             // Assert
             result.Should().BeTrue();
@@ -107,11 +107,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr ""The msgstr text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
 
             // Act
-            var result = lineValidationSession.Check(@"msgid ""The msgid text""");
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Assert
             result.Should().BeTrue();
@@ -123,12 +123,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr """"");
-            lineValidationSession.Check(@"""The text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr """"");
+            lineValidationSession.IsValid(@"""The text""");
 
             // Act
-            var result = lineValidationSession.Check(@"""More text""");
+            var result = lineValidationSession.IsValid(@"""More text""");
 
             // Assert
             result.Should().BeTrue();
@@ -140,12 +140,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr """"");
-            lineValidationSession.Check(@"""The text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr """"");
+            lineValidationSession.IsValid(@"""The text""");
 
             // Act
-            var result = lineValidationSession.Check(@"#: a comment");
+            var result = lineValidationSession.IsValid(@"#: a comment");
 
             // Assert
             result.Should().BeTrue();
@@ -157,11 +157,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid """"");
-            lineValidationSession.Check(@"""The text""");
+            lineValidationSession.IsValid(@"msgid """"");
+            lineValidationSession.IsValid(@"""The text""");
 
             // Act
-            var result = lineValidationSession.Check(@"msgstr ""The msgstr text""");
+            var result = lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
 
             // Assert
             result.Should().BeTrue();
@@ -173,12 +173,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr """"");
-            lineValidationSession.Check(@"""The text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr """"");
+            lineValidationSession.IsValid(@"""The text""");
 
             // Act
-            var result = lineValidationSession.Check(@"msgid ""The msgid text""");
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Assert
             result.Should().BeTrue();
@@ -190,10 +190,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"#: a comment");
+            lineValidationSession.IsValid(@"#: a comment");
 
             // Act
-            var result = lineValidationSession.Check(@"#, another comment");
+            var result = lineValidationSession.IsValid(@"#, another comment");
 
             // Assert
             result.Should().BeTrue();
@@ -205,10 +205,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"#: a comment");
+            lineValidationSession.IsValid(@"#: a comment");
 
             // Act
-            var result = lineValidationSession.Check(@"msgid ""The msgid text""");
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Assert
             result.Should().BeTrue();
@@ -222,13 +222,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
-            var result = lineValidationSession.Check(@"#: a comment");
-            result &= lineValidationSession.Check(@"#, a following comment");
-            result &= lineValidationSession.Check(@"msgid ""The msgid text""");
-            result &= lineValidationSession.Check(@"msgstr ""The msgstr text""");
-            result &= lineValidationSession.Check(@"#: a comment");
-            result &= lineValidationSession.Check(@"msgid ""The second msgid text""");
-            result &= lineValidationSession.Check(@"msgstr ""The second msgstr text""");
+            var result = lineValidationSession.IsValid(@"#: a comment");
+            result &= lineValidationSession.IsValid(@"#, a following comment");
+            result &= lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            result &= lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
+            result &= lineValidationSession.IsValid(@"#: a comment");
+            result &= lineValidationSession.IsValid(@"msgid ""The second msgid text""");
+            result &= lineValidationSession.IsValid(@"msgstr ""The second msgstr text""");
 
             // Assert
             result.Should().BeTrue();
@@ -240,12 +240,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"#: a comment");
-            lineValidationSession.Check(@"#, a following comment");
-            lineValidationSession.Check(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"#: a comment");
+            lineValidationSession.IsValid(@"#, a following comment");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Act
-            var result = lineValidationSession.Check(@"#: a comment");
+            var result = lineValidationSession.IsValid(@"#: a comment");
 
             // Assert
             result.Should().BeFalse();
@@ -257,10 +257,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Act
-            var result = lineValidationSession.Check(@"msgid ""The second msgid text""");
+            var result = lineValidationSession.IsValid(@"msgid ""The second msgid text""");
 
             // Assert
             result.Should().BeFalse();
@@ -272,7 +272,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Act
             var result = lineValidationSession.IsEndValid();
@@ -301,13 +301,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"#: a comment");
-            lineValidationSession.Check(@"#, a following comment");
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr ""The msgstr text""");
-            lineValidationSession.Check(@"#: a comment");
-            lineValidationSession.Check(@"msgid ""The second msgid text""");
-            lineValidationSession.Check(@"msgstr ""The second msgstr text""");
+            lineValidationSession.IsValid(@"#: a comment");
+            lineValidationSession.IsValid(@"#, a following comment");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
+            lineValidationSession.IsValid(@"#: a comment");
+            lineValidationSession.IsValid(@"msgid ""The second msgid text""");
+            lineValidationSession.IsValid(@"msgstr ""The second msgstr text""");
 
             // Act
             var result = lineValidationSession.IsEndValid();
@@ -322,7 +322,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Act
             var result = lineValidationSession.NextExpectedLineDescription;
@@ -337,8 +337,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.Check(@"msgid ""The msgid text""");
-            lineValidationSession.Check(@"msgstr ""The msgstr text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
 
             // Act
             var result = lineValidationSession.NextExpectedLineDescription;

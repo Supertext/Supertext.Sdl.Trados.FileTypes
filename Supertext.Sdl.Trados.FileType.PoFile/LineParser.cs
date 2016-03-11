@@ -8,18 +8,20 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class LineParser : ILineParser, ILineValidationSession, ILineParsingSession
     {
-        private static readonly LinePattern Start;
+        private const string Eof = "--EOF--";
+        private static readonly LinePattern BeginOfFile;
         private LinePattern _lastLinePattern;
 
         static LineParser()
         {
-            Start = new LinePattern(LineType.Start, string.Empty, string.Empty);
+            var beginOfFile = new LinePattern(LineType.BeginOfFile, string.Empty, string.Empty);
             var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
             var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
             var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
             var comment = new LinePattern(LineType.Comment, "#", @"#[\s:,.|]\s*(.*)");
+            var endOfFile = new LinePattern(LineType.EndOfFile, Eof, string.Empty);
 
-            Start
+            beginOfFile
                 .MustBeFollowedBy(msgid)
                 .CanBeFollowedBy(comment);
 
@@ -30,17 +32,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             msgstr
                 .CanBeFollowedBy(text)
                 .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid);
+                .CanBeFollowedBy(msgid)
+                .CanBeFollowedBy(endOfFile);
 
             text
                 .CanBeFollowedBy(text)
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgstr)
-                .CanBeFollowedBy(msgid);
+                .CanBeFollowedBy(msgid)
+                .CanBeFollowedBy(endOfFile);
 
             comment
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid);
+
+            BeginOfFile = beginOfFile;
         }
 
         public string NextExpectedLineDescription
@@ -48,17 +54,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public ILineValidationSession StartLineValidationSession()
         {
-            _lastLinePattern = Start;
+            _lastLinePattern = BeginOfFile;
             return this;
         }
 
         public ILineParsingSession StartLineParsingSession()
         {
-            _lastLinePattern = Start;
+            _lastLinePattern = BeginOfFile;
             return this;
         }
 
-        public bool Check(string line)
+        public bool IsValid(string line)
         {
             var applyingLinePattern = GetApplyingLinePattern(_lastLinePattern, line);
 
@@ -78,7 +84,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public bool IsEndValid()
         {
-            return _lastLinePattern.ExpectedFollowingLinePattern == null;
+            return IsValid(Eof);
         }
 
         public IParseResult Parse(string line)

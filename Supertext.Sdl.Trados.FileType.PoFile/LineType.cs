@@ -2,10 +2,11 @@
 {
     public enum LineType
     {
-        Start,
+        BeginOfFile,
         MessageId,
         MessageString,
         Text,
-        Comment
+        Comment,
+        EndOfFile
     }
 }

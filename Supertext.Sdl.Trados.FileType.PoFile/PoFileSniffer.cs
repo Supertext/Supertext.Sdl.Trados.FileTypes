@@ -35,7 +35,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                         continue;
                     }
 
-                    var isValidLine = lineValidationSession.Check(currentLine);
+                    var isValidLine = lineValidationSession.IsValid(currentLine);
 
                     if (isValidLine)
                     {

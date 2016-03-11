@@ -93,7 +93,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return true;
             }
 
-            if (!string.IsNullOrEmpty(textExtractor.Text))
+            textExtractor.Process(new ParseResult(LineType.EndOfFile, string.Empty));
+
+            if (textExtractor.IsTextComplete)
             {
                 Output.Text(PropertiesFactory.CreateTextProperties(textExtractor.Text));
             }
