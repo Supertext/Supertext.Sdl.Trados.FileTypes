@@ -7,7 +7,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     public class LineParserTest
     {
         [Test]
-        public void Check_WhenStartIsFollowedByMsgId_ShouldReturnTrue()
+        public void IsValid_WhenStartIsFollowedByMsgId_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -21,7 +21,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenStartIsFollowedByComment_ShouldReturnTrue()
+        public void IsValid_WhenStartIsFollowedByComment_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -35,7 +35,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMsgidIsFollowedByMsgstr_ShouldReturnTrue()
+        public void IsValid_WhenMsgidIsFollowedByMsgstr_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -50,7 +50,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMsgidIsFollowedByText_ShouldReturnTrue()
+        public void IsValid_WhenMsgidIsFollowedByText_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -65,7 +65,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMsgstrIsFollowedByText_ShouldReturnTrue()
+        public void IsValid_WhenMsgstrIsFollowedByText_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -81,7 +81,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMsgstrIsFollowedByComment_ShouldReturnTrue()
+        public void IsValid_WhenMsgstrIsFollowedByComment_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -97,7 +97,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMsgstrIsFollowedByMsgid_ShouldReturnTrue()
+        public void IsValid_WhenMsgstrIsFollowedByMsgid_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -113,7 +113,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenTextIsFollowedByText_ShouldReturnTrue()
+        public void IsValid_WhenTextIsFollowedByText_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -130,7 +130,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenTextIsFollowedByComment_ShouldReturnTrue()
+        public void IsValid_WhenTextIsFollowedByComment_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -147,7 +147,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenTextIsFollowedByMsgstr_ShouldReturnTrue()
+        public void IsValid_WhenTextIsFollowedByMsgstr_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -163,7 +163,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenTextIsFollowedByMsgid_ShouldReturnTrue()
+        public void IsValid_WhenTextIsFollowedByMsgid_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -180,7 +180,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenCommentIsFollowedByComment_ShouldReturnTrue()
+        public void IsValid_WhenCommentIsFollowedByComment_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -195,7 +195,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenCommentIsFollowedByMsgid_ShouldReturnTrue()
+        public void IsValid_WhenCommentIsFollowedByMsgid_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -210,7 +210,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMultipleLinesInCorrectOrder_ShouldAlwaysReturnTrue()
+        public void IsValid_WhenMultipleLinesInCorrectOrder_ShouldAlwaysReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -230,7 +230,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMultipleLinesInIncorrectOrder_ShouldReturnFalseAtFaultyLine()
+        public void IsValid_WhenMultipleLinesInIncorrectOrder_ShouldReturnFalseAtFaultyLine()
         {
             // Arrange
             var testee = new LineParser();
@@ -247,7 +247,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Check_WhenMsgstrIsMissingBetweenMsgids_ShouldReturnFalse()
+        public void IsValid_WhenMsgstrIsMissingBetweenMsgids_ShouldReturnFalse()
         {
             // Arrange
             var testee = new LineParser();
