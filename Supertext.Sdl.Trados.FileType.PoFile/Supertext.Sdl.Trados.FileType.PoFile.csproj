@@ -63,6 +63,7 @@
     <Compile Include="DotNetWrappers\IFileHelper.cs" />
     <Compile Include="DotNetWrappers\IReader.cs" />
     <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
+    <Compile Include="ExtendedFileReader.cs" />
     <Compile Include="ILineParser.cs" />
     <Compile Include="ILineParsingSession.cs" />
     <Compile Include="ILineValidationSession.cs" />
