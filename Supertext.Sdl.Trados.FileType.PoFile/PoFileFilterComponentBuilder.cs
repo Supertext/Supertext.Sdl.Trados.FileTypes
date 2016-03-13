@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;

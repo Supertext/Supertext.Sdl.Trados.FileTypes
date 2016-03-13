@@ -1,7 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Text;
-using Sdl.Core.Settings;
+﻿using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;

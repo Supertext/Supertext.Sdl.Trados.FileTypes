@@ -1,5 +1,4 @@
-﻿using System.Drawing.Text;
-using Sdl.Core.Settings;
+﻿using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
