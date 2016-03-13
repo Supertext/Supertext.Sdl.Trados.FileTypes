@@ -81,11 +81,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return true;
         }
 
-        public bool IsEndValid()
-        {
-            return IsValid(LineType.EndOfFile.ToString());
-        }
-
         public IParseResult Parse(string line)
         {
             var applyingLinePattern = GetApplyingLinePattern(_lastLinePattern, line);

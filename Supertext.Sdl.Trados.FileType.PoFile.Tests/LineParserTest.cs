@@ -262,7 +262,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void IsEndValid_WhenMsgstrIsMissingUntilEnd_ShouldReturnFalse()
+        public void IsValid_WhenMsgstrIsMissingUntilEnd_ShouldReturnFalse()
         {
             // Arrange
             var testee = new LineParser();
@@ -270,28 +270,28 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Act
-            var result = lineValidationSession.IsEndValid();
+            var result = lineValidationSession.IsValid(LineType.EndOfFile.ToString());
 
             // Assert
             result.Should().BeFalse();
         }
 
         [Test]
-        public void IsEndValid_WhenReachedEndRightAfterValidationStart_ShoudReturnFalse()
+        public void IsValid_WhenReachedEndRightAfterValidationStart_ShoudReturnFalse()
         {
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
-            var result = lineValidationSession.IsEndValid();
+            var result = lineValidationSession.IsValid(LineType.EndOfFile.ToString());
 
             // Assert
             result.Should().BeFalse();
         }
 
         [Test]
-        public void IsEndValid_WhenAllIsValid_ShoudReturnTrue()
+        public void IsValid_WhenAllIsValid_ShoudReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -305,7 +305,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             lineValidationSession.IsValid(@"msgstr ""The second msgstr text""");
 
             // Act
-            var result = lineValidationSession.IsEndValid();
+            var result = lineValidationSession.IsValid(LineType.EndOfFile.ToString());
 
             // Assert
             result.Should().BeTrue();

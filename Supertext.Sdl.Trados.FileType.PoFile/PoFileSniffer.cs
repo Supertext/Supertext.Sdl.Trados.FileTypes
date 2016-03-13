@@ -46,7 +46,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
 
 
-            if (!lineValidationSession.IsEndValid())
+            if (!lineValidationSession.IsValid(LineType.EndOfFile.ToString()))
             {
                 messageReporter.ReportMessage(this, nativeFilePath,
                     ErrorLevel.Error,

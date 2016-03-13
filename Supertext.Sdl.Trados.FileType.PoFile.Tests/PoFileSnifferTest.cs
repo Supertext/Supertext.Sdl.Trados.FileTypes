@@ -46,7 +46,7 @@ msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(LineType.EndOfFile.ToString())).Returns(true);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -68,7 +68,7 @@ msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(LineType.EndOfFile.ToString())).Returns(false);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -90,7 +90,7 @@ msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.IsEndValid()).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(LineType.EndOfFile.ToString())).Returns(false);
             A.CallTo(() => _lineValidationSessionMock.NextExpectedLineDescription).Returns("msgstr");
 
             // Act

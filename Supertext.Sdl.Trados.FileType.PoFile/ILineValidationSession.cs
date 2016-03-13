@@ -4,8 +4,6 @@
     {
         bool IsValid(string line);
 
-        bool IsEndValid();
-
         string NextExpectedLineDescription { get; }
     }
 }
