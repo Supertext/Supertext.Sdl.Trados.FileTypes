@@ -19,15 +19,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IEnumerable<string> ReadLines(string filePath)
         {
-            var reader = _fileHelper.CreateStreamReader(filePath);
-
             yield return LineType.BeginOfFile.ToString();
 
-            string currentLine;
-
-            while ((currentLine = reader.ReadLine()) != null)
+            foreach (var line in _fileHelper.ReadLines(filePath))
             {
-                yield return currentLine;
+                yield return line;
             }
 
             yield return LineType.EndOfFile.ToString();

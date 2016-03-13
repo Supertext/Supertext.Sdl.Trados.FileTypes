@@ -15,7 +15,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
         private IPersistentFileConversionProperties _fileConversionProperties;
-        private IReader _reader;
         private ILineParsingSession _lineParsingSession;
         private byte _progressInPercent;
         private int _totalNumberOfLines;
@@ -58,7 +57,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override void BeforeParsing()
         {
-            _reader = _fileHelper.CreateStreamReader(_fileConversionProperties.OriginalFilePath);
             _lineParsingSession = _lineParser.StartLineParsingSession();
             _totalNumberOfLines = _fileHelper.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _numberOfProcessedLines = 0;
@@ -68,19 +66,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override bool DuringParsing()
         {
-            string currentLine;
             var textExtractor = new TextExtractor(_userSettings.LineTypeToTranslate);
 
-            while ((currentLine = _reader.ReadLine()) != null)
+            foreach (var line in _fileHelper.ReadLines(_fileConversionProperties.OriginalFilePath))
             {
                 ProgressInPercent = (byte) (++_numberOfProcessedLines * 100 / _totalNumberOfLines);
 
-                if (string.IsNullOrWhiteSpace(currentLine))
+                if (string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
 
-                var parseResult = _lineParsingSession.Parse(currentLine);
+                var parseResult = _lineParsingSession.Parse(line);
 
                 textExtractor.Process(parseResult);
 
@@ -105,8 +102,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override void AfterParsing()
         {
-            _reader.Close();
-            _reader.Dispose();
             ProgressInPercent = 100;
         }
 

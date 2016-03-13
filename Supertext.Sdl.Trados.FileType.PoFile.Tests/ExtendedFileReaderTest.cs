@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -65,9 +66,9 @@ line 3
         private ExtendedFileReader CreateTestee(string testString)
         {
             var fileHelper = A.Fake<IFileHelper>();
-
-            var streamReaderFake = new StringReaderWrapper(testString);
-            A.CallTo(() => fileHelper.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
+            var lines = testString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            A.CallTo(() => fileHelper.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
+            A.CallTo(() => fileHelper.ReadLines(TestFilePath)).Returns(lines);
 
             return new ExtendedFileReader(fileHelper);
         }

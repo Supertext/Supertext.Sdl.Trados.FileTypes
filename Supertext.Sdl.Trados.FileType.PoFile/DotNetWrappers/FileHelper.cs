@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -5,9 +6,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
 {
     public class FileHelper : IFileHelper
     {
-        public IReader CreateStreamReader(string path)
+        public IEnumerable<string> ReadLines(string path)
         {
-            return new StreamReaderWrapper(path);
+            return File.ReadLines(path);
         }
 
         public int GetTotalNumberOfLines(string path)

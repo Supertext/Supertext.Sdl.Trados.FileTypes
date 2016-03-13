@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using FakeItEasy;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -183,7 +185,6 @@ msgstr ""The msgstr text""
 
 msgid ""The msgid text""
 msgstr ""The msgstr text""
-
 ";
             var testee = CreateTestee(testString);
 
@@ -203,13 +204,12 @@ msgstr ""The msgstr text""
         private PoFileParser CreateTestee(string testString)
         {
             var fileHelper = A.Fake<IFileHelper>();
-            A.CallTo(() => fileHelper.GetTotalNumberOfLines(TestFilePath)).Returns(CountNewlines(testString));
+            var lines = testString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            A.CallTo(() => fileHelper.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
+            A.CallTo(() => fileHelper.ReadLines(TestFilePath)).Returns(lines);
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
-
-            var streamReaderFake = new StringReaderWrapper(testString);
-            A.CallTo(() => fileHelper.CreateStreamReader(TestFilePath)).Returns(streamReaderFake);
 
             var persistentFileConversionPropertiesMock = A.Fake<IPersistentFileConversionProperties>();
             A.CallTo(() => persistentFileConversionPropertiesMock.OriginalFilePath).Returns(TestFilePath);
@@ -226,20 +226,6 @@ msgstr ""The msgstr text""
             testee.SetFileProperties(filePropertiesMock);
 
             return testee;
-        }
-
-        private static int CountNewlines(string input)
-        {
-            var length = input.Length;
-            var counter = 0;
-            for (var i = 0; i < length; ++i)
-            {
-                if (input[i] == '\n')
-                {
-                    ++counter;
-                }
-            }
-            return counter;
         }
     }
 }
