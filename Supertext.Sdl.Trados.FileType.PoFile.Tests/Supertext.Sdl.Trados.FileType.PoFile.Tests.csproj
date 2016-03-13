@@ -65,7 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EofLineFileReaderTest.cs" />
+    <Compile Include="ExtendedFileReaderTest.cs" />
     <Compile Include="LineParserTest.cs" />
     <Compile Include="PoFileParserTest.cs" />
     <Compile Include="PoFileSnifferTest.cs" />
