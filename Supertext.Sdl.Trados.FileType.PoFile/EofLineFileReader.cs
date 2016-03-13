@@ -3,24 +3,22 @@ using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public interface IExtendedFileReader
+    public interface IEofLineFileReader
     {
         IEnumerable<string> ReadLines(string filePath);
     }
 
-    public class ExtendedFileReader : IExtendedFileReader
+    public class EofLineFileReader : IEofLineFileReader
     {
         private readonly IFileHelper _fileHelper;
 
-        public ExtendedFileReader(IFileHelper fileHelper)
+        public EofLineFileReader(IFileHelper fileHelper)
         {
             _fileHelper = fileHelper;
         }
 
         public IEnumerable<string> ReadLines(string filePath)
         {
-            yield return LineType.BeginOfFile.ToString();
-
             foreach (var line in _fileHelper.ReadLines(filePath))
             {
                 yield return line;

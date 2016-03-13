@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="DotNetWrappers\FileHelper.cs" />
     <Compile Include="DotNetWrappers\IFileHelper.cs" />
-    <Compile Include="ExtendedFileReader.cs" />
+    <Compile Include="EofLineFileReader.cs" />
     <Compile Include="ILineParser.cs" />
     <Compile Include="ILineParsingSession.cs" />
     <Compile Include="ILineValidationSession.cs" />

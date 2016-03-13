@@ -8,22 +8,9 @@ using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {
     [TestFixture]
-    public class ExtendedFileReaderTest
+    public class EofLineFileReaderTest
     {
         private const string TestFilePath = "sample_file_ok";
-
-        [Test]
-        public void ReadLines_WhenGettingFirstLine_ReturnsBeginOfFile()
-        {
-            // Arrange
-            var testee = CreateTestee(string.Empty);
-
-            // Act
-            var result = testee.ReadLines(TestFilePath);
-
-            // Assert
-            result.First().Should().Be(LineType.BeginOfFile.ToString());
-        }
 
         [Test]
         public void ReadLines_ReturnsAllLinesOfFile()
@@ -63,14 +50,14 @@ line 3
             result.Last().Should().Be(LineType.EndOfFile.ToString());
         }
 
-        private ExtendedFileReader CreateTestee(string testString)
+        private EofLineFileReader CreateTestee(string testString)
         {
             var fileHelper = A.Fake<IFileHelper>();
             var lines = testString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             A.CallTo(() => fileHelper.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
             A.CallTo(() => fileHelper.ReadLines(TestFilePath)).Returns(lines);
 
-            return new ExtendedFileReader(fileHelper);
+            return new EofLineFileReader(fileHelper);
         }
     }
 }
