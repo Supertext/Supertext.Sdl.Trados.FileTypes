@@ -7,12 +7,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileSniffer : INativeFileSniffer
     {
-        private readonly IFileHelper _fileHelper;
+        private readonly IExtendedFileReader _extendedFileReader;
         private readonly ILineParser _lineParser;
 
-        public PoFileSniffer(IFileHelper fileHelper, ILineParser lineParser)
+        public PoFileSniffer(IExtendedFileReader extendedFileReader, ILineParser lineParser)
         {
-            _fileHelper = fileHelper;
+            _extendedFileReader = extendedFileReader;
             _lineParser = lineParser;
         }
 
@@ -22,7 +22,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var lineValidationSession = _lineParser.StartLineValidationSession();
             var lineNumber = 0;
 
-            foreach (var line in _fileHelper.ReadLines(nativeFilePath))
+            foreach (var line in _extendedFileReader.ReadLinesWithEofLine(nativeFilePath))
             {
                 ++lineNumber;
 
@@ -38,21 +38,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     continue;
                 }
 
+                var message = line == LineType.EndOfFile.ToString()
+                    ? string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
+                        lineValidationSession.NextExpectedLineDescription)
+                    : PoFileTypeResources.Sniffer_Unexpected_Line;
+
                 messageReporter.ReportMessage(this, nativeFilePath,
-                    ErrorLevel.Error, PoFileTypeResources.Sniffer_Unexpected_Line,
+                    ErrorLevel.Error, message,
                     lineNumber + ": " + line);
-
-                return new SniffInfo {IsSupported = false};
-            }
-
-
-            if (!lineValidationSession.IsValid(LineType.EndOfFile.ToString()))
-            {
-                messageReporter.ReportMessage(this, nativeFilePath,
-                    ErrorLevel.Error,
-                    string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
-                        lineValidationSession.NextExpectedLineDescription),
-                    "End of file");
 
                 return new SniffInfo {IsSupported = false};
             }

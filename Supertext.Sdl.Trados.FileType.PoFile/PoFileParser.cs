@@ -8,7 +8,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IFileHelper _fileHelper;
+        private readonly IExtendedFileReader _extendedFileReader;
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
         private IPersistentFileConversionProperties _fileConversionProperties;
@@ -17,9 +17,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private int _totalNumberOfLines;
         private int _numberOfProcessedLines;
 
-        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
+        public PoFileParser(IExtendedFileReader extendedFileReader, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
-            _fileHelper = fileHelper;
+            _extendedFileReader = extendedFileReader;
             _lineParser = lineParser;
             _userSettings = defaultUserSettings;
         }
@@ -55,7 +55,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         protected override void BeforeParsing()
         {
             _lineParsingSession = _lineParser.StartLineParsingSession();
-            _totalNumberOfLines = _fileHelper.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
+            _totalNumberOfLines = _extendedFileReader.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _numberOfProcessedLines = 0;
 
             ProgressInPercent = 0;
@@ -65,7 +65,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var textExtractor = new TextExtractor(_userSettings.LineTypeToTranslate);
 
-            foreach (var line in _fileHelper.ReadLines(_fileConversionProperties.OriginalFilePath))
+            foreach (var line in _extendedFileReader.ReadLinesWithEofLine(_fileConversionProperties.OriginalFilePath))
             {
                 ProgressInPercent = (byte) (++_numberOfProcessedLines * 100 / _totalNumberOfLines);
 
@@ -85,13 +85,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 Output.Text(PropertiesFactory.CreateTextProperties(textExtractor.Text));
                 return true;
-            }
-
-            textExtractor.Process(new ParseResult(LineType.EndOfFile, string.Empty));
-
-            if (textExtractor.IsTextComplete)
-            {
-                Output.Text(PropertiesFactory.CreateTextProperties(textExtractor.Text));
             }
 
             return false;

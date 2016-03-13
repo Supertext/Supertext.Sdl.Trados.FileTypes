@@ -13,7 +13,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private const string TestFilePath = "sample_file_ok";
 
         [Test]
-        public void ReadLines_WhenGettingFirstLine_ReturnsBeginOfFile()
+        public void ReadLinesWithEofLine_WhenGettingFirstLine_ReturnsBeginOfFile()
         {
             // Arrange
             var testee = CreateTestee(string.Empty);
@@ -26,7 +26,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void ReadLines_ReturnsAllLinesOfFile()
+        public void ReadLinesWithEofLine_ReturnsAllLinesOfFile()
         {
             // Arrange
             var testString = @"
@@ -46,7 +46,7 @@ line 3
         }
 
         [Test]
-        public void ReadLines_WhenGettingLastLine_ReturnsEndOfFile()
+        public void ReadLinesWithEofLine_WhenGettingLastLine_ReturnsEndOfFile()
         {
             // Arrange
             var testString = @"

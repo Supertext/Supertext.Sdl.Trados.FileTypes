@@ -184,8 +184,8 @@ msgid ""The msgid text""
 msgstr ""The msgstr text""
 
 msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
+msgstr ""The msgstr text""";
+
             var testee = CreateTestee(testString);
 
             var handler = A.Fake<EventHandler<ProgressEventArgs>>();
@@ -203,10 +203,10 @@ msgstr ""The msgstr text""
 
         private PoFileParser CreateTestee(string testString)
         {
-            var fileHelper = A.Fake<IFileHelper>();
-            var lines = testString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-            A.CallTo(() => fileHelper.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
-            A.CallTo(() => fileHelper.ReadLines(TestFilePath)).Returns(lines);
+            var extendedFileReader = A.Fake<IExtendedFileReader>();
+            var lines = (testString + Environment.NewLine + LineType.EndOfFile).Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            A.CallTo(() => extendedFileReader.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
+            A.CallTo(() => extendedFileReader.ReadLinesWithEofLine(TestFilePath)).Returns(lines);
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
@@ -217,7 +217,7 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelper, lineParserMock, _userSettingsMock)
+            var testee = new PoFileParser(extendedFileReader, lineParserMock, _userSettingsMock)
             {
                 PropertiesFactory = _propertiesFactoryMock,
                 Output = _nativeExtractionContentHandlerMock
