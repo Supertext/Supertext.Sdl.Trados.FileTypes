@@ -5,7 +5,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public interface IExtendedFileReader
     {
-        IEnumerable<string> ReadLines(string filePath);
+        int GetTotalNumberOfLines(string path);
+
+        IEnumerable<string> ReadLinesWithEofLine(string path);
     }
 
     public class ExtendedFileReader : IExtendedFileReader
@@ -17,7 +19,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _fileHelper = fileHelper;
         }
 
-        public IEnumerable<string> ReadLines(string filePath)
+        public int GetTotalNumberOfLines(string path)
+        {
+            return _fileHelper.GetTotalNumberOfLines(path) + 1;
+        }
+
+        public IEnumerable<string> ReadLinesWithEofLine(string filePath)
         {
             yield return LineType.BeginOfFile.ToString();
 

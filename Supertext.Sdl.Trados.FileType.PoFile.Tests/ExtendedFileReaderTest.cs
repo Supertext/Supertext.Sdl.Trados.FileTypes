@@ -19,7 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var testee = CreateTestee(string.Empty);
 
             // Act
-            var result = testee.ReadLines(TestFilePath);
+            var result = testee.ReadLinesWithEofLine(TestFilePath);
 
             // Assert
             result.First().Should().Be(LineType.BeginOfFile.ToString());
@@ -37,7 +37,7 @@ line 3
             var testee = CreateTestee(testString);
 
             // Act
-            var result = testee.ReadLines(TestFilePath).ToList();
+            var result = testee.ReadLinesWithEofLine(TestFilePath).ToList();
 
             // Assert
             result.FirstOrDefault(line => line == "line 1").Should().NotBeNullOrEmpty();
@@ -57,7 +57,7 @@ line 3
             var testee = CreateTestee(testString);
 
             // Act
-            var result = testee.ReadLines(TestFilePath);
+            var result = testee.ReadLinesWithEofLine(TestFilePath);
 
             // Assert
             result.Last().Should().Be(LineType.EndOfFile.ToString());
