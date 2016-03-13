@@ -5,8 +5,6 @@ using NUnit.Framework;
 using Sdl.Core.Globalization;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
-using static System.String;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {
