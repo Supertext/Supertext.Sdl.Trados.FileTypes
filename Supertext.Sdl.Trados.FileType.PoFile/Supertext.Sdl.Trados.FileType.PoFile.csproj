@@ -68,6 +68,7 @@
     <Compile Include="IParseResult.cs" />
     <Compile Include="IUserSettings.cs" />
     <Compile Include="LineType.cs" />
+    <Compile Include="MarkerLines.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="LineParser.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />

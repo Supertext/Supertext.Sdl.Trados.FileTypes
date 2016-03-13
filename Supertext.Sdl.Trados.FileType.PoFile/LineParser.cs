@@ -11,12 +11,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         static LineParser()
         {
-            var beginOfFile = new LinePattern(LineType.BeginOfFile, LineType.BeginOfFile.ToString(), string.Empty);
+            var beginOfFile = new LinePattern(LineType.BeginOfFile, MarkerLines.BeginOfFile, string.Empty);
             var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
             var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
             var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
             var comment = new LinePattern(LineType.Comment, "#", @"#[\s:,.|]\s*(.*)");
-            var endOfFile = new LinePattern(LineType.EndOfFile, LineType.EndOfFile.ToString(), string.Empty);
+            var endOfFile = new LinePattern(LineType.EndOfFile, MarkerLines.EndOfFile, string.Empty);
 
             beginOfFile
                 .MustBeFollowedBy(msgid)

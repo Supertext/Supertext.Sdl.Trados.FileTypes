@@ -26,14 +26,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IEnumerable<string> ReadLinesWithEofLine(string filePath)
         {
-            yield return LineType.BeginOfFile.ToString();
-
             foreach (var line in _fileHelper.ReadLines(filePath))
             {
                 yield return line;
             }
 
-            yield return LineType.EndOfFile.ToString();
+            yield return MarkerLines.EndOfFile;
         }
     }
 }

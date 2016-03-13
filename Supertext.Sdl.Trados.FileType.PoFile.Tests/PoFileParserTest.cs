@@ -204,7 +204,7 @@ msgstr ""The msgstr text""";
         private PoFileParser CreateTestee(string testString)
         {
             var extendedFileReader = A.Fake<IExtendedFileReader>();
-            var lines = (testString + Environment.NewLine + LineType.EndOfFile).Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             A.CallTo(() => extendedFileReader.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
             A.CallTo(() => extendedFileReader.ReadLinesWithEofLine(TestFilePath)).Returns(lines);
 

@@ -270,7 +270,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Act
-            var result = lineValidationSession.IsValid(LineType.EndOfFile.ToString());
+            var result = lineValidationSession.IsValid(MarkerLines.EndOfFile);
 
             // Assert
             result.Should().BeFalse();
@@ -284,7 +284,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var lineValidationSession = testee.StartLineValidationSession();
 
             // Act
-            var result = lineValidationSession.IsValid(LineType.EndOfFile.ToString());
+            var result = lineValidationSession.IsValid(MarkerLines.EndOfFile);
 
             // Assert
             result.Should().BeFalse();
@@ -305,7 +305,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             lineValidationSession.IsValid(@"msgstr ""The second msgstr text""");
 
             // Act
-            var result = lineValidationSession.IsValid(LineType.EndOfFile.ToString());
+            var result = lineValidationSession.IsValid(MarkerLines.EndOfFile);
 
             // Assert
             result.Should().BeTrue();

@@ -1,7 +1,6 @@
 using Sdl.Core.Globalization;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
@@ -38,7 +37,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     continue;
                 }
 
-                var message = line == LineType.EndOfFile.ToString()
+                var message = line == MarkerLines.EndOfFile
                     ? string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
                         lineValidationSession.NextExpectedLineDescription)
                     : PoFileTypeResources.Sniffer_Unexpected_Line;

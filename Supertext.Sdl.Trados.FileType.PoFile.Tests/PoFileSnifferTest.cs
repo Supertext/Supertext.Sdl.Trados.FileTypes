@@ -46,7 +46,7 @@ msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.IsValid(LineType.EndOfFile.ToString())).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(MarkerLines.EndOfFile)).Returns(true);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -68,7 +68,7 @@ msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.IsValid(LineType.EndOfFile.ToString())).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(MarkerLines.EndOfFile)).Returns(false);
 
             // Act
             var result = testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
@@ -90,7 +90,7 @@ msgid ""The msgid text""
 ";
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
-            A.CallTo(() => _lineValidationSessionMock.IsValid(LineType.EndOfFile.ToString())).Returns(false);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(MarkerLines.EndOfFile)).Returns(false);
             A.CallTo(() => _lineValidationSessionMock.NextExpectedLineDescription).Returns("msgstr");
 
             // Act
@@ -182,7 +182,7 @@ msgstr ""The msgstr text""
         private PoFileSniffer CreateTestee(string testString)
         {
             var extendedFileReader = A.Fake<IExtendedFileReader>();
-            var lines = (testString + Environment.NewLine + LineType.EndOfFile).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             A.CallTo(() => extendedFileReader.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
             A.CallTo(() => extendedFileReader.ReadLinesWithEofLine(TestFilePath)).Returns(lines);
 

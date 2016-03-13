@@ -13,19 +13,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private const string TestFilePath = "sample_file_ok";
 
         [Test]
-        public void ReadLinesWithEofLine_WhenGettingFirstLine_ReturnsBeginOfFile()
-        {
-            // Arrange
-            var testee = CreateTestee(string.Empty);
-
-            // Act
-            var result = testee.ReadLinesWithEofLine(TestFilePath);
-
-            // Assert
-            result.First().Should().Be(LineType.BeginOfFile.ToString());
-        }
-
-        [Test]
         public void ReadLinesWithEofLine_ReturnsAllLinesOfFile()
         {
             // Arrange
@@ -60,7 +47,7 @@ line 3
             var result = testee.ReadLinesWithEofLine(TestFilePath);
 
             // Assert
-            result.Last().Should().Be(LineType.EndOfFile.ToString());
+            result.Last().Should().Be(MarkerLines.EndOfFile);
         }
 
         private ExtendedFileReader CreateTestee(string testString)
