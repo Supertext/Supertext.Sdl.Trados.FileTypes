@@ -4,6 +4,25 @@ using System.Text.RegularExpressions;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
+    public interface ILineValidationSession
+    {
+        bool IsValid(string line);
+
+        string NextExpectedLineDescription { get; }
+    }
+
+    public interface ILineParsingSession
+    {
+        IParseResult Parse(string line);
+    }
+
+    public interface ILineParser
+    {
+        ILineValidationSession StartLineValidationSession();
+
+        ILineParsingSession StartLineParsingSession();
+    }
+
     public class LineParser : ILineParser, ILineValidationSession, ILineParsingSession
     {
         private static readonly LinePattern BeginOfFile;

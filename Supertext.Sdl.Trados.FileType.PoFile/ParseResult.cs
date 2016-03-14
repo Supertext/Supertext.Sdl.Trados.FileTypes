@@ -1,5 +1,12 @@
 ﻿namespace Supertext.Sdl.Trados.FileType.PoFile
 {
+    public interface IParseResult
+    {
+        LineType LineType { get; }
+
+        string LineContent { get; }
+    }
+
     public class ParseResult : IParseResult
     {
         public ParseResult(LineType lineType, string lineContent)

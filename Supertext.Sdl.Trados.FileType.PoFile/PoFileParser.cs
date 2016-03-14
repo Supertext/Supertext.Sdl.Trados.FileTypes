@@ -2,7 +2,6 @@
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
