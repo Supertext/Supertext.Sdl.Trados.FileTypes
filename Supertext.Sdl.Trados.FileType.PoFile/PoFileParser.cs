@@ -48,7 +48,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
-            _userSettings.UpdateWith(settingsBundle, configurationId);
+            _userSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
         }
 
         protected override void BeforeParsing()

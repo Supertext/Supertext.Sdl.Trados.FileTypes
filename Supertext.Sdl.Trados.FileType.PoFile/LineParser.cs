@@ -30,14 +30,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         static LineParser()
         {
-            var beginOfFile = new LinePattern(LineType.BeginOfFile, MarkerLines.BeginOfFile, string.Empty);
+            BeginOfFile = new LinePattern(LineType.BeginOfFile, MarkerLines.BeginOfFile, string.Empty);
             var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
             var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
             var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
             var comment = new LinePattern(LineType.Comment, "#", @"#[\s:,.|]\s*(.*)");
             var endOfFile = new LinePattern(LineType.EndOfFile, MarkerLines.EndOfFile, string.Empty);
 
-            beginOfFile
+            BeginOfFile
                 .MustBeFollowedBy(msgid)
                 .CanBeFollowedBy(comment);
 
@@ -61,8 +61,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             comment
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid);
-
-            BeginOfFile = beginOfFile;
         }
 
         public string NextExpectedLineDescription

@@ -7,7 +7,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         LineType LineTypeToTranslate { get; }
 
-        void UpdateWith(ISettingsBundle settingsBundle, string configurationId);
+        void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId);
     }
 
     public sealed class UserSettings : FileTypeSettingsBase, IUserSettings
@@ -31,11 +31,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
         }
 
-        public void UpdateWith(ISettingsBundle settingsBundle, string configurationId)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void ResetToDefaults()
         {
             LineTypeToTranslate = DefaultLineTypeToTranslate;
@@ -43,12 +38,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
-            throw new System.NotImplementedException();
+            var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
+            LineTypeToTranslate = GetSettingFromSettingsGroup(settingsGroup, LineTypeToTranslateSetting, DefaultLineTypeToTranslate);
         }
 
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
-            throw new System.NotImplementedException();
+            var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
+            UpdateSettingInSettingsGroup(settingsGroup, LineTypeToTranslateSetting, LineTypeToTranslate, DefaultLineTypeToTranslate);
         }
     }
 }
