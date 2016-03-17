@@ -1,4 +1,9 @@
-﻿using Sdl.Core.Settings;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Mime;
+using System.Runtime.InteropServices;
+using System.Text;
+using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -11,10 +16,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
         private IPersistentFileConversionProperties _fileConversionProperties;
+
+        //Parsing STATE --- is being changed during parsing 
         private ILineParsingSession _lineParsingSession;
+        private Queue<string> _linesToProcess;
         private byte _progressInPercent;
         private int _totalNumberOfLines;
         private int _numberOfProcessedLines;
+        private StringBuilder _textContent;
+        private bool _processingText;
 
         public PoFileParser(IExtendedFileReader extendedFileReader, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
@@ -53,7 +63,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override void BeforeParsing()
         {
+            Debug.WriteLine("BeforeParsing");
             _lineParsingSession = _lineParser.StartLineParsingSession();
+            _linesToProcess = new Queue<string>(_extendedFileReader.ReadLinesWithEofLine(_fileConversionProperties.OriginalFilePath));
             _totalNumberOfLines = _extendedFileReader.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _numberOfProcessedLines = 0;
 
@@ -62,31 +74,39 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override bool DuringParsing()
         {
-            var textExtractor = new TextExtractor(_userSettings.LineTypeToTranslate);
-
-            foreach (var line in _extendedFileReader.ReadLinesWithEofLine(_fileConversionProperties.OriginalFilePath))
+            if (_linesToProcess.Count <= 0)
             {
-                ProgressInPercent = (byte) (++_numberOfProcessedLines * 100 / _totalNumberOfLines);
-
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    continue;
-                }
-
-                var parseResult = _lineParsingSession.Parse(line);
-
-                textExtractor.Process(parseResult);
-
-                if (!textExtractor.IsTextComplete)
-                {
-                    continue;
-                }
-
-                Output.Text(PropertiesFactory.CreateTextProperties(textExtractor.Text));
-                return true;
+                return false;
             }
 
-            return false;
+            ProgressInPercent = (byte)(++_numberOfProcessedLines * 100 / _totalNumberOfLines);
+
+            var currentLine = _linesToProcess.Dequeue();
+
+            if (string.IsNullOrEmpty(currentLine))
+            {
+                WriteStructure(currentLine);
+                return _linesToProcess.Count > 0;
+            }
+
+            var parseResult = _lineParsingSession.Parse(currentLine);
+
+            if (_processingText && parseResult.LineType == LineType.Text)
+            {
+                WriteText(parseResult.LineContent);
+            }
+            else if (parseResult.LineType == _userSettings.LineTypeToTranslate)
+            {
+                WriteText(parseResult.LineContent);
+                _processingText = true;
+            }
+            else
+            {
+                _processingText = false;
+                WriteStructure(currentLine);
+            }
+
+            return _linesToProcess.Count > 0;
         }
 
         protected override void AfterParsing()
@@ -94,37 +114,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             ProgressInPercent = 100;
         }
 
-        private class TextExtractor
+        private void WriteStructure(string structureContent)
         {
-            private readonly LineType _lineTypeToTranslate;
-            private bool _processingText;
-
-            public TextExtractor(LineType lineTypeToTranslate)
-            {
-                _lineTypeToTranslate = lineTypeToTranslate;
-                _processingText = false;
-            }
-
-            public bool IsTextComplete { get; private set; }
-
-            public string Text { get; private set; }
-
-            public void Process(IParseResult parseResult)
-            {
-                if (parseResult.LineType != LineType.Text && _processingText)
-                {
-                    IsTextComplete = true;
-                }
-                else if (parseResult.LineType == LineType.Text && _processingText)
-                {
-                    Text += parseResult.LineContent;
-                }
-                else if (parseResult.LineType == _lineTypeToTranslate)
-                {
-                    Text += parseResult.LineContent;
-                    _processingText = true;
-                }
-            }
+            var structureTagProperties = PropertiesFactory.CreateStructureTagProperties(structureContent);
+            structureTagProperties.DisplayText = structureContent;
+            Output.StructureTag(structureTagProperties);
         }
+
+        private void WriteText(string textContent)
+        {
+            var textProperties = PropertiesFactory.CreateTextProperties(textContent);
+            Output.Text(textProperties);
+        }
+
     }
 }
