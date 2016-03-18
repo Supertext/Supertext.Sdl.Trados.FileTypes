@@ -10,7 +10,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     public class ExtendedStreamReaderTest
     {
         [Test]
-        public void ReadLine_ReturnsAllLinesOfFile()
+        public void ReadLineWithEofLine_ReturnsAllLinesOfFile()
         {
             // Arrange
             var testString = @"line 1
@@ -19,9 +19,9 @@ line 3";
             var testee = CreateTestee(testString);
 
             // Act
-            var result1 = testee.ReadLine();
-            var result2 = testee.ReadLine();
-            var result3 = testee.ReadLine();
+            var result1 = testee.ReadLineWithEofLine();
+            var result2 = testee.ReadLineWithEofLine();
+            var result3 = testee.ReadLineWithEofLine();
 
             // Assert
             result1.Should().Be("line 1");
@@ -30,41 +30,41 @@ line 3";
         }
 
         [Test]
-        public void ReadLine_WhenGettingLastLine_ReturnsEndOfFile()
+        public void ReadLineWithEofLine_WhenGettingLastLine_ReturnsEndOfFile()
         {
             // Arrange
             var testString = @"line 1
 line 2
 line 3";
             var testee = CreateTestee(testString);
-             testee.ReadLine();
-             testee.ReadLine();
-             testee.ReadLine();
+             testee.ReadLineWithEofLine();
+             testee.ReadLineWithEofLine();
+             testee.ReadLineWithEofLine();
 
             // Act
 
-            var result = testee.ReadLine();
+            var result = testee.ReadLineWithEofLine();
 
             // Assert
             result.Should().Be(MarkerLines.EndOfFile);
         }
 
         [Test]
-        public void ReadLine_WhenGettingAfterEndOfFileLine_ReturnsNull()
+        public void ReadLineWithEofLine_WhenAfterEndOfFileLine_ReturnsNull()
         {
             // Arrange
             var testString = @"line 1
 line 2
 line 3";
             var testee = CreateTestee(testString);
-            testee.ReadLine();
-            testee.ReadLine();
-            testee.ReadLine();
-            testee.ReadLine();
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
 
             // Act
 
-            var result = testee.ReadLine();
+            var result = testee.ReadLineWithEofLine();
 
             // Assert
             result.Should().BeNull();

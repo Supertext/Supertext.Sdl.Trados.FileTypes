@@ -1,7 +1,7 @@
 ﻿namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
 {
 
-    public class ExtendedStreamReader : IExtendedStreamReader, IStreamReader
+    public class ExtendedStreamReader : IExtendedStreamReader
     {
         private readonly IStreamReader _streamReader;
         private bool _isEndReached;
@@ -11,7 +11,7 @@
             _streamReader = streamReader;
         }
 
-        public string ReadLine()
+        public string ReadLineWithEofLine()
         {
             var line = _streamReader.ReadLine();
 

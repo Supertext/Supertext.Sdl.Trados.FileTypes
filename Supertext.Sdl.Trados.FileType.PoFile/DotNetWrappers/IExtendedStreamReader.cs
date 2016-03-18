@@ -2,5 +2,6 @@
 {
     public interface IExtendedStreamReader
     {
+        string ReadLineWithEofLine();
     }
 }
