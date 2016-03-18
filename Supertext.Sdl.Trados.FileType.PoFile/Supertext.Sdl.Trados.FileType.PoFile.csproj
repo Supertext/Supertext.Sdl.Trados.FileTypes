@@ -71,7 +71,7 @@
     <Compile Include="DotNetWrappers\IStreamWriter.cs" />
     <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
     <Compile Include="DotNetWrappers\StreamWriterWrapper.cs" />
-    <Compile Include="ExtendedStreamReader.cs" />
+    <Compile Include="ExtendedFileReader.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -12,7 +12,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IExtendedStreamReader _extendedStreamReader;
+        private readonly IExtendedFileReader _extendedFileReader;
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
         private IPersistentFileConversionProperties _fileConversionProperties;
@@ -26,9 +26,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private StringBuilder _textContent;
         private bool _processingText;
 
-        public PoFileParser(IExtendedStreamReader extendedStreamReader, ILineParser lineParser, IUserSettings defaultUserSettings)
+        public PoFileParser(IExtendedFileReader extendedFileReader, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
-            _extendedStreamReader = extendedStreamReader;
+            _extendedFileReader = extendedFileReader;
             _lineParser = lineParser;
             _userSettings = defaultUserSettings;
         }
@@ -64,9 +64,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         protected override void BeforeParsing()
         {
             _lineParsingSession = _lineParser.StartLineParsingSession();
-            var linesWithEofLine = _extendedStreamReader.GetLinesWithEofLine(_fileConversionProperties.OriginalFilePath);
+            var linesWithEofLine = _extendedFileReader.GetLinesWithEofLine(_fileConversionProperties.OriginalFilePath);
             _linesToProcess = new Queue<string>(linesWithEofLine);
-            _totalNumberOfLines = _extendedStreamReader.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
+            _totalNumberOfLines = _extendedFileReader.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _numberOfProcessedLines = 0;
 
             ProgressInPercent = 0;

@@ -305,10 +305,10 @@ msgstr ""The msgstr text""
 
         private PoFileParser CreateTestee(string testString)
         {
-            var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
+            var extendedFileReader = A.Fake<IExtendedFileReader>();
             var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-            A.CallTo(() => extendedStreamReaderMock.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
-            A.CallTo(() => extendedStreamReaderMock.GetLinesWithEofLine(TestFilePath)).Returns(lines);
+            A.CallTo(() => extendedFileReader.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
+            A.CallTo(() => extendedFileReader.GetLinesWithEofLine(TestFilePath)).Returns(lines);
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
@@ -319,7 +319,7 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(extendedStreamReaderMock, lineParserMock, _userSettingsMock)
+            var testee = new PoFileParser(extendedFileReader, lineParserMock, _userSettingsMock)
             {
                 PropertiesFactory = _propertiesFactoryMock,
                 Output = _nativeExtractionContentHandlerMock

@@ -9,7 +9,7 @@ using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {
     [TestFixture]
-    public class ExtendedStreamReaderTest
+    public class ExtendedFileReaderTest
     {
         private const string TestFilePath = "sample_file_ok";
 
@@ -51,7 +51,7 @@ line 3
             result.Last().Should().Be(MarkerLines.EndOfFile);
         }
 
-        private ExtendedStreamReader CreateTestee(string testString)
+        private ExtendedFileReader CreateTestee(string testString)
         {
             var fileHelper = A.Fake<IFileHelper>();
             var lines = testString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
@@ -62,7 +62,7 @@ line 3
             A.CallTo(() => streamReaderMock.ReadLine()).ReturnsNextFromSequence(lines);
             A.CallTo(() => fileHelper.GetStreamReader(TestFilePath)).Returns(streamReaderMock);
 
-            return new ExtendedStreamReader(fileHelper);
+            return new ExtendedFileReader(fileHelper);
         }
     }
 }
