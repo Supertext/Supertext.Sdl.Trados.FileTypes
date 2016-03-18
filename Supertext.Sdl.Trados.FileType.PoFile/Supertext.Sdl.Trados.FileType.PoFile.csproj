@@ -67,7 +67,9 @@
   <ItemGroup>
     <Compile Include="DotNetWrappers\FileHelper.cs" />
     <Compile Include="DotNetWrappers\IFileHelper.cs" />
+    <Compile Include="DotNetWrappers\IStreamReader.cs" />
     <Compile Include="DotNetWrappers\IStreamWriter.cs" />
+    <Compile Include="DotNetWrappers\StreamReaderWrapper.cs" />
     <Compile Include="DotNetWrappers\StreamWriterWrapper.cs" />
     <Compile Include="ExtendedFileReader.cs" />
     <Compile Include="PluginResources.Designer.cs">

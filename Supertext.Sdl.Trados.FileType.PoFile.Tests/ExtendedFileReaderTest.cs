@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
@@ -55,7 +56,11 @@ line 3
             var fileHelper = A.Fake<IFileHelper>();
             var lines = testString.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             A.CallTo(() => fileHelper.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
-            A.CallTo(() => fileHelper.ReadLines(TestFilePath)).Returns(lines);
+
+            var streamReaderMock = A.Fake<IStreamReader>();
+            A.CallTo(() => streamReaderMock.ReadLine()).Returns(null);
+            A.CallTo(() => streamReaderMock.ReadLine()).ReturnsNextFromSequence(lines);
+            A.CallTo(() => fileHelper.GetStreamReader(TestFilePath)).Returns(streamReaderMock);
 
             return new ExtendedFileReader(fileHelper);
         }

@@ -7,7 +7,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
     {
         int GetTotalNumberOfLines(string path);
 
-        IEnumerable<string> ReadLines(string path);
+        IStreamReader GetStreamReader(string path);
 
         IStreamWriter GetStreamWriter(string path);
     }

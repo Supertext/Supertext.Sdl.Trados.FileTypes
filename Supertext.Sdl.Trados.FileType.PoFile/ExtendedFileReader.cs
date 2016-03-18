@@ -26,12 +26,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IEnumerable<string> ReadLinesWithEofLine(string filePath)
         {
-            foreach (var line in _fileHelper.ReadLines(filePath))
+            using (var streamReader = _fileHelper.GetStreamReader(filePath))
             {
-                yield return line;
-            }
+                string line;
 
-            yield return MarkerLines.EndOfFile;
+                while ((line = streamReader.ReadLine()) != null)
+                {
+                    yield return line;
+                }
+
+                yield return MarkerLines.EndOfFile;
+            }
         }
     }
 }
