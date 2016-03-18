@@ -122,10 +122,10 @@
     <value>Resources\PoFileIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Sniffer_Unexpected_End_Of_File" xml:space="preserve">
-    <value>Reached end of file but expected to find line with following line {0}</value>
-    <comment>{0}: line description</comment>
+    <value>Reached end of file but expected to find value with following value {0}</value>
+    <comment>{0}: value description</comment>
   </data>
   <data name="Sniffer_Unexpected_Line" xml:space="preserve">
-    <value>Found unexpected line</value>
+    <value>Found unexpected value</value>
   </data>
 </root>

@@ -11,6 +11,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
             return File.ReadLines(path);
         }
 
+        public IStreamWriter GetStreamWriter(string path)
+        {
+            return new StreamWriterWrapper(path);
+        }
+
         public int GetTotalNumberOfLines(string path)
         {
             return File.ReadLines(path).Count();

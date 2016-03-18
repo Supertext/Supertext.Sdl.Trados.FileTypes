@@ -63,7 +63,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override void BeforeParsing()
         {
-            Debug.WriteLine("BeforeParsing");
             _lineParsingSession = _lineParser.StartLineParsingSession();
             _linesToProcess = new Queue<string>(_extendedFileReader.ReadLinesWithEofLine(_fileConversionProperties.OriginalFilePath));
             _totalNumberOfLines = _extendedFileReader.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);

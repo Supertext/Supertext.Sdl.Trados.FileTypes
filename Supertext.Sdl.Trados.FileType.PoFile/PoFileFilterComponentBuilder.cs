@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
-using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
@@ -61,7 +59,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IFileGenerator BuildFileGenerator(string name)
         {
-            var writer = new PoFileWriter();
+            var writer = new PoFileWriter(new FileHelper());
             var generator = FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(writer));
             return generator;
         }
@@ -73,7 +71,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IAbstractGenerator BuildAbstractGenerator(string name)
         {
-            return FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(new PoFileWriter()));
+            return FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(new PoFileWriter(new FileHelper())));
         }
 
         public IPreviewSetsFactory BuildPreviewSetsFactory(string name)
@@ -166,54 +164,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public IVerifierCollection BuildVerifierCollection(string name)
         {
             return null;
-        }
-    }
-
-    public class PoFileWriter : AbstractNativeFileWriter, INativeContentCycleAware
-    {
-        private IPersistentFileConversionProperties _fileConversionProperties;
-        private StreamWriter _targetFile;
-
-        public void SetFileProperties(IFileProperties properties)
-        {
-            _fileConversionProperties = properties.FileConversionProperties;
-        }
-
-        public void StartOfInput()
-        {
-            _targetFile = new StreamWriter(OutputProperties.OutputFilePath);
-        }
-
-        public void EndOfInput()
-        {
-            _targetFile.Close();
-            _targetFile.Dispose();
-            _targetFile = null;
-        }
-
-        public override void StructureTag(IStructureTagProperties tagInfo)
-        {
-            _targetFile.WriteLine(tagInfo.TagContent);
-        }
-
-        public override void Text(ITextProperties textInfo)
-        {
-            _targetFile.Write(textInfo.Text);
-        }
-
-        public override void InlineStartTag(IStartTagProperties tagInfo)
-        {
-            _targetFile.Write(tagInfo.TagContent);
-        }
-
-        public override void InlineEndTag(IEndTagProperties tagInfo)
-        {
-            _targetFile.Write(tagInfo.TagContent);
-        }
-
-        public override void SegmentEnd()
-        {
-            _targetFile.WriteLine();
         }
     }
 }

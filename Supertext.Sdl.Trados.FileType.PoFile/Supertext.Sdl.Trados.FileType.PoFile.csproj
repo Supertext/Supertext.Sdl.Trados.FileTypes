@@ -67,12 +67,15 @@
   <ItemGroup>
     <Compile Include="DotNetWrappers\FileHelper.cs" />
     <Compile Include="DotNetWrappers\IFileHelper.cs" />
+    <Compile Include="DotNetWrappers\IStreamWriter.cs" />
+    <Compile Include="DotNetWrappers\StreamWriterWrapper.cs" />
     <Compile Include="ExtendedFileReader.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PluginResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PoFileWriter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

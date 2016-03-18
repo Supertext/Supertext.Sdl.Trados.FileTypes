@@ -69,6 +69,7 @@
     <Compile Include="LineParserTest.cs" />
     <Compile Include="PoFileParserTest.cs" />
     <Compile Include="PoFileSnifferTest.cs" />
+    <Compile Include="PoFileWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
