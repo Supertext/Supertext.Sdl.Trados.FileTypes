@@ -3,18 +3,18 @@ using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public interface IExtendedFileReader
+    public interface IExtendedStreamReader
     {
         int GetTotalNumberOfLines(string path);
 
         IEnumerable<string> GetLinesWithEofLine(string path);
     }
 
-    public class ExtendedFileReader : IExtendedFileReader
+    public class ExtendedStreamReader : IExtendedStreamReader
     {
         private readonly IFileHelper _fileHelper;
 
-        public ExtendedFileReader(IFileHelper fileHelper)
+        public ExtendedStreamReader(IFileHelper fileHelper)
         {
             _fileHelper = fileHelper;
         }

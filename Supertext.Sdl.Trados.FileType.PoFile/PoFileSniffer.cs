@@ -6,12 +6,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileSniffer : INativeFileSniffer
     {
-        private readonly IExtendedFileReader _extendedFileReader;
+        private readonly IExtendedStreamReader _extendedStreamReader;
         private readonly ILineParser _lineParser;
 
-        public PoFileSniffer(IExtendedFileReader extendedFileReader, ILineParser lineParser)
+        public PoFileSniffer(IExtendedStreamReader extendedStreamReader, ILineParser lineParser)
         {
-            _extendedFileReader = extendedFileReader;
+            _extendedStreamReader = extendedStreamReader;
             _lineParser = lineParser;
         }
 
@@ -21,7 +21,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var lineValidationSession = _lineParser.StartLineValidationSession();
             var lineNumber = 0;
 
-            foreach (var line in _extendedFileReader.GetLinesWithEofLine(nativeFilePath))
+            foreach (var line in _extendedStreamReader.GetLinesWithEofLine(nativeFilePath))
             {
                 ++lineNumber;
 
