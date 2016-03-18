@@ -6,6 +6,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 
         IStreamReader GetStreamReader(string path);
 
+        IExtendedStreamReader GetExtendedStreamReader(string path);
+
         IStreamWriter GetStreamWriter(string path);
     }
 }
