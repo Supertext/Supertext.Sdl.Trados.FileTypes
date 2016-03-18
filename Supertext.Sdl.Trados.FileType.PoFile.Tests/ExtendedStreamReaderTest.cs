@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -68,6 +69,40 @@ line 3";
 
             // Assert
             result.Should().BeNull();
+        }
+
+        [Test]
+        public void GetLinesWithEofLine_ReturnsAllLinesOfFile()
+        {
+            // Arrange
+            var testString = @"line 1
+line 2
+line 3";
+            var testee = CreateTestee(testString);
+
+            // Act
+            var result = testee.GetLinesWithEofLine().ToList();
+
+            // Assert
+            result.FirstOrDefault(line => line == "line 1").Should().NotBeNullOrEmpty();
+            result.FirstOrDefault(line => line == "line 2").Should().NotBeNullOrEmpty();
+            result.FirstOrDefault(line => line == "line 3").Should().NotBeNullOrEmpty();
+        }
+
+        [Test]
+        public void GetLinesWithEofLine_WhenGettingLastLine_ReturnsEndOfFile()
+        {
+            // Arrange
+            var testString = @"line 1
+line 2
+line 3";
+            var testee = CreateTestee(testString);
+
+            // Act
+            var result = testee.GetLinesWithEofLine().ToList();
+
+            // Assert
+            result.Last().Should().Be(MarkerLines.EndOfFile);
         }
 
         private ExtendedStreamReader CreateTestee(string testString)

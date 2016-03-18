@@ -1,4 +1,6 @@
-﻿namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
+﻿using System.Collections.Generic;
+
+namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 {
 
     public class ExtendedStreamReader : IExtendedStreamReader
@@ -22,6 +24,18 @@
 
             _isEndReached = true;
             return MarkerLines.EndOfFile;
+        }
+
+        public IEnumerable<string> GetLinesWithEofLine()
+        {
+            string line;
+
+            while ((line = _streamReader.ReadLine()) != null)
+            {
+                yield return line;
+            }
+
+            yield return MarkerLines.EndOfFile;
         }
 
         public void Close()
