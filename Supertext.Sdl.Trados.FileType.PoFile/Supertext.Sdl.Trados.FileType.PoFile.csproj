@@ -87,7 +87,7 @@
     </Compile>
     <Compile Include="UserSettings.cs" />
     <Compile Include="LineType.cs" />
-    <Compile Include="MarkerLines.cs" />
+    <Compile Include="FileHandling\MarkerLines.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="LineParser.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />

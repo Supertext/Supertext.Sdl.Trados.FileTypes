@@ -1,4 +1,4 @@
-﻿namespace Supertext.Sdl.Trados.FileType.PoFile
+﻿namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 {
     public static class MarkerLines
     {

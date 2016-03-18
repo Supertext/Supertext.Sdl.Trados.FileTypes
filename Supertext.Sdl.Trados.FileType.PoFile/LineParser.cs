@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
