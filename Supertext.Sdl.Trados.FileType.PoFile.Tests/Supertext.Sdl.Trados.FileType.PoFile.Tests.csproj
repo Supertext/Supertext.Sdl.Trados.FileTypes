@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtendedFileReaderTest.cs" />
+    <Compile Include="ExtendedStreamReaderTest.cs" />
     <Compile Include="LineParserTest.cs" />
     <Compile Include="PoFileParserTest.cs" />
     <Compile Include="PoFileSnifferTest.cs" />
