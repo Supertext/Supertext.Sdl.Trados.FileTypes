@@ -14,7 +14,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private const string TestFilePath = "sample_file_ok";
 
         [Test]
-        public void ReadLinesWithEofLine_ReturnsAllLinesOfFile()
+        public void GetLinesWithEofLine_ReturnsAllLinesOfFile()
         {
             // Arrange
             var testString = @"
@@ -25,7 +25,7 @@ line 3
             var testee = CreateTestee(testString);
 
             // Act
-            var result = testee.ReadLinesWithEofLine(TestFilePath).ToList();
+            var result = testee.GetLinesWithEofLine(TestFilePath).ToList();
 
             // Assert
             result.FirstOrDefault(line => line == "line 1").Should().NotBeNullOrEmpty();
@@ -34,7 +34,7 @@ line 3
         }
 
         [Test]
-        public void ReadLinesWithEofLine_WhenGettingLastLine_ReturnsEndOfFile()
+        public void GetLinesWithEofLine_WhenGettingLastLine_ReturnsEndOfFile()
         {
             // Arrange
             var testString = @"
@@ -45,7 +45,7 @@ line 3
             var testee = CreateTestee(testString);
 
             // Act
-            var result = testee.ReadLinesWithEofLine(TestFilePath);
+            var result = testee.GetLinesWithEofLine(TestFilePath);
 
             // Assert
             result.Last().Should().Be(MarkerLines.EndOfFile);

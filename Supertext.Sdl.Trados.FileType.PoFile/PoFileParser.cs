@@ -64,7 +64,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         protected override void BeforeParsing()
         {
             _lineParsingSession = _lineParser.StartLineParsingSession();
-            _linesToProcess = new Queue<string>(_extendedFileReader.ReadLinesWithEofLine(_fileConversionProperties.OriginalFilePath));
+            var linesWithEofLine = _extendedFileReader.GetLinesWithEofLine(_fileConversionProperties.OriginalFilePath);
+            _linesToProcess = new Queue<string>(linesWithEofLine);
             _totalNumberOfLines = _extendedFileReader.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _numberOfProcessedLines = 0;
 
@@ -73,6 +74,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override bool DuringParsing()
         {
+            
             if (_linesToProcess.Count <= 0)
             {
                 return false;

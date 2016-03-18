@@ -308,7 +308,7 @@ msgstr ""The msgstr text""
             var extendedFileReader = A.Fake<IExtendedFileReader>();
             var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             A.CallTo(() => extendedFileReader.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
-            A.CallTo(() => extendedFileReader.ReadLinesWithEofLine(TestFilePath)).Returns(lines);
+            A.CallTo(() => extendedFileReader.GetLinesWithEofLine(TestFilePath)).Returns(lines);
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);

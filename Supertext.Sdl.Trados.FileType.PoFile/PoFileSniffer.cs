@@ -21,7 +21,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var lineValidationSession = _lineParser.StartLineValidationSession();
             var lineNumber = 0;
 
-            foreach (var line in _extendedFileReader.ReadLinesWithEofLine(nativeFilePath))
+            foreach (var line in _extendedFileReader.GetLinesWithEofLine(nativeFilePath))
             {
                 ++lineNumber;
 
