@@ -2,7 +2,7 @@
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
+using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {

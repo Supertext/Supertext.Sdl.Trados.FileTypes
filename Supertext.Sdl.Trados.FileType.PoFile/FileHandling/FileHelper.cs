@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
+namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 {
     public class FileHelper : IFileHelper
     {

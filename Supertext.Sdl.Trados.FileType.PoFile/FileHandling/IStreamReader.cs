@@ -1,6 +1,6 @@
 using System;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers
+namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 {
     public interface IStreamReader : IDisposable
     {
