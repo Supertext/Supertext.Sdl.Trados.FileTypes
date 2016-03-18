@@ -1,15 +1,18 @@
 ﻿using System;
+using System.IO;
 using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
+using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.DotNetWrappers;
+using Supertext.Sdl.Trados.FileType.PoFile.Properties;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     [FileTypeComponentBuilderAttribute(Id = "PoFile_FilterComponentBuilderExtension_Id",
-                                       Name = "PoFile_FilterComponentBuilderExtension_Name",
-                                       Description = "PoFile_FilterComponentBuilderExtension_Description")]
+        Name = "PoFile_FilterComponentBuilderExtension_Name",
+        Description = "PoFile_FilterComponentBuilderExtension_Description")]
     public class PoFileFilterComponentBuilder : IFileTypeComponentBuilder
     {
         public IFileTypeManager FileTypeManager { get; set; }
@@ -58,42 +61,159 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IFileGenerator BuildFileGenerator(string name)
         {
-            throw new NotImplementedException();
+            var writer = new PoFileWriter();
+            var generator = FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(writer));
+            return generator;
         }
 
         public IAdditionalGeneratorsInfo BuildAdditionalGeneratorsInfo(string name)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IAbstractGenerator BuildAbstractGenerator(string name)
         {
-            throw new NotImplementedException();
+            return FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(new PoFileWriter()));
         }
 
         public IPreviewSetsFactory BuildPreviewSetsFactory(string name)
         {
-            throw new NotImplementedException();
+            IPreviewSetsFactory previewFactory = FileTypeManager.BuildPreviewSetsFactory();
+
+            IPreviewSet externalPreviewSet = previewFactory.CreatePreviewSet();
+            externalPreviewSet.Id = new PreviewSetId("ExternalPreview");
+            externalPreviewSet.Name = new LocalizableString(Resources.ExternalPreview_Name);
+
+            IApplicationPreviewType sourceAppPreviewType = previewFactory.CreatePreviewType<IApplicationPreviewType>() as IApplicationPreviewType;
+
+            if (sourceAppPreviewType != null)
+            {
+                sourceAppPreviewType.SourceGeneratorId = new GeneratorId("DefaultPreview");
+                sourceAppPreviewType.SingleFilePreviewApplicationId = new PreviewApplicationId("ExternalPreview");
+                externalPreviewSet.Source = sourceAppPreviewType;
+            }
+
+            IApplicationPreviewType targetAppPreviewType = previewFactory.CreatePreviewType<IApplicationPreviewType>() as IApplicationPreviewType;
+            if (targetAppPreviewType != null)
+            {
+                targetAppPreviewType.TargetGeneratorId = new GeneratorId("DefaultPreview");
+                targetAppPreviewType.SingleFilePreviewApplicationId = new PreviewApplicationId("ExternalPreview");
+                externalPreviewSet.Target = targetAppPreviewType;
+            }
+
+            previewFactory.GetPreviewSets(null).Add(externalPreviewSet);
+
+            IPreviewSet internalStaticPreviewSet = previewFactory.CreatePreviewSet();
+            internalStaticPreviewSet.Id = new PreviewSetId("InternalStaticPreview");
+            internalStaticPreviewSet.Name = new LocalizableString(Resources.InternalStaticPreview_Name);
+
+            IControlPreviewType sourceControlPreviewType1 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
+            if (sourceControlPreviewType1 != null)
+            {
+                sourceControlPreviewType1.SourceGeneratorId = new GeneratorId("StaticPreview");
+                sourceControlPreviewType1.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
+                internalStaticPreviewSet.Source = sourceControlPreviewType1;
+            }
+
+            IControlPreviewType targetControlPreviewType1 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
+            if (targetControlPreviewType1 != null)
+            {
+                targetControlPreviewType1.TargetGeneratorId = new GeneratorId("StaticPreview");
+                targetControlPreviewType1.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
+                internalStaticPreviewSet.Target = targetControlPreviewType1;
+            }
+            previewFactory.GetPreviewSets(null).Add(internalStaticPreviewSet);
+
+            IPreviewSet internalRealPreviewSet = previewFactory.CreatePreviewSet();
+            internalRealPreviewSet.Id = new PreviewSetId("InternalRealTimePreview");
+            internalRealPreviewSet.Name = new LocalizableString(Resources.InternalRealTimeNavigablePreview_Name);
+
+            IControlPreviewType sourceControlPreviewType2 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
+            if (sourceControlPreviewType2 != null)
+            {
+                sourceControlPreviewType2.SourceGeneratorId = new GeneratorId("RealTimePreview");
+                sourceControlPreviewType2.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
+                internalRealPreviewSet.Source = sourceControlPreviewType2;
+            }
+
+            IControlPreviewType targetControlPreviewType2 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
+            if (targetControlPreviewType2 != null)
+            {
+                targetControlPreviewType2.TargetGeneratorId = new GeneratorId("RealTimePreview");
+                targetControlPreviewType2.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
+                internalRealPreviewSet.Target = targetControlPreviewType2;
+            }
+            previewFactory.GetPreviewSets(null).Add(internalRealPreviewSet);
+
+            return previewFactory;
         }
 
         public IAbstractPreviewControl BuildPreviewControl(string name)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IAbstractPreviewApplication BuildPreviewApplication(string name)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IBilingualDocumentGenerator BuildBilingualGenerator(string name)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IVerifierCollection BuildVerifierCollection(string name)
         {
-            throw new NotImplementedException();
+            return null;
+        }
+    }
+
+    public class PoFileWriter : AbstractNativeFileWriter, INativeContentCycleAware
+    {
+        private IPersistentFileConversionProperties _fileConversionProperties;
+        private StreamWriter _targetFile;
+
+        public void SetFileProperties(IFileProperties properties)
+        {
+            _fileConversionProperties = properties.FileConversionProperties;
+        }
+
+        public void StartOfInput()
+        {
+            _targetFile = new StreamWriter(OutputProperties.OutputFilePath);
+        }
+
+        public void EndOfInput()
+        {
+            _targetFile.Close();
+            _targetFile.Dispose();
+            _targetFile = null;
+        }
+
+        public override void StructureTag(IStructureTagProperties tagInfo)
+        {
+            _targetFile.WriteLine(tagInfo.TagContent);
+        }
+
+        public override void Text(ITextProperties textInfo)
+        {
+            _targetFile.Write(textInfo.Text);
+        }
+
+        public override void InlineStartTag(IStartTagProperties tagInfo)
+        {
+            _targetFile.Write(tagInfo.TagContent);
+        }
+
+        public override void InlineEndTag(IEndTagProperties tagInfo)
+        {
+            _targetFile.Write(tagInfo.TagContent);
+        }
+
+        public override void SegmentEnd()
+        {
+            _targetFile.WriteLine();
         }
     }
 }
