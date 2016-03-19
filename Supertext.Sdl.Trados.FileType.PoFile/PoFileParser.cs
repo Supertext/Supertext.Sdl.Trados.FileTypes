@@ -1,34 +1,32 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Mime;
-using System.Runtime.InteropServices;
 using System.Text;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
+using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IExtendedFileReader _extendedFileReader;
+        private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
         private IPersistentFileConversionProperties _fileConversionProperties;
 
         //Parsing STATE --- is being changed during parsing 
         private ILineParsingSession _lineParsingSession;
-        private Queue<string> _linesToProcess;
+        private IExtendedStreamReader _extendedStreamReader;
         private byte _progressInPercent;
         private int _totalNumberOfLines;
         private int _numberOfProcessedLines;
         private StringBuilder _textContent;
         private bool _processingText;
 
-        public PoFileParser(IExtendedFileReader extendedFileReader, ILineParser lineParser, IUserSettings defaultUserSettings)
+        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
-            _extendedFileReader = extendedFileReader;
+            _fileHelper = fileHelper;
             _lineParser = lineParser;
             _userSettings = defaultUserSettings;
         }
@@ -64,9 +62,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         protected override void BeforeParsing()
         {
             _lineParsingSession = _lineParser.StartLineParsingSession();
-            var linesWithEofLine = _extendedFileReader.GetLinesWithEofLine(_fileConversionProperties.OriginalFilePath);
-            _linesToProcess = new Queue<string>(linesWithEofLine);
-            _totalNumberOfLines = _extendedFileReader.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
+            _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath);
+            _totalNumberOfLines = _fileHelper.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _numberOfProcessedLines = 0;
 
             ProgressInPercent = 0;
@@ -74,23 +71,27 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         protected override bool DuringParsing()
         {
-            
-            if (_linesToProcess.Count <= 0)
+            var currentLine = _extendedStreamReader.ReadLineWithEofLine();
+
+            if (currentLine == null)
             {
                 return false;
             }
 
             ProgressInPercent = (byte)(++_numberOfProcessedLines * 100 / _totalNumberOfLines);
 
-            var currentLine = _linesToProcess.Dequeue();
-
             if (string.IsNullOrEmpty(currentLine))
             {
                 WriteStructure(currentLine);
-                return _linesToProcess.Count > 0;
+                return true;
             }
 
             var parseResult = _lineParsingSession.Parse(currentLine);
+
+            if (parseResult.LineType == LineType.EndOfFile)
+            {
+                return false;
+            }
 
             if (_processingText && parseResult.LineType == LineType.Text)
             {
@@ -107,12 +108,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 WriteStructure(currentLine);
             }
 
-            return _linesToProcess.Count > 0;
+            return true;
         }
 
         protected override void AfterParsing()
         {
-            ProgressInPercent = 100;
+            _extendedStreamReader.Close();
+            _extendedStreamReader.Dispose();
+            _extendedStreamReader = null;
         }
 
         private void WriteStructure(string structureContent)
