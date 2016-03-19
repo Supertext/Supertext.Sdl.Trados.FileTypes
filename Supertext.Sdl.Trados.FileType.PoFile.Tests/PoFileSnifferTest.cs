@@ -180,15 +180,17 @@ msgstr ""The msgstr text""
 
         private PoFileSniffer CreateTestee(string testString)
         {
-            var extendedFileReaderMock = A.Fake<IExtendedFileReader>();
+            var fileHelperMock = A.Fake<IFileHelper>();
+
             var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            A.CallTo(() => extendedFileReaderMock.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
-            A.CallTo(() => extendedFileReaderMock.GetLinesWithEofLine(TestFilePath)).Returns(lines);
+            var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
+            A.CallTo(() => extendedStreamReaderMock.GetLinesWithEofLine()).Returns(lines);
+            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath)).Returns(extendedStreamReaderMock);
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineValidationSession()).Returns(_lineValidationSessionMock);
 
-            return new PoFileSniffer(extendedFileReaderMock, lineParserMock);
+            return new PoFileSniffer(fileHelperMock, lineParserMock);
         }
     }
 }

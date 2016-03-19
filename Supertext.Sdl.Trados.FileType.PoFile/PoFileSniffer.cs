@@ -7,12 +7,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileSniffer : INativeFileSniffer
     {
-        private readonly IExtendedFileReader _extendedFileReader;
+        private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
 
-        public PoFileSniffer(IExtendedFileReader extendedFileReader, ILineParser lineParser)
+        public PoFileSniffer(IFileHelper fileHelper, ILineParser lineParser)
         {
-            _extendedFileReader = extendedFileReader;
+            _fileHelper = fileHelper;
             _lineParser = lineParser;
         }
 
@@ -21,33 +21,35 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var lineValidationSession = _lineParser.StartLineValidationSession();
             var lineNumber = 0;
-
-            foreach (var line in _extendedFileReader.GetLinesWithEofLine(nativeFilePath))
+            using (var extendedStreamReader = _fileHelper.GetExtendedStreamReader(nativeFilePath))
             {
-                ++lineNumber;
-
-                if (string.IsNullOrWhiteSpace(line))
+                foreach (var line in extendedStreamReader.GetLinesWithEofLine())
                 {
-                    continue;
+                    ++lineNumber;
+
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+
+                    var isValidLine = lineValidationSession.IsValid(line);
+
+                    if (isValidLine)
+                    {
+                        continue;
+                    }
+
+                    var message = line == MarkerLines.EndOfFile
+                        ? string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
+                            lineValidationSession.NextExpectedLineDescription)
+                        : PoFileTypeResources.Sniffer_Unexpected_Line;
+
+                    messageReporter.ReportMessage(this, nativeFilePath,
+                        ErrorLevel.Error, message,
+                        lineNumber + ": " + line);
+
+                    return new SniffInfo {IsSupported = false};
                 }
-
-                var isValidLine = lineValidationSession.IsValid(line);
-
-                if (isValidLine)
-                {
-                    continue;
-                }
-
-                var message = line == MarkerLines.EndOfFile
-                    ? string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
-                        lineValidationSession.NextExpectedLineDescription)
-                    : PoFileTypeResources.Sniffer_Unexpected_Line;
-
-                messageReporter.ReportMessage(this, nativeFilePath,
-                    ErrorLevel.Error, message,
-                    lineNumber + ": " + line);
-
-                return new SniffInfo {IsSupported = false};
             }
 
             return new SniffInfo {IsSupported = true};
