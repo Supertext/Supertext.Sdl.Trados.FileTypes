@@ -297,8 +297,7 @@ msgid ""The msgid text""
 msgstr ""The msgstr text""
 
 msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
+msgstr ""The msgstr text""";
 
             var testee = CreateTestee(testString);
 
@@ -357,13 +356,12 @@ msgstr ""The msgstr text""
         {
             var fileHelperMock = A.Fake<IFileHelper>();
 
-            var lines = testString.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-            var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
-            A.CallTo(() => fileHelperMock.GetTotalNumberOfLines(TestFilePath)).Returns(lines.Length);
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).Returns(null);
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).Returns(MarkerLines.EndOfFile);
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsNextFromSequence(lines);
-            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath)).Returns(extendedStreamReaderMock);
+            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            var extendedStreamReaderMock1 = A.Fake<IExtendedStreamReader>();
+            A.CallTo(() => extendedStreamReaderMock1.ReadLineWithEofLine()).Returns(null);
+            A.CallTo(() => extendedStreamReaderMock1.ReadLineWithEofLine()).ReturnsNextFromSequence(lines);
+            A.CallTo(() => extendedStreamReaderMock1.GetLinesWithEofLine()).Returns(lines);
+            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath)).Returns(extendedStreamReaderMock1);
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);

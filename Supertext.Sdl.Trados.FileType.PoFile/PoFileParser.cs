@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -63,7 +64,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             _lineParsingSession = _lineParser.StartLineParsingSession();
             _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath);
-            _totalNumberOfLines = _fileHelper.GetTotalNumberOfLines(_fileConversionProperties.OriginalFilePath);
+            _totalNumberOfLines = _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath).GetLinesWithEofLine().Count();
             _numberOfProcessedLines = 0;
 
             ProgressInPercent = 0;
