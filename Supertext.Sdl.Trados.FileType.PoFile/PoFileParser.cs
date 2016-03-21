@@ -22,7 +22,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private byte _progressInPercent;
         private int _totalNumberOfLines;
         private int _numberOfProcessedLines;
-        private StringBuilder _textContent;
         private bool _processingText;
 
         public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
