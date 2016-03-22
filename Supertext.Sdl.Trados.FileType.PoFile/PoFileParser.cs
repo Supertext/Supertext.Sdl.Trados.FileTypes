@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Net.Mime;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
@@ -9,11 +9,12 @@ using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public class PoFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
+    public class PoFileParser : AbstractBilingualParser, INativeContentCycleAware, ISettingsAware
     {
         private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
+        private readonly EntryBuilder _entryBuilder;
         private IPersistentFileConversionProperties _fileConversionProperties;
 
         //Parsing STATE --- is being changed during parsing 
@@ -22,13 +23,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private byte _progressInPercent;
         private int _totalNumberOfLines;
         private int _numberOfProcessedLines;
-        private bool _processingText;
 
         public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
             _fileHelper = fileHelper;
             _lineParser = lineParser;
             _userSettings = defaultUserSettings;
+            _entryBuilder = new EntryBuilder();
         }
 
         public byte ProgressInPercent
@@ -44,14 +45,32 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public void SetFileProperties(IFileProperties properties)
         {
             _fileConversionProperties = properties.FileConversionProperties;
+
+            Output.Initialize(DocumentProperties);
+
+            var fileProperties = ItemFactory.CreateFileProperties();
+            fileProperties.FileConversionProperties = _fileConversionProperties;
+            Output.SetFileProperties(fileProperties);
         }
 
         public void StartOfInput()
         {
+            _lineParsingSession = _lineParser.StartLineParsingSession();
+            _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath);
+            _totalNumberOfLines =
+                _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath)
+                    .GetLinesWithEofLine()
+                    .Count();
+            _numberOfProcessedLines = 0;
+
+            ProgressInPercent = 0;
         }
 
         public void EndOfInput()
         {
+            _extendedStreamReader.Close();
+            _extendedStreamReader.Dispose();
+            _extendedStreamReader = null;
         }
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
@@ -59,77 +78,109 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _userSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
         }
 
-        protected override void BeforeParsing()
+        public override bool ParseNext()
         {
-            _lineParsingSession = _lineParser.StartLineParsingSession();
-            _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath);
-            _totalNumberOfLines = _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath).GetLinesWithEofLine().Count();
-            _numberOfProcessedLines = 0;
+            string currentLine;
 
-            ProgressInPercent = 0;
+            while ((currentLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
+            {
+                ProgressInPercent = (byte)(++_numberOfProcessedLines * 100 / _totalNumberOfLines);
+
+                if (string.IsNullOrEmpty(currentLine))
+                {
+                    continue;
+                }
+
+                var parseResult = _lineParsingSession.Parse(currentLine);
+
+                _entryBuilder.Add(parseResult);
+
+                if (_entryBuilder.CompleteEntry == null)
+                {
+                    continue;
+                }
+
+                CreateParagraphUnit(_entryBuilder.CompleteEntry);
+
+                return parseResult.LineType != LineType.EndOfFile;
+            }
+
+            return false;
         }
 
-        protected override bool DuringParsing()
+        private void CreateParagraphUnit(Entry entry)
         {
-            var currentLine = _extendedStreamReader.ReadLineWithEofLine();
+            var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
+            var segmentPairProperties = ItemFactory.CreateSegmentPairProperties();
 
-            if (currentLine == null)
-            {
-                return false;
-            }
+            var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
+            sourceSegment.Add(CreateText(entry.MessageId));
+            paragraphUnit.Source.Add(sourceSegment);
 
-            ProgressInPercent = (byte)(++_numberOfProcessedLines * 100 / _totalNumberOfLines);
+            var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
+            targetSegment.Add(CreateText(entry.MessageString));
+            paragraphUnit.Target.Add(targetSegment);
 
-            if (string.IsNullOrEmpty(currentLine))
-            {
-                WriteStructure(currentLine);
-                return true;
-            }
-
-            var parseResult = _lineParsingSession.Parse(currentLine);
-
-            if (parseResult.LineType == LineType.EndOfFile)
-            {
-                return false;
-            }
-
-            if (_processingText && parseResult.LineType == LineType.Text)
-            {
-                WriteText(parseResult.LineContent);
-            }
-            else if (parseResult.LineType == _userSettings.LineTypeToTranslate)
-            {
-                WriteText(parseResult.LineContent);
-                _processingText = true;
-            }
-            else
-            {
-                _processingText = false;
-                WriteStructure(currentLine);
-            }
-
-            return true;
+            Output.ProcessParagraphUnit(paragraphUnit);
         }
 
-        protected override void AfterParsing()
+        private IText CreateText(string value)
         {
-            _extendedStreamReader.Close();
-            _extendedStreamReader.Dispose();
-            _extendedStreamReader = null;
+            var textProperties = PropertiesFactory.CreateTextProperties(value);
+
+            return ItemFactory.CreateText(textProperties);
         }
 
-        private void WriteStructure(string structureContent)
+        private class EntryBuilder
         {
-            var structureTagProperties = PropertiesFactory.CreateStructureTagProperties(structureContent);
-            structureTagProperties.DisplayText = structureContent;
-            Output.StructureTag(structureTagProperties);
+            private bool _collectingMessageId;
+            private bool _collectingMessagString;
+            private Entry _entryInCreation;
+            
+            public Entry CompleteEntry { get; private set; }
+
+            public void Add(IParseResult parseResult)
+            {
+                CompleteEntry = null;
+
+                if (_collectingMessageId && parseResult.LineType != LineType.Text)
+                {
+                    _collectingMessageId = false;
+                }
+                else if (_collectingMessagString && parseResult.LineType != LineType.Text)
+                {
+                    _collectingMessagString = false;
+                    CompleteEntry = _entryInCreation;
+                }
+                else if (_collectingMessageId && parseResult.LineType == LineType.Text)
+                {
+                    _entryInCreation.MessageId += parseResult.LineContent;
+                }
+                else if (_collectingMessagString && parseResult.LineType == LineType.Text)
+                {
+                    _entryInCreation.MessageString += parseResult.LineContent;
+                }
+
+                if (parseResult.LineType == LineType.MessageId)
+                {
+                    _entryInCreation = new Entry();
+                    _entryInCreation.MessageId += parseResult.LineContent;
+                    _collectingMessageId = true;
+                }
+
+                if (parseResult.LineType == LineType.MessageString)
+                {
+                    _entryInCreation.MessageString += parseResult.LineContent;
+                    _collectingMessagString = true;
+                }
+            }
         }
 
-        private void WriteText(string textContent)
+        private class Entry
         {
-            var textProperties = PropertiesFactory.CreateTextProperties(textContent);
-            Output.Text(textProperties);
-        }
+            public string MessageId { get; set; } = string.Empty;
 
+            public string MessageString { get; set; } = string.Empty;
+        }
     }
 }

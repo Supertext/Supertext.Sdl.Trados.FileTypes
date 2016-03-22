@@ -53,7 +53,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public IFileExtractor BuildFileExtractor(string name)
         {
             var parser = new PoFileParser(new FileHelper(), new LineParser(), new UserSettings());
-            var extractor = FileTypeManager.BuildFileExtractor(FileTypeManager.BuildNativeExtractor(parser), this);
+            var extractor = FileTypeManager.BuildFileExtractor(parser, this);
             return extractor;
         }
 
