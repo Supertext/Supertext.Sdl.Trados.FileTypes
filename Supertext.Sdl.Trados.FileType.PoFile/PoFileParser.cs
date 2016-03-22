@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Mime;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
+using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
@@ -22,7 +24,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private IExtendedStreamReader _extendedStreamReader;
         private byte _progressInPercent;
         private int _totalNumberOfLines;
-        private int _numberOfProcessedLines;
+        private int _currentLineNumber;
 
         public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
@@ -61,7 +63,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath)
                     .GetLinesWithEofLine()
                     .Count();
-            _numberOfProcessedLines = 0;
+            _currentLineNumber = 0;
 
             ProgressInPercent = 0;
         }
@@ -84,7 +86,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             while ((currentLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
-                ProgressInPercent = (byte)(++_numberOfProcessedLines * 100 / _totalNumberOfLines);
+                ProgressInPercent = (byte)(++_currentLineNumber * 100 / _totalNumberOfLines);
 
                 if (string.IsNullOrEmpty(currentLine))
                 {
@@ -93,14 +95,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 var parseResult = _lineParsingSession.Parse(currentLine);
 
-                _entryBuilder.Add(parseResult);
+                _entryBuilder.Add(parseResult, _currentLineNumber);
 
-                if (_entryBuilder.CompleteEntry == null)
+                if (_entryBuilder.CompleteEntry == null || string.IsNullOrEmpty(_entryBuilder.CompleteEntry.MessageId))
                 {
                     continue;
                 }
 
-                CreateParagraphUnit(_entryBuilder.CompleteEntry);
+                Output.ProcessParagraphUnit(CreateParagraphUnit(_entryBuilder.CompleteEntry));
 
                 return parseResult.LineType != LineType.EndOfFile;
             }
@@ -108,7 +110,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return false;
         }
 
-        private void CreateParagraphUnit(Entry entry)
+        private IParagraphUnit CreateParagraphUnit(Entry entry)
         {
             var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
             var segmentPairProperties = ItemFactory.CreateSegmentPairProperties();
@@ -121,7 +123,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             targetSegment.Add(CreateText(entry.MessageString));
             paragraphUnit.Target.Add(targetSegment);
 
-            Output.ProcessParagraphUnit(paragraphUnit);
+            paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
+
+            return paragraphUnit;
+        }
+
+        private IContextProperties CreateContextProperties(Entry entry)
+        {
+            var contextProperties = PropertiesFactory.CreateContextProperties();
+            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Paragraph);
+            contextInfo.Purpose = ContextPurpose.Information;
+
+            var contextId = PropertiesFactory.CreateContextInfo("EntryPositions");
+            contextId.SetMetaData("msgidPosition", entry.MessageIdPosition);
+            contextId.SetMetaData("msgstrPosition", entry.MessageStringPosition);
+
+            contextProperties.Contexts.Add(contextInfo);
+            contextProperties.Contexts.Add(contextId);
+            return contextProperties;
         }
 
         private IText CreateText(string value)
@@ -139,7 +158,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             
             public Entry CompleteEntry { get; private set; }
 
-            public void Add(IParseResult parseResult)
+            public void Add(IParseResult parseResult, int lineNumber)
             {
                 CompleteEntry = null;
 
@@ -165,12 +184,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 {
                     _entryInCreation = new Entry();
                     _entryInCreation.MessageId += parseResult.LineContent;
+                    _entryInCreation.MessageIdPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
                     _collectingMessageId = true;
                 }
 
                 if (parseResult.LineType == LineType.MessageString)
                 {
                     _entryInCreation.MessageString += parseResult.LineContent;
+                    _entryInCreation.MessageStringPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
                     _collectingMessagString = true;
                 }
             }
@@ -181,6 +202,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             public string MessageId { get; set; } = string.Empty;
 
             public string MessageString { get; set; } = string.Empty;
+
+            public string MessageIdPosition { get; set; } = string.Empty;
+
+            public string MessageStringPosition { get; set; } = string.Empty;
         }
     }
 }
