@@ -1,5 +1,8 @@
-﻿using FakeItEasy;
+﻿using System;
+using System.Collections.Generic;
+using FakeItEasy;
 using NUnit.Framework;
+using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
@@ -8,112 +11,80 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     [TestFixture]
     public class PoFileWriterTest
     {
+        private IStreamReader _streamReaderMock;
         private IStreamWriter _streamWriterMock;
-        private const string TestFilePath = "sample_file_ok";
+        private const string TestFileInputPath = "sample_input_file_ok";
+        private const string TestFileOutputPath = "sample_output_file_ok";
 
         [SetUp]
         public void SetUp()
         {
+            _streamReaderMock = A.Fake<IStreamReader>();
             _streamWriterMock = A.Fake<IStreamWriter>();
         }
 
         [Test]
-        public void StructureTag_ShouldWriteTheHoleTagAsLine()
+        public void
+            ProcessParagraphUnit_WhenFirstCalledAndMsgidPositionIsNotFirstLine_ShouldWriteLinesBeforeMsgidPosition()
         {
             // Arrange
             var testee = CreateTestee();
-            var structureTagPropertiesMock = A.Fake<IStructureTagProperties>();
-            const string tagContent = "tag content";
-            A.CallTo(() => structureTagPropertiesMock.TagContent).Returns(tagContent);
+            var inputLines = @"line 1
+line 2
+line 3
+line 4
+line 5
+";
+            A.CallTo(() => _streamReaderMock.ReadLine()).Returns(null);
+            A.CallTo(() => _streamReaderMock.ReadLine()).ReturnsNextFromSequence(inputLines.Split(new[] { Environment.NewLine },
+                StringSplitOptions.None));
 
-            testee.StartOfInput();
+            var entryPositionsMock = A.Fake<IContextInfo>();
+            A.CallTo(() => entryPositionsMock.GetMetaData("msgidPosition")).Returns("3");
 
-            // Act
-            testee.StructureTag(structureTagPropertiesMock);
+            var contextInfoMocks = new List<IContextInfo>
+            {
+                A.Fake<IContextInfo>(),
+                entryPositionsMock
+            };
 
-            // Assert
-            A.CallTo(() => _streamWriterMock.WriteLine(tagContent)).MustHaveHappened();
-        }
+            var contextPropertiesMock = A.Fake<IContextProperties>();
+            A.CallTo(() => contextPropertiesMock.Contexts).Returns(contextInfoMocks);
 
-        [Test]
-        public void Text_ShouldWriteTheText()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            const string tagContent = "text content";
-            A.CallTo(() => textPropertiesMock.Text).Returns(tagContent);
+            var paragraphUnitPropertiesMock = A.Fake<IParagraphUnitProperties>();
+            A.CallTo(() => paragraphUnitPropertiesMock.Contexts).Returns(contextPropertiesMock);
 
-            testee.StartOfInput();
-
-            // Act
-            testee.Text(textPropertiesMock);
-
-            // Assert
-            A.CallTo(() => _streamWriterMock.Write(tagContent)).MustHaveHappened();
-        }
-
-        [Test]
-        public void InlineStartTag_ShouldWriteTheTag()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            const string tagContent = "tag content";
-            A.CallTo(() => startTagPropertiesMock.TagContent).Returns(tagContent);
-
-            testee.StartOfInput();
+            var paragraphUnitMock = A.Fake<IParagraphUnit>();
+            A.CallTo(() => paragraphUnitMock.Properties).Returns(paragraphUnitPropertiesMock);
 
             // Act
-            testee.InlineStartTag(startTagPropertiesMock);
+            testee.ProcessParagraphUnit(paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _streamWriterMock.Write(tagContent)).MustHaveHappened();
-        }
-
-        [Test]
-        public void InlineEndTag_ShouldWriteTheTag()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            const string tagContent = "tag content";
-            A.CallTo(() => endTagPropertiesMock.TagContent).Returns(tagContent);
-
-            testee.StartOfInput();
-
-            // Act
-            testee.InlineEndTag(endTagPropertiesMock);
-
-            // Assert
-            A.CallTo(() => _streamWriterMock.Write(tagContent)).MustHaveHappened();
-        }
-
-        [Test]
-        public void SegmentEnd_ShouldWriteALine()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            testee.StartOfInput();
-
-            // Act
-            testee.SegmentEnd();
-
-            // Assert
-            A.CallTo(() => _streamWriterMock.WriteLine()).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine("line 1")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine("line 2")).MustHaveHappened();
         }
 
         public PoFileWriter CreateTestee()
         {
             var fileHelperMock = A.Fake<IFileHelper>();
-            A.CallTo(() => fileHelperMock.GetStreamWriter(TestFilePath)).Returns(_streamWriterMock);
+            A.CallTo(() => fileHelperMock.GetStreamReader(TestFileInputPath)).Returns(_streamReaderMock);
+            A.CallTo(() => fileHelperMock.GetStreamWriter(TestFileOutputPath)).Returns(_streamWriterMock);
+
+            var persistentFileConversionPropertiesMock = A.Fake<IPersistentFileConversionProperties>();
+            A.CallTo(() => persistentFileConversionPropertiesMock.OriginalFilePath).Returns(TestFileInputPath);
 
             var nativeOutputFilePropertiesMock = A.Fake<INativeOutputFileProperties>();
-            A.CallTo(() => nativeOutputFilePropertiesMock.OutputFilePath).Returns(TestFilePath);
+            A.CallTo(() => nativeOutputFilePropertiesMock.OutputFilePath).Returns(TestFileOutputPath);
+
+            var outputFileInfoMock = A.Fake<IOutputFileInfo>();
+
+            var filePropertiesMock = A.Fake<IFileProperties>();
 
             var testee = new PoFileWriter(fileHelperMock);
             testee.SetOutputProperties(nativeOutputFilePropertiesMock);
+            testee.GetProposedOutputFileInfo(persistentFileConversionPropertiesMock, outputFileInfoMock);
+            testee.SetFileProperties(filePropertiesMock);
 
             return testee;
         }

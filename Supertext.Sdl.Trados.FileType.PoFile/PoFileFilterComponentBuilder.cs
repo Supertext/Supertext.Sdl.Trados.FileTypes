@@ -53,15 +53,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public IFileExtractor BuildFileExtractor(string name)
         {
             var parser = new PoFileParser(new FileHelper(), new LineParser(), new UserSettings());
-            var extractor = FileTypeManager.BuildFileExtractor(parser, this);
-            return extractor;
+            return FileTypeManager.BuildFileExtractor(parser, this);
         }
 
         public IFileGenerator BuildFileGenerator(string name)
         {
             var writer = new PoFileWriter(new FileHelper());
-            var generator = FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(writer));
-            return generator;
+            return FileTypeManager.BuildFileGenerator(writer);
         }
 
         public IAdditionalGeneratorsInfo BuildAdditionalGeneratorsInfo(string name)
@@ -71,77 +69,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IAbstractGenerator BuildAbstractGenerator(string name)
         {
-            return FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(new PoFileWriter(new FileHelper())));
+            return null;
         }
 
         public IPreviewSetsFactory BuildPreviewSetsFactory(string name)
         {
             IPreviewSetsFactory previewFactory = FileTypeManager.BuildPreviewSetsFactory();
-
-            IPreviewSet externalPreviewSet = previewFactory.CreatePreviewSet();
-            externalPreviewSet.Id = new PreviewSetId("ExternalPreview");
-            externalPreviewSet.Name = new LocalizableString(Resources.ExternalPreview_Name);
-
-            IApplicationPreviewType sourceAppPreviewType = previewFactory.CreatePreviewType<IApplicationPreviewType>() as IApplicationPreviewType;
-
-            if (sourceAppPreviewType != null)
-            {
-                sourceAppPreviewType.SourceGeneratorId = new GeneratorId("DefaultPreview");
-                sourceAppPreviewType.SingleFilePreviewApplicationId = new PreviewApplicationId("ExternalPreview");
-                externalPreviewSet.Source = sourceAppPreviewType;
-            }
-
-            IApplicationPreviewType targetAppPreviewType = previewFactory.CreatePreviewType<IApplicationPreviewType>() as IApplicationPreviewType;
-            if (targetAppPreviewType != null)
-            {
-                targetAppPreviewType.TargetGeneratorId = new GeneratorId("DefaultPreview");
-                targetAppPreviewType.SingleFilePreviewApplicationId = new PreviewApplicationId("ExternalPreview");
-                externalPreviewSet.Target = targetAppPreviewType;
-            }
-
-            previewFactory.GetPreviewSets(null).Add(externalPreviewSet);
-
-            IPreviewSet internalStaticPreviewSet = previewFactory.CreatePreviewSet();
-            internalStaticPreviewSet.Id = new PreviewSetId("InternalStaticPreview");
-            internalStaticPreviewSet.Name = new LocalizableString(Resources.InternalStaticPreview_Name);
-
-            IControlPreviewType sourceControlPreviewType1 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
-            if (sourceControlPreviewType1 != null)
-            {
-                sourceControlPreviewType1.SourceGeneratorId = new GeneratorId("StaticPreview");
-                sourceControlPreviewType1.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
-                internalStaticPreviewSet.Source = sourceControlPreviewType1;
-            }
-
-            IControlPreviewType targetControlPreviewType1 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
-            if (targetControlPreviewType1 != null)
-            {
-                targetControlPreviewType1.TargetGeneratorId = new GeneratorId("StaticPreview");
-                targetControlPreviewType1.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
-                internalStaticPreviewSet.Target = targetControlPreviewType1;
-            }
-            previewFactory.GetPreviewSets(null).Add(internalStaticPreviewSet);
-
-            IPreviewSet internalRealPreviewSet = previewFactory.CreatePreviewSet();
-            internalRealPreviewSet.Id = new PreviewSetId("InternalRealTimePreview");
-            internalRealPreviewSet.Name = new LocalizableString(Resources.InternalRealTimeNavigablePreview_Name);
-
-            IControlPreviewType sourceControlPreviewType2 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
-            if (sourceControlPreviewType2 != null)
-            {
-                sourceControlPreviewType2.SourceGeneratorId = new GeneratorId("RealTimePreview");
-                sourceControlPreviewType2.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
-                internalRealPreviewSet.Source = sourceControlPreviewType2;
-            }
-
-            IControlPreviewType targetControlPreviewType2 = previewFactory.CreatePreviewType<IControlPreviewType>() as IControlPreviewType;
-            if (targetControlPreviewType2 != null)
-            {
-                targetControlPreviewType2.TargetGeneratorId = new GeneratorId("RealTimePreview");
-                targetControlPreviewType2.SingleFilePreviewControlId = new PreviewControlId("InternalNavigablePreview");
-                internalRealPreviewSet.Target = targetControlPreviewType2;
-            }
-            previewFactory.GetPreviewSets(null).Add(internalRealPreviewSet);
 
             return previewFactory;
         }

@@ -1,13 +1,15 @@
-using System.IO;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public class PoFileWriter : AbstractNativeFileWriter, INativeContentCycleAware
+    public class PoFileWriter : AbstractBilingualFileTypeComponent, IBilingualWriter, INativeOutputSettingsAware
     {
         private readonly IFileHelper _fileHelper;
+        private IPersistentFileConversionProperties _originalFileProperties;
+        private INativeOutputFileProperties _nativeFileProperties;
+        private IStreamReader _streamReader;
         private IStreamWriter _streamWriter;
 
         public PoFileWriter(IFileHelper fileHelper)
@@ -15,46 +17,57 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _fileHelper = fileHelper;
         }
 
-        public void SetFileProperties(IFileProperties properties)
+        public void Initialize(IDocumentProperties documentInfo)
         {
-            
         }
 
-        public void StartOfInput()
+        public void SetFileProperties(IFileProperties fileInfo)
         {
-            _streamWriter = _fileHelper.GetStreamWriter(OutputProperties.OutputFilePath);
+            _streamReader = _fileHelper.GetStreamReader(_originalFileProperties.OriginalFilePath);
+            _streamWriter = _fileHelper.GetStreamWriter(_nativeFileProperties.OutputFilePath);
         }
 
-        public void EndOfInput()
+        public void GetProposedOutputFileInfo(IPersistentFileConversionProperties fileProperties, IOutputFileInfo proposedFileInfo)
         {
+            _originalFileProperties = fileProperties;
+        }
+
+        public void SetOutputProperties(INativeOutputFileProperties properties)
+        {
+            _nativeFileProperties = properties;
+        }
+
+        public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
+        {
+            var msgidPosition = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData("msgidPosition"));
+
+            var currentInputLineNumber = 0;
+            string currentInputLine;
+            while ((currentInputLine = _streamReader.ReadLine()) != null)
+            {
+                ++currentInputLineNumber;
+
+                if (currentInputLineNumber < msgidPosition)
+                {
+                    _streamWriter.WriteLine(currentInputLine);
+                }
+            }
+        }
+
+        public void Complete()
+        {
+        }
+
+        public void FileComplete()
+        {
+            _streamReader.Close();
+            _streamReader.Dispose();
             _streamWriter.Close();
             _streamWriter.Dispose();
-            _streamWriter = null;
         }
 
-        public override void StructureTag(IStructureTagProperties tagInfo)
+        public void Dispose()
         {
-            _streamWriter.WriteLine(tagInfo.TagContent);
-        }
-
-        public override void Text(ITextProperties textInfo)
-        {
-            _streamWriter.Write(textInfo.Text);
-        }
-
-        public override void InlineStartTag(IStartTagProperties tagInfo)
-        {
-            _streamWriter.Write(tagInfo.TagContent);
-        }
-
-        public override void InlineEndTag(IEndTagProperties tagInfo)
-        {
-            _streamWriter.Write(tagInfo.TagContent);
-        }
-
-        public override void SegmentEnd()
-        {
-            _streamWriter.WriteLine();
         }
     }
 }
