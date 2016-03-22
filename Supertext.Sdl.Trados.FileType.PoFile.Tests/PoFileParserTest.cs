@@ -67,6 +67,36 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void EndOfInput_ShouldInformContentHanlderAboutCompletion()
+        {
+            // Arrange
+            var testee = CreateTestee(string.Empty);
+            testee.StartOfInput();
+
+            // Act
+            testee.EndOfInput();
+
+            // Assert
+            A.CallTo(() => _bilingualContentHandlerMock.Complete()).MustHaveHappened();
+            A.CallTo(() => _bilingualContentHandlerMock.FileComplete()).MustHaveHappened();
+        }
+
+        [Test]
+        public void SetFileProperties_ShouldInitializeContentHandler()
+        {
+            // Arrange
+            var testee = CreateTestee(string.Empty);
+
+            var filePropertiesMock = A.Fake<IFileProperties>();
+
+            // Act
+            testee.SetFileProperties(filePropertiesMock);
+
+            // Assert
+            A.CallTo(() => _bilingualContentHandlerMock.Initialize(A<IDocumentProperties>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
         public void ParseNext_WhenMultipleLines_ShouldUpdateProgressForEachLine()
         {
             // Arrange
@@ -87,19 +117,31 @@ msgstr ""The msgstr text""";
             testee.Progress += handler;
 
             // Act
-            while (testee.ParseNext()) { }
+            while (testee.ParseNext())
+            {
+            }
 
             //Assert
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 10))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 20))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 30))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 40))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 50))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 60))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 70))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 80))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 90))).MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 100))).MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 10)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 20)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 30)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 40)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 50)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 60)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 70)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 80)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 90)))
+                .MustHaveHappened();
+            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 100)))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -194,7 +236,8 @@ msgstr ""The msgstr text""
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Twice);
         }
 
         [Test]
@@ -216,7 +259,8 @@ msgstr ""The msgstr text""
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Twice);
         }
 
         [Test]
@@ -270,7 +314,8 @@ msgstr ""The msgstr text""
             testee.StartOfInput();
 
             var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The textThe second text")).Returns(textPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The textThe second text"))
+                .Returns(textPropertiesMock);
 
             var msgidTextMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgidTextMock);
@@ -308,7 +353,8 @@ msgstr ""The msgstr text""
             testee.StartOfInput();
 
             var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid textThe text")).Returns(textPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid textThe text"))
+                .Returns(textPropertiesMock);
 
             var msgidTextMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgidTextMock);
@@ -384,7 +430,8 @@ msgstr """"
             testee.StartOfInput();
 
             var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The textThe second text")).Returns(textPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The textThe second text"))
+                .Returns(textPropertiesMock);
 
             var msgstrTextMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgstrTextMock);
@@ -422,7 +469,8 @@ msgstr ""The msgstr text""
             testee.StartOfInput();
 
             var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr textThe text")).Returns(textPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr textThe text"))
+                .Returns(textPropertiesMock);
 
             var msgstrTextMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgstrTextMock);
@@ -538,68 +586,16 @@ msgstr ""The msgstr text""
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(paragraphUnitMock)).MustHaveHappened(Repeated.Exactly.Twice);
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(paragraphUnitMock))
+                .MustHaveHappened(Repeated.Exactly.Twice);
         }
-
-        //Test with comment and so on
-        /*
-        
-
-        
-
-
-        [Test]
-        public void ParseNext_WhenMsgidNeedsToBeTranslated_ShouldAddMsgidText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid text")).Returns(textPropertiesMock);
-
-            // Act
-            testee.ParseNext();
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.Text(textPropertiesMock)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgstrNeedsToBeTranslated_ShouldAddMsgstrText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr text")).Returns(textPropertiesMock);
-
-            A.CallTo(() => _userSettingsMock.LineTypeToTranslate).Returns(LineType.MessageString);
-
-            // Act
-            testee.ParseNext();
-            testee.ParseNext();
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.Text(textPropertiesMock)).MustHaveHappened();
-        }
-
-*/
 
         private PoFileParser CreateTestee(string testString)
         {
             var fileHelperMock = A.Fake<IFileHelper>();
 
-            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] {Environment.NewLine},
+                StringSplitOptions.None);
             var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
             A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).Returns(null);
             A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsNextFromSequence(lines);

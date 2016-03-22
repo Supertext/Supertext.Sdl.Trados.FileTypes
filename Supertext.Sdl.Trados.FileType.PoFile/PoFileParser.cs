@@ -70,6 +70,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void EndOfInput()
         {
+            Output.FileComplete();
+            Output.Complete();
+
             _extendedStreamReader.Close();
             _extendedStreamReader.Dispose();
             _extendedStreamReader = null;
