@@ -36,8 +36,19 @@
     <AssemblyOriginatorKeyFile>key.snk.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sdl.Core.PluginFramework">
+      <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Server\Application\Sdl.Core.PluginFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdl.Core.Settings">
+      <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.Core.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdl.FileTypeSupport.Framework.Core.Settings">
+      <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.FileTypeSupport.Framework.Core.Settings.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,14 +57,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="SettingsPage.cs" />
+    <Compile Include="PluginResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PluginResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SettingsUI.Designer.cs">
+      <DependentUpon>SettingsUI.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="pluginpackage.manifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Supertext.Sdl.Trados.FileType.PoFile\Supertext.Sdl.Trados.FileType.PoFile.csproj">
+      <Project>{c0bbd9dc-300a-4ce2-88bc-5889c5ad0523}</Project>
+      <Name>Supertext.Sdl.Trados.FileType.PoFile</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PluginResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PluginResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsUI.resx">
+      <DependentUpon>SettingsUI.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
