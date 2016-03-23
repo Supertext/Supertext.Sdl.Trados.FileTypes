@@ -7,6 +7,7 @@
         MessageString,
         Text,
         Comment,
-        EndOfFile
+        EndOfFile,
+        Empty
     }
 }

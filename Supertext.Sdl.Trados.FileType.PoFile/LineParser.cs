@@ -32,6 +32,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         static LineParser()
         {
             BeginOfFile = new LinePattern(LineType.BeginOfFile, MarkerLines.BeginOfFile, string.Empty);
+            var emptyLine = new LinePattern(LineType.Empty, "^$", string.Empty);
             var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
             var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
             var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
@@ -40,28 +41,36 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             BeginOfFile
                 .MustBeFollowedBy(msgid)
-                .CanBeFollowedBy(comment);
+                .CanBeFollowedBy(comment)
+                .CanBeFollowedBy(emptyLine);
 
             msgid
                 .MustBeFollowedBy(msgstr)
-                .CanBeFollowedBy(text);
+                .CanBeFollowedBy(text)
+                .CanBeFollowedBy(emptyLine);
 
             msgstr
                 .CanBeFollowedBy(text)
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid)
-                .CanBeFollowedBy(endOfFile);
+                .CanBeFollowedBy(endOfFile)
+                .CanBeFollowedBy(emptyLine);
 
             text
                 .CanBeFollowedBy(text)
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgstr)
                 .CanBeFollowedBy(msgid)
-                .CanBeFollowedBy(endOfFile);
+                .CanBeFollowedBy(endOfFile)
+                .CanBeFollowedBy(emptyLine);
 
             comment
                 .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid);
+                .CanBeFollowedBy(msgid)
+                .CanBeFollowedBy(emptyLine);
+
+            emptyLine
+                .CanBeIgnored();
         }
 
         public string NextExpectedLineDescription
@@ -88,8 +97,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return false;
             }
 
-            if (applyingLinePattern.Equals(_lastLinePattern.ExpectedFollowingLinePattern) ||
-                _lastLinePattern.ExpectedFollowingLinePattern == null)
+            if (!applyingLinePattern.IsIgnored && (applyingLinePattern.Equals(_lastLinePattern.ExpectedFollowingLinePattern) ||
+                _lastLinePattern.ExpectedFollowingLinePattern == null))
             {
                 _lastLinePattern = applyingLinePattern;
             }
@@ -106,7 +115,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return null;
             }
 
-            _lastLinePattern = applyingLinePattern;
+            _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
 
             return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line));
         }
@@ -142,6 +151,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public LineType LineType { get; }
 
+            public bool IsIgnored { get; private set; }
+
             public IEnumerable<LinePattern> PossibleFollowingLinePatterns => _possibleFollowingLinePatterns;
 
             public LinePattern ExpectedFollowingLinePattern => _expectedFollowingLinePattern;
@@ -156,6 +167,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             {
                 _expectedFollowingLinePattern = linePattern;
                 return this;
+            }
+
+            public void CanBeIgnored()
+            {
+                IsIgnored = true;
             }
 
             public bool IsApplyingTo(string line)
