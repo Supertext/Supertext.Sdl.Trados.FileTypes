@@ -7,14 +7,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public class PoFileWriter : AbstractBilingualFileTypeComponent, IBilingualWriter, INativeOutputSettingsAware
     {
         private readonly IFileHelper _fileHelper;
+        private readonly ISegmentReader _segmentReader;
         private IPersistentFileConversionProperties _originalFileProperties;
         private INativeOutputFileProperties _nativeFileProperties;
         private IStreamReader _streamReader;
         private IStreamWriter _streamWriter;
+        private int _currentInputLineNumber;
 
-        public PoFileWriter(IFileHelper fileHelper)
+        public PoFileWriter(IFileHelper fileHelper, ISegmentReader segmentReader)
         {
             _fileHelper = fileHelper;
+            _segmentReader = segmentReader;
         }
 
         public void Initialize(IDocumentProperties documentInfo)
@@ -39,19 +42,40 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
-            var messageIdStart = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageIdStart));
+            var messageIdEnd = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageIdEnd));
+            var messageStringEnd = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageStringEnd));
 
-            var currentInputLineNumber = 0;
             string currentInputLine;
             while ((currentInputLine = _streamReader.ReadLine()) != null)
             {
-                ++currentInputLineNumber;
+                ++_currentInputLineNumber;
 
-                if (currentInputLineNumber < messageIdStart)
+                if (_currentInputLineNumber <= messageIdEnd)
                 {
                     _streamWriter.WriteLine(currentInputLine);
                 }
+                else
+                {
+                    break;
+                }
             }
+
+            // Write msgid and msgstr
+
+            _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(paragraphUnit.SegmentPairs) + "\"");
+
+
+            do
+            {
+                if (_currentInputLineNumber < messageStringEnd)
+                {
+                    ++_currentInputLineNumber;
+                    continue;
+                }
+
+                break;
+            }
+            while (_streamReader.ReadLine() != null) ;
         }
 
         public void Complete()
