@@ -39,7 +39,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
-            var msgidPosition = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageIdPosition));
+            var messageIdStart = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageIdStart));
 
             var currentInputLineNumber = 0;
             string currentInputLine;
@@ -47,7 +47,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             {
                 ++currentInputLineNumber;
 
-                if (currentInputLineNumber < msgidPosition)
+                if (currentInputLineNumber < messageIdStart)
                 {
                     _streamWriter.WriteLine(currentInputLine);
                 }

@@ -25,7 +25,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
         [Test]
         public void
-            ProcessParagraphUnit_WhenFirstCalledAndMsgidPositionIsNotFirstLine_ShouldWriteLinesBeforeMsgidPosition()
+            ProcessParagraphUnit_WhenStart_ShouldWriteLinesFromStartToMsgidPosition()
         {
             // Arrange
             var testee = CreateTestee();
@@ -40,7 +40,8 @@ line 5
                 StringSplitOptions.None));
 
             var entryPositionsMock = A.Fake<IContextInfo>();
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageIdPosition)).Returns("3");
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageIdStart)).Returns("3");
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageIdEnd)).Returns("3");
 
             var contextInfoMocks = new List<IContextInfo>
             {

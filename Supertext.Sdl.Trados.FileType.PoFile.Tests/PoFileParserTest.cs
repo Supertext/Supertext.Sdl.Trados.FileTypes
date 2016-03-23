@@ -490,7 +490,7 @@ msgstr ""The msgstr text""
         }
 
         [Test]
-        public void ParseNext_WhenMsgidOnOneLine_ShouldSetMsgidPositionContextToOneLine()
+        public void ParseNext_WhenMsgidOnOneLine_ShouldSetMsgidLocationContextToOneLine()
         {
             // Arrange
             var testString = @"
@@ -504,18 +504,19 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.PositionContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdPosition, "2,2")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdStart, "2")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdEnd, "2")).MustHaveHappened();
             A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenMsgidOnMultipleLines_ShouldSetMsgidPositionContextToAllTheLines()
+        public void ParseNext_WhenMsgidOnMultipleLines_ShouldSetMsgidLocationContextToAllTheLines()
         {
             // Arrange
             var testString = @"
@@ -531,18 +532,19 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.PositionContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdPosition, "2,4")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdStart, "2")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdEnd, "4")).MustHaveHappened();
             A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenMsgstrOnOneLine_ShouldSetMsgstrPositionContextToOneLine()
+        public void ParseNext_WhenMsgstrOnOneLine_ShouldSetMsgstrLocationContextToOneLine()
         {
             // Arrange
             var testString = @"
@@ -556,18 +558,19 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.PositionContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringPosition, "3,3")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringStart, "3")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringEnd, "3")).MustHaveHappened();
             A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenMsgstrOnMultipleLines_ShouldSetMsgstrPositionContextToAllTheLines()
+        public void ParseNext_WhenMsgstrOnMultipleLines_ShouldSetMsgstrLocationContextToAllTheLines()
         {
             // Arrange
             var testString = @"
@@ -583,13 +586,14 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.PositionContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringPosition, "3,5")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringStart, "3")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringEnd, "5")).MustHaveHappened();
             A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
         }
 

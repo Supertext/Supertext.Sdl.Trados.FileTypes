@@ -132,9 +132,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Paragraph);
             contextInfo.Purpose = ContextPurpose.Information;
 
-            var contextId = PropertiesFactory.CreateContextInfo(ContextKeys.PositionContextType);
-            contextId.SetMetaData(ContextKeys.MessageIdPosition, entry.MessageIdPosition);
-            contextId.SetMetaData(ContextKeys.MessageStringPosition, entry.MessageStringPosition);
+            var contextId = PropertiesFactory.CreateContextInfo(ContextKeys.LocationContextType);
+            contextId.SetMetaData(ContextKeys.MessageIdStart, entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageIdEnd, entry.MessageIdEnd.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageStringStart, entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageStringEnd, entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
 
             contextProperties.Contexts.Add(contextInfo);
             contextProperties.Contexts.Add(contextId);
@@ -164,14 +166,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 {
                     _entryInCreation = new Entry();
                     _entryInCreation.MessageId += parseResult.LineContent;
-                    _entryInCreation.MessageIdPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
+                    _entryInCreation.MessageIdStart = lineNumber;
                     _collectingMessageId = true;
                 }
 
                 if (parseResult.LineType == LineType.MessageString)
                 {
                     _entryInCreation.MessageString += parseResult.LineContent;
-                    _entryInCreation.MessageStringPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
+                    _entryInCreation.MessageStringStart = lineNumber;
                     _collectingMessagString = true;
                 }
             }
@@ -183,12 +185,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 if (_collectingMessageId && parseResult.LineType != LineType.Text)
                 {
                     _collectingMessageId = false;
-                    _entryInCreation.MessageIdPosition += "," + (lineNumber - 1);
+                    _entryInCreation.MessageIdEnd = lineNumber - 1;
                 }
                 else if (_collectingMessagString && parseResult.LineType != LineType.Text)
                 {
                     _collectingMessagString = false;
-                    _entryInCreation.MessageStringPosition += "," + (lineNumber - 1);
+                    _entryInCreation.MessageStringEnd = lineNumber - 1;
                     CompleteEntry = _entryInCreation;
                 }
                 else if (_collectingMessageId && parseResult.LineType == LineType.Text)
@@ -208,9 +210,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public string MessageString { get; set; } = string.Empty;
 
-            public string MessageIdPosition { get; set; } = string.Empty;
+            public int MessageIdStart { get; set; }
 
-            public string MessageStringPosition { get; set; } = string.Empty;
+            public int MessageIdEnd { get; set; }
+
+            public int MessageStringStart { get; set; }
+
+            public int MessageStringEnd { get; set; }
         }
     }
 }

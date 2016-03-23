@@ -2,8 +2,10 @@
 {
     public static class ContextKeys
     {
-        public static string PositionContextType = "EntryPositions";
-        public static string MessageIdPosition = "msgidPosition";
-        public static string MessageStringPosition = "msgstrPosition";
+        public static string LocationContextType = "EntryLocation";
+        public static string MessageIdStart = "msgidStart";
+        public static string MessageIdEnd = "msgidEnd";
+        public static string MessageStringStart = "msgstrStart";
+        public static string MessageStringEnd = "msgstrEnd";
     }
 }
