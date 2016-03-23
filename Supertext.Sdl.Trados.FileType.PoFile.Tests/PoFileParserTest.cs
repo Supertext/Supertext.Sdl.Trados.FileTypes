@@ -39,6 +39,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 .Returns(new ParseResult(LineType.Text, "The second text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"#: a comment"))
                 .Returns(new ParseResult(LineType.Comment, "a comment"));
+            A.CallTo(() => _lineParsingSessionMock.Parse(string.Empty))
+                .Returns(new ParseResult(LineType.Empty, string.Empty));
             A.CallTo(() => _lineParsingSessionMock.Parse(MarkerLines.EndOfFile))
                 .Returns(new ParseResult(LineType.EndOfFile, string.Empty));
 
@@ -183,32 +185,6 @@ msgstr ""The msgstr text""
 
             // Assert
             result.Should().BeFalse();
-        }
-
-        [Test]
-        public void ParseNext_ShouldIgnoreEmptyLines()
-        {
-            // Arrange
-            var testString = @"
-
-#: a comment
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            while (testee.ParseNext())
-            {
-            }
-
-            // Assert
-            A.CallTo(() => _lineParsingSessionMock.Parse(string.Empty)).MustNotHaveHappened();
         }
 
         [Test]

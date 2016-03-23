@@ -91,11 +91,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             {
                 ProgressInPercent = (byte)(++_currentLineNumber * 100 / _totalNumberOfLines);
 
-                if (string.IsNullOrEmpty(currentLine))
-                {
-                    continue;
-                }
-
                 var parseResult = _lineParsingSession.Parse(currentLine);
 
                 _entryBuilder.Add(parseResult, _currentLineNumber);

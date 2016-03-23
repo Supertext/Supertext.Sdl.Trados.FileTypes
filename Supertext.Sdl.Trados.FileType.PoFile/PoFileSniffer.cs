@@ -27,11 +27,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 {
                     ++lineNumber;
 
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
                     var isValidLine = lineValidationSession.IsValid(line);
 
                     if (isValidLine)

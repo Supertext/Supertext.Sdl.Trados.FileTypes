@@ -139,6 +139,7 @@ somethingwrong
             var testee = CreateTestee(testString);
             A.CallTo(() => _lineValidationSessionMock.IsValid("#: a comment")).Returns(true);
             A.CallTo(() => _lineValidationSessionMock.IsValid(@"msgid ""The msgid text""")).Returns(true);
+            A.CallTo(() => _lineValidationSessionMock.IsValid(string.Empty)).Returns(true);
             A.CallTo(() => _lineValidationSessionMock.IsValid("somethingwrong")).Returns(false);
 
             // Act
@@ -152,30 +153,6 @@ somethingwrong
                 A<string>.Ignored,
                 "4: somethingwrong"
                 )).MustHaveHappened();
-        }
-
-        [Test]
-        public void Sniff_ShouldIgnoreEmptyLines()
-        {
-            // Arrange
-            var testString = @"
-
-#: a comment
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-
-";
-            var testee = CreateTestee(testString);
-            A.CallTo(() => _lineValidationSessionMock.IsValid(A<string>.Ignored)).Returns(true);
-
-            // Act
-            testee.Sniff(TestFilePath, _testLanguage, _testCodepage, _messageReporterMock, _settingsGroupMock);
-
-            // Assert
-            A.CallTo(() => _lineValidationSessionMock.IsValid(string.Empty)).MustNotHaveHappened();
         }
 
         private PoFileSniffer CreateTestee(string testString)
