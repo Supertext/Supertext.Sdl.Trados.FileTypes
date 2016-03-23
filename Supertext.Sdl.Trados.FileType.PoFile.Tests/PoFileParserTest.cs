@@ -54,6 +54,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             _userSettingsMock = A.Fake<IUserSettings>();
             A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageId);
+            A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(true);
         }
 
         [Test]
@@ -508,7 +509,6 @@ msgstr ""The msgstr text""
 
             var sourceSegmentMock = A.Fake<ISegment>();
             var targetSegmentMock = A.Fake<ISegment>();
-
             A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
 
             A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageString);
@@ -672,6 +672,55 @@ msgstr ""The msgstr text""
             A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(paragraphUnitMock))
                 .MustHaveHappened(Repeated.Exactly.Twice);
         }
+
+        [Test]
+        public void ParseNext_WhenTargetIsNotNeeded_ShouldNotAddTargetText()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            var msgidTextProperties = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid text"))
+                .Returns(msgidTextProperties);
+
+            var msgstrTextProperties = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr text"))
+                .Returns(msgstrTextProperties);
+
+            var msgidTextMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(msgidTextProperties)).Returns(msgidTextMock);
+
+            var msgstrTextMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(msgstrTextProperties)).Returns(msgstrTextMock);
+
+            var paragraphUnitMock = A.Fake<IParagraphUnit>();
+            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
+
+            var paragraphSourceMock = A.Fake<IParagraph>();
+            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
+
+            var paragraphTargetMock = A.Fake<IParagraph>();
+            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
+
+            var sourceSegmentMock = A.Fake<ISegment>();
+            var targetSegmentMock = A.Fake<ISegment>();
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
+
+            A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(false);
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => targetSegmentMock.Add(msgstrTextMock)).MustNotHaveHappened();
+            A.CallTo(() => paragraphSourceMock.Add(targetSegmentMock)).MustNotHaveHappened();
+        }
+
 
         private PoFileParser CreateTestee(string testString)
         {

@@ -6,6 +6,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public interface IUserSettings
     {
         LineType SourceLineType { get; }
+        bool IsTargetTextNeeded { get; set; }
 
         void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId);
     }
@@ -13,6 +14,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public sealed class UserSettings : FileTypeSettingsBase, IUserSettings
     {
         private LineType _sourceLineType;
+        private bool _isTargetTextNeeded;
         private const string SourceLineTypeSetting = "SourceLineType";
         private const LineType DefaultSourceLineType = LineType.MessageId;
 
@@ -31,9 +33,20 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
         }
 
+        public bool IsTargetTextNeeded
+        {
+            get { return _isTargetTextNeeded; }
+            set
+            {
+                _isTargetTextNeeded = value;
+                OnPropertyChanged("IsTargetTextNeeded");
+            }
+        }
+
         public override void ResetToDefaults()
         {
             SourceLineType = DefaultSourceLineType;
+            IsTargetTextNeeded = false;
         }
 
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)

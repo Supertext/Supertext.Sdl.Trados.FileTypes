@@ -89,7 +89,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             while ((currentLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
-                ProgressInPercent = (byte)(++_currentLineNumber * 100 / _totalNumberOfLines);
+                ProgressInPercent = (byte) (++_currentLineNumber*100/_totalNumberOfLines);
 
                 var parseResult = _lineParsingSession.Parse(currentLine);
 
@@ -100,7 +100,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     continue;
                 }
 
-                var paragraphUnit = CreateParagraphUnit(_entryBuilder.CompleteEntry, _userSettings.SourceLineType);
+                var paragraphUnit = CreateParagraphUnit(
+                    _entryBuilder.CompleteEntry,
+                    _userSettings.SourceLineType,
+                    _userSettings.IsTargetTextNeeded);
+
                 Output.ProcessParagraphUnit(paragraphUnit);
 
                 return parseResult.LineType != LineType.EndOfFile;
@@ -109,7 +113,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return false;
         }
 
-        private IParagraphUnit CreateParagraphUnit(Entry entry, LineType sourceLineType)
+        private IParagraphUnit CreateParagraphUnit(Entry entry, LineType sourceLineType, bool isTargetTextNeeded)
         {
             var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
             var segmentPairProperties = ItemFactory.CreateSegmentPairProperties();
@@ -120,9 +124,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             sourceSegment.Add(CreateText(sourceText));
             paragraphUnit.Source.Add(sourceSegment);
 
-            var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            targetSegment.Add(CreateText(entry.MessageString));
-            paragraphUnit.Target.Add(targetSegment);
+            if (isTargetTextNeeded)
+            {
+                var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
+                targetSegment.Add(CreateText(entry.MessageString));
+                paragraphUnit.Target.Add(targetSegment);
+            }
 
             paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
 
@@ -136,10 +143,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             contextInfo.Purpose = ContextPurpose.Information;
 
             var contextId = PropertiesFactory.CreateContextInfo(ContextKeys.LocationContextType);
-            contextId.SetMetaData(ContextKeys.MessageIdStart, entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageIdStart,
+                entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
             contextId.SetMetaData(ContextKeys.MessageIdEnd, entry.MessageIdEnd.ToString(CultureInfo.InvariantCulture));
-            contextId.SetMetaData(ContextKeys.MessageStringStart, entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
-            contextId.SetMetaData(ContextKeys.MessageStringEnd, entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageStringStart,
+                entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageStringEnd,
+                entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
 
             contextProperties.Contexts.Add(contextInfo);
             contextProperties.Contexts.Add(contextId);
@@ -158,7 +168,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             private bool _collectingMessageId;
             private bool _collectingMessagString;
             private Entry _entryInCreation;
-            
+
             public Entry CompleteEntry { get; private set; }
 
             public void Add(IParseResult parseResult, int lineNumber)
