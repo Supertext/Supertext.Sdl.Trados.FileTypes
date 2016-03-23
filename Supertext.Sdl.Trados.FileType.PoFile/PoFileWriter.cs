@@ -39,7 +39,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
-            var msgidPosition = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData("msgidPosition"));
+            var msgidPosition = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageIdPosition));
 
             var currentInputLineNumber = 0;
             string currentInputLine;

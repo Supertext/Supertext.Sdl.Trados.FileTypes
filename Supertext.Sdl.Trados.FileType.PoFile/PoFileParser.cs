@@ -137,9 +137,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Paragraph);
             contextInfo.Purpose = ContextPurpose.Information;
 
-            var contextId = PropertiesFactory.CreateContextInfo("EntryPositions");
-            contextId.SetMetaData("msgidPosition", entry.MessageIdPosition);
-            contextId.SetMetaData("msgstrPosition", entry.MessageStringPosition);
+            var contextId = PropertiesFactory.CreateContextInfo(ContextKeys.PositionContextType);
+            contextId.SetMetaData(ContextKeys.MessageIdPosition, entry.MessageIdPosition);
+            contextId.SetMetaData(ContextKeys.MessageStringPosition, entry.MessageStringPosition);
 
             contextProperties.Contexts.Add(contextInfo);
             contextProperties.Contexts.Add(contextId);
@@ -163,6 +163,26 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public void Add(IParseResult parseResult, int lineNumber)
             {
+                CollectData(parseResult);
+
+                if (parseResult.LineType == LineType.MessageId)
+                {
+                    _entryInCreation = new Entry();
+                    _entryInCreation.MessageId += parseResult.LineContent;
+                    _entryInCreation.MessageIdPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
+                    _collectingMessageId = true;
+                }
+
+                if (parseResult.LineType == LineType.MessageString)
+                {
+                    _entryInCreation.MessageString += parseResult.LineContent;
+                    _entryInCreation.MessageStringPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
+                    _collectingMessagString = true;
+                }
+            }
+
+            private void CollectData(IParseResult parseResult)
+            {
                 CompleteEntry = null;
 
                 if (_collectingMessageId && parseResult.LineType != LineType.Text)
@@ -181,21 +201,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 else if (_collectingMessagString && parseResult.LineType == LineType.Text)
                 {
                     _entryInCreation.MessageString += parseResult.LineContent;
-                }
-
-                if (parseResult.LineType == LineType.MessageId)
-                {
-                    _entryInCreation = new Entry();
-                    _entryInCreation.MessageId += parseResult.LineContent;
-                    _entryInCreation.MessageIdPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
-                    _collectingMessageId = true;
-                }
-
-                if (parseResult.LineType == LineType.MessageString)
-                {
-                    _entryInCreation.MessageString += parseResult.LineContent;
-                    _entryInCreation.MessageStringPosition = lineNumber.ToString(CultureInfo.InvariantCulture);
-                    _collectingMessagString = true;
                 }
             }
         }

@@ -40,7 +40,7 @@ line 5
                 StringSplitOptions.None));
 
             var entryPositionsMock = A.Fake<IContextInfo>();
-            A.CallTo(() => entryPositionsMock.GetMetaData("msgidPosition")).Returns("3");
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageIdPosition)).Returns("3");
 
             var contextInfoMocks = new List<IContextInfo>
             {

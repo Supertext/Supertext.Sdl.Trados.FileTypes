@@ -529,13 +529,13 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo("EntryPositions")).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.PositionContextType)).Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData("msgidPosition", "2")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdPosition, "2")).MustHaveHappened();
             A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
         }
 
@@ -554,13 +554,13 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo("EntryPositions")).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.PositionContextType)).Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData("msgstrPosition", "3")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringPosition, "3")).MustHaveHappened();
             A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
         }
 
