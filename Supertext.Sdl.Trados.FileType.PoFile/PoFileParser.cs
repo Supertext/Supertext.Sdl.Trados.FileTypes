@@ -158,7 +158,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public void Add(IParseResult parseResult, int lineNumber)
             {
-                CollectData(parseResult);
+                CollectData(parseResult, lineNumber);
 
                 if (parseResult.LineType == LineType.MessageId)
                 {
@@ -176,17 +176,19 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 }
             }
 
-            private void CollectData(IParseResult parseResult)
+            private void CollectData(IParseResult parseResult, int lineNumber)
             {
                 CompleteEntry = null;
 
                 if (_collectingMessageId && parseResult.LineType != LineType.Text)
                 {
                     _collectingMessageId = false;
+                    _entryInCreation.MessageIdPosition += "," + (lineNumber - 1);
                 }
                 else if (_collectingMessagString && parseResult.LineType != LineType.Text)
                 {
                     _collectingMessagString = false;
+                    _entryInCreation.MessageStringPosition += "," + (lineNumber - 1);
                     CompleteEntry = _entryInCreation;
                 }
                 else if (_collectingMessageId && parseResult.LineType == LineType.Text)
