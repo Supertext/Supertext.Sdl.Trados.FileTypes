@@ -1,10 +1,8 @@
-﻿using System;
-using Sdl.Core.Globalization;
+﻿using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
-using Supertext.Sdl.Trados.FileType.PoFile.Properties;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {

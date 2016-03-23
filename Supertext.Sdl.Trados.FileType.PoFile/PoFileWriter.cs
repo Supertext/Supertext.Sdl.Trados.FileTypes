@@ -60,10 +60,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 }
             }
 
-            // Write msgid and msgstr
-
             _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(paragraphUnit.SegmentPairs) + "\"");
-
 
             do
             {

@@ -100,7 +100,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     continue;
                 }
 
-                Output.ProcessParagraphUnit(CreateParagraphUnit(_entryBuilder.CompleteEntry));
+                var paragraphUnit = CreateParagraphUnit(_entryBuilder.CompleteEntry, _userSettings.SourceLineType);
+                Output.ProcessParagraphUnit(paragraphUnit);
 
                 return parseResult.LineType != LineType.EndOfFile;
             }
@@ -108,13 +109,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return false;
         }
 
-        private IParagraphUnit CreateParagraphUnit(Entry entry)
+        private IParagraphUnit CreateParagraphUnit(Entry entry, LineType sourceLineType)
         {
             var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
             var segmentPairProperties = ItemFactory.CreateSegmentPairProperties();
 
+            var sourceText = sourceLineType == LineType.MessageString ? entry.MessageString : entry.MessageId;
+
             var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            sourceSegment.Add(CreateText(entry.MessageId));
+            sourceSegment.Add(CreateText(sourceText));
             paragraphUnit.Source.Add(sourceSegment);
 
             var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
