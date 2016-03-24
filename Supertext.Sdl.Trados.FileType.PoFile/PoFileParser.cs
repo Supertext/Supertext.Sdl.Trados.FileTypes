@@ -137,7 +137,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private IContextProperties CreateContextProperties(Entry entry)
         {
             var contextProperties = PropertiesFactory.CreateContextProperties();
-            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Paragraph);
+            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Field);
             contextInfo.Purpose = ContextPurpose.Information;
 
             var contextId = PropertiesFactory.CreateContextInfo(ContextKeys.LocationContextType);
