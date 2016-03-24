@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using System.Net.Mime;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
@@ -163,6 +161,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return ItemFactory.CreateText(textProperties);
         }
 
+        // TODO move extracted class and test
         private class EntryBuilder
         {
             private bool _collectingMessageId;
