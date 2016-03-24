@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
@@ -85,28 +84,9 @@ line 3";
             var result = testee.GetLinesWithEofLine().ToList();
 
             // Assert
-            result.Exists(line => line.Content == "line 1").Should().BeTrue();
-            result.Exists(line => line.Content == "line 2").Should().BeTrue();
-            result.Exists(line => line.Content == "line 3").Should().BeTrue();
-        }
-
-        [Test]
-        public void GetLinesWithEofLine_ShouldReturnLineNumbers()
-        {
-            // Arrange
-            var testString = @"line 1
-line 2
-line 3";
-            var testee = CreateTestee(testString);
-
-            // Act
-            var result = testee.GetLinesWithEofLine().ToList();
-
-            // Assert
-            result[0].Number.Should().Be(1);
-            result[1].Number.Should().Be(2);
-            result[2].Number.Should().Be(3);
-            result[3].Number.Should().Be(4);
+            result.FirstOrDefault(line => line == "line 1").Should().NotBeNullOrEmpty();
+            result.FirstOrDefault(line => line == "line 2").Should().NotBeNullOrEmpty();
+            result.FirstOrDefault(line => line == "line 3").Should().NotBeNullOrEmpty();
         }
 
         [Test]
@@ -122,7 +102,7 @@ line 3";
             var result = testee.GetLinesWithEofLine().ToList();
 
             // Assert
-            result.Last().Content.Should().Be(MarkerLines.EndOfFile);
+            result.Last().Should().Be(MarkerLines.EndOfFile);
         }
 
         [Test]
