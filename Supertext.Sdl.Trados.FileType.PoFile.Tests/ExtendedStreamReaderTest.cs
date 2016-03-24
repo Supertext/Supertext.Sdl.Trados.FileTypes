@@ -11,7 +11,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     public class ExtendedStreamReaderTest
     {
         [Test]
-        public void ReadLineWithEofLine_ReturnsAllLinesOfFile()
+        public void ReadLineWithEofLine_ShouldReturnAllLinesOfFile()
         {
             // Arrange
             var testString = @"line 1
@@ -31,7 +31,7 @@ line 3";
         }
 
         [Test]
-        public void ReadLineWithEofLine_WhenGettingLastLine_ReturnsEndOfFile()
+        public void ReadLineWithEofLine_WhenGettingLastLine_ShouldReturnEndOfFile()
         {
             // Arrange
             var testString = @"line 1
@@ -51,7 +51,7 @@ line 3";
         }
 
         [Test]
-        public void ReadLineWithEofLine_WhenAfterEndOfFileLine_ReturnsNull()
+        public void ReadLineWithEofLine_WhenAfterEndOfFileLine_ShouldReturnNull()
         {
             // Arrange
             var testString = @"line 1
@@ -72,7 +72,7 @@ line 3";
         }
 
         [Test]
-        public void GetLinesWithEofLine_ReturnsAllLinesOfFile()
+        public void GetLinesWithEofLine_ShouldReturnAllLinesOfFile()
         {
             // Arrange
             var testString = @"line 1
@@ -90,7 +90,7 @@ line 3";
         }
 
         [Test]
-        public void GetLinesWithEofLine_WhenGettingLastLine_ReturnsEndOfFile()
+        public void GetLinesWithEofLine_WhenGettingLastLine_ShouldReturnEndOfFile()
         {
             // Arrange
             var testString = @"line 1
@@ -103,6 +103,95 @@ line 3";
 
             // Assert
             result.Last().Should().Be(MarkerLines.EndOfFile);
+        }
+
+        [Test]
+        public void GetCurrentLineNumber_WhenNothingRead_ShouldReturnZero()
+        {
+            // Arrange
+            var testString = @"line 1
+line 2
+line 3";
+            var testee = CreateTestee(testString);
+
+            // Act
+            var result = testee.CurrentLineNumber;
+
+            // Assert
+            result.Should().Be(0);
+        }
+
+        [Test]
+        public void GetCurrentLineNumber_WhenReadALineWithReadLine_ShouldReturnOne()
+        {
+            // Arrange
+            var testString = @"line 1
+line 2
+line 3";
+            var testee = CreateTestee(testString);
+            testee.ReadLineWithEofLine();
+
+            // Act
+            var result = testee.CurrentLineNumber;
+
+            // Assert
+            result.Should().Be(1);
+        }
+
+        [Test]
+        public void GetCurrentLineNumber_WhenReadALineWithGetLine_ShouldReturnOne()
+        {
+            // Arrange
+            var testString = @"line 1
+line 2
+line 3";
+            var testee = CreateTestee(testString);
+            testee.GetLinesWithEofLine().First();
+
+            // Act
+            var result = testee.CurrentLineNumber;
+
+            // Assert
+            result.Should().Be(1);
+        }
+
+        [Test]
+        public void GetCurrentLineNumber_WhenReadAllLinesWithReadLine_ShouldReturnLastLineNumber()
+        {
+            // Arrange
+            var testString = @"line 1
+line 2
+line 3";
+            var testee = CreateTestee(testString);
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
+            testee.ReadLineWithEofLine();
+
+            // Act
+            var result = testee.CurrentLineNumber;
+
+            // Assert
+            result.Should().Be(4);
+        }
+
+        [Test]
+        public void GetCurrentLineNumber_WhenReadAllLinesWithGetLines_ShouldReturnLastLineNumber()
+        {
+            // Arrange
+            var testString = @"line 1
+line 2
+line 3";
+            var testee = CreateTestee(testString);
+            testee.GetLinesWithEofLine().ToList();
+
+            // Act
+            var result = testee.CurrentLineNumber;
+
+            // Assert
+            result.Should().Be(4);
         }
 
         private ExtendedStreamReader CreateTestee(string testString)

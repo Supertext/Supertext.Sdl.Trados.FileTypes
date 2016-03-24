@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using FakeItEasy;
+using FakeItEasy.ExtensionSyntax.Full;
 using FluentAssertions;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -509,7 +510,8 @@ msgstr ""The msgstr text""
 
             var sourceSegmentMock = A.Fake<ISegment>();
             var targetSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
+                .ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
 
             A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageString);
 
@@ -554,7 +556,8 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
+                .Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
@@ -582,7 +585,8 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
+                .Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
@@ -608,7 +612,8 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
+                .Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
@@ -636,7 +641,8 @@ msgstr ""The msgstr text""
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType)).Returns(contextInfoMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
+                .Returns(contextInfoMock);
 
             // Act
             testee.ParseNext();
@@ -709,7 +715,8 @@ msgstr ""The msgstr text""
 
             var sourceSegmentMock = A.Fake<ISegment>();
             var targetSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
+                .ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
 
             A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(false);
 
@@ -726,13 +733,10 @@ msgstr ""The msgstr text""
         {
             var fileHelperMock = A.Fake<IFileHelper>();
 
-            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] {Environment.NewLine},
-                StringSplitOptions.None);
-            var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).Returns(null);
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsNextFromSequence(lines);
-            A.CallTo(() => extendedStreamReaderMock.GetLinesWithEofLine()).Returns(lines);
-            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath)).Returns(extendedStreamReaderMock);
+            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath))
+                .ReturnsNextFromSequence(
+                    new ExtendedStreamReaderFake(testString),
+                    new ExtendedStreamReaderFake(testString));
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);

@@ -20,28 +20,26 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             INativeTextLocationMessageReporter messageReporter, ISettingsGroup settingsGroup)
         {
             var lineValidationSession = _lineParser.StartLineValidationSession();
-            var lineNumber = 0;
             using (var extendedStreamReader = _fileHelper.GetExtendedStreamReader(nativeFilePath))
             {
-                foreach (var line in extendedStreamReader.GetLinesWithEofLine())
+                string currentLine;
+                while ((currentLine = extendedStreamReader.ReadLineWithEofLine()) != null)
                 {
-                    ++lineNumber;
-
-                    var isValidLine = lineValidationSession.IsValid(line);
+                    var isValidLine = lineValidationSession.IsValid(currentLine);
 
                     if (isValidLine)
                     {
                         continue;
                     }
 
-                    var message = line == MarkerLines.EndOfFile
+                    var message = currentLine == MarkerLines.EndOfFile
                         ? string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
                             lineValidationSession.NextExpectedLineDescription)
                         : PoFileTypeResources.Sniffer_Unexpected_Line;
 
                     messageReporter.ReportMessage(this, nativeFilePath,
                         ErrorLevel.Error, message,
-                        lineNumber + ": " + line);
+                        extendedStreamReader.CurrentLineNumber + ": " + currentLine);
 
                     return new SniffInfo {IsSupported = false};
                 }

@@ -13,17 +13,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
             _streamReader = streamReader;
         }
 
+        public int CurrentLineNumber { get; private set; }
+
         public string ReadLineWithEofLine()
         {
             var line = _streamReader.ReadLine();
 
-            if (line != null || _isEndReached)
+            if (line == null && !_isEndReached)
             {
-                return line;
+                line = MarkerLines.EndOfFile;
+                _isEndReached = true;
             }
 
-            _isEndReached = true;
-            return MarkerLines.EndOfFile;
+            if (line != null)
+            {
+                ++CurrentLineNumber;
+            }
+
+            return line;
         }
 
         public IEnumerable<string> GetLinesWithEofLine()
@@ -32,9 +39,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 
             while ((line = _streamReader.ReadLine()) != null)
             {
+                ++CurrentLineNumber;
                 yield return line;
             }
 
+            ++CurrentLineNumber;
             yield return MarkerLines.EndOfFile;
         }
 

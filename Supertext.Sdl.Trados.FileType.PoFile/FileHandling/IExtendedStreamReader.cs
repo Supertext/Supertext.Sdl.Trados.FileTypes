@@ -5,6 +5,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 {
     public interface IExtendedStreamReader : IDisposable
     {
+        int CurrentLineNumber { get; }
+
         string ReadLineWithEofLine();
 
         IEnumerable<string> GetLinesWithEofLine();

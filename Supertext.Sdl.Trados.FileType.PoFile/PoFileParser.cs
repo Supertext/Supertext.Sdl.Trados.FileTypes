@@ -22,7 +22,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private IExtendedStreamReader _extendedStreamReader;
         private byte _progressInPercent;
         private int _totalNumberOfLines;
-        private int _currentLineNumber;
 
         public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
         {
@@ -61,7 +60,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 _fileHelper.GetExtendedStreamReader(_originalFilePath)
                     .GetLinesWithEofLine()
                     .Count();
-            _currentLineNumber = 0;
 
             ProgressInPercent = 0;
         }
@@ -87,11 +85,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             while ((currentLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
-                ProgressInPercent = (byte) (++_currentLineNumber*100/_totalNumberOfLines);
+                ProgressInPercent = (byte) (_extendedStreamReader.CurrentLineNumber*100/_totalNumberOfLines);
 
                 var parseResult = _lineParsingSession.Parse(currentLine);
 
-                _entryBuilder.Add(parseResult, _currentLineNumber);
+                _entryBuilder.Add(parseResult, _extendedStreamReader.CurrentLineNumber);
 
                 if (_entryBuilder.CompleteEntry == null || string.IsNullOrEmpty(_entryBuilder.CompleteEntry.MessageId))
                 {
