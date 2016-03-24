@@ -71,6 +71,7 @@
     <Compile Include="FileHandling\IFileHelper.cs" />
     <Compile Include="FileHandling\IStreamReader.cs" />
     <Compile Include="FileHandling\IStreamWriter.cs" />
+    <Compile Include="FileHandling\Line.cs" />
     <Compile Include="FileHandling\StreamReaderWrapper.cs" />
     <Compile Include="FileHandling\StreamWriterWrapper.cs" />
     <Compile Include="FileHandling\ExtendedStreamReader.cs" />

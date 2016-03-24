@@ -9,7 +9,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 
         string ReadLineWithEofLine();
 
-        IEnumerable<string> GetLinesWithEofLine();
+        IEnumerable<Line> GetLinesWithEofLine();
 
         void Close();
     }

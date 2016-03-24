@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
@@ -26,10 +27,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             return _lines[CurrentLineNumber++];
         }
 
-        public IEnumerable<string> GetLinesWithEofLine()
+        public IEnumerable<Line> GetLinesWithEofLine()
         {
-            CurrentLineNumber = _lines.Length;
-            return _lines;
+            return _lines.Select(line => new Line(++CurrentLineNumber, line));
         }
 
         public void Close()

@@ -33,18 +33,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
             return line;
         }
 
-        public IEnumerable<string> GetLinesWithEofLine()
+        public IEnumerable<Line> GetLinesWithEofLine()
         {
             string line;
 
             while ((line = _streamReader.ReadLine()) != null)
             {
                 ++CurrentLineNumber;
-                yield return line;
+                yield return new Line(CurrentLineNumber, line);
             }
 
             ++CurrentLineNumber;
-            yield return MarkerLines.EndOfFile;
+            yield return new Line(CurrentLineNumber, MarkerLines.EndOfFile);
         }
 
         public void Close()
