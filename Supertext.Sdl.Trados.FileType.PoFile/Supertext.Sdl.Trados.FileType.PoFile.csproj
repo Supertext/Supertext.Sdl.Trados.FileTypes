@@ -87,6 +87,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SegmentReader.cs" />
+    <Compile Include="TextProcessor.cs" />
     <Compile Include="UserSettings.cs" />
     <Compile Include="LineType.cs" />
     <Compile Include="FileHandling\MarkerLines.cs" />

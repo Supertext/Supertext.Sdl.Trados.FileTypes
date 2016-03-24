@@ -2,7 +2,7 @@
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
 {
-
+    //Todo: maybe refactor with introducing line class with number and content
     public class ExtendedStreamReader : IExtendedStreamReader
     {
         private readonly IStreamReader _streamReader;
