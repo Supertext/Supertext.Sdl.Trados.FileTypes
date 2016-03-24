@@ -15,7 +15,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
         private readonly EntryBuilder _entryBuilder;
-        private IPersistentFileConversionProperties _fileConversionProperties;
+        private string _originalFilePath;
 
         //Parsing STATE --- is being changed during parsing 
         private ILineParsingSession _lineParsingSession;
@@ -44,21 +44,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void SetFileProperties(IFileProperties properties)
         {
-            _fileConversionProperties = properties.FileConversionProperties;
-
             Output.Initialize(DocumentProperties);
 
             var fileProperties = ItemFactory.CreateFileProperties();
-            fileProperties.FileConversionProperties = _fileConversionProperties;
+            fileProperties.FileConversionProperties = properties.FileConversionProperties;
             Output.SetFileProperties(fileProperties);
+
+            _originalFilePath = properties.FileConversionProperties.OriginalFilePath;
         }
 
         public void StartOfInput()
         {
             _lineParsingSession = _lineParser.StartLineParsingSession();
-            _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath);
+            _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_originalFilePath);
             _totalNumberOfLines =
-                _fileHelper.GetExtendedStreamReader(_fileConversionProperties.OriginalFilePath)
+                _fileHelper.GetExtendedStreamReader(_originalFilePath)
                     .GetLinesWithEofLine()
                     .Count();
             _currentLineNumber = 0;
@@ -137,20 +137,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private IContextProperties CreateContextProperties(Entry entry)
         {
             var contextProperties = PropertiesFactory.CreateContextProperties();
+
             var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Field);
             contextInfo.Purpose = ContextPurpose.Information;
+            contextProperties.Contexts.Add(contextInfo);
 
             var contextId = PropertiesFactory.CreateContextInfo(ContextKeys.LocationContextType);
-            contextId.SetMetaData(ContextKeys.MessageIdStart,
-                entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageIdStart, entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
             contextId.SetMetaData(ContextKeys.MessageIdEnd, entry.MessageIdEnd.ToString(CultureInfo.InvariantCulture));
-            contextId.SetMetaData(ContextKeys.MessageStringStart,
-                entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
-            contextId.SetMetaData(ContextKeys.MessageStringEnd,
-                entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
-
-            contextProperties.Contexts.Add(contextInfo);
+            contextId.SetMetaData(ContextKeys.MessageStringStart, entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
+            contextId.SetMetaData(ContextKeys.MessageStringEnd, entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
             contextProperties.Contexts.Add(contextId);
+
             return contextProperties;
         }
 
@@ -214,21 +212,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     _entryInCreation.MessageString += parseResult.LineContent;
                 }
             }
-        }
-
-        private class Entry
-        {
-            public string MessageId { get; set; } = string.Empty;
-
-            public string MessageString { get; set; } = string.Empty;
-
-            public int MessageIdStart { get; set; }
-
-            public int MessageIdEnd { get; set; }
-
-            public int MessageStringStart { get; set; }
-
-            public int MessageStringEnd { get; set; }
         }
     }
 }
