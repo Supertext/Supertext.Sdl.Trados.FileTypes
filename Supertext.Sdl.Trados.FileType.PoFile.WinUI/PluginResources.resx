@@ -120,4 +120,10 @@
   <data name="Plugin_Name" xml:space="preserve">
     <value>PO File Filter Settings</value>
   </data>
+  <data name="Segment_Settings_Description" xml:space="preserve">
+    <value>Segment Settings</value>
+  </data>
+  <data name="Segment_Settings_Name" xml:space="preserve">
+    <value>Segment Settings</value>
+  </data>
 </root>

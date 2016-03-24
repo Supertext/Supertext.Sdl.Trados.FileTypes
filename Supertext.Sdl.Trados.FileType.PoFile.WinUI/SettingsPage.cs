@@ -2,7 +2,7 @@
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {
-    [FileTypeSettingsPage(Id = "PoFile_Settings", Name = "Segment settings", Description = "Segment settings")]
+    [FileTypeSettingsPage(Id = "PoFile_Segment_Settings", Name = "Segment_Settings_Name", Description = "Segment_Settings_Description")]
     public class SettingsPage : AbstractFileTypeSettingsPage<SettingsUI, UserSettings>
     {
         /// <summary>

@@ -68,5 +68,23 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
                 return ResourceManager.GetString("Plugin_Name", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Segment Settings.
+        /// </summary>
+        internal static string Segment_Settings_Description {
+            get {
+                return ResourceManager.GetString("Segment_Settings_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Segment Settings.
+        /// </summary>
+        internal static string Segment_Settings_Name {
+            get {
+                return ResourceManager.GetString("Segment_Settings_Name", resourceCulture);
+            }
+        }
     }
 }

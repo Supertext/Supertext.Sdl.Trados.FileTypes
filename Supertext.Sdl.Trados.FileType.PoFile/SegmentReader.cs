@@ -20,21 +20,30 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             foreach (var segmentPair in segmentPairs)
             {
-                foreach (var segment in segmentPair.Target)
-                {
-                    segment.AcceptVisitor(this);
-                }
+                VisitChildren(segmentPair.Target);
             }
 
             return _textStringBuilder.ToString();
         }
 
+        private void VisitChildren(IAbstractMarkupDataContainer container)
+        {
+            foreach (var segment in container)
+            {
+                segment.AcceptVisitor(this);
+            }
+        }
+
         public void VisitTagPair(ITagPair tagPair)
         {
+            _textStringBuilder.Append(tagPair.StartTagProperties.TagContent);
+            VisitChildren(tagPair);
+            _textStringBuilder.Append(tagPair.EndTagProperties.TagContent);
         }
 
         public void VisitPlaceholderTag(IPlaceholderTag tag)
         {
+            _textStringBuilder.Append(tag.TagProperties.TagContent);
         }
 
         public void VisitText(IText text)
@@ -44,6 +53,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void VisitSegment(ISegment segment)
         {
+            VisitChildren(segment);
         }
 
         public void VisitLocationMarker(ILocationMarker location)
@@ -52,6 +62,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void VisitCommentMarker(ICommentMarker commentMarker)
         {
+            VisitChildren(commentMarker);
         }
 
         public void VisitOtherMarker(IOtherMarker marker)

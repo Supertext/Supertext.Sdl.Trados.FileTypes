@@ -1,5 +1,6 @@
 ﻿using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
+using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
@@ -30,7 +31,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             info.WinFormSettingsPageIds = new[]
             {
-                "PoFile_Settings",
+                "PoFile_Segment_Settings",
                 "QuickInserts_Settings",
             };
 
@@ -51,7 +52,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public IFileExtractor BuildFileExtractor(string name)
         {
             var parser = new PoFileParser(new FileHelper(), new LineParser(), new UserSettings());
-            return FileTypeManager.BuildFileExtractor(parser, this);
+            var fileExtractor = FileTypeManager.BuildFileExtractor(parser, this);
+            //var processor = new EmbeddedContentProcessor();
+            //fileExtractor.AddBilingualProcessor(processor);
+            return fileExtractor;
         }
 
         public IFileGenerator BuildFileGenerator(string name)
