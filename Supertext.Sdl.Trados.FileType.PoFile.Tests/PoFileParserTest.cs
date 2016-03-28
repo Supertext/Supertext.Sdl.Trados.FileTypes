@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Hosting;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using FluentAssertions;
@@ -20,6 +22,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IBilingualContentHandler _bilingualContentHandlerMock;
         private IUserSettings _userSettingsMock;
         private IDocumentItemFactory _itemFactoryMock;
+        private ITextProcessor _textProcessorMock;
 
         [SetUp]
         public void SetUp()
@@ -56,6 +59,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _userSettingsMock = A.Fake<IUserSettings>();
             A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageId);
             A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(true);
+
+            _textProcessorMock = A.Fake<ITextProcessor>();
+            A.CallTo(() => _textProcessorMock.Process(A<string>.Ignored)).ReturnsLazily((string text) => new List<Fragment>
+            {
+                new Fragment(InlineType.Text, text)
+            });
         }
 
         [Test]
@@ -747,7 +756,7 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock)
+            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _textProcessorMock)
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock

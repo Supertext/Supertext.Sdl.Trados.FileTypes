@@ -1,4 +1,5 @@
-﻿using Sdl.Core.Globalization;
+﻿using System.Linq.Expressions;
+using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
@@ -51,7 +52,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IFileExtractor BuildFileExtractor(string name)
         {
-            var parser = new PoFileParser(new FileHelper(), new LineParser(), new UserSettings());
+            var parser = new PoFileParser(new FileHelper(), new LineParser(), new UserSettings(), new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs));
             var fileExtractor = FileTypeManager.BuildFileExtractor(parser, this);
             //var processor = new EmbeddedContentProcessor();
             //fileExtractor.AddBilingualProcessor(processor);

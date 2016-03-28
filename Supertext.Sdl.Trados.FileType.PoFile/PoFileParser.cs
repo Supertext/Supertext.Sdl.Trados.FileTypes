@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -14,6 +15,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
+        private readonly ITextProcessor _textProcessor;
         private readonly EntryBuilder _entryBuilder;
         private string _originalFilePath;
 
@@ -23,11 +25,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private byte _progressInPercent;
         private int _totalNumberOfLines;
 
-        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings)
+        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings, ITextProcessor textProcessor)
         {
             _fileHelper = fileHelper;
             _lineParser = lineParser;
             _userSettings = defaultUserSettings;
+            _textProcessor = textProcessor;
             _entryBuilder = new EntryBuilder();
         }
 
@@ -117,19 +120,55 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var sourceText = sourceLineType == LineType.MessageString ? entry.MessageString : entry.MessageId;
 
             var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            sourceSegment.Add(CreateText(sourceText));
+            AddText(sourceSegment, sourceText);
             paragraphUnit.Source.Add(sourceSegment);
 
             if (isTargetTextNeeded)
             {
                 var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
-                targetSegment.Add(CreateText(entry.MessageString));
+                AddText(targetSegment, entry.MessageString);
                 paragraphUnit.Target.Add(targetSegment);
             }
 
             paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
 
             return paragraphUnit;
+        }
+
+        private void AddText(ISegment segment, string text)
+        {
+            var fragments = _textProcessor.Process(text);
+
+            foreach (var fragment in fragments)
+            {
+                switch (fragment.InlineType)
+                {
+                    case InlineType.Text:
+                        segment.Add(CreateText(fragment.Content));
+                        break;
+                    case InlineType.Placeholder:
+                        segment.Add(CreatePlaceholder(fragment.Content));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        private IText CreateText(string value)
+        {
+            var textProperties = PropertiesFactory.CreateTextProperties(value);
+
+            return ItemFactory.CreateText(textProperties);
+        }
+
+        private IPlaceholderTag CreatePlaceholder(string content)
+        {
+            var placeholderProperties = PropertiesFactory.CreatePlaceholderTagProperties(content);
+            placeholderProperties.TagContent = content;
+            placeholderProperties.DisplayText = content;
+
+            return ItemFactory.CreatePlaceholderTag(placeholderProperties);
         }
 
         private IContextProperties CreateContextProperties(Entry entry)
@@ -148,13 +187,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             contextProperties.Contexts.Add(contextId);
 
             return contextProperties;
-        }
-
-        private IText CreateText(string value)
-        {
-            var textProperties = PropertiesFactory.CreateTextProperties(value);
-
-            return ItemFactory.CreateText(textProperties);
         }
 
         // TODO move extracted class and test
