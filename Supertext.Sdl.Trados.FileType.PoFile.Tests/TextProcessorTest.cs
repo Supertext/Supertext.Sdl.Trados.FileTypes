@@ -8,24 +8,123 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     public class TextProcessorTest
     {
         [Test]
-        public void Process_WhenTextHasPlaceholder_ShouldRecognizePlaceholder()
+        public void Process_WhenUsingCustomRegex_ShouldRecognizeRegexAndReturnCorrectType()
         {
             // Arrange
-            var embeddedContentRegexs = new Dictionary<string, InlineType>
+            var testee = new TextProcessor(new Dictionary<string, InlineType>
             {
-                { @"%\d+", InlineType.Placeholder }
-            };
+                {@"{\d}", InlineType.Placeholder }
+            });
 
-            var testee = new TextProcessor(embeddedContentRegexs);
-            var testString = @"some text with %123 and more text";
+            var testString = @"{4}";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Placeholder);
+            result[0].Content.Should().Be("{4}");
+        }
+
+        [Test]
+        public void Process_WhenTextHasEmbeddedContentAtStart_ShouldReturnTextAfterEmbeddedContent()
+        {
+            // Arrange
+            var testee = new TextProcessor(new Dictionary<string, InlineType>
+            {
+                {@"{\d}", InlineType.Placeholder }
+            });
+
+            var testString = @"{4} this is some text";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[1].InlineType.Should().Be(InlineType.Text);
+            result[1].Content.Should().Be(" this is some text");
+        }
+
+        [Test]
+        public void Process_WhenTextHasEmbeddedContentInMiddle_ShouldReturnTextBeforeAndAfterEmbeddedContent()
+        {
+            // Arrange
+            var testee = new TextProcessor(new Dictionary<string, InlineType>
+            {
+                {@"{\d}", InlineType.Placeholder }
+            });
+
+            var testString = @"This is the start {4} and this is the end.";
 
             // Act
             var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.Text);
-            result[1].InlineType.Should().Be(InlineType.Placeholder);
+            result[0].Content.Should().Be("This is the start ");
             result[2].InlineType.Should().Be(InlineType.Text);
+            result[2].Content.Should().Be(" and this is the end.");
+        }
+
+        [Test]
+        public void Process_WhenTextHasEmbeddedContentAtEnd_ShouldReturnTextBeforeEmbeddedContent()
+        {
+            // Arrange
+            var testee = new TextProcessor(new Dictionary<string, InlineType>
+            {
+                {@"{\d}", InlineType.Placeholder }
+            });
+
+            var testString = @"This is the start {4}";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Text);
+            result[0].Content.Should().Be("This is the start ");
+        }
+
+        [Test]
+        public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasPlaceholder_ShouldRecognizePlaceholder()
+        {
+            // Arrange
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testString = @"%123";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Placeholder);
+        }
+
+        [Test]
+        public void Process_WhenTextHasStartTag_ShouldRecognizeStartTag()
+        {
+            // Arrange
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testString = @"<a href=""http://www.supertext.ch"">";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.StartTag);
+        }
+
+        [Test]
+        public void Process_WhenTextHasEndTag_ShouldRecognizeEndTag()
+        {
+            // Arrange
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testString = @"</a>";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.EndTag);
         }
     }
 

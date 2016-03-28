@@ -15,7 +15,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public static Dictionary<string, InlineType> DefaultEmbeddedContentRegexs = new Dictionary<string, InlineType>
             {
-                { @"%\d+", InlineType.Placeholder }
+                { @"%\d+", InlineType.Placeholder },
+                { @"<[a-z][a-z0-9]*[^<>]*>", InlineType.StartTag },
+                { @"</[a-z][a-z0-9]*[^<>]*>", InlineType.EndTag }
             };
 
         public TextProcessor(Dictionary<string, InlineType> embeddedContentPatterns)
@@ -36,9 +38,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             foreach (Match match in matches)
             {
-                var textBefore = value.Substring(lastIndex, match.Index - lastIndex);
-                var inlineContent = value.Substring(match.Index, match.Length);
-
                 var type = InlineType.Text;
                 for (var i = 1; i < match.Groups.Count; ++i)
                 {
@@ -48,7 +47,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     }
                 }
 
-                fragments.Add(new Fragment(InlineType.Text, textBefore));
+                var textBeforeLength = match.Index - lastIndex;
+
+                if (textBeforeLength > 0)
+                {
+                    var textBefore = value.Substring(lastIndex, textBeforeLength);
+                    fragments.Add(new Fragment(InlineType.Text, textBefore));
+                }
+ 
+                var inlineContent = value.Substring(match.Index, match.Length);
                 fragments.Add(new Fragment(type, inlineContent));
 
                 lastIndex = match.Index + match.Length;
@@ -61,25 +68,5 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             return fragments;
         }
-    }
-
-    public struct Fragment
-    {
-        public InlineType InlineType;
-        public string Content;
-
-        public Fragment(InlineType inlineType, string content)
-        {
-            InlineType = inlineType;
-            Content = content;
-        }
-    }
-
-    public enum InlineType
-    {
-        Placeholder,
-        StartTag,
-        EndTag,
-        Text
     }
 }

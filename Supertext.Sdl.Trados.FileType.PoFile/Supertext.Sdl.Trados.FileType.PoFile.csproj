@@ -75,6 +75,8 @@
     <Compile Include="FileHandling\StreamWriterWrapper.cs" />
     <Compile Include="FileHandling\ExtendedStreamReader.cs" />
     <Compile Include="FileHandling\IExtendedStreamReader.cs" />
+    <Compile Include="Fragment.cs" />
+    <Compile Include="InlineType.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
