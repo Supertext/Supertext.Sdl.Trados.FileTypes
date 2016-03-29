@@ -100,6 +100,20 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasPercentWithWordPlaceholder_ShouldRecognizePlaceholder()
+        {
+            // Arrange
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testString = @"%s";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Placeholder);
+        }
+
+        [Test]
         public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasDollarPlaceholder_ShouldRecognizePlaceholder()
         {
             // Arrange
