@@ -16,6 +16,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public static Dictionary<string, InlineType> DefaultEmbeddedContentRegexs = new Dictionary<string, InlineType>
             {
                 { @"%\d+", InlineType.Placeholder },
+                { @"\$\w+", InlineType.Placeholder },
                 { @"<[a-z][a-z0-9]*[^<>]*>", InlineType.StartTag },
                 { @"</[a-z][a-z0-9]*[^<>]*>", InlineType.EndTag }
             };
