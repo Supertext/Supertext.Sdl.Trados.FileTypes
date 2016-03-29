@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Hosting;
 using FakeItEasy;
-using FakeItEasy.ExtensionSyntax.Full;
 using FluentAssertions;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -22,7 +18,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IBilingualContentHandler _bilingualContentHandlerMock;
         private IUserSettings _userSettingsMock;
         private IDocumentItemFactory _itemFactoryMock;
-        private ITextProcessor _textProcessorMock;
+        private IParagraphUnitFactory _paragraphUnitFactory;
 
         [SetUp]
         public void SetUp()
@@ -57,14 +53,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _bilingualContentHandlerMock = A.Fake<IBilingualContentHandler>();
 
             _userSettingsMock = A.Fake<IUserSettings>();
-            A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageId);
-            A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(true);
 
-            _textProcessorMock = A.Fake<ITextProcessor>();
-            A.CallTo(() => _textProcessorMock.Process(A<string>.Ignored)).ReturnsLazily((string text) => new List<Fragment>
-            {
-                new Fragment(InlineType.Text, text)
-            });
+            _paragraphUnitFactory = A.Fake<IParagraphUnitFactory>();
         }
 
         [Test]
@@ -262,30 +252,17 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid text")).Returns(textPropertiesMock);
-
-            var msgidTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgidTextMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var sourceSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).Returns(sourceSegmentMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => sourceSegmentMock.Add(msgidTextMock)).MustHaveHappened();
-            A.CallTo(() => paragraphSourceMock.Add(sourceSegmentMock)).MustHaveHappened();
+            A.CallTo(
+                () =>
+                    _paragraphUnitFactory.Create(
+                        A<Entry>.That.Matches(entry => entry.MessageId == "The msgid text"),
+                        A<LineType>.Ignored,
+                        A<bool>.Ignored))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -301,31 +278,17 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The textThe second text"))
-                .Returns(textPropertiesMock);
-
-            var msgidTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgidTextMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var sourceSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).Returns(sourceSegmentMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => sourceSegmentMock.Add(msgidTextMock)).MustHaveHappened();
-            A.CallTo(() => paragraphSourceMock.Add(sourceSegmentMock)).MustHaveHappened();
+            A.CallTo(
+                () =>
+                    _paragraphUnitFactory.Create(
+                        A<Entry>.That.Matches(entry => entry.MessageId == "The textThe second text"),
+                        A<LineType>.Ignored,
+                        A<bool>.Ignored))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -340,31 +303,17 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid textThe text"))
-                .Returns(textPropertiesMock);
-
-            var msgidTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgidTextMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var sourceSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).Returns(sourceSegmentMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => sourceSegmentMock.Add(msgidTextMock)).MustHaveHappened();
-            A.CallTo(() => paragraphSourceMock.Add(sourceSegmentMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageId == "The msgid textThe text"),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
@@ -378,30 +327,17 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr text")).Returns(textPropertiesMock);
-
-            var msgstrTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgstrTextMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var targetSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).Returns(targetSegmentMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => targetSegmentMock.Add(msgstrTextMock)).MustHaveHappened();
-            A.CallTo(() => paragraphTargetMock.Add(targetSegmentMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageString == "The msgstr text"),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
@@ -417,31 +353,17 @@ msgstr """"
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The textThe second text"))
-                .Returns(textPropertiesMock);
-
-            var msgstrTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgstrTextMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var targetSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).Returns(targetSegmentMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => targetSegmentMock.Add(msgstrTextMock)).MustHaveHappened();
-            A.CallTo(() => paragraphTargetMock.Add(targetSegmentMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageString == "The textThe second text"),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
@@ -456,31 +378,43 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr textThe text"))
-                .Returns(textPropertiesMock);
+            // Act
+            testee.ParseNext();
 
-            var msgstrTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(msgstrTextMock);
+            // Assert
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageString == "The msgstr textThe text"),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
+        }
 
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
+        [Test]
+        public void ParseNext_WhenMsgidIsSourceLineType_ShouldTakeMsgidAsSource()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
 
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var targetSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).Returns(targetSegmentMock);
+            A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageId);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => targetSegmentMock.Add(msgstrTextMock)).MustHaveHappened();
-            A.CallTo(() => paragraphTargetMock.Add(targetSegmentMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.Ignored,
+                       LineType.MessageId, 
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
@@ -494,42 +428,19 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var msgidTextProperties = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid text"))
-                .Returns(msgidTextProperties);
-
-            var msgstrTextProperties = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr text"))
-                .Returns(msgstrTextProperties);
-
-            var msgidTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(msgidTextProperties)).Returns(msgidTextMock);
-
-            var msgstrTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(msgstrTextProperties)).Returns(msgstrTextMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var sourceSegmentMock = A.Fake<ISegment>();
-            var targetSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
-                .ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
-
             A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageString);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => sourceSegmentMock.Add(msgstrTextMock)).MustHaveHappened();
-            A.CallTo(() => paragraphSourceMock.Add(sourceSegmentMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.Ignored,
+                       LineType.MessageString,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
@@ -547,11 +458,17 @@ msgstr ""The msgstr text""
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(string.Empty)).MustNotHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.Ignored,
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustNotHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenMsgidOnOneLine_ShouldSetMsgidLocationContextToOneLine()
+        public void ParseNext_WhenMsgidOnOneLine_ShouldSetMsgidLocationToOneLine()
         {
             // Arrange
             var testString = @"
@@ -561,24 +478,21 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var contextPropertiesMock = A.Fake<IContextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
-
-            var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
-                .Returns(contextInfoMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdStart, "2")).MustHaveHappened();
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdEnd, "2")).MustHaveHappened();
-            A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageIdStart == 2 && entry.MessageIdEnd == 2),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenMsgidOnMultipleLines_ShouldSetMsgidLocationContextToAllTheLines()
+        public void ParseNext_WhenMsgidOnMultipleLines_ShouldSetMsgidLocationToAllTheLines()
         {
             // Arrange
             var testString = @"
@@ -590,24 +504,21 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var contextPropertiesMock = A.Fake<IContextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
-
-            var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
-                .Returns(contextInfoMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdStart, "2")).MustHaveHappened();
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdEnd, "4")).MustHaveHappened();
-            A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageIdStart == 2 && entry.MessageIdEnd == 4),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenMsgstrOnOneLine_ShouldSetMsgstrLocationContextToOneLine()
+        public void ParseNext_WhenMsgstrOnOneLine_ShouldSetMsgstrLocationToOneLine()
         {
             // Arrange
             var testString = @"
@@ -617,24 +528,21 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var contextPropertiesMock = A.Fake<IContextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
-
-            var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
-                .Returns(contextInfoMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringStart, "3")).MustHaveHappened();
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringEnd, "3")).MustHaveHappened();
-            A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageStringStart == 3 && entry.MessageStringEnd == 3),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenMsgstrOnMultipleLines_ShouldSetMsgstrLocationContextToAllTheLines()
+        public void ParseNext_WhenMsgstrOnMultipleLines_ShouldSetMsgstrContextToAllTheLines()
         {
             // Arrange
             var testString = @"
@@ -646,138 +554,17 @@ msgstr ""The msgstr text""
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            var contextPropertiesMock = A.Fake<IContextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
-
-            var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
-                .Returns(contextInfoMock);
-
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringStart, "3")).MustHaveHappened();
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringEnd, "5")).MustHaveHappened();
-            A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_ShouldProcessOneParagraphUnitPerEntry()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            // Act
-            testee.ParseNext();
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(paragraphUnitMock))
-                .MustHaveHappened(Repeated.Exactly.Twice);
-        }
-
-        [Test]
-        public void ParseNext_WhenTargetIsNotNeeded_ShouldNotAddTargetText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            var msgidTextProperties = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgid text"))
-                .Returns(msgidTextProperties);
-
-            var msgstrTextProperties = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("The msgstr text"))
-                .Returns(msgstrTextProperties);
-
-            var msgidTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(msgidTextProperties)).Returns(msgidTextMock);
-
-            var msgstrTextMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(msgstrTextProperties)).Returns(msgstrTextMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var paragraphTargetMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Target).Returns(paragraphTargetMock);
-
-            var sourceSegmentMock = A.Fake<ISegment>();
-            var targetSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
-                .ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
-
-            A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(false);
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => targetSegmentMock.Add(msgstrTextMock)).MustNotHaveHappened();
-            A.CallTo(() => paragraphSourceMock.Add(targetSegmentMock)).MustNotHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenTextIsPlaceholder_ShouldAddPlaceholder()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties("The msgid text"))
-                .Returns(placeholderTagPropertiesMock);
-
-            var placeholderTagMock = A.Fake<IPlaceholderTag>();
-            A.CallTo(() => _itemFactoryMock.CreatePlaceholderTag(placeholderTagPropertiesMock)).Returns(placeholderTagMock);
-
-            var paragraphUnitMock = A.Fake<IParagraphUnit>();
-            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
-
-            var paragraphSourceMock = A.Fake<IParagraph>();
-            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
-
-            var sourceSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
-                .Returns(sourceSegmentMock);
-
-            A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(false);
-
-            A.CallTo(() => _textProcessorMock.Process("The msgid text")).Returns(new List<Fragment>
-            {
-                new Fragment(InlineType.Placeholder, "The msgid text")
-            });
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => sourceSegmentMock.Add(placeholderTagMock)).MustHaveHappened();
-            A.CallTo(() => paragraphSourceMock.Add(sourceSegmentMock)).MustHaveHappened();
+            A.CallTo(
+               () =>
+                   _paragraphUnitFactory.Create(
+                       A<Entry>.That.Matches(entry => entry.MessageStringStart == 3 && entry.MessageStringEnd == 5),
+                       A<LineType>.Ignored,
+                       A<bool>.Ignored))
+               .MustHaveHappened();
         }
 
         private PoFileParser CreateTestee(string testString)
@@ -798,7 +585,7 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _textProcessorMock)
+            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _paragraphUnitFactory)
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock

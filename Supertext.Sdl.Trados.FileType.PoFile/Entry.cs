@@ -1,6 +1,6 @@
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    internal class Entry
+    public class Entry
     {
         public string MessageId { get; set; } = string.Empty;
 
