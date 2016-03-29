@@ -737,6 +737,48 @@ msgstr ""The msgstr text""
             A.CallTo(() => paragraphSourceMock.Add(targetSegmentMock)).MustNotHaveHappened();
         }
 
+        [Test]
+        public void ParseNext_WhenTextIsPlaceholder_ShouldAddPlaceholder()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties("The msgid text"))
+                .Returns(placeholderTagPropertiesMock);
+
+            var placeholderTagMock = A.Fake<IPlaceholderTag>();
+            A.CallTo(() => _itemFactoryMock.CreatePlaceholderTag(placeholderTagPropertiesMock)).Returns(placeholderTagMock);
+
+            var paragraphUnitMock = A.Fake<IParagraphUnit>();
+            A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(paragraphUnitMock);
+
+            var paragraphSourceMock = A.Fake<IParagraph>();
+            A.CallTo(() => paragraphUnitMock.Source).Returns(paragraphSourceMock);
+
+            var sourceSegmentMock = A.Fake<ISegment>();
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
+                .Returns(sourceSegmentMock);
+
+            A.CallTo(() => _userSettingsMock.IsTargetTextNeeded).Returns(false);
+
+            A.CallTo(() => _textProcessorMock.Process("The msgid text")).Returns(new List<Fragment>
+            {
+                new Fragment(InlineType.Placeholder, "The msgid text")
+            });
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => sourceSegmentMock.Add(placeholderTagMock)).MustHaveHappened();
+            A.CallTo(() => paragraphSourceMock.Add(sourceSegmentMock)).MustHaveHappened();
+        }
 
         private PoFileParser CreateTestee(string testString)
         {

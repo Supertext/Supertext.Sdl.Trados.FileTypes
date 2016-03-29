@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Sdl.Core.Settings;
@@ -137,10 +138,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private void AddText(ISegment segment, string text)
         {
-            var fragments = _textProcessor.Process(text);
+            var fragments = new Queue<Fragment>(_textProcessor.Process(text));
 
-            foreach (var fragment in fragments)
+            while(fragments.Count > 0)
             {
+                var fragment = fragments.Dequeue();
+
                 switch (fragment.InlineType)
                 {
                     case InlineType.Text:
@@ -149,6 +152,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     case InlineType.Placeholder:
                         segment.Add(CreatePlaceholder(fragment.Content));
                         break;
+                    case InlineType.StartTag:
+                        segment.Add(CreateTagPair(fragment, fragments));
+                        break;
+                    case InlineType.EndTag:
+                        throw new ArithmeticException();
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -169,6 +177,48 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             placeholderProperties.DisplayText = content;
 
             return ItemFactory.CreatePlaceholderTag(placeholderProperties);
+        }
+
+        private ITagPair CreateTagPair(Fragment startTagfragment, Queue<Fragment> fragments)
+        {
+            var startTagProperties = PropertiesFactory.CreateStartTagProperties(startTagfragment.Content);
+            startTagProperties.DisplayText = startTagfragment.Content;
+
+            var enclosedContent = new List<IAbstractMarkupData>();
+
+            while (fragments.Count > 0)
+            {
+                var fragment = fragments.Dequeue();
+
+                switch (fragment.InlineType)
+                {
+                    case InlineType.Text:
+                        enclosedContent.Add(CreateText(fragment.Content));
+                        break;
+                    case InlineType.Placeholder:
+                        enclosedContent.Add(CreatePlaceholder(fragment.Content));
+                        break;
+                    case InlineType.StartTag:
+                        enclosedContent.Add(CreateTagPair(fragment, fragments));
+                        break;
+                    case InlineType.EndTag:
+                        var endTagProperties = PropertiesFactory.CreateEndTagProperties(fragment.Content);
+                        endTagProperties.DisplayText = fragment.Content;
+
+                        var tagPair = ItemFactory.CreateTagPair(startTagProperties, endTagProperties);
+
+                        foreach (var abstractMarkupData in enclosedContent)
+                        {
+                            tagPair.Add(abstractMarkupData);
+                        }
+
+                        return tagPair;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            throw new ArgumentOutOfRangeException();
         }
 
         private IContextProperties CreateContextProperties(Entry entry)
