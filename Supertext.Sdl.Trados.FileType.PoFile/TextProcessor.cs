@@ -11,7 +11,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public class TextProcessor : ITextProcessor
     {
         private readonly Dictionary<string, InlineType> _embeddedContentPatterns;
-        private readonly List<InlineType> _types;
+        private List<InlineType> _types;
+        private Regex _regex;
 
         public static Dictionary<string, InlineType> DefaultEmbeddedContentRegexs = new Dictionary<string, InlineType>
             {
@@ -25,15 +26,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public TextProcessor(Dictionary<string, InlineType> embeddedContentPatterns)
         {
             _embeddedContentPatterns = embeddedContentPatterns;
-            _types = new List<InlineType>(_embeddedContentPatterns.Values);
         }
 
         public IList<Fragment> Process(string value)
         {
-            var patterns = "(" + string.Join(")|(", _embeddedContentPatterns.Keys) + ")";
-            var regex = new Regex(patterns);
-
-            var matches = regex.Matches(value);
+            if (_regex == null)
+            {
+                CreateRegex();
+            }
+            
+            var matches = _regex.Matches(value);
 
             var fragments = new List<Fragment>();
             var lastIndex = 0;
@@ -69,6 +71,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
 
             return fragments;
+        }
+
+        private void CreateRegex()
+        {
+            _regex = new Regex("(" + string.Join(")|(", _embeddedContentPatterns.Keys) + ")");
+            _types = new List<InlineType>(_embeddedContentPatterns.Values);
         }
     }
 }

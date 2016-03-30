@@ -18,7 +18,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IBilingualContentHandler _bilingualContentHandlerMock;
         private IUserSettings _userSettingsMock;
         private IDocumentItemFactory _itemFactoryMock;
-        private IParagraphUnitFactory _paragraphUnitFactory;
+        private IParagraphUnitFactory _paragraphUnitFactoryMock;
 
         [SetUp]
         public void SetUp()
@@ -54,7 +54,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             _userSettingsMock = A.Fake<IUserSettings>();
 
-            _paragraphUnitFactory = A.Fake<IParagraphUnitFactory>();
+            _paragraphUnitFactoryMock = A.Fake<IParagraphUnitFactory>();
         }
 
         [Test]
@@ -112,8 +112,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.SetFileProperties(filePropertiesMock);
 
             // Assert
-            A.CallTo(() => _paragraphUnitFactory.ItemFactory).WithAnyArguments().MustHaveHappened();
-            A.CallTo(() => _paragraphUnitFactory.PropertiesFactory).WithAnyArguments().MustHaveHappened();
+            _paragraphUnitFactoryMock.ItemFactory.Should().Be(_itemFactoryMock);
+            _paragraphUnitFactoryMock.PropertiesFactory.Should().Be(_propertiesFactoryMock);
         }
 
         [Test]
@@ -274,7 +274,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                 () =>
-                    _paragraphUnitFactory.Create(
+                    _paragraphUnitFactoryMock.Create(
                         A<Entry>.That.Matches(entry => entry.MessageId == "The msgid text"),
                         A<LineType>.Ignored,
                         A<bool>.Ignored))
@@ -300,7 +300,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                 () =>
-                    _paragraphUnitFactory.Create(
+                    _paragraphUnitFactoryMock.Create(
                         A<Entry>.That.Matches(entry => entry.MessageId == "The textThe second text"),
                         A<LineType>.Ignored,
                         A<bool>.Ignored))
@@ -325,7 +325,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageId == "The msgid textThe text"),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -349,7 +349,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageString == "The msgstr text"),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -375,7 +375,7 @@ msgstr """"
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageString == "The textThe second text"),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -400,7 +400,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageString == "The msgstr textThe text"),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -426,7 +426,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.Ignored,
                        LineType.MessageId, 
                        A<bool>.Ignored))
@@ -452,7 +452,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.Ignored,
                        LineType.MessageString,
                        A<bool>.Ignored))
@@ -476,7 +476,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.Ignored,
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -500,7 +500,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageIdStart == 2 && entry.MessageIdEnd == 2),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -526,7 +526,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageIdStart == 2 && entry.MessageIdEnd == 4),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -550,7 +550,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageStringStart == 3 && entry.MessageStringEnd == 3),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -576,7 +576,7 @@ msgstr ""The msgstr text""
             // Assert
             A.CallTo(
                () =>
-                   _paragraphUnitFactory.Create(
+                   _paragraphUnitFactoryMock.Create(
                        A<Entry>.That.Matches(entry => entry.MessageStringStart == 3 && entry.MessageStringEnd == 5),
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
@@ -601,7 +601,7 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _paragraphUnitFactory)
+            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _paragraphUnitFactoryMock)
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock
