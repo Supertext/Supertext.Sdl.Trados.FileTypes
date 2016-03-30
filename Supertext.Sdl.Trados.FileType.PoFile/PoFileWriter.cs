@@ -42,10 +42,19 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
-            //TODO refactor
-            var messageIdEnd = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageIdEnd));
-            var messageStringEnd = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageStringEnd));
+            var contextInfo = paragraphUnit.Properties.Contexts.Contexts[1];
+            var messageIdEnd = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageIdEnd));
+            var messageStringEnd = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringEnd));
 
+            WriteOriginalLinesUntil(messageIdEnd);
+
+            _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(paragraphUnit.SegmentPairs) + "\"");
+
+            MoveTo(messageStringEnd);
+        }
+
+        private void WriteOriginalLinesUntil(int messageIdEnd)
+        {
             string currentInputLine;
             while ((currentInputLine = _streamReader.ReadLine()) != null)
             {
@@ -60,9 +69,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     break;
                 }
             }
+        }
 
-            _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(paragraphUnit.SegmentPairs) + "\"");
-
+        private void MoveTo(int messageStringEnd)
+        {
             do
             {
                 if (_currentInputLineNumber < messageStringEnd)
@@ -72,8 +82,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 }
 
                 break;
-            }
-            while (_streamReader.ReadLine() != null) ;
+            } while (_streamReader.ReadLine() != null);
         }
 
         public void Complete()
