@@ -537,6 +537,27 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void IsValid_WhenHasEmweptyLines_ShoudIgnoreAndReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgid """"");
+            result &= lineValidationSession.IsValid(@"msgstr """"");
+            result &= lineValidationSession.IsValid(@"""Project - Id - Version: supertext2014\n""");
+            result &= lineValidationSession.IsValid(@"""POT - Creation - Date: 2016 - 02 - 01 14:23 + 0100\n""");
+            result &= lineValidationSession.IsValid(@"""X-Poedit-SearchPath-0: /var/www/blog/wp-content/themes/supertext2014\n""");
+            result &= lineValidationSession.IsValid(string.Empty);
+            result &= lineValidationSession.IsValid(@"#: /var/www/blog/wp-content/themes/supertext2014/content-gallery.php:39");
+            result &= lineValidationSession.IsValid(@"#: /var/www/blog/wp-content/themes/supertext2014/content.php:120");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
         public void NextExpectedLineDescription_ShouldReturnPattern()
         {
             // Arrange

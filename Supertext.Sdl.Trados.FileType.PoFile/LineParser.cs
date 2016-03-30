@@ -101,21 +101,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public bool IsValid(string line)
         {
-            var applyingLinePattern = GetApplyingLinePattern(_context, _lastLinePattern, line);
-
-            if (applyingLinePattern == null)
-            {
-                return false;
-            }
-
-            if (!applyingLinePattern.Equals(_lastLinePattern))
-            {
-                _context = _lastLinePattern;
-            }
-
-            _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
-
-            return true;
+            return Parse(line) != null;
         }
 
         public IParseResult Parse(string line)
@@ -127,7 +113,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return null;
             }
 
-            if (!applyingLinePattern.Equals(_lastLinePattern))
+            if (!applyingLinePattern.IsIgnored && !applyingLinePattern.Equals(_lastLinePattern))
             {
                 _context = _lastLinePattern;
             }
