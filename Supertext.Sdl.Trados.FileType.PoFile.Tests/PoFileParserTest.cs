@@ -237,6 +237,28 @@ msgstr ""The msgstr text""
         }
 
         [Test]
+        public void ParseNext_WhenMultipleEntries_ShouldParseOneTextAfterOther()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            // Act
+            testee.ParseNext();
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageId == "The msgid text"), A<LineType>.Ignored, A<bool>.Ignored)).MustHaveHappened(Repeated.Exactly.Twice);
+        }
+
+        [Test]
         public void ParseNext_WhenEntriesSeparatedByComment_ShouldRecognizeBothEntries()
         {
             // Arrange

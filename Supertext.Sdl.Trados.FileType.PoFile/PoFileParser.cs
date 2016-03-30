@@ -22,7 +22,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private byte _progressInPercent;
         private int _totalNumberOfLines;
 
-        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings, IParagraphUnitFactory paragraphUnitFactory)
+        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings,
+            IParagraphUnitFactory paragraphUnitFactory)
         {
             _fileHelper = fileHelper;
             _lineParser = lineParser;
@@ -122,11 +123,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public void Add(IParseResult parseResult, int lineNumber)
             {
+                CompleteEntry = null;
+
                 CollectText(parseResult, lineNumber);
+
+                if (CompleteEntry != null || _entryInCreation == null)
+                {
+                    _entryInCreation = new Entry();
+                }
 
                 if (parseResult.LineType == LineType.MessageId)
                 {
-                    _entryInCreation = _entryInCreation ?? new Entry();
                     _entryInCreation.MessageId += parseResult.LineContent;
                     _entryInCreation.MessageIdStart = lineNumber;
                     _collectingMessageId = true;
@@ -141,14 +148,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 if (parseResult.LineType == LineType.MessageContext)
                 {
-                    _entryInCreation = new Entry {MessageContext = parseResult.LineContent};
+                    _entryInCreation.MessageContext = parseResult.LineContent;
                 }
             }
 
             private void CollectText(IParseResult parseResult, int lineNumber)
             {
-                CompleteEntry = null;
-
                 if (_collectingMessageId && parseResult.LineType != LineType.Text)
                 {
                     _collectingMessageId = false;
@@ -158,7 +163,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 {
                     _collectingMessagString = false;
                     _entryInCreation.MessageStringEnd = lineNumber - 1;
-                    CompleteEntry = _entryInCreation;
+                    SetCompleteEntry();
                 }
                 else if (_collectingMessageId && parseResult.LineType == LineType.Text)
                 {
@@ -168,6 +173,20 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 {
                     _entryInCreation.MessageString += parseResult.LineContent;
                 }
+            }
+
+            private void SetCompleteEntry()
+            {
+                CompleteEntry = new Entry
+                {
+                    MessageContext = _entryInCreation.MessageContext,
+                    MessageId = _entryInCreation.MessageId,
+                    MessageString = _entryInCreation.MessageString,
+                    MessageIdStart = _entryInCreation.MessageIdStart,
+                    MessageIdEnd = _entryInCreation.MessageIdEnd,
+                    MessageStringStart = _entryInCreation.MessageStringStart,
+                    MessageStringEnd = _entryInCreation.MessageStringEnd,
+                };
             }
         }
     }
