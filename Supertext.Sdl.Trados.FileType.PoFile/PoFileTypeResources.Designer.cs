@@ -71,16 +71,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reached end of file but expected to find line with following line {0}.
-        /// </summary>
-        internal static string Sniffer_Unexpected_End_Of_File {
-            get {
-                return ResourceManager.GetString("Sniffer_Unexpected_End_Of_File", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Found unexpected line.
+        ///   Looks up a localized string similar to Unexpected line ({0}), next expected line patterns: {1}.
         /// </summary>
         internal static string Sniffer_Unexpected_Line {
             get {

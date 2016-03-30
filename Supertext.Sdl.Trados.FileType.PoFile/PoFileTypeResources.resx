@@ -121,11 +121,8 @@
   <data name="PoFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PoFileIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Sniffer_Unexpected_End_Of_File" xml:space="preserve">
-    <value>Reached end of file but expected to find value with following value {0}</value>
-    <comment>{0}: value description</comment>
-  </data>
   <data name="Sniffer_Unexpected_Line" xml:space="preserve">
-    <value>Found unexpected value</value>
+    <value>Unexpected line ({0}), next expected line patterns: {1}</value>
+    <comment>{0}: line that is invalid, {1}: next expected lines</comment>
   </data>
 </root>

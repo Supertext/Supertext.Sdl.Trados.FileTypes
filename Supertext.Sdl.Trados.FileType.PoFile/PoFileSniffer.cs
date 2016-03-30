@@ -32,10 +32,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                         continue;
                     }
 
-                    var message = currentLine == MarkerLines.EndOfFile
-                        ? string.Format(PoFileTypeResources.Sniffer_Unexpected_End_Of_File,
-                            lineValidationSession.NextExpectedLineDescription)
-                        : PoFileTypeResources.Sniffer_Unexpected_Line;
+                    var message = string.Format(
+                        PoFileTypeResources.Sniffer_Unexpected_Line,
+                        extendedStreamReader.CurrentLineNumber + ": " + currentLine,
+                        lineValidationSession.NextExpectedLineDescription);
 
                     messageReporter.ReportMessage(this, nativeFilePath,
                         ErrorLevel.Error, message,
