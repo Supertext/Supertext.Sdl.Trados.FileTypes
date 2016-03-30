@@ -50,6 +50,51 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void IsValid_WhenStartIsFollowedByMsgctxt_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgctxt ""The msgctxt text""");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsValid_WhenStartIsFollowedByCommentAndThenByEnd_ShouldReturnFalse()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"#: a comment");
+
+            // Act
+            var result = lineValidationSession.IsValid(MarkerLines.EndOfFile);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Test]
+        public void IsValid_WhenStartIsFollowedByMsgidAndThenTextAndThenByEnd_ShouldReturnFalse()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"""The text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(MarkerLines.EndOfFile);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Test]
         public void IsValid_WhenMsgidIsFollowedByMsgstr_ShouldReturnTrue()
         {
             // Arrange
@@ -59,6 +104,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Act
             var result = lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsValid_WhenMsgctxtIsFollowedByMsgid_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgctxt ""The msgctxt text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Assert
             result.Should().BeTrue();
@@ -80,18 +140,19 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void IsValid_WhenMsgidIsFollowedByEmptyLine_ShouldReturnTrue()
+        public void IsValid_WhenMsgidIsFollowedByTextAndThenByMsgid_ShouldReturnFalse()
         {
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgid """"");
+            lineValidationSession.IsValid(@"""The msgid text""");
 
             // Act
-            var result = lineValidationSession.IsValid(string.Empty);
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
 
             // Assert
-            result.Should().BeTrue();
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -121,6 +182,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Act
             var result = lineValidationSession.IsValid(@"#: a comment");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsValid_WhenMsgstrIsFollowedByMsgctxt_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgctxt ""The msgctxt text""");
 
             // Assert
             result.Should().BeTrue();
@@ -226,6 +303,23 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void IsValid_WhenTextIsFollowedByMsgctxt_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr """"");
+            lineValidationSession.IsValid(@"""The text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgctxt ""The msgctxt text""");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
         public void IsValid_WhenTextIsFollowedByEmptyLine_ShouldReturnTrue()
         {
             // Arrange
@@ -251,6 +345,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Act
             var result = lineValidationSession.IsValid(@"#, another comment");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsValid_WhenCommentIsFollowedByMsgctxt_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"#: a comment");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgctxt ""The msgctxt text""");
 
             // Assert
             result.Should().BeTrue();

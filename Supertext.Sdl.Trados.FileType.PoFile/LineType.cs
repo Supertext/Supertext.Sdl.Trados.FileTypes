@@ -3,6 +3,7 @@
     public enum LineType
     {
         BeginOfFile,
+        MessageContext,
         MessageId,
         MessageString,
         Text,

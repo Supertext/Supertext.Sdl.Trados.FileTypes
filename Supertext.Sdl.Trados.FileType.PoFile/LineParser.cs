@@ -33,6 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             BeginOfFile = new LinePattern(LineType.BeginOfFile, MarkerLines.BeginOfFile, string.Empty);
             var emptyLine = new LinePattern(LineType.Empty, "^$", string.Empty);
+            var msgctxt = new LinePattern(LineType.MessageContext, @"msgctxt\s+"".*""", @"""(.*)""");
             var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
             var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
             var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
@@ -42,18 +43,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             BeginOfFile
                 .MustBeFollowedBy(msgid)
                 .CanBeFollowedBy(comment)
+                .CanBeFollowedBy(msgctxt)
                 .CanBeFollowedBy(emptyLine);
+
+            msgctxt
+                .MustBeFollowedBy(msgid);
 
             msgid
                 .MustBeFollowedBy(msgstr)
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(emptyLine);
+                .CanBeFollowedBy(text);
 
             msgstr
                 .CanBeFollowedBy(text)
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid)
                 .CanBeFollowedBy(endOfFile)
+                .CanBeFollowedBy(msgctxt)
                 .CanBeFollowedBy(emptyLine);
 
             text
@@ -62,11 +67,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 .CanBeFollowedBy(msgstr)
                 .CanBeFollowedBy(msgid)
                 .CanBeFollowedBy(endOfFile)
+                .CanBeFollowedBy(msgctxt)
                 .CanBeFollowedBy(emptyLine);
 
             comment
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid)
+                .CanBeFollowedBy(msgctxt)
                 .CanBeFollowedBy(emptyLine);
 
             emptyLine
@@ -97,11 +104,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return false;
             }
 
-            if (!applyingLinePattern.IsIgnored && (applyingLinePattern.Equals(_lastLinePattern.ExpectedFollowingLinePattern) ||
-                _lastLinePattern.ExpectedFollowingLinePattern == null))
-            {
-                _lastLinePattern = applyingLinePattern;
-            }
+            _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
 
             return true;
         }
