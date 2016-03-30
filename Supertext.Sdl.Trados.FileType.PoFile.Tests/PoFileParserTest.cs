@@ -101,6 +101,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void SetFileProperties_ShouldSetParagraphUnitFactoryDependencies()
+        {
+            // Arrange
+            var testee = CreateTestee(string.Empty);
+
+            var filePropertiesMock = A.Fake<IFileProperties>();
+
+            // Act
+            testee.SetFileProperties(filePropertiesMock);
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactory.ItemFactory).WithAnyArguments().MustHaveHappened();
+            A.CallTo(() => _paragraphUnitFactory.PropertiesFactory).WithAnyArguments().MustHaveHappened();
+        }
+
+        [Test]
         public void ParseNext_WhenMultipleLines_ShouldUpdateProgressForEachLine()
         {
             // Arrange
