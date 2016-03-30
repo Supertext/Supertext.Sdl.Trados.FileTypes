@@ -28,6 +28,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         private static readonly LinePattern BeginOfFile;
         private LinePattern _lastLinePattern;
+        private LinePattern _context;
 
         static LineParser()
         {
@@ -41,16 +42,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var endOfFile = new LinePattern(LineType.EndOfFile, MarkerLines.EndOfFile, string.Empty);
 
             BeginOfFile
-                .MustBeFollowedBy(msgid)
+                .CanBeFollowedBy(msgid)
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgctxt)
                 .CanBeFollowedBy(emptyLine);
 
             msgctxt
-                .MustBeFollowedBy(msgid);
+                .CanBeFollowedBy(msgid);
 
             msgid
-                .MustBeFollowedBy(msgstr)
+                .CanBeFollowedBy(msgstr)
                 .CanBeFollowedBy(text);
 
             msgstr
@@ -62,13 +63,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 .CanBeFollowedBy(emptyLine);
 
             text
+                .After(msgid)
                 .CanBeFollowedBy(text)
-                .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgstr)
+                .After(msgstr)
+                .CanBeFollowedBy(text)
+                .CanBeFollowedBy(emptyLine)
+                .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid)
                 .CanBeFollowedBy(endOfFile)
-                .CanBeFollowedBy(msgctxt)
-                .CanBeFollowedBy(emptyLine);
+                .CanBeFollowedBy(msgctxt);
 
             comment
                 .CanBeFollowedBy(comment)
@@ -81,7 +85,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         }
 
         public string NextExpectedLineDescription
-            => _lastLinePattern.ExpectedFollowingLinePattern?.ToString() ?? string.Empty;
+            => string.Join(" or ", _lastLinePattern.GetFollowingLinePatterns(_context));
 
         public ILineValidationSession StartLineValidationSession()
         {
@@ -97,11 +101,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public bool IsValid(string line)
         {
-            var applyingLinePattern = GetApplyingLinePattern(_lastLinePattern, line);
+            var applyingLinePattern = GetApplyingLinePattern(_context, _lastLinePattern, line);
 
             if (applyingLinePattern == null)
             {
                 return false;
+            }
+
+            if (!applyingLinePattern.Equals(_lastLinePattern))
+            {
+                _context = _lastLinePattern;
             }
 
             _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
@@ -111,11 +120,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IParseResult Parse(string line)
         {
-            var applyingLinePattern = GetApplyingLinePattern(_lastLinePattern, line);
+            var applyingLinePattern = GetApplyingLinePattern(_context, _lastLinePattern, line);
 
             if (applyingLinePattern == null)
             {
                 return null;
+            }
+
+            if (!applyingLinePattern.Equals(_lastLinePattern))
+            {
+                _context = _lastLinePattern;
             }
 
             _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
@@ -123,25 +137,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line));
         }
 
-        private static LinePattern GetApplyingLinePattern(LinePattern lastLinePattern, string currentLine)
+        private static LinePattern GetApplyingLinePattern(LinePattern context, LinePattern lastLinePattern,
+            string currentLine)
         {
-            if (lastLinePattern.ExpectedFollowingLinePattern != null &&
-                lastLinePattern.ExpectedFollowingLinePattern.IsApplyingTo(currentLine))
-            {
-                return lastLinePattern.ExpectedFollowingLinePattern;
-            }
-
-            return lastLinePattern.PossibleFollowingLinePatterns.FirstOrDefault(
-                linePattern => linePattern.IsApplyingTo(currentLine));
+            return lastLinePattern
+                .GetFollowingLinePatterns(context)
+                .FirstOrDefault(linePattern => linePattern.IsApplyingTo(currentLine));
         }
 
         private class LinePattern
         {
             private const string StartOfStringPattern = "^";
-            private readonly List<LinePattern> _possibleFollowingLinePatterns;
+
+            private readonly List<LinePattern> _followingLinePatterns;
+            private readonly Dictionary<LinePattern, List<LinePattern>> _contextfollowingLinePatterns;
             private readonly Regex _lineStartRegex;
             private readonly Regex _lineContentRegex;
-            private LinePattern _expectedFollowingLinePattern;
+
+            private LinePattern _context;
 
             public LinePattern(LineType lineType, string lineStartPattern, string lineContentPattern)
             {
@@ -149,32 +162,51 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 _lineStartRegex = new Regex(StartOfStringPattern + lineStartPattern);
                 _lineContentRegex = new Regex(lineContentPattern);
-                _possibleFollowingLinePatterns = new List<LinePattern>();
+                _followingLinePatterns = new List<LinePattern>();
+                _contextfollowingLinePatterns = new Dictionary<LinePattern, List<LinePattern>>();
             }
 
             public LineType LineType { get; }
 
             public bool IsIgnored { get; private set; }
 
-            public IEnumerable<LinePattern> PossibleFollowingLinePatterns => _possibleFollowingLinePatterns;
-
-            public LinePattern ExpectedFollowingLinePattern => _expectedFollowingLinePattern;
-
             public LinePattern CanBeFollowedBy(LinePattern linePattern)
             {
-                _possibleFollowingLinePatterns.Add(linePattern);
+                if (_context == null)
+                {
+                    _followingLinePatterns.Add(linePattern);
+                    return this;
+                }
+
+                if (!_contextfollowingLinePatterns.ContainsKey(_context))
+                {
+                    _contextfollowingLinePatterns.Add(_context, new List<LinePattern>());
+                }
+
+                _contextfollowingLinePatterns[_context].Add(linePattern);
+
                 return this;
             }
 
-            public LinePattern MustBeFollowedBy(LinePattern linePattern)
+            public LinePattern After(LinePattern context)
             {
-                _expectedFollowingLinePattern = linePattern;
+                _context = context;
                 return this;
             }
 
             public void CanBeIgnored()
             {
                 IsIgnored = true;
+            }
+
+            public IEnumerable<LinePattern> GetFollowingLinePatterns(LinePattern context)
+            {
+                if (context == null || !_contextfollowingLinePatterns.ContainsKey(context))
+                {
+                    return _followingLinePatterns;
+                }
+
+                return _contextfollowingLinePatterns[context];
             }
 
             public bool IsApplyingTo(string line)

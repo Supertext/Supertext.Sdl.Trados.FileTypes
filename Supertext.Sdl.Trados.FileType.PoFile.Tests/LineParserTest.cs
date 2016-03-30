@@ -253,6 +253,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void IsValid_WhenTextIsFollowedByTextAfterMsgid_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgid """"");
+            lineValidationSession.IsValid(@"""The msgid text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"""More text""");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
         public void IsValid_WhenTextIsFollowedByComment_ShouldReturnTrue()
         {
             // Arrange
@@ -325,8 +341,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new LineParser();
             var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.IsValid(@"msgid """"");
-            lineValidationSession.IsValid(@"""The text""");
+            lineValidationSession.IsValid(@"msgid ""The msgid text""");
+            lineValidationSession.IsValid(@"msgstr """"");
+            lineValidationSession.IsValid(@"""The msgstr text""");
 
             // Act
             var result = lineValidationSession.IsValid(string.Empty);
@@ -520,7 +537,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void NextExpectedLineDescription_WhenMandortyLinePatternExpected_ShouldReturnPattern()
+        public void NextExpectedLineDescription_ShouldReturnPattern()
         {
             // Arrange
             var testee = new LineParser();
@@ -532,22 +549,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Assert
             result.Should().NotBeEmpty();
-        }
-
-        [Test]
-        public void NextExpectedLineDescription_WhenNoMandortyLinePatternExpected_ShouldReturnEmptyString()
-        {
-            // Arrange
-            var testee = new LineParser();
-            var lineValidationSession = testee.StartLineValidationSession();
-            lineValidationSession.IsValid(@"msgid ""The msgid text""");
-            lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
-
-            // Act
-            var result = lineValidationSession.NextExpectedLineDescription;
-
-            // Assert
-            result.Should().BeEmpty();
         }
 
         [Test]
