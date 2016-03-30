@@ -537,7 +537,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void IsValid_WhenHasEmweptyLines_ShoudIgnoreAndReturnTrue()
+        public void IsValid_WhenHasMultipleTextAndComments_ShoudIgnoreAndReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
