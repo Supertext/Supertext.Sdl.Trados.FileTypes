@@ -61,6 +61,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entry location.
+        /// </summary>
+        internal static string entryLocation {
+            get {
+                return ResourceManager.GetString("entryLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message context.
+        /// </summary>
+        internal static string msgctxt {
+            get {
+                return ResourceManager.GetString("msgctxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon PoFileIcon {

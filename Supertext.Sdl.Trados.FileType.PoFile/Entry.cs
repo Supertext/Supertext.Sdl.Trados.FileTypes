@@ -15,5 +15,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public int MessageStringStart { get; set; }
 
         public int MessageStringEnd { get; set; }
+
+        public string Description => MessageIdStart + "-" + MessageStringEnd;
     }
 }

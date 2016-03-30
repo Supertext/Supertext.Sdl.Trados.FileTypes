@@ -42,6 +42,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
+            //TODO refactor
             var messageIdEnd = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageIdEnd));
             var messageStringEnd = int.Parse(paragraphUnit.Properties.Contexts.Contexts[1].GetMetaData(ContextKeys.MessageStringEnd));
 

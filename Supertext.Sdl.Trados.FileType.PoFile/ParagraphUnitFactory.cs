@@ -141,18 +141,48 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var contextProperties = PropertiesFactory.CreateContextProperties();
 
-            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Field);
-            contextInfo.Purpose = ContextPurpose.Information;
-            contextProperties.Contexts.Add(contextInfo);
+            contextProperties.Contexts.Add(CreateFieldContextInfo(entry));
 
-            var contextId = PropertiesFactory.CreateContextInfo(ContextKeys.LocationContextType);
-            contextId.SetMetaData(ContextKeys.MessageIdStart, entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
-            contextId.SetMetaData(ContextKeys.MessageIdEnd, entry.MessageIdEnd.ToString(CultureInfo.InvariantCulture));
-            contextId.SetMetaData(ContextKeys.MessageStringStart, entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
-            contextId.SetMetaData(ContextKeys.MessageStringEnd, entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
-            contextProperties.Contexts.Add(contextId);
+            contextProperties.Contexts.Add(CreateLocationContextInfo(entry));
+
+            if (!string.IsNullOrEmpty(entry.MessageContext))
+            {
+                contextProperties.Contexts.Add(CreateMessageContextInfo(entry));
+            }
 
             return contextProperties;
+        }
+
+        private IContextInfo CreateFieldContextInfo(Entry entry)
+        {
+            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Field);
+            contextInfo.Purpose = ContextPurpose.Match;
+            contextInfo.Description = entry.Description;
+            return contextInfo;
+        }
+
+        private IContextInfo CreateLocationContextInfo(Entry entry)
+        {
+            var contextInfo = PropertiesFactory.CreateContextInfo(ContextKeys.LocationContextType);
+            contextInfo.DisplayName = PoFileTypeResources.ResourceManager.GetString(ContextKeys.LocationContextType);
+            contextInfo.Purpose = ContextPurpose.Location;
+            contextInfo.Description = PoFileTypeResources.ResourceManager.GetString(ContextKeys.LocationContextType);
+            contextInfo.DisplayCode = "FCX";
+            contextInfo.SetMetaData(ContextKeys.MessageIdStart, entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
+            contextInfo.SetMetaData(ContextKeys.MessageIdEnd, entry.MessageIdEnd.ToString(CultureInfo.InvariantCulture));
+            contextInfo.SetMetaData(ContextKeys.MessageStringStart, entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
+            contextInfo.SetMetaData(ContextKeys.MessageStringEnd, entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
+            return contextInfo;
+        }
+
+        private IContextInfo CreateMessageContextInfo(Entry entry)
+        {
+            var contextInfo = PropertiesFactory.CreateContextInfo(ContextKeys.MessageContext);
+            contextInfo.DisplayName = PoFileTypeResources.ResourceManager.GetString(ContextKeys.MessageContext);
+            contextInfo.Purpose = ContextPurpose.Information;
+            contextInfo.Description = entry.MessageContext;
+            contextInfo.DisplayCode = "FCX";
+            return contextInfo;
         }
     }
 }

@@ -110,6 +110,55 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void Create_WhenEntryHasMessageContext_ShouldSetMessageContextContext()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var contextPropertiesMock = A.Fake<IContextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
+
+            var contextInfoMock = A.Fake<IContextInfo>();
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.MessageContext))
+                .Returns(contextInfoMock);
+
+            var entry = new Entry
+            {
+                MessageContext = "message context"
+            };
+
+            // Act
+            testee.Create(entry, LineType.MessageId, false);
+
+            // Assert
+            contextInfoMock.Description.Should().Be("message context");
+            A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Create_WhenEntryHasNoMessageContext_ShouldNotSetMessageContextContext()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var contextPropertiesMock = A.Fake<IContextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
+
+            var contextInfoMock = A.Fake<IContextInfo>();
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.MessageContext))
+                .Returns(contextInfoMock);
+
+            var entry = new Entry();
+
+            // Act
+            testee.Create(entry, LineType.MessageId, false);
+
+            // Assert
+            contextInfoMock.Description.Should().BeNullOrEmpty();
+            A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustNotHaveHappened();
+        }
+
+        [Test]
         public void Create_WhenTextIsText_ShouldAddText()
         {
             // Arrange
