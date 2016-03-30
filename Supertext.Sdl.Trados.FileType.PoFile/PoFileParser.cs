@@ -122,11 +122,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public void Add(IParseResult parseResult, int lineNumber)
             {
-                CollectData(parseResult, lineNumber);
+                CollectText(parseResult, lineNumber);
 
                 if (parseResult.LineType == LineType.MessageId)
                 {
-                    _entryInCreation = new Entry();
+                    _entryInCreation = _entryInCreation ?? new Entry();
                     _entryInCreation.MessageId += parseResult.LineContent;
                     _entryInCreation.MessageIdStart = lineNumber;
                     _collectingMessageId = true;
@@ -138,9 +138,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     _entryInCreation.MessageStringStart = lineNumber;
                     _collectingMessagString = true;
                 }
+
+                if (parseResult.LineType == LineType.MessageContext)
+                {
+                    _entryInCreation = new Entry {MessageContext = parseResult.LineContent};
+                }
             }
 
-            private void CollectData(IParseResult parseResult, int lineNumber)
+            private void CollectText(IParseResult parseResult, int lineNumber)
             {
                 CompleteEntry = null;
 

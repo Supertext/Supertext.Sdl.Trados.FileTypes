@@ -24,6 +24,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void SetUp()
         {
             _lineParsingSessionMock = A.Fake<ILineParsingSession>();
+            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgctxt ""The msgctxt text"""))
+                .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The msgid text"""))
                 .Returns(new ParseResult(LineType.MessageId, "The msgid text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr ""The msgstr text"""))
@@ -581,6 +583,26 @@ msgstr ""The msgstr text""
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
                .MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenEntryHasContext_ShouldCreateEntryWithContext()
+        {
+            // Arrange
+            var testString = @"
+msgctxt ""The msgctxt text""
+msgid ""The msgid text""
+msgstr ""The msgstr text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageContext == "The msgctxt text"), A<LineType>.Ignored, A<bool>.Ignored))
+                .MustHaveHappened();
         }
 
         private PoFileParser CreateTestee(string testString)
