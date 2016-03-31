@@ -68,6 +68,76 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void Add_WhenOneEntryAfterTheOther_ShouldNotHaveEntryDataFromPrevious()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text", "msgctxt"), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+
+            // Act
+            testee.Add(new ParseResult(LineType.MessageId, "The second msgid text", "msgid"), 4);
+            testee.Add(new ParseResult(LineType.MessageString, "The second msgstr text", "msgstr"), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 6);
+
+            // Assert
+            testee.CompleteEntry.MessageContext.Should().BeEmpty();
+        }
+
+        [Test]
+        public void Add_WhenEntryStartsWithComment_ShouldSetCorrectEntryLocation()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 1);
+            testee.Add(new ParseResult(LineType.Comment, "# some comment", "#"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+
+            // Assert
+            testee.CompleteEntry.Start.Should().Be(2);
+            testee.CompleteEntry.End.Should().Be(4);
+        }
+
+        public void Add_WhenEntryStartsWithMsgctxt_ShouldSetCorrectEntryLocation()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 1);
+            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text", "msgctxt"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+
+            // Assert
+            testee.CompleteEntry.Start.Should().Be(2);
+            testee.CompleteEntry.End.Should().Be(4);
+        }
+
+        [Test]
+        public void Add_WhenEntryStartsWithMsgid_ShouldSetCorrectEntryLocation()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+
+            // Assert
+            testee.CompleteEntry.Start.Should().Be(2);
+            testee.CompleteEntry.End.Should().Be(3);
+        }
+
+        [Test]
         public void Add_WhenMsgidIsOnOneLine_ShouldTakeText()
         {
             // Arrange
@@ -388,5 +458,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.CompleteEntry.Comments[0].Should().Be(", the comment text");
             testee.CompleteEntry.Comments[1].Should().Be(", the second comment text");
         }
+
+
     }
 }

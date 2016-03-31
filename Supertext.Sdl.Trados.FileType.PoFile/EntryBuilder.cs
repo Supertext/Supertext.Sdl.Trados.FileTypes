@@ -15,7 +15,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private Action<string> _collectText;
         private Action<int> _finishCollectingText;
         private Action<string> _collectMessageStringPlural;
-        private Action _finishCollectingMessageStringPlural;
+        private Action<int> _finishCollectingMessageStringPlural;
         private string _tmpMessageStringPluralContent;
 
         public Entry CompleteEntry { get; private set; }
@@ -49,14 +49,20 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             if (_finishCollectingMessageStringPlural != null)
             {
-                _finishCollectingMessageStringPlural();
+                _finishCollectingMessageStringPlural(lineNumber);
             }
 
             _finishCollectingMessageStringPlural = null;
 
-            if (CompleteEntry != null || _entryInCreation == null)
+            if (_entryInCreation == null &&
+                (parseResult.LineType == LineType.Comment ||
+                parseResult.LineType == LineType.MessageContext ||
+                 parseResult.LineType == LineType.MessageId))
             {
-                _entryInCreation = new Entry();
+                _entryInCreation = new Entry
+                {
+                    Start = lineNumber
+                };
             }
 
             CollectMessage(parseResult, lineNumber);
@@ -114,7 +120,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _finishCollectingText = currentLineNumber =>
             {
                 _entryInCreation.MessageStringEnd = currentLineNumber - 1;
-                SetCompleteEntry();
+                SetCompleteEntry(currentLineNumber);
             };
         }
 
@@ -139,7 +145,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     _entryInCreation.MessageStringEnd = currentLineNumber - 1;
                     _entryInCreation.MessageStringPlural.Add(_tmpMessageStringPluralContent);
                 };
-
         }
 
         private void CollectComment(IParseResult parseResult)
@@ -150,9 +155,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
         }
 
-        private void SetCompleteEntry()
+        private void SetCompleteEntry(int lineNumber)
         {
+            _entryInCreation.End = lineNumber - 1;
             CompleteEntry = _entryInCreation;
+            _entryInCreation = null;
         }
     }
 }
