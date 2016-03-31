@@ -85,7 +85,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     break;
 
                 case LineType.MessageStringPlural:
-                    StartCollectingMessageStringPlural(parseResult);
+                    StartCollectingMessageStringPlural(parseResult, lineNumber);
                     break;
             }
         }
@@ -103,7 +103,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             _entryInCreation.MessageIdPlural += parseResult.LineContent;
             _collectText = lineContent => _entryInCreation.MessageIdPlural += lineContent;
-            _finishCollectingText = currentLineNumber => { };
+            _finishCollectingText = currentLineNumber => _entryInCreation.MessageIdEnd = currentLineNumber - 1;
         }
 
         private void CollectMessageString(IParseResult parseResult, int lineNumber)
@@ -118,8 +118,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             };
         }
 
-        private void StartCollectingMessageStringPlural(IParseResult parseResult)
+        private void StartCollectingMessageStringPlural(IParseResult parseResult, int lineNumber)
         {
+            _entryInCreation.MessageStringStart = lineNumber;
+
             CollectMessageStringPlural(parseResult.LineContent);
 
             _collectMessageStringPlural = CollectMessageStringPlural;
@@ -133,7 +135,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _collectText = currentLineContent => _tmpMessageStringPluralContent += currentLineContent;
             _finishCollectingText =
                 currentLineNumber =>
+                {
+                    _entryInCreation.MessageStringEnd = currentLineNumber - 1;
                     _entryInCreation.MessageStringPlural.Add(_tmpMessageStringPluralContent);
+                };
+
         }
 
         private void CollectComment(IParseResult parseResult)

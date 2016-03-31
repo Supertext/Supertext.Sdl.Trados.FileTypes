@@ -200,6 +200,23 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void Add_WhenMsgidHasPlural_ShouldSetMsgidLocationToAllTheLines()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+
+            // Assert
+            testee.CompleteEntry.MessageIdStart.Should().Be(1);
+            testee.CompleteEntry.MessageIdEnd.Should().Be(2);
+        }
+
+        [Test]
         public void Add_WhenMsgstrOnOneLine_ShouldSetMsgstrLocationToOneLine()
         {
             // Arrange
@@ -231,6 +248,25 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             testee.CompleteEntry.MessageStringStart.Should().Be(2);
             testee.CompleteEntry.MessageStringEnd.Should().Be(4);
+        }
+
+        [Test]
+        public void Add_WhenMsgstrPlurals_ShouldSetMsgstrContextToAllTheLines()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", "msgstr[0]"), 3);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text", "msgstr[1]"), 4);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[2] text", "msgstr[2]"), 5);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 6);
+
+            // Assert
+            testee.CompleteEntry.MessageStringStart.Should().Be(3);
+            testee.CompleteEntry.MessageStringEnd.Should().Be(5);
         }
 
         [Test]
