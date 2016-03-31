@@ -181,7 +181,7 @@ msgstr ""The msgstr text""";
         }
 
         [Test]
-        public void ParseNext_ShouldReturnTrueAsLongAsSomethingToParse()
+        public void ParseNext_AsLongAsSomethingToParse_ShouldReturnTrue()
         {
             // Arrange
             var testString = @"
@@ -203,7 +203,7 @@ msgstr ""The msgstr text""
         }
 
         [Test]
-        public void ParseNext_ShouldReturnFalseWhenNothingToParseAnymore()
+        public void ParseNext_WhenNothingToParseAnymore_ShouldReturnFalse()
         {
             // Arrange
             var testString = @"
@@ -251,107 +251,11 @@ msgstr ""The msgstr text""
         }
 
         [Test]
-        public void ParseNext_WhenMultipleEntries_ShouldParseOneTextAfterOther()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageId == "The msgid text"), A<LineType>.Ignored, A<bool>.Ignored)).MustHaveHappened(Repeated.Exactly.Twice);
-        }
-
-        [Test]
-        public void ParseNext_WhenEntriesSeparatedByComment_ShouldRecognizeBothEntries()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-# this is a comment
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored))
-                .MustHaveHappened(Repeated.Exactly.Twice);
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgidIsOnOneLine_ShouldTakeText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-                () =>
-                    _paragraphUnitFactoryMock.Create(
-                        A<Entry>.That.Matches(entry => entry.MessageId == "The msgid text"),
-                        A<LineType>.Ignored,
-                        A<bool>.Ignored))
-                .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgidIsOnMultipleLinesStartingWithEmptyString_ShouldTakeAllText()
+        public void ParseNext_WhenMsgidIsEmpty_ShouldIgnoreEntry()
         {
             // Arrange
             var testString = @"
 msgid """"
-""The text""
-""The second text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-                () =>
-                    _paragraphUnitFactoryMock.Create(
-                        A<Entry>.That.Matches(entry => entry.MessageId == "The textThe second text"),
-                        A<LineType>.Ignored,
-                        A<bool>.Ignored))
-                .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgidIsOnMultipleLines_ShouldTakeAllText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-""The text""
 msgstr ""The msgstr text""
 ";
             var testee = CreateTestee(testString);
@@ -364,87 +268,12 @@ msgstr ""The msgstr text""
             A.CallTo(
                () =>
                    _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageId == "The msgid textThe text"),
+                       A<Entry>.Ignored,
                        A<LineType>.Ignored,
                        A<bool>.Ignored))
-               .MustHaveHappened();
+               .MustNotHaveHappened();
         }
-
-        [Test]
-        public void ParseNext_WhenMsgstrIsOnOneLine_ShouldTakeText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageString == "The msgstr text"),
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgstrIsOnMultipleLinesStartingWithEmptyString_ShouldTakeAllText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr """"
-""The text""
-""The second text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageString == "The textThe second text"),
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgstrIsOnMultipleLines_ShouldTakeAllText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-""The text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageString == "The msgstr textThe text"),
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
-        }
-
+        
         [Test]
         public void ParseNext_WhenMsgidIsSourceLineType_ShouldTakeMsgidAsSource()
         {
@@ -466,7 +295,7 @@ msgstr ""The msgstr text""
                () =>
                    _paragraphUnitFactoryMock.Create(
                        A<Entry>.Ignored,
-                       LineType.MessageId, 
+                       LineType.MessageId,
                        A<bool>.Ignored))
                .MustHaveHappened();
         }
@@ -495,235 +324,6 @@ msgstr ""The msgstr text""
                        LineType.MessageString,
                        A<bool>.Ignored))
                .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgidIsEmpty_ShouldIgnoreEntry()
-        {
-            // Arrange
-            var testString = @"
-msgid """"
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.Ignored,
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustNotHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgidOnOneLine_ShouldSetMsgidLocationToOneLine()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageIdStart == 2 && entry.MessageIdEnd == 2),
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgidOnMultipleLines_ShouldSetMsgidLocationToAllTheLines()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-""The text""
-""The second text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageIdStart == 2 && entry.MessageIdEnd == 4),
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgstrOnOneLine_ShouldSetMsgstrLocationToOneLine()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageStringStart == 3 && entry.MessageStringEnd == 3),
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenMsgstrOnMultipleLines_ShouldSetMsgstrContextToAllTheLines()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-""The text""
-""The second text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.That.Matches(entry => entry.MessageStringStart == 3 && entry.MessageStringEnd == 5),
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenEntryHasContext_ShouldCreateEntryWithContext()
-        {
-            // Arrange
-            var testString = @"
-msgctxt ""The msgctxt text""
-msgid ""The msgid text""
-msgstr ""The msgstr text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageContext == "The msgctxt text"), A<LineType>.Ignored, A<bool>.Ignored))
-                .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenEntryMsgidPlural_ShouldCreateEntryWithMsgidPlural()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgid_plural ""The msgid_plural text""
-msgstr[0] ""The msgstr[0] text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageIdPlural == "The msgid_plural text"), A<LineType>.Ignored, A<bool>.Ignored))
-                .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenEntryMsgidPluralOnMultipleLines_ShouldCreateEntryWithMsgidPluralAndAllText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgid_plural """"
-""The text""
-""The second text""
-msgstr[0] ""The msgstr[0] text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageIdPlural == "The textThe second text"), A<LineType>.Ignored, A<bool>.Ignored))
-                .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenEntryMsgstrPlural_ShouldCreateEntryWithMsgstrPlural()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgid_plural ""The msgid_plural text""
-msgstr[0] ""The msgstr[0] text""
-msgstr[1] ""The msgstr[1] text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageStringPlural[0] == "The msgstr[0] text" && entry.MessageStringPlural[1] == "The msgstr[1] text"), A<LineType>.Ignored, A<bool>.Ignored))
-                .MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenEntryMsgstrPluralOnMultipleLines_ShouldCreateEntryWithMsgstrPluralWithAllText()
-        {
-            // Arrange
-            var testString = @"
-msgid ""The msgid text""
-msgid_plural ""The msgid_plural text""
-msgstr[0] """"
-""The text""
-""The second text""
-";
-            var testee = CreateTestee(testString);
-            testee.StartOfInput();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageStringPlural[0] == "The textThe second text"), A<LineType>.Ignored, A<bool>.Ignored))
-                .MustHaveHappened();
         }
 
         private PoFileParser CreateTestee(string testString)

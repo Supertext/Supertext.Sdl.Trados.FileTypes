@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="ContextKeys.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="EntryBuilder.cs" />
     <Compile Include="FileHandling\FileHelper.cs" />
     <Compile Include="FileHandling\IFileHelper.cs" />
     <Compile Include="FileHandling\IStreamReader.cs" />
