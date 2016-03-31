@@ -25,27 +25,27 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             _lineParsingSessionMock = A.Fake<ILineParsingSession>();
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgctxt ""The msgctxt text"""))
-                .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text"));
+                .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text", @"msgctxt ""The msgctxt text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The msgid text"""))
-                .Returns(new ParseResult(LineType.MessageId, "The msgid text"));
+                .Returns(new ParseResult(LineType.MessageId, "The msgid text", @"msgid ""The msgid text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr ""The msgstr text"""))
-                .Returns(new ParseResult(LineType.MessageString, "The msgstr text"));
+                .Returns(new ParseResult(LineType.MessageString, "The msgstr text", @"msgstr ""The msgstr text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid """""))
-                .Returns(new ParseResult(LineType.MessageId, ""));
+                .Returns(new ParseResult(LineType.MessageId, "", @"msgid """""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr """""))
-                .Returns(new ParseResult(LineType.MessageString, ""));
+                .Returns(new ParseResult(LineType.MessageString, "", @"msgstr """""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The text"""))
-                .Returns(new ParseResult(LineType.MessageId, "The text"));
+                .Returns(new ParseResult(LineType.MessageId, "The text", @"msgid ""The text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"""The text"""))
-                .Returns(new ParseResult(LineType.Text, "The text"));
+                .Returns(new ParseResult(LineType.Text, "The text", @"""The text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"""The second text"""))
-                .Returns(new ParseResult(LineType.Text, "The second text"));
+                .Returns(new ParseResult(LineType.Text, "The second text", @"""The second text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"#: a comment"))
-                .Returns(new ParseResult(LineType.Comment, "a comment"));
+                .Returns(new ParseResult(LineType.Comment, "a comment", @"#: a comment"));
             A.CallTo(() => _lineParsingSessionMock.Parse(string.Empty))
-                .Returns(new ParseResult(LineType.Empty, string.Empty));
+                .Returns(new ParseResult(LineType.Empty, string.Empty, string.Empty));
             A.CallTo(() => _lineParsingSessionMock.Parse(MarkerLines.EndOfFile))
-                .Returns(new ParseResult(LineType.EndOfFile, string.Empty));
+                .Returns(new ParseResult(LineType.EndOfFile, string.Empty, MarkerLines.EndOfFile));
 
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
 

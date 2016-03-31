@@ -958,6 +958,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void Parse_WhenMsgctxtLine_ShouldReturnMessageContextAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+
+            // Act
+            var result = lineParsingSession.Parse(@"msgctxt ""The msgctxt text""");
+
+            // Assert
+            result.LineType.Should().Be(LineType.MessageContext);
+            result.LineContent.Should().Be("The msgctxt text");
+        }
+
+        [Test]
         public void Parse_WhenMsgidLine_ShouldReturnMessageIdTypeAndContent()
         {
             // Arrange
@@ -986,6 +1001,39 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             result.LineType.Should().Be(LineType.MessageString);
             result.LineContent.Should().Be("The msgstr text");
+        }
+
+        [Test]
+        public void Parse_WhenMsgidpluralLine_ShouldReturnMessageIdPluralTypeAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid ""The msgid text""");
+
+            // Act
+            var result = lineParsingSession.Parse(@"msgid_plural ""The msgid_plural text""");
+
+            // Assert
+            result.LineType.Should().Be(LineType.MessageIdPlural);
+            result.LineContent.Should().Be("The msgid_plural text");
+        }
+
+        [Test]
+        public void Parse_WhenMsgstrpluralLine_ShouldReturnMessageStringPluralTypeAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid ""The msgid text""");
+            lineParsingSession.Parse(@"msgid_plural ""The msgid_plural text""");
+
+            // Act
+            var result = lineParsingSession.Parse(@"msgstr[0] ""The msgstr[0] text""");
+
+            // Assert
+            result.LineType.Should().Be(LineType.MessageStringPlural);
+            result.LineContent.Should().Be("The msgstr[0] text");
         }
 
         [Test]
@@ -1032,6 +1080,38 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             result.LineType.Should().Be(LineType.Empty);
             result.LineContent.Should().Be(string.Empty);
+        }
+
+        [Test]
+        public void Parse_WhenEndOfFile_ShouldReturnEndOFileTypeAndEmptyContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid ""The msgid text""");
+            lineParsingSession.Parse(@"msgstr ""The msgstr text""");
+
+            // Act
+            var result = lineParsingSession.Parse(MarkerLines.EndOfFile);
+
+            // Assert
+            result.LineType.Should().Be(LineType.EndOfFile);
+            result.LineContent.Should().Be(string.Empty);
+        }
+
+        [Test]
+        public void Parse_ShouldAddRawContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid ""The msgid text""");
+  
+            // Act
+            var result = lineParsingSession.Parse(@"msgstr ""The msgstr text""");
+
+            // Assert
+            result.RawContent.Should().Be(@"msgstr ""The msgstr text""");
         }
     }
 }

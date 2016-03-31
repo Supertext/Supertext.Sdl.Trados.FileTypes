@@ -129,7 +129,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
 
-            return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line));
+            return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line), line);
         }
 
         private static LinePattern GetApplyingLinePattern(LinePattern context, LinePattern lastLinePattern,
