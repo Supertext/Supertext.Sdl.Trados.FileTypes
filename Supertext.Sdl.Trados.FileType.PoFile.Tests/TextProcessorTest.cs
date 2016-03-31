@@ -86,10 +86,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasPercentPlaceholder_ShouldRecognizePlaceholder()
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasPercentPlaceholder_ShouldRecognizePlaceholder()
         {
             // Arrange
-            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns);
             var testString = @"%123";
 
             // Act
@@ -100,10 +100,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasPercentWithWordPlaceholder_ShouldRecognizePlaceholder()
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasPercentWithWordPlaceholder_ShouldRecognizePlaceholder()
         {
             // Arrange
-            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns);
             var testString = @"%s";
 
             // Act
@@ -114,10 +114,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasDollarPlaceholder_ShouldRecognizePlaceholder()
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasDollarPlaceholder_ShouldRecognizePlaceholder()
         {
             // Arrange
-            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns);
             var testString = @"$test";
 
             // Act
@@ -128,10 +128,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasStartTag_ShouldRecognizeStartTag()
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasStartTag_ShouldRecognizeStartTag()
         {
             // Arrange
-            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns);
             var testString = @"<a href=""http://www.supertext.ch"">";
 
             // Act
@@ -142,10 +142,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Process_WhenUsingDefaultEmbeddedRegexsAndTextHasEndTag_ShouldRecognizeEndTag()
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasEndTag_ShouldRecognizeEndTag()
         {
             // Arrange
-            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs);
+            var testee = new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns);
             var testString = @"</a>";
 
             // Act

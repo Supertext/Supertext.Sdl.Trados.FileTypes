@@ -56,7 +56,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 new FileHelper(),
                 new LineParser(),
                 new UserSettings(),
-                new ParagraphUnitFactory(new TextProcessor(TextProcessor.DefaultEmbeddedContentRegexs)));
+                new ParagraphUnitFactory(new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns)));
 
             var fileExtractor = FileTypeManager.BuildFileExtractor(parser, this);
 

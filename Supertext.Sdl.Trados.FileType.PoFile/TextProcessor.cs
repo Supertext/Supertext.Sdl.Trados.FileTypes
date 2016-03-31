@@ -14,7 +14,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private List<InlineType> _types;
         private Regex _regex;
 
-        public static Dictionary<string, InlineType> DefaultEmbeddedContentRegexs = new Dictionary<string, InlineType>
+        public static Dictionary<string, InlineType> DefaultEmbeddedContentPatterns = new Dictionary<string, InlineType>
             {
                 { @"%\d+", InlineType.Placeholder },
                 { @"%\w+", InlineType.Placeholder },
