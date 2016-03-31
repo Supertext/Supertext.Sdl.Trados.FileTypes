@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
@@ -115,9 +116,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private class EntryBuilder
         {
-            private bool _collectingMessageId;
-            private bool _collectingMessagString;
             private Entry _entryInCreation;
+            private Action<string> _collectText;
+            private Action<int> _finishCollectingText;
+            private Action<string> _collectMessageStringPlurals;
+            private Action _finishCollectingMessageStringPlurals;
+            private string _tmpMessageStringPluralContent;
 
             public Entry CompleteEntry { get; private set; }
 
@@ -125,68 +129,99 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             {
                 CompleteEntry = null;
 
-                CollectText(parseResult, lineNumber);
+                if (_collectText != null && parseResult.LineType == LineType.Text)
+                {
+                    _collectText(parseResult.LineContent);
+                    return;
+                }
+
+                _collectText = null;
+
+                if (_finishCollectingText != null)
+                {
+                    _finishCollectingText(lineNumber);
+                }
+
+                _finishCollectingText = null;
+
+                if (_collectMessageStringPlurals != null && parseResult.LineType == LineType.MessageStringPlural)
+                {
+                    _collectMessageStringPlurals(parseResult.LineContent);
+                    return;
+                }
+
+                _collectMessageStringPlurals = null;
+
+                if (_finishCollectingMessageStringPlurals != null)
+                {
+                    _finishCollectingMessageStringPlurals();
+                }
+
+                _finishCollectingMessageStringPlurals = null;
 
                 if (CompleteEntry != null || _entryInCreation == null)
                 {
                     _entryInCreation = new Entry();
                 }
 
+                CollectMessage(parseResult, lineNumber);
+            }
+
+            private void CollectMessage(IParseResult parseResult, int lineNumber)
+            {
+                if (parseResult.LineType == LineType.MessageContext)
+                {
+                    _entryInCreation.MessageContext = parseResult.LineContent;
+                }
+
                 if (parseResult.LineType == LineType.MessageId)
                 {
                     _entryInCreation.MessageId += parseResult.LineContent;
                     _entryInCreation.MessageIdStart = lineNumber;
-                    _collectingMessageId = true;
+                    _collectText = lineContent => _entryInCreation.MessageId += lineContent;
+                    _finishCollectingText = currentLineNumber => _entryInCreation.MessageIdEnd = currentLineNumber - 1;
+                }
+
+                if (parseResult.LineType == LineType.MessageIdPlural)
+                {
+                    _entryInCreation.MessageIdPlural += parseResult.LineContent;
+                    _collectText = lineContent => _entryInCreation.MessageIdPlural += lineContent;
+                    _finishCollectingText = currentLineNumber => { };
                 }
 
                 if (parseResult.LineType == LineType.MessageString)
                 {
                     _entryInCreation.MessageString += parseResult.LineContent;
                     _entryInCreation.MessageStringStart = lineNumber;
-                    _collectingMessagString = true;
+                    _collectText = lineContent => _entryInCreation.MessageString += lineContent;
+                    _finishCollectingText = currentLineNumber =>
+                    {
+                        _entryInCreation.MessageStringEnd = currentLineNumber - 1;
+                        SetCompleteEntry();
+                    };
                 }
 
-                if (parseResult.LineType == LineType.MessageContext)
+                if (parseResult.LineType == LineType.MessageStringPlural)
                 {
-                    _entryInCreation.MessageContext = parseResult.LineContent;
-                }
-            }
+                    _tmpMessageStringPluralContent = parseResult.LineContent;
+                    _collectText = lineContent => _tmpMessageStringPluralContent += lineContent;
+                    _finishCollectingText =
+                        currentLineNumber => _entryInCreation.MessageStringPlural.Add(_tmpMessageStringPluralContent);
 
-            private void CollectText(IParseResult parseResult, int lineNumber)
-            {
-                if (_collectingMessageId && parseResult.LineType != LineType.Text)
-                {
-                    _collectingMessageId = false;
-                    _entryInCreation.MessageIdEnd = lineNumber - 1;
-                }
-                else if (_collectingMessagString && parseResult.LineType != LineType.Text)
-                {
-                    _collectingMessagString = false;
-                    _entryInCreation.MessageStringEnd = lineNumber - 1;
-                    SetCompleteEntry();
-                }
-                else if (_collectingMessageId && parseResult.LineType == LineType.Text)
-                {
-                    _entryInCreation.MessageId += parseResult.LineContent;
-                }
-                else if (_collectingMessagString && parseResult.LineType == LineType.Text)
-                {
-                    _entryInCreation.MessageString += parseResult.LineContent;
+                    _collectMessageStringPlurals = lineContent =>
+                    {
+                        _tmpMessageStringPluralContent = lineContent;
+                        _collectText = sdf => _tmpMessageStringPluralContent += sdf;
+                        _finishCollectingText =
+                            currentLineNumber => _entryInCreation.MessageStringPlural.Add(_tmpMessageStringPluralContent);
+                    };
+                    _finishCollectingMessageStringPlurals = SetCompleteEntry;
                 }
             }
 
             private void SetCompleteEntry()
             {
-                CompleteEntry = new Entry
-                {
-                    MessageContext = _entryInCreation.MessageContext,
-                    MessageId = _entryInCreation.MessageId,
-                    MessageString = _entryInCreation.MessageString,
-                    MessageIdStart = _entryInCreation.MessageIdStart,
-                    MessageIdEnd = _entryInCreation.MessageIdEnd,
-                    MessageStringStart = _entryInCreation.MessageStringStart,
-                    MessageStringEnd = _entryInCreation.MessageStringEnd,
-                };
+                CompleteEntry = _entryInCreation;
             }
         }
     }

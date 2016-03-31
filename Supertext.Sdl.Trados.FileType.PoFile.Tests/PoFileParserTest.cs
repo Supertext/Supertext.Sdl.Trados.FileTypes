@@ -20,16 +20,26 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IDocumentItemFactory _itemFactoryMock;
         private IParagraphUnitFactory _paragraphUnitFactoryMock;
 
-        [SetUp]
-        public void SetUp()
+        public PoFileParserTest()
         {
+            //Create here for performance reasons, not needed to be created for each test.
             _lineParsingSessionMock = A.Fake<ILineParsingSession>();
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgctxt ""The msgctxt text"""))
                 .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text", @"msgctxt ""The msgctxt text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The msgid text"""))
                 .Returns(new ParseResult(LineType.MessageId, "The msgid text", @"msgid ""The msgid text"""));
+            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid_plural ""The msgid_plural text"""))
+                .Returns(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", @"msgid_plural ""The msgid_plural text"""));
+            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid_plural """""))
+                .Returns(new ParseResult(LineType.MessageIdPlural, "", @"msgid_plural """""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr ""The msgstr text"""))
                 .Returns(new ParseResult(LineType.MessageString, "The msgstr text", @"msgstr ""The msgstr text"""));
+            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[0] ""The msgstr[0] text"""))
+                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", @"msgstr[0] ""The msgstr[0] text"""));
+            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[0] """""))
+                .Returns(new ParseResult(LineType.MessageStringPlural, "", @"msgstr[0] """""));
+            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[1] ""The msgstr[1] text"""))
+                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text", @"msgstr[1] ""The msgstr[1] text"""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid """""))
                 .Returns(new ParseResult(LineType.MessageId, "", @"msgid """""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr """""))
@@ -46,7 +56,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 .Returns(new ParseResult(LineType.Empty, string.Empty, string.Empty));
             A.CallTo(() => _lineParsingSessionMock.Parse(MarkerLines.EndOfFile))
                 .Returns(new ParseResult(LineType.EndOfFile, string.Empty, MarkerLines.EndOfFile));
+        }
 
+        [SetUp]
+        public void SetUp()
+        {
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
 
             _itemFactoryMock = A.Fake<IDocumentItemFactory>();
@@ -624,6 +638,91 @@ msgstr ""The msgstr text""
 
             // Assert
             A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageContext == "The msgctxt text"), A<LineType>.Ignored, A<bool>.Ignored))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenEntryMsgidPlural_ShouldCreateEntryWithMsgidPlural()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgid_plural ""The msgid_plural text""
+msgstr[0] ""The msgstr[0] text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageIdPlural == "The msgid_plural text"), A<LineType>.Ignored, A<bool>.Ignored))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenEntryMsgidPluralOnMultipleLines_ShouldCreateEntryWithMsgidPluralAndAllText()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgid_plural """"
+""The text""
+""The second text""
+msgstr[0] ""The msgstr[0] text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageIdPlural == "The textThe second text"), A<LineType>.Ignored, A<bool>.Ignored))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenEntryMsgstrPlural_ShouldCreateEntryWithMsgstrPlural()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgid_plural ""The msgid_plural text""
+msgstr[0] ""The msgstr[0] text""
+msgstr[1] ""The msgstr[1] text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageStringPlural[0] == "The msgstr[0] text" && entry.MessageStringPlural[1] == "The msgstr[1] text"), A<LineType>.Ignored, A<bool>.Ignored))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenEntryMsgstrPluralOnMultipleLines_ShouldCreateEntryWithMsgstrPluralWithAllText()
+        {
+            // Arrange
+            var testString = @"
+msgid ""The msgid text""
+msgid_plural ""The msgid_plural text""
+msgstr[0] """"
+""The text""
+""The second text""
+";
+            var testee = CreateTestee(testString);
+            testee.StartOfInput();
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<Entry>.That.Matches(entry => entry.MessageStringPlural[0] == "The textThe second text"), A<LineType>.Ignored, A<bool>.Ignored))
                 .MustHaveHappened();
         }
 
