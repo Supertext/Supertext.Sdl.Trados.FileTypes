@@ -13,7 +13,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     {
         private const string TestFilePath = "sample_file_ok";
 
-        private ILineParsingSession _lineParsingSessionMock;
+        private readonly ILineParsingSession _lineParsingSessionMock;
         private IPropertiesFactory _propertiesFactoryMock;
         private IBilingualContentHandler _bilingualContentHandlerMock;
         private IUserSettings _userSettingsMock;
@@ -344,7 +344,8 @@ msgstr ""The msgstr text""
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _paragraphUnitFactoryMock)
+            //TODO use mock EntryBuilder
+            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _paragraphUnitFactoryMock, new EntryBuilder())
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock

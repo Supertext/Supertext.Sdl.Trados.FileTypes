@@ -13,7 +13,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private readonly ILineParser _lineParser;
         private readonly IUserSettings _userSettings;
         private readonly IParagraphUnitFactory _paragraphUnitFactory;
-        private readonly EntryBuilder _entryBuilder;
+        private readonly IEntryBuilder _entryBuilder;
         private string _originalFilePath;
 
         //Parsing STATE --- is being changed during parsing 
@@ -22,14 +22,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private byte _progressInPercent;
         private int _totalNumberOfLines;
 
-        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings,
-            IParagraphUnitFactory paragraphUnitFactory)
+        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings, IParagraphUnitFactory paragraphUnitFactory, IEntryBuilder entryBuilder)
         {
             _fileHelper = fileHelper;
             _lineParser = lineParser;
             _userSettings = defaultUserSettings;
             _paragraphUnitFactory = paragraphUnitFactory;
-            _entryBuilder = new EntryBuilder();
+            _entryBuilder = entryBuilder;
         }
 
         public byte ProgressInPercent

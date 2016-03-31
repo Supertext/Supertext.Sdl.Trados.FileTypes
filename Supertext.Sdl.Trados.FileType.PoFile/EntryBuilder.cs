@@ -2,7 +2,14 @@ using System;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public class EntryBuilder
+    public interface IEntryBuilder
+    {
+        Entry CompleteEntry { get; }
+
+        void Add(IParseResult parseResult, int lineNumber);
+    }
+
+    public class EntryBuilder : IEntryBuilder
     {
         private Entry _entryInCreation;
         private Action<string> _collectText;
