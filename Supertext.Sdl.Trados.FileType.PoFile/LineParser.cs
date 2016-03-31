@@ -36,7 +36,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var emptyLine = new LinePattern(LineType.Empty, "^$", string.Empty);
             var msgctxt = new LinePattern(LineType.MessageContext, @"msgctxt\s+"".*""", @"""(.*)""");
             var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
+            var msgidplural = new LinePattern(LineType.MessageId, @"msgid_plural\s+"".*""", @"""(.*)""");
             var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
+            var msgstrplural = new LinePattern(LineType.MessageString, @"msgstr\[\d+\]\s+"".*""", @"""(.*)""");
             var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
             var comment = new LinePattern(LineType.Comment, "#", @"#[\s:,.|]\s*(.*)");
             var endOfFile = new LinePattern(LineType.EndOfFile, MarkerLines.EndOfFile, string.Empty);
@@ -52,9 +54,23 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             msgid
                 .CanBeFollowedBy(msgstr)
-                .CanBeFollowedBy(text);
+                .CanBeFollowedBy(text)
+                .CanBeFollowedBy(msgidplural);
 
             msgstr
+                .CanBeFollowedBy(text)
+                .CanBeFollowedBy(comment)
+                .CanBeFollowedBy(msgctxt)
+                .CanBeFollowedBy(msgid)
+                .CanBeFollowedBy(endOfFile)
+                .CanBeFollowedBy(emptyLine);
+
+            msgidplural
+                .CanBeFollowedBy(msgstrplural)
+                .CanBeFollowedBy(text);
+
+            msgstrplural
+                .CanBeFollowedBy(msgstrplural)
                 .CanBeFollowedBy(text)
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid)
@@ -68,6 +84,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 .CanBeFollowedBy(msgstr)
                 .After(msgstr)
                 .CanBeFollowedBy(text)
+                .CanBeFollowedBy(comment)
+                .CanBeFollowedBy(msgid)
+                .CanBeFollowedBy(endOfFile)
+                .CanBeFollowedBy(msgctxt)
+                .CanBeFollowedBy(emptyLine)
+                .After(msgidplural)
+                .CanBeFollowedBy(text)
+                .CanBeFollowedBy(msgstrplural)
+                .After(msgstrplural)
+                .CanBeFollowedBy(msgstrplural)
+                .CanBeFollowedBy(text)
                 .CanBeFollowedBy(emptyLine)
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgid)
@@ -76,8 +103,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             comment
                 .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid)
                 .CanBeFollowedBy(msgctxt)
+                .CanBeFollowedBy(msgid)
                 .CanBeFollowedBy(emptyLine);
 
             emptyLine
