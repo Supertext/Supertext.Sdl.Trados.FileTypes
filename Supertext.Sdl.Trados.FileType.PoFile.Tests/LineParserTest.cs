@@ -1100,18 +1100,64 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Parse_ShouldAddRawContent()
+        public void Parse_WhenMsgid_ShouldAddMsgidLineKeyword()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            
+            // Act
+            var result = lineParsingSession.Parse(@"msgid ""The msgid text""");
+
+            // Assert
+            result.LineKeyword.Should().Be("msgid");
+        }
+
+
+        [Test]
+        public void Parse_WhenMsgidPlural_ShouldAddMsgidLineKeyword()
         {
             // Arrange
             var testee = new LineParser();
             var lineParsingSession = testee.StartLineParsingSession();
             lineParsingSession.Parse(@"msgid ""The msgid text""");
-  
+
+            // Act
+            var result = lineParsingSession.Parse(@"msgid_plural ""The msgid_plural text""");
+
+            // Assert
+            result.LineKeyword.Should().Be("msgid_plural");
+        }
+
+        [Test]
+        public void Parse_WhenMsgstr_ShouldAddMsgstrLineKeyword()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid ""The msgid text""");
+
             // Act
             var result = lineParsingSession.Parse(@"msgstr ""The msgstr text""");
 
             // Assert
-            result.RawContent.Should().Be(@"msgstr ""The msgstr text""");
+            result.LineKeyword.Should().Be("msgstr");
+        }
+
+        [Test]
+        public void Parse_WhenMsgstrPlural_ShouldAddMsgstrPluralLineKeyword()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgid ""The msgid text""");
+            lineParsingSession.Parse(@"msgid_plural ""The msgid_plural text""");
+
+            // Act
+            var result = lineParsingSession.Parse(@"msgstr[0] ""The msgstr text""");
+
+            // Assert
+            result.LineKeyword.Should().Be("msgstr[0]");
         }
     }
 }

@@ -120,7 +120,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             private Action<string> _collectText;
             private Action<int> _finishCollectingText;
             private Action<string> _collectMessageStringPlural;
-            private Action _finishCollectingMessageStringPlurals;
+            private Action _finishCollectingMessageStringPlural;
             private string _tmpMessageStringPluralContent;
 
             public Entry CompleteEntry { get; private set; }
@@ -152,12 +152,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 _collectMessageStringPlural = null;
 
-                if (_finishCollectingMessageStringPlurals != null)
+                if (_finishCollectingMessageStringPlural != null)
                 {
-                    _finishCollectingMessageStringPlurals();
+                    _finishCollectingMessageStringPlural();
                 }
 
-                _finishCollectingMessageStringPlurals = null;
+                _finishCollectingMessageStringPlural = null;
 
                 if (CompleteEntry != null || _entryInCreation == null)
                 {
@@ -227,7 +227,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 _collectMessageStringPlural = CollectMessageStringPlural;
 
-                _finishCollectingMessageStringPlurals = SetCompleteEntry;
+                _finishCollectingMessageStringPlural = SetCompleteEntry;
             }
 
             private void CollectMessageStringPlural(string lineContent)

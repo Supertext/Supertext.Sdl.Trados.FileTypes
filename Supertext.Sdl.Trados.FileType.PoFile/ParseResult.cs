@@ -6,22 +6,22 @@
 
         string LineContent { get; }
 
-        string RawContent { get;}
+        string LineKeyword { get;}
     }
 
     public class ParseResult : IParseResult
     {
-        public ParseResult(LineType lineType, string lineContent, string rawContent)
+        public ParseResult(LineType lineType, string lineContent, string lineKeyword)
         {
             LineType = lineType;
             LineContent = lineContent;
-            RawContent = rawContent;
+            LineKeyword = lineKeyword;
         }
 
         public LineType LineType { get; }
 
         public string LineContent { get; }
 
-        public string RawContent { get; }
+        public string LineKeyword { get; }
     }
 }

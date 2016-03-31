@@ -32,16 +32,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         static LineParser()
         {
-            BeginOfFile = new LinePattern(LineType.BeginOfFile, MarkerLines.BeginOfFile, string.Empty);
-            var emptyLine = new LinePattern(LineType.Empty, "^$", string.Empty);
-            var msgctxt = new LinePattern(LineType.MessageContext, @"msgctxt\s+"".*""", @"""(.*)""");
-            var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
-            var msgidplural = new LinePattern(LineType.MessageIdPlural, @"msgid_plural\s+"".*""", @"""(.*)""");
-            var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
-            var msgstrplural = new LinePattern(LineType.MessageStringPlural, @"msgstr\[\d+\]\s+"".*""", @"""(.*)""");
-            var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
-            var comment = new LinePattern(LineType.Comment, "#", @"#[\s:,.|]\s*(.*)");
-            var endOfFile = new LinePattern(LineType.EndOfFile, MarkerLines.EndOfFile, string.Empty);
+            BeginOfFile = new LinePattern(LineType.BeginOfFile, "(" + MarkerLines.BeginOfFile + ")", string.Empty);
+            var emptyLine = new LinePattern(LineType.Empty, "(^$)", string.Empty);
+            var msgctxt = new LinePattern(LineType.MessageContext, @"(msgctxt)\s+"".*""", @"""(.*)""");
+            var msgid = new LinePattern(LineType.MessageId, @"(msgid)\s+"".*""", @"""(.*)""");
+            var msgidplural = new LinePattern(LineType.MessageIdPlural, @"(msgid_plural)\s+"".*""", @"""(.*)""");
+            var msgstr = new LinePattern(LineType.MessageString, @"(msgstr)\s+"".*""", @"""(.*)""");
+            var msgstrplural = new LinePattern(LineType.MessageStringPlural, @"(msgstr\[\d+\])\s+"".*""", @"""(.*)""");
+            var text = new LinePattern(LineType.Text, "(\")", @"""(.*)""");
+            var comment = new LinePattern(LineType.Comment, "(#)", @"#[\s:,.|]\s*(.*)");
+            var endOfFile = new LinePattern(LineType.EndOfFile, "(" + MarkerLines.EndOfFile + ")", string.Empty);
 
             BeginOfFile
                 .CanBeFollowedBy(msgid)
@@ -129,7 +129,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
 
-            return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line), line);
+            return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line),
+                applyingLinePattern.GetLineKeyword(line));
         }
 
         private static LinePattern GetApplyingLinePattern(LinePattern context, LinePattern lastLinePattern,
@@ -146,16 +147,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             private readonly List<LinePattern> _followingLinePatterns;
             private readonly Dictionary<LinePattern, List<LinePattern>> _contextfollowingLinePatterns;
-            private readonly Regex _lineStartRegex;
+            private readonly Regex _lineKeywordRegex;
             private readonly Regex _lineContentRegex;
 
             private LinePattern _context;
 
-            public LinePattern(LineType lineType, string lineStartPattern, string lineContentPattern)
+            public LinePattern(LineType lineType, string lineKeywordRegex, string lineContentPattern)
             {
                 LineType = lineType;
 
-                _lineStartRegex = new Regex(StartOfStringPattern + lineStartPattern);
+                _lineKeywordRegex = new Regex(StartOfStringPattern + lineKeywordRegex);
                 _lineContentRegex = new Regex(lineContentPattern);
                 _followingLinePatterns = new List<LinePattern>();
                 _contextfollowingLinePatterns = new Dictionary<LinePattern, List<LinePattern>>();
@@ -225,7 +226,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public bool IsApplyingTo(string line)
             {
-                return _lineStartRegex.IsMatch(line);
+                return _lineKeywordRegex.IsMatch(line);
             }
 
             public string GetContent(string line)
@@ -234,9 +235,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return match.Groups[1].Value;
             }
 
+            public string GetLineKeyword(string line)
+            {
+                var match = _lineKeywordRegex.Match(line);
+                return match.Groups[1].Value;
+            }
+
             public override string ToString()
             {
-                return LineType + "(" + _lineStartRegex + ")";
+                return LineType + "(" + _lineKeywordRegex + ")";
             }
         }
     }
