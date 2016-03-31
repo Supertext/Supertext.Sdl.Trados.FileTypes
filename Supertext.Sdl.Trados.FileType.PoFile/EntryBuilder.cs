@@ -60,6 +60,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
 
             CollectMessage(parseResult, lineNumber);
+
+            CollectComment(parseResult);
         }
 
         private void CollectMessage(IParseResult parseResult, int lineNumber)
@@ -132,6 +134,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _finishCollectingText =
                 currentLineNumber =>
                     _entryInCreation.MessageStringPlural.Add(_tmpMessageStringPluralContent);
+        }
+
+        private void CollectComment(IParseResult parseResult)
+        {
+            if (parseResult.LineType == LineType.Comment)
+            {
+                _entryInCreation.Comments.Add(parseResult.LineContent);
+            }
         }
 
         private void SetCompleteEntry()

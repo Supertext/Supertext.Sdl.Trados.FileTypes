@@ -40,7 +40,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var msgstr = new LinePattern(LineType.MessageString, @"(msgstr)\s+"".*""", @"""(.*)""");
             var msgstrplural = new LinePattern(LineType.MessageStringPlural, @"(msgstr\[\d+\])\s+"".*""", @"""(.*)""");
             var text = new LinePattern(LineType.Text, "(\")", @"""(.*)""");
-            var comment = new LinePattern(LineType.Comment, "(#)", @"#[\s:,.|]\s*(.*)");
+            var comment = new LinePattern(LineType.Comment, "(#)", @"#([\s:,.|]\s*.*)");
             var endOfFile = new LinePattern(LineType.EndOfFile, "(" + MarkerLines.EndOfFile + ")", string.Empty);
 
             BeginOfFile

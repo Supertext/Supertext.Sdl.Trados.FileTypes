@@ -4,6 +4,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class Entry
     {
+        public List<string> Comments { get; set; } = new List<string>();
+
         public string MessageContext { get; set; } = string.Empty;
 
         public string MessageId { get; set; } = string.Empty;

@@ -284,7 +284,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Add_WhenEntryMsgstrPlural_ShouldCreateEntryWithMsgstrPlural()
+        public void Add_WhenEntryHasMsgstrPlural_ShouldCreateEntryWithMsgstrPlural()
         {
             // Arrange
             var testee = new EntryBuilder();
@@ -302,7 +302,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Add_WhenEntryMsgstrPluralOnMultipleLines_ShouldCreateEntryWithMsgstrPluralWithAllText()
+        public void Add_WhenEntryHasMsgstrPluralOnMultipleLines_ShouldCreateEntryWithMsgstrPluralWithAllText()
         {
             // Arrange
             var testee = new EntryBuilder();
@@ -319,5 +319,38 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.CompleteEntry.MessageStringPlural[0].Should().Be("The msgstr[0] textThe text");
         }
 
+        [Test]
+        public void Add_WhenEntryHasComment_ShouldCreateEntryWithComment()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.Comment, ", the comment text", "#"), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+
+            // Assert
+            testee.CompleteEntry.Comments[0].Should().Be(", the comment text");
+        }
+
+        [Test]
+        public void Add_WhenEntryHasComments_ShouldCreateEntryWithComments()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.Comment, ", the comment text", "#"), 1);
+            testee.Add(new ParseResult(LineType.Comment, ", the second comment text", "#"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+
+            // Assert
+            testee.CompleteEntry.Comments[0].Should().Be(", the comment text");
+            testee.CompleteEntry.Comments[1].Should().Be(", the second comment text");
+        }
     }
 }

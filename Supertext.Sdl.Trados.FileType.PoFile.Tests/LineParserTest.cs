@@ -1064,7 +1064,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Assert
             result.LineType.Should().Be(LineType.Comment);
-            result.LineContent.Should().Be("some comment");
+            result.LineContent.Should().Be(": some comment");
         }
 
         [Test]
