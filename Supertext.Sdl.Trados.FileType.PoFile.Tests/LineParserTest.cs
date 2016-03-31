@@ -450,6 +450,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void IsValid_WhenTextAfterMsgidIsFollowedByMsgidpluralAndThenByTextAndThenByMsgstr_ShouldReturnFalse()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgid """"");
+            lineValidationSession.IsValid(@"""The msgid text""");
+            lineValidationSession.IsValid(@"msgid_plural """"");
+            lineValidationSession.IsValid(@"""The msgid_plural text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Test]
         public void IsValid_WhenTextAfterMsgstrIsFollowedByText_ShouldReturnTrue()
         {
             // Arrange

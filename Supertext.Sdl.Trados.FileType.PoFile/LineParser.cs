@@ -71,35 +71,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             msgstrplural
                 .CanBeFollowedBy(msgstrplural)
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid)
-                .CanBeFollowedBy(endOfFile)
-                .CanBeFollowedBy(msgctxt)
-                .CanBeFollowedBy(emptyLine);
+                .CanBeFollowedBySameAs(msgstr);
 
             text
                 .After(msgid)
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(msgstr)
+                .CanBeFollowedBySameAs(msgid)
                 .After(msgstr)
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid)
-                .CanBeFollowedBy(endOfFile)
-                .CanBeFollowedBy(msgctxt)
-                .CanBeFollowedBy(emptyLine)
+                .CanBeFollowedBySameAs(msgstr)
                 .After(msgidplural)
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(msgstrplural)
+                .CanBeFollowedBySameAs(msgidplural)
                 .After(msgstrplural)
-                .CanBeFollowedBy(msgstrplural)
-                .CanBeFollowedBy(text)
-                .CanBeFollowedBy(emptyLine)
-                .CanBeFollowedBy(comment)
-                .CanBeFollowedBy(msgid)
-                .CanBeFollowedBy(endOfFile)
-                .CanBeFollowedBy(msgctxt);
+                .CanBeFollowedBySameAs(msgstrplural);
 
             comment
                 .CanBeFollowedBy(comment)
@@ -201,9 +183,28 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return this;
             }
 
+            public LinePattern CanBeFollowedBySameAs(LinePattern linePattern)
+            {
+                if (_context == null)
+                {
+                    _followingLinePatterns.AddRange(linePattern._followingLinePatterns);
+                    return this;
+                }
+
+                if (!_contextfollowingLinePatterns.ContainsKey(_context))
+                {
+                    _contextfollowingLinePatterns.Add(_context, new List<LinePattern>());
+                }
+
+                _contextfollowingLinePatterns[_context].AddRange(linePattern._followingLinePatterns);
+
+                return this;
+            }
+
             public LinePattern After(LinePattern context)
             {
                 _context = context;
+
                 return this;
             }
 
