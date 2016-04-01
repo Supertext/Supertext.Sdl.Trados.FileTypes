@@ -32,24 +32,49 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public IParagraphUnit Create(Entry entry, LineType sourceLineType, bool isTargetTextNeeded)
         {
             var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
+
+            if (entry.MessageStringPlural.Count > 0)
+            {
+                var counter = 0;
+                foreach (var messageString in entry.MessageStringPlural)
+                {
+                    var messageId = counter == 0 ? entry.MessageId : entry.MessageIdPlural;
+
+                    AddSegmentPair(paragraphUnit, messageId, messageString,
+                        sourceLineType, isTargetTextNeeded);
+
+                    ++counter;
+                }
+            }
+            else
+            {
+                AddSegmentPair(paragraphUnit, entry.MessageId, entry.MessageString, sourceLineType, isTargetTextNeeded);
+            }
+            
+
+            paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
+
+            return paragraphUnit;
+        }
+
+        private void AddSegmentPair(IParagraphUnit paragraphUnit, string messageId, string messageString, LineType sourceLineType, bool isTargetTextNeeded)
+        {
             var segmentPairProperties = ItemFactory.CreateSegmentPairProperties();
 
-            var sourceText = sourceLineType == LineType.MessageString ? entry.MessageString : entry.MessageId;
+            var sourceText = sourceLineType == LineType.MessageString ? messageString : messageId;
 
             var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
             AddText(sourceSegment, sourceText);
             paragraphUnit.Source.Add(sourceSegment);
 
-            if (isTargetTextNeeded)
+            if (!isTargetTextNeeded)
             {
-                var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
-                AddText(targetSegment, entry.MessageString);
-                paragraphUnit.Target.Add(targetSegment);
+                return;
             }
 
-            paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
-
-            return paragraphUnit;
+            var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
+            AddText(targetSegment, messageString);
+            paragraphUnit.Target.Add(targetSegment);
         }
 
         private void AddText(ISegment segment, string text)

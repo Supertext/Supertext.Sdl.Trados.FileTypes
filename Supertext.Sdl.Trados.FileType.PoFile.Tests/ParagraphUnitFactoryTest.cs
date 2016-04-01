@@ -18,8 +18,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IParagraphUnit _paragraphUnitMock;
         private IParagraph _paragraphSourceMock;
         private IParagraph _paragraphTargetMock;
-        private ISegment _sourceSegmentMock;
-        private ISegment _targetSegmentMock;
+        private ISegment _sourceSegment0Mock;
+        private ISegment _targetSegment0Mock;
+        private IText _textMsgidMock;
+        private IText _textMsgidPluralMock;
+        private IText _textMsgstrMock;
+        private IText _textMsgstr0Mock;
+        private IText _textMsgstr1Mock;
+        private IText _textMsgstr2Mock;
+        private ISegment _sourceSegment1Mock;
+        private ISegment _targetSegment1Mock;
+        private ISegment _sourceSegment2Mock;
+        private ISegment _targetSegment2Mock;
+        private ISegment _sourceSegment3Mock;
+        private ISegment _targetSegment3Mock;
+        private ISegment _sourceSegment4Mock;
+        private ISegment _targetSegment4Mock;
 
         [SetUp]
         public void SetUp()
@@ -37,16 +51,63 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _paragraphTargetMock = A.Fake<IParagraph>();
             A.CallTo(() => _paragraphUnitMock.Target).Returns(_paragraphTargetMock);
 
-            _sourceSegmentMock = A.Fake<ISegment>();
-            _targetSegmentMock = A.Fake<ISegment>();
+            _sourceSegment0Mock = A.Fake<ISegment>();
+            _targetSegment0Mock = A.Fake<ISegment>();
+            _sourceSegment1Mock = A.Fake<ISegment>();
+            _targetSegment1Mock = A.Fake<ISegment>();
+            _sourceSegment2Mock = A.Fake<ISegment>();
+            _targetSegment2Mock = A.Fake<ISegment>();
+            _sourceSegment3Mock = A.Fake<ISegment>();
+            _targetSegment3Mock = A.Fake<ISegment>();
             A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
-                .ReturnsNextFromSequence(_sourceSegmentMock, _targetSegmentMock);
+                .ReturnsNextFromSequence(
+                _sourceSegment0Mock, _targetSegment0Mock,
+                _sourceSegment1Mock, _targetSegment1Mock,
+                _sourceSegment2Mock, _targetSegment2Mock,
+                _sourceSegment3Mock, _targetSegment3Mock
+                );
 
             //Default
             A.CallTo(() => _textProcessorMock.Process(A<string>.Ignored)).ReturnsLazily((string value) => new List<Fragment>
             {
                 new Fragment(InlineType.Text, value)
             });
+
+            var textPropertiesMsgidMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMsgidMock);
+
+            var textPropertiesMsgidPluralMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id plural")).Returns(textPropertiesMsgidPluralMock);
+
+            var textPropertiesMsgstrMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string")).Returns(textPropertiesMsgstrMock);
+
+            var textPropertiesMsgstr0Mock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 0")).Returns(textPropertiesMsgstr0Mock);
+
+            var textPropertiesMsgstr1Mock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 1")).Returns(textPropertiesMsgstr1Mock);
+
+            var textPropertiesMsgstr2Mock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 2")).Returns(textPropertiesMsgstr2Mock);
+
+            _textMsgidMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgidMock)).Returns(_textMsgidMock);
+
+            _textMsgidPluralMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgidPluralMock)).Returns(_textMsgidPluralMock);
+
+            _textMsgstrMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgstrMock)).Returns(_textMsgstrMock);
+
+            _textMsgstr0Mock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgstr0Mock)).Returns(_textMsgstr0Mock);
+
+            _textMsgstr1Mock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgstr1Mock)).Returns(_textMsgstr1Mock);
+
+            _textMsgstr2Mock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgstr2Mock)).Returns(_textMsgstr2Mock);
         }
 
         [Test]
@@ -140,12 +201,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 MessageString = "message string",
             };
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
-
             A.CallTo(() => _textProcessorMock.Process("message id")).Returns(new List<Fragment>
             {
                 new Fragment(InlineType.Text, "message id")
@@ -155,7 +210,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.Create(entry, LineType.MessageId, false);
 
             // Assert
-            A.CallTo(() => _sourceSegmentMock.Add(textMock)).MustHaveHappened();
+            A.CallTo(() => _sourceSegment0Mock.Add(_textMsgidMock)).MustHaveHappened();
         }
 
         [Test]
@@ -185,7 +240,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.Create(entry, LineType.MessageId, false);
 
             // Assert
-            A.CallTo(() => _sourceSegmentMock.Add(placeholderTagMock)).MustHaveHappened();
+            A.CallTo(() => _sourceSegment0Mock.Add(placeholderTagMock)).MustHaveHappened();
         }
 
         [Test]
@@ -210,12 +265,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock))
                 .Returns(tagPairMock);
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
-
             A.CallTo(() => _textProcessorMock.Process("start message id end")).Returns(new List<Fragment>
             {
                 new Fragment(InlineType.StartTag, "start"),
@@ -227,7 +276,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.Create(entry, LineType.MessageId, false);
 
             // Assert
-            A.CallTo(() => _sourceSegmentMock.Add(tagPairMock)).MustHaveHappened();
+            A.CallTo(() => _sourceSegment0Mock.Add(tagPairMock)).MustHaveHappened();
         }
 
         [Test]
@@ -251,12 +300,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var tagPairMock = A.Fake<ITagPair>();
             A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock))
                 .Returns(tagPairMock);
-
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
 
             A.CallTo(() => _textProcessorMock.Process("start message id")).Returns(new List<Fragment>
             {
@@ -316,7 +359,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Assert
             A.CallTo(() => tagPairMock1.Add(tagPairMock2));
-            A.CallTo(() => _sourceSegmentMock.Add(tagPairMock1)).MustHaveHappened();
+            A.CallTo(() => _sourceSegment0Mock.Add(tagPairMock1)).MustHaveHappened();
         }
 
         [Test]
@@ -341,12 +384,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock))
                 .Returns(tagPairMock);
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
-
             A.CallTo(() => _textProcessorMock.Process("start message id placeholder end")).Returns(new List<Fragment>
             {
                 new Fragment(InlineType.StartTag, "start"),
@@ -359,8 +396,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.Create(entry, LineType.MessageId, false);
 
             // Assert
-            A.CallTo(() => tagPairMock.Add(textMock)).MustHaveHappened();
-            A.CallTo(() => _sourceSegmentMock.Add(tagPairMock)).MustHaveHappened();
+            A.CallTo(() => tagPairMock.Add(_textMsgidMock)).MustHaveHappened();
+            A.CallTo(() => _sourceSegment0Mock.Add(tagPairMock)).MustHaveHappened();
         }
 
         [Test]
@@ -375,18 +412,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 MessageString = "message string",
             };
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
-
             // Act
             testee.Create(entry, LineType.MessageId, false);
 
             // Assert
-            A.CallTo(() => _sourceSegmentMock.Add(textMock)).MustHaveHappened();
-            A.CallTo(() => _paragraphSourceMock.Add(_sourceSegmentMock)).MustHaveHappened();
+            A.CallTo(() => _sourceSegment0Mock.Add(_textMsgidMock)).MustHaveHappened();
+            A.CallTo(() => _paragraphSourceMock.Add(_sourceSegment0Mock)).MustHaveHappened();
         }
 
         [Test]
@@ -401,18 +432,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 MessageString = "message string",
             };
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
-
             // Act
             testee.Create(entry, LineType.MessageString, false);
 
             // Assert
-            A.CallTo(() => _sourceSegmentMock.Add(textMock)).MustHaveHappened();
-            A.CallTo(() => _paragraphSourceMock.Add(_sourceSegmentMock)).MustHaveHappened();
+            A.CallTo(() => _sourceSegment0Mock.Add(_textMsgstrMock)).MustHaveHappened();
+            A.CallTo(() => _paragraphSourceMock.Add(_sourceSegment0Mock)).MustHaveHappened();
         }
 
         [Test]
@@ -427,18 +452,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 MessageString = "message string",
             };
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
-
             // Act
             testee.Create(entry, LineType.MessageId, true);
 
             // Assert
-            A.CallTo(() => _targetSegmentMock.Add(textMock)).MustHaveHappened();
-            A.CallTo(() => _paragraphTargetMock.Add(_targetSegmentMock)).MustHaveHappened();
+            A.CallTo(() => _targetSegment0Mock.Add(_textMsgstrMock)).MustHaveHappened();
+            A.CallTo(() => _paragraphTargetMock.Add(_targetSegment0Mock)).MustHaveHappened();
         }
 
         [Test]
@@ -453,21 +472,97 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 MessageString = "message string",
             };
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string")).Returns(textPropertiesMock);
-
-            var textMock = A.Fake<IText>();
-            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
-
             // Act
             testee.Create(entry, LineType.MessageId, false);
 
             // Assert
-            A.CallTo(() => _targetSegmentMock.Add(textMock)).MustNotHaveHappened();
-            A.CallTo(() => _paragraphTargetMock.Add(_targetSegmentMock)).MustNotHaveHappened();
+            A.CallTo(() => _targetSegment0Mock.Add(_textMsgstrMock)).MustNotHaveHappened();
+            A.CallTo(() => _paragraphTargetMock.Add(_targetSegment0Mock)).MustNotHaveHappened();
         }
 
+        [Test]
+        public void Create_WhenHasPluralFormAndTargetNeeded_ShouldAddMsgidWithFirstMsgstr()
+        {
+            // Arrange
+            var testee = CreateTestee();
 
+            var entry = new Entry
+            {
+                MessageId = "message id",
+                MessageIdPlural = "message id plural",
+                MessageStringPlural = new List<string>
+                {
+                    "message string 0",
+                    "message string 1",
+                    "message string 2",
+                },
+            };
+
+            // Act
+            testee.Create(entry, LineType.MessageId, true);
+
+            // Assert
+            A.CallTo(() => _sourceSegment0Mock.Add(_textMsgidMock)).MustHaveHappened();
+            A.CallTo(() => _targetSegment0Mock.Add(_textMsgstr0Mock)).MustHaveHappened();
+            A.CallTo(() => _paragraphSourceMock.Add(_sourceSegment0Mock)).MustHaveHappened();
+            A.CallTo(() => _paragraphTargetMock.Add(_targetSegment0Mock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Create_WhenHasPluralFormAndTargetNeeded_ShouldAddMsgidpluralWithSecondMsgstr()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var entry = new Entry
+            {
+                MessageId = "message id",
+                MessageIdPlural = "message id plural",
+                MessageStringPlural = new List<string>
+                {
+                    "message string 0",
+                    "message string 1",
+                    "message string 2",
+                },
+            };
+
+            // Act
+            testee.Create(entry, LineType.MessageId, true);
+
+            // Assert
+            A.CallTo(() => _sourceSegment1Mock.Add(_textMsgidPluralMock)).MustHaveHappened();
+            A.CallTo(() => _targetSegment1Mock.Add(_textMsgstr1Mock)).MustHaveHappened();
+            A.CallTo(() => _paragraphSourceMock.Add(_sourceSegment1Mock)).MustHaveHappened();
+            A.CallTo(() => _paragraphTargetMock.Add(_targetSegment1Mock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Create_WhenHasPluralFormAndTargetNeeded_ShouldAddMsgidpluralWithThirdMsgstr()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var entry = new Entry
+            {
+                MessageId = "message id",
+                MessageIdPlural = "message id plural",
+                MessageStringPlural = new List<string>
+                {
+                    "message string 0",
+                    "message string 1",
+                    "message string 2",
+                },
+            };
+
+            // Act
+            testee.Create(entry, LineType.MessageId, true);
+
+            // Assert
+            A.CallTo(() => _sourceSegment2Mock.Add(_textMsgidPluralMock)).MustHaveHappened();
+            A.CallTo(() => _targetSegment2Mock.Add(_textMsgstr2Mock)).MustHaveHappened();
+            A.CallTo(() => _paragraphSourceMock.Add(_sourceSegment2Mock)).MustHaveHappened();
+            A.CallTo(() => _paragraphTargetMock.Add(_targetSegment2Mock)).MustHaveHappened();
+        }
 
         public ParagraphUnitFactory CreateTestee()
         {
