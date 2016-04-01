@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="entryLocation" xml:space="preserve">
+  <data name="Entry_Location" xml:space="preserve">
     <value>Entry location</value>
   </data>
-  <data name="msgctxt" xml:space="preserve">
+  <data name="Message_Context" xml:space="preserve">
     <value>Message context</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

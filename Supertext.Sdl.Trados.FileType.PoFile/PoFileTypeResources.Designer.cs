@@ -61,6 +61,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entry location.
+        /// </summary>
+        internal static string Entry_Location {
+            get {
+                return ResourceManager.GetString("Entry_Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entry located at {0}-{1}.
         /// </summary>
         internal static string Entry_With_Location {
@@ -70,20 +79,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry location.
-        /// </summary>
-        internal static string entryLocation {
-            get {
-                return ResourceManager.GetString("entryLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Message context.
         /// </summary>
-        internal static string msgctxt {
+        internal static string Message_Context {
             get {
-                return ResourceManager.GetString("msgctxt", resourceCulture);
+                return ResourceManager.GetString("Message_Context", resourceCulture);
             }
         }
         
