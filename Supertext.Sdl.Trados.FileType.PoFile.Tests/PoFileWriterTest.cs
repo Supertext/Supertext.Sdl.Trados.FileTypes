@@ -136,7 +136,7 @@ line 5
         {
             var fileHelperMock = A.Fake<IFileHelper>();
 
-            _extendedStreamReaderMock = CreateExtendedStreamReaderMock(testString);
+            _extendedStreamReaderMock = ExtendedStreamReaderFake.Create(testString);
             A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFileInputPath)).Returns(_extendedStreamReaderMock);
             A.CallTo(() => fileHelperMock.GetStreamWriter(TestFileOutputPath)).Returns(_streamWriterMock);
 
@@ -179,22 +179,6 @@ line 5
             var paragraphUnitMock = A.Fake<IParagraphUnit>();
             A.CallTo(() => paragraphUnitMock.Properties).Returns(paragraphUnitPropertiesMock);
             return paragraphUnitMock;
-        }
-
-        private static IExtendedStreamReader CreateExtendedStreamReaderMock(string testString)
-        {
-            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            var counter = 0;
-            var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).Returns(null);
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsLazily(() => lines[counter++]);
-            A.CallTo(() => extendedStreamReaderMock.GetLinesWithEofLine()).ReturnsLazily(() =>
-            {
-                counter = lines.Length;
-                return lines;
-            });
-            A.CallTo(() => extendedStreamReaderMock.CurrentLineNumber).ReturnsLazily(() => counter);
-            return extendedStreamReaderMock;
         }
     }
 }

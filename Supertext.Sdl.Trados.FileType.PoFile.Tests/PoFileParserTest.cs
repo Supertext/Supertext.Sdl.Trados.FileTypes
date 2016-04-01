@@ -332,8 +332,8 @@ msgstr ""The msgstr text""
 
             A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath))
                 .ReturnsNextFromSequence(
-                    new ExtendedStreamReaderFake(testString),
-                    new ExtendedStreamReaderFake(testString));
+                    ExtendedStreamReaderFake.Create(testString),
+                    ExtendedStreamReaderFake.Create(testString));
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
