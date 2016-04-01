@@ -30,7 +30,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
         [Test]
         public void
-            ProcessParagraphUnit_WhenStart_ShouldWriteLinesFromStartToMsgidWithMsgid()
+            ProcessParagraphUnit_WhenStart_ShouldWriteLinesFromStartToMsgstr()
         {
             // Arrange
             var testString = @"line 1
@@ -41,7 +41,7 @@ line 5
 ";
             var testee = CreateTestee(testString);
 
-            var paragraphUnitMock = CreateParagraphUnitMock("3", "3", "4", "4");
+            var paragraphUnitMock = CreateParagraphUnitMock("4", "4");
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -67,8 +67,8 @@ line 7
 line 8
 ";
             var testee = CreateTestee(testString);
-            var paragraphUnitMock1 = CreateParagraphUnitMock("3", "3", "4", "4");
-            var paragraphUnitMock2 = CreateParagraphUnitMock("7", "7", "8", "8");
+            var paragraphUnitMock1 = CreateParagraphUnitMock("4", "4");
+            var paragraphUnitMock2 = CreateParagraphUnitMock("8", "8");
 
             testee.ProcessParagraphUnit(paragraphUnitMock1);
 
@@ -94,7 +94,7 @@ line 5
 ";
             var testee = CreateTestee(testString);
 
-            var paragraphUnitMock = CreateParagraphUnitMock("3", "3", "4", "4");
+            var paragraphUnitMock = CreateParagraphUnitMock("4", "4");
 
             A.CallTo(() => _segmentReader.GetTargetText(A<IEnumerable<ISegmentPair>>.Ignored)).Returns("sometext");
 
@@ -158,11 +158,9 @@ line 5
             return testee;
         }
 
-        private static IParagraphUnit CreateParagraphUnitMock(string messageIdStart, string messageIdEnd, string messageStringStart, string messageStringEnd)
+        private static IParagraphUnit CreateParagraphUnitMock(string messageStringStart, string messageStringEnd)
         {
             var entryPositionsMock = A.Fake<IContextInfo>();
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageIdStart)).Returns(messageIdStart);
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageIdEnd)).Returns(messageIdEnd);
             A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringStart)).Returns(messageStringStart);
             A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringEnd)).Returns(messageStringEnd);
 
@@ -189,16 +187,13 @@ line 5
             var counter = 0;
             var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
             A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).Returns(null);
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsLazily(() =>
-            {
-                return lines[counter++];
-            });
+            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsLazily(() => lines[counter++]);
             A.CallTo(() => extendedStreamReaderMock.GetLinesWithEofLine()).ReturnsLazily(() =>
             {
                 counter = lines.Length;
                 return lines;
             });
-
+            A.CallTo(() => extendedStreamReaderMock.CurrentLineNumber).ReturnsLazily(() => counter);
             return extendedStreamReaderMock;
         }
     }

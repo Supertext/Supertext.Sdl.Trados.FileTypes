@@ -167,9 +167,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             contextInfo.DisplayName = PoFileTypeResources.ResourceManager.GetString(ContextKeys.LocationContextType);
             contextInfo.Purpose = ContextPurpose.Location;
             contextInfo.Description = PoFileTypeResources.ResourceManager.GetString(ContextKeys.LocationContextType);
-            contextInfo.DisplayCode = "FCX";
-            contextInfo.SetMetaData(ContextKeys.MessageIdStart, entry.MessageIdStart.ToString(CultureInfo.InvariantCulture));
-            contextInfo.SetMetaData(ContextKeys.MessageIdEnd, entry.MessageIdEnd.ToString(CultureInfo.InvariantCulture));
             contextInfo.SetMetaData(ContextKeys.MessageStringStart, entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
             contextInfo.SetMetaData(ContextKeys.MessageStringEnd, entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
             return contextInfo;

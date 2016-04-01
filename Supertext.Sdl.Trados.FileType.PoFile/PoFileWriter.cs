@@ -12,7 +12,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private INativeOutputFileProperties _nativeFileProperties;
         private IExtendedStreamReader _extendedStreamReader;
         private IStreamWriter _streamWriter;
-        private int _currentInputLineNumber;
 
         public PoFileWriter(IFileHelper fileHelper, ISegmentReader segmentReader)
         {
@@ -43,24 +42,23 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
             var contextInfo = paragraphUnit.Properties.Contexts.Contexts[1];
-            var messageIdEnd = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageIdEnd));
+            var messageStringStart = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringStart));
             var messageStringEnd = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringEnd));
 
-            WriteOriginalLinesUntil(messageIdEnd);
+            WriteOriginalLinesUntil(messageStringStart);
 
             _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(paragraphUnit.SegmentPairs) + "\"");
 
             MoveTo(messageStringEnd);
         }
 
-        private void WriteOriginalLinesUntil(int messageIdEnd)
+        private void WriteOriginalLinesUntil(int lineNumber)
         {
             string currentInputLine;
             while ((currentInputLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
-                ++_currentInputLineNumber;
 
-                if (_currentInputLineNumber <= messageIdEnd)
+                if (_extendedStreamReader.CurrentLineNumber < lineNumber)
                 {
                     _streamWriter.WriteLine(currentInputLine);
                 }
@@ -71,13 +69,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
         }
 
-        private void MoveTo(int messageStringEnd)
+        private void MoveTo(int lineNumber)
         {
             do
             {
-                if (_currentInputLineNumber < messageStringEnd)
+                if (_extendedStreamReader.CurrentLineNumber < lineNumber)
                 {
-                    ++_currentInputLineNumber;
                     continue;
                 }
 

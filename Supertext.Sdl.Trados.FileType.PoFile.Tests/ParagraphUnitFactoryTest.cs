@@ -50,36 +50,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Create_ShouldSetMessageIdLocationContext()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            var contextPropertiesMock = A.Fake<IContextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
-
-            var contextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(ContextKeys.LocationContextType))
-                .Returns(contextInfoMock);
-
-            var entry = new Entry
-            {
-                MessageIdStart = 2,
-                MessageIdEnd = 3,
-                MessageStringStart = 4,
-                MessageStringEnd = 5
-            };
-
-            // Act
-            testee.Create(entry, LineType.MessageId, false);
-
-            // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdStart, "2")).MustHaveHappened();
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageIdEnd, "3")).MustHaveHappened();
-            A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
-        }
-
-        [Test]
         public void Create_ShouldSetMessageStringLocationContext()
         {
             // Arrange
