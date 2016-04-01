@@ -8,6 +8,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     public interface ISegmentReader
     {
         string GetTargetText(IEnumerable<ISegmentPair> segmentPairs);
+
+        string GetTargetText(ISegmentPair segmentPair);
     }
 
     public class SegmentReader : ISegmentReader, IMarkupDataVisitor
@@ -22,6 +24,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             {
                 VisitChildren(segmentPair.Target);
             }
+
+            return _textStringBuilder.ToString();
+        }
+
+        public string GetTargetText(ISegmentPair segmentPair)
+        {
+            _textStringBuilder = new StringBuilder();
+
+            VisitChildren(segmentPair.Target);
 
             return _textStringBuilder.ToString();
         }
