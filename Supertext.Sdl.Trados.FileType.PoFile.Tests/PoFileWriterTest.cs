@@ -150,7 +150,7 @@ line 5
 
             var filePropertiesMock = A.Fake<IFileProperties>();
 
-            var testee = new PoFileWriter(fileHelperMock, _segmentReader, _lineParserMock, _entryBuilderMock);
+            var testee = new PoFileWriter(fileHelperMock, _segmentReader);
             testee.SetOutputProperties(nativeOutputFilePropertiesMock);
             testee.GetProposedOutputFileInfo(persistentFileConversionPropertiesMock, outputFileInfoMock);
             testee.SetFileProperties(filePropertiesMock);

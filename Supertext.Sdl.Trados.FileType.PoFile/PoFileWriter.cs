@@ -10,7 +10,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private readonly ISegmentReader _segmentReader;
         private IPersistentFileConversionProperties _originalFileProperties;
         private INativeOutputFileProperties _nativeFileProperties;
-        private IStreamReader _streamReader;
+        private IExtendedStreamReader _extendedStreamReader;
         private IStreamWriter _streamWriter;
         private int _currentInputLineNumber;
 
@@ -26,7 +26,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void SetFileProperties(IFileProperties fileInfo)
         {
-            _streamReader = _fileHelper.GetStreamReader(_originalFileProperties.OriginalFilePath);
+            _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_originalFileProperties.OriginalFilePath);
             _streamWriter = _fileHelper.GetStreamWriter(_nativeFileProperties.OutputFilePath);
         }
 
@@ -56,7 +56,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private void WriteOriginalLinesUntil(int messageIdEnd)
         {
             string currentInputLine;
-            while ((currentInputLine = _streamReader.ReadLine()) != null)
+            while ((currentInputLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
                 ++_currentInputLineNumber;
 
@@ -82,7 +82,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 }
 
                 break;
-            } while (_streamReader.ReadLine() != null);
+            } while (_extendedStreamReader.ReadLineWithEofLine() != null);
         }
 
         public void Complete()
@@ -91,8 +91,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void FileComplete()
         {
-            _streamReader.Close();
-            _streamReader.Dispose();
+            _extendedStreamReader.Close();
+            _extendedStreamReader.Dispose();
             _streamWriter.Close();
             _streamWriter.Dispose();
         }
