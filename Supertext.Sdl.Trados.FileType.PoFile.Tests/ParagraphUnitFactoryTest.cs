@@ -159,7 +159,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Create_WhenTextIsText_ShouldAddText()
+        public void Create_WhenTextIsTextInlineType_ShouldAddText()
         {
             // Arrange
             var testee = CreateTestee();
@@ -189,7 +189,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Create_WhenTextIsPlaceholder_ShouldAddPlaceholder()
+        public void Create_WhenTextIsPlaceholderInlineType_ShouldAddPlaceholder()
         {
             // Arrange
             var testee = CreateTestee();
@@ -496,6 +496,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _targetSegmentMock.Add(textMock)).MustNotHaveHappened();
             A.CallTo(() => _paragraphTargetMock.Add(_targetSegmentMock)).MustNotHaveHappened();
         }
+
+
 
         public ParagraphUnitFactory CreateTestee()
         {

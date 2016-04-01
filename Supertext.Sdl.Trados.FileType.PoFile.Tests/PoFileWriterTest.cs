@@ -11,18 +11,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     [TestFixture]
     public class PoFileWriterTest
     {
-        private IStreamReader _streamReaderMock;
         private IStreamWriter _streamWriterMock;
         private ISegmentReader _segmentReader;
+        private ILineParser _lineParserMock;
+        private IEntryBuilder _entryBuilderMock;
+        private IExtendedStreamReader _extendedStreamReaderMock;
         private const string TestFileInputPath = "sample_input_file_ok";
         private const string TestFileOutputPath = "sample_output_file_ok";
 
         [SetUp]
         public void SetUp()
         {
-            _streamReaderMock = A.Fake<IStreamReader>();
             _streamWriterMock = A.Fake<IStreamWriter>();
             _segmentReader = A.Fake<ISegmentReader>();
+            _lineParserMock = A.Fake<ILineParser>();
+            _entryBuilderMock = A.Fake<IEntryBuilder>();
         }
 
         [Test]
@@ -30,13 +33,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             ProcessParagraphUnit_WhenStart_ShouldWriteLinesFromStartToMsgidWithMsgid()
         {
             // Arrange
-            var testee = CreateTestee();
-            SetStreamReaderData(@"line 1
+            var testString = @"line 1
 line 2
 line 3
 line 4
 line 5
-");
+";
+            var testee = CreateTestee(testString);
 
             var paragraphUnitMock = CreateParagraphUnitMock("3", "3", "4", "4");
 
@@ -54,8 +57,7 @@ line 5
             ProcessParagraphUnit_WhenParagraphUnitAlreadyProcessed_ShouldWriteLinesFromProcessedToNewParagraphUnitWithMsgid()
         {
             // Arrange
-            var testee = CreateTestee();
-            SetStreamReaderData(@"line 1
+            var testString = @"line 1
 line 2
 line 3
 line 4
@@ -63,8 +65,8 @@ line 5
 line 6
 line 7
 line 8
-");
-
+";
+            var testee = CreateTestee(testString);
             var paragraphUnitMock1 = CreateParagraphUnitMock("3", "3", "4", "4");
             var paragraphUnitMock2 = CreateParagraphUnitMock("7", "7", "8", "8");
 
@@ -84,13 +86,13 @@ line 8
             ProcessParagraphUnit_ShouldWriteNewMsgstr()
         {
             // Arrange
-            var testee = CreateTestee();
-            SetStreamReaderData(@"line 1
+            var testString = @"line 1
 line 2
 line 3
 line 4
 line 5
-");
+";
+            var testee = CreateTestee(testString);
 
             var paragraphUnitMock = CreateParagraphUnitMock("3", "3", "4", "4");
 
@@ -107,20 +109,20 @@ line 5
         public void FileComplete_ShouldCloseStreamReader()
         {
             // Arrange
-            var testee = CreateTestee();
+            var testee = CreateTestee(string.Empty);
 
             // Act
             testee.FileComplete();
 
             // Assert
-            A.CallTo(() => _streamReaderMock.Close()).MustHaveHappened();
+            A.CallTo(() => _extendedStreamReaderMock.Close()).MustHaveHappened();
         }
 
         [Test]
         public void FileComplete_ShouldCloseStreamWriter()
         {
             // Arrange
-            var testee = CreateTestee();
+            var testee = CreateTestee(string.Empty);
 
             // Act
             testee.FileComplete();
@@ -130,10 +132,12 @@ line 5
         }
 
 
-        public PoFileWriter CreateTestee()
+        public PoFileWriter CreateTestee(string testString)
         {
             var fileHelperMock = A.Fake<IFileHelper>();
-            A.CallTo(() => fileHelperMock.GetStreamReader(TestFileInputPath)).Returns(_streamReaderMock);
+
+            _extendedStreamReaderMock = CreateExtendedStreamReaderMock(testString);
+            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFileInputPath)).Returns(_extendedStreamReaderMock);
             A.CallTo(() => fileHelperMock.GetStreamWriter(TestFileOutputPath)).Returns(_streamWriterMock);
 
             var persistentFileConversionPropertiesMock = A.Fake<IPersistentFileConversionProperties>();
@@ -146,7 +150,7 @@ line 5
 
             var filePropertiesMock = A.Fake<IFileProperties>();
 
-            var testee = new PoFileWriter(fileHelperMock, _segmentReader);
+            var testee = new PoFileWriter(fileHelperMock, _segmentReader, _lineParserMock, _entryBuilderMock);
             testee.SetOutputProperties(nativeOutputFilePropertiesMock);
             testee.GetProposedOutputFileInfo(persistentFileConversionPropertiesMock, outputFileInfoMock);
             testee.SetFileProperties(filePropertiesMock);
@@ -179,11 +183,23 @@ line 5
             return paragraphUnitMock;
         }
 
-        private void SetStreamReaderData(string inputLines)
+        private static IExtendedStreamReader CreateExtendedStreamReaderMock(string testString)
         {
-            A.CallTo(() => _streamReaderMock.ReadLine()).Returns(null);
-            A.CallTo(() => _streamReaderMock.ReadLine()).ReturnsNextFromSequence(inputLines.Split(new[] {Environment.NewLine},
-                StringSplitOptions.None));
+            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var counter = 0;
+            var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
+            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).Returns(null);
+            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsLazily(() =>
+            {
+                return lines[counter++];
+            });
+            A.CallTo(() => extendedStreamReaderMock.GetLinesWithEofLine()).ReturnsLazily(() =>
+            {
+                counter = lines.Length;
+                return lines;
+            });
+
+            return extendedStreamReaderMock;
         }
     }
 }

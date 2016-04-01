@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
@@ -15,6 +16,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         public int CurrentLineNumber { get; private set; }
+
+        public bool Closed { get; private set; }
 
         public string ReadLineWithEofLine()
         {
@@ -34,6 +37,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
         public void Close()
         {
+            Closed = true;
         }
 
         public void Dispose()
