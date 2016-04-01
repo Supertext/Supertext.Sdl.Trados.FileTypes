@@ -131,4 +131,8 @@
     <value>Unexpected line ({0}), next expected line patterns: {1}</value>
     <comment>{0}: line that is invalid, {1}: next expected lines</comment>
   </data>
+  <data name="Entry_With_Location" xml:space="preserve">
+    <value>Entry located at {0}-{1}</value>
+    <comment>{0}: entry start, {1}: entry end</comment>
+  </data>
 </root>
