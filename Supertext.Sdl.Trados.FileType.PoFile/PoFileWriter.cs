@@ -50,7 +50,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var contextInfo = paragraphUnit.Properties.Contexts.Contexts[1];
             var messageStringStart = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringStart));
-            var messageStringEnd = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringEnd));
 
             string currentOriginalLine;
 

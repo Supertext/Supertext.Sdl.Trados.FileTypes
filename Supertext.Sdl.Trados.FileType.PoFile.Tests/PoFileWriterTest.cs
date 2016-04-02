@@ -37,6 +37,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             A.CallTo(() => lineParsingSession.Parse("msgstr[2] end"))
                 .Returns(new ParseResult(LineType.MessageStringPlural, "msgstr[2] end", "msgstr[2]"));
+
+            A.CallTo(() => lineParsingSession.Parse("msgid empty"))
+                .Returns(new ParseResult(LineType.MessageId, "msgid empty", "msgid"));
         }
 
         [Test]
@@ -157,6 +160,23 @@ msgstr end
         }
 
         [Test]
+        public void
+            ProcessParagraphUnit_WhenMsgidIsEmpty_ShouldIgnoreEntry()
+        {
+            // Arrange
+            var testString = @"msgid empty";
+
+            var testee = CreateTestee(testString);
+            var paragraphUnitMock = CreateParagraphUnitMock(2, 2);
+
+            // Act
+            testee.ProcessParagraphUnit(paragraphUnitMock);
+
+            // Assert
+            A.CallTo(() => _streamWriterMock.WriteLine(A<string>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
         public void FileComplete_ShouldCloseStreamReader()
         {
             // Arrange
@@ -259,7 +279,15 @@ msgstr end
                     MessageId = "message id",
                     MessageString = "message string"
                 };
-            }else if (parseResult.LineType == LineType.MessageStringPlural && parseResult.LineContent == "msgstr[2] end")
+            }else if (parseResult.LineType == LineType.MessageId && parseResult.LineContent == "msgid empty")
+            {
+                CompleteEntry = new Entry
+                {
+                    MessageId = "",
+                    MessageString = "message string"
+                };
+            }
+            else if(parseResult.LineType == LineType.MessageStringPlural && parseResult.LineContent == "msgstr[2] end")
             {
                 CompleteEntry = new Entry
                 {
