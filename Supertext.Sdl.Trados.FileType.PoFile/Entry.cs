@@ -28,6 +28,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public int MessageStringEnd { get; set; }
 
+        public bool IsPluralForm => !string.IsNullOrEmpty(MessageIdPlural) && MessageStringPlural.Count > 0;
+
         public string Description => string.Format(PoFileTypeResources.Entry_With_Location, Start , End);
     }
 }

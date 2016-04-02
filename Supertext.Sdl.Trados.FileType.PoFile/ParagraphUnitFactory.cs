@@ -33,7 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
 
-            if (entry.MessageStringPlural.Count > 0)
+            if (entry.IsPluralForm)
             {
                 var counter = 0;
                 foreach (var messageString in entry.MessageStringPlural)

@@ -69,8 +69,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     continue;
                 }
 
-                //Todo refactor -> IsPluralForm
-                if (_entryBuilder.CompleteEntry.MessageStringPlural.Count > 0)
+                if (_entryBuilder.CompleteEntry.IsPluralForm)
                 {
                     var segmentPairCounter = 0;
                     foreach (var segmentPair in paragraphUnit.SegmentPairs)
