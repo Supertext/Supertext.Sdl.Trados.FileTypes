@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FakeItEasy;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -15,6 +14,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private ISegmentReader _segmentReader;
         private ILineParser _lineParserMock;
         private IEntryBuilder _entryBuilderMock;
+        private ILineParsingSession _lineParsingSession;
         private IExtendedStreamReader _extendedStreamReaderMock;
         private const string TestFileInputPath = "sample_input_file_ok";
         private const string TestFileOutputPath = "sample_output_file_ok";
@@ -25,21 +25,43 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _streamWriterMock = A.Fake<IStreamWriter>();
             _segmentReader = A.Fake<ISegmentReader>();
             _lineParserMock = A.Fake<ILineParser>();
-            _entryBuilderMock = new EntryBuilderFake();
 
-            var lineParsingSession = A.Fake<ILineParsingSession>();
-            A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(lineParsingSession);
-            A.CallTo(() => lineParsingSession.Parse(A<string>.Ignored))
-                .Returns(new ParseResult(LineType.Empty, string.Empty));
+            _entryBuilderMock = A.Fake<IEntryBuilder>();
+            _lineParsingSession = A.Fake<ILineParsingSession>();
+            A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(_lineParsingSession);
 
-            A.CallTo(() => lineParsingSession.Parse("msgstr end"))
-                .Returns(new ParseResult(LineType.MessageString, "msgstr end"));
+            MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
+            MathParseResultWithEntry("msgstr message string", new ParseResult(LineType.MessageString, "message string"), new Entry
+            {
+                MessageId = "message id",
+                MessageString = "message string"
+            });
+            MathParseResultWithEntry("msgid", new ParseResult(LineType.MessageId, string.Empty), new Entry
+            {
+                MessageId = string.Empty,
+                MessageString = "message string"
+            });
+            MathParseResultWithEntry("msgstr[2] message string 2", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
+            {
+                MessageId = "message id",
+                MessageIdPlural = "message id plural",
+                MessageStringPlural = new List<string>
+                    {
+                        "message string 0",
+                        "message string 1",
+                        "message string 2"
+                    }
+            });
+        }
 
-            A.CallTo(() => lineParsingSession.Parse("msgstr[2] end"))
-                .Returns(new ParseResult(LineType.MessageStringPlural, "msgstr[2] end"));
+        private void MathParseResultWithEntry(string line, IParseResult parseResult, Entry completeEntry)
+        {
+            A.CallTo(() => _lineParsingSession.Parse(line ?? A<string>.Ignored)).Returns(parseResult);
 
-            A.CallTo(() => lineParsingSession.Parse("msgid empty"))
-                .Returns(new ParseResult(LineType.MessageId, "msgid empty"));
+            A.CallTo(() => _entryBuilderMock.Add(parseResult, A<int>.Ignored)).Invokes(() =>
+            {
+                A.CallTo(() => _entryBuilderMock.CompleteEntry).Returns(completeEntry);
+            });
         }
 
         [Test]
@@ -74,11 +96,11 @@ line 5
             var testString = @"line 1
 line 2
 line 3
-msgstr end
+msgstr message string
 line 5
 line 6
 line 7
-msgstr end
+msgstr message string
 ";
             var testee = CreateTestee(testString);
             var paragraphUnitMock1 = CreateParagraphUnitMock(4, 4);
@@ -103,7 +125,7 @@ msgstr end
             var testString = @"line 1
 line 2
 line 3
-msgstr end
+msgstr message string
 ";
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 4);
@@ -122,7 +144,7 @@ msgstr end
             ProcessParagraphUnit_WhenEntryHasOneMessageStringOnMultipleLines_ShouldWriteMessageStringWithTextLines()
         {
             // Arrange
-            var testString = @"msgstr end";
+            var testString = @"msgstr message string";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
@@ -143,7 +165,7 @@ msgstr end
             ProcessParagraphUnit_WhenEntryHasPluralForm_ShouldWriteMessageStringPlurals()
         {
             // Arrange
-            var testString = @"msgstr[2] end";
+            var testString = @"msgstr[2] message string 2";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
@@ -164,7 +186,7 @@ msgstr end
             ProcessParagraphUnit_WhenMsgidIsEmpty_ShouldIgnoreEntry()
         {
             // Arrange
-            var testString = @"msgid empty";
+            var testString = @"msgid";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(2, 2);
@@ -201,7 +223,6 @@ msgstr end
             // Assert
             A.CallTo(() => _streamWriterMock.Close()).MustHaveHappened();
         }
-
 
         public PoFileWriter CreateTestee(string testString)
         {
@@ -259,50 +280,6 @@ msgstr end
             A.CallTo(() => paragraphUnitMock.SegmentPairs).Returns(segmentPairs);
             A.CallTo(() => paragraphUnitMock.Properties).Returns(paragraphUnitPropertiesMock);
             return paragraphUnitMock;
-
-           
-        }
-    }
-
-    public class EntryBuilderFake : IEntryBuilder
-    {
-        public Entry CompleteEntry { get; private set; }
-
-        public void Add(IParseResult parseResult, int lineNumber)
-        {
-            CompleteEntry = null;
-
-            if (parseResult.LineType == LineType.MessageString && parseResult.LineContent == "msgstr end")
-            {
-                CompleteEntry = new Entry
-                {
-                    MessageId = "message id",
-                    MessageString = "message string"
-                };
-            }else if (parseResult.LineType == LineType.MessageId && parseResult.LineContent == "msgid empty")
-            {
-                CompleteEntry = new Entry
-                {
-                    MessageId = "",
-                    MessageString = "message string"
-                };
-            }
-            else if(parseResult.LineType == LineType.MessageStringPlural && parseResult.LineContent == "msgstr[2] end")
-            {
-                CompleteEntry = new Entry
-                {
-                    MessageId = "message id",
-                    MessageIdPlural = "message id plural",
-                    MessageStringPlural = new List<string>
-                    {
-                        "message string 0",
-                        "message string 1",
-                        "message string 2"
-                    }
-                };
-            }
-
-
         }
     }
 }

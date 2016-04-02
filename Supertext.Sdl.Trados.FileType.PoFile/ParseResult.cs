@@ -19,5 +19,23 @@
 
         public string LineContent { get; }
 
+        public override bool Equals(object obj)
+        {
+            var other = obj as ParseResult;
+            return other != null && other.LineType == LineType && string.Equals(LineContent, other.LineContent);
+        }
+
+        protected bool Equals(ParseResult other)
+        {
+            return LineType == other.LineType && string.Equals(LineContent, other.LineContent);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int) LineType*397) ^ (LineContent != null ? LineContent.GetHashCode() : 0);
+            }
+        }
     }
 }
