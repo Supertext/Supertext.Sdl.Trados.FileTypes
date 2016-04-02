@@ -65,7 +65,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IFileGenerator BuildFileGenerator(string name)
         {
-            var writer = new PoFileWriter(new FileHelper(), new SegmentReader());
+            var writer = new PoFileWriter(new FileHelper(), new SegmentReader(), new LineParser(), new EntryBuilder());
             return FileTypeManager.BuildFileGenerator(writer);
         }
 

@@ -8,15 +8,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         private readonly IFileHelper _fileHelper;
         private readonly ISegmentReader _segmentReader;
+        private readonly ILineParser _lineParser;
+        private readonly IEntryBuilder _entryBuilder;
         private IPersistentFileConversionProperties _originalFileProperties;
         private INativeOutputFileProperties _nativeFileProperties;
         private IExtendedStreamReader _extendedStreamReader;
         private IStreamWriter _streamWriter;
 
-        public PoFileWriter(IFileHelper fileHelper, ISegmentReader segmentReader)
+        private ILineParsingSession _lineParsingSession;
+
+        public PoFileWriter(IFileHelper fileHelper, ISegmentReader segmentReader, ILineParser lineParser, IEntryBuilder entryBuilder)
         {
             _fileHelper = fileHelper;
             _segmentReader = segmentReader;
+            _lineParser = lineParser;
+            _entryBuilder = entryBuilder;
         }
 
         public void Initialize(IDocumentProperties documentInfo)
@@ -27,6 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_originalFileProperties.OriginalFilePath);
             _streamWriter = _fileHelper.GetStreamWriter(_nativeFileProperties.OutputFilePath);
+            _lineParsingSession = _lineParser.StartLineParsingSession();
         }
 
         public void GetProposedOutputFileInfo(IPersistentFileConversionProperties fileProperties, IOutputFileInfo proposedFileInfo)
@@ -45,41 +52,57 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var messageStringStart = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringStart));
             var messageStringEnd = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringEnd));
 
-            WriteOriginalLinesUntil(messageStringStart);
+            string currentOriginalLine;
 
-            _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(paragraphUnit.SegmentPairs) + "\"");
-
-            MoveTo(messageStringEnd);
-        }
-
-        private void WriteOriginalLinesUntil(int lineNumber)
-        {
-            string currentInputLine;
-            while ((currentInputLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
+            while ((currentOriginalLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
-
-                if (_extendedStreamReader.CurrentLineNumber < lineNumber)
+                if (_extendedStreamReader.CurrentLineNumber < messageStringStart)
                 {
-                    _streamWriter.WriteLine(currentInputLine);
+                    _streamWriter.WriteLine(currentOriginalLine);
                 }
-                else
-                {
-                    break;
-                }
-            }
-        }
 
-        private void MoveTo(int lineNumber)
-        {
-            do
-            {
-                if (_extendedStreamReader.CurrentLineNumber < lineNumber)
+                var parseResult = _lineParsingSession.Parse(currentOriginalLine);
+
+                _entryBuilder.Add(parseResult, _extendedStreamReader.CurrentLineNumber);
+
+                if (_entryBuilder.CompleteEntry == null || string.IsNullOrEmpty(_entryBuilder.CompleteEntry.MessageId))
                 {
                     continue;
                 }
 
+                //Todo refactor -> IsPluralForm
+                if (_entryBuilder.CompleteEntry.MessageStringPlural.Count > 0)
+                {
+                    var segmentPairCounter = 0;
+                    foreach (var segmentPair in paragraphUnit.SegmentPairs)
+                    {
+                        _streamWriter.WriteLine("msgstr["+segmentPairCounter+"] \"" + _segmentReader.GetTargetText(segmentPair) + "\"");
+
+                        segmentPairCounter++;
+                    }
+                }
+                else
+                {
+                    var segmentPairCounter = 0;
+                    foreach (var segmentPair in paragraphUnit.SegmentPairs)
+                    {
+                        if (segmentPairCounter == 0)
+                        {
+                            _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(segmentPair) + "\"");
+
+                        }
+                        else
+                        {
+                            _streamWriter.WriteLine("\"" + _segmentReader.GetTargetText(segmentPair) + "\"");
+                        }
+
+                        segmentPairCounter++;
+                    }
+                }
+
                 break;
-            } while (_extendedStreamReader.ReadLineWithEofLine() != null);
+            }
+
         }
 
         public void Complete()

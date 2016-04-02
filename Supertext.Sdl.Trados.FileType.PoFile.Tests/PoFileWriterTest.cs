@@ -25,7 +25,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _streamWriterMock = A.Fake<IStreamWriter>();
             _segmentReader = A.Fake<ISegmentReader>();
             _lineParserMock = A.Fake<ILineParser>();
-            _entryBuilderMock = A.Fake<IEntryBuilder>();
+            _entryBuilderMock = new EntryBuilderFake();
+
+            var lineParsingSession = A.Fake<ILineParsingSession>();
+            A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(lineParsingSession);
+            A.CallTo(() => lineParsingSession.Parse(A<string>.Ignored))
+                .Returns(new ParseResult(LineType.Empty, string.Empty, string.Empty));
+
+            A.CallTo(() => lineParsingSession.Parse("msgstr end"))
+                .Returns(new ParseResult(LineType.MessageString, "msgstr end", "msgstr"));
+
+            A.CallTo(() => lineParsingSession.Parse("msgstr[2] end"))
+                .Returns(new ParseResult(LineType.MessageStringPlural, "msgstr[2] end", "msgstr[2]"));
         }
 
         [Test]
@@ -41,7 +52,7 @@ line 5
 ";
             var testee = CreateTestee(testString);
 
-            var paragraphUnitMock = CreateParagraphUnitMock("4", "4");
+            var paragraphUnitMock = CreateParagraphUnitMock(4, 4);
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -60,15 +71,15 @@ line 5
             var testString = @"line 1
 line 2
 line 3
-line 4
+msgstr end
 line 5
 line 6
 line 7
-line 8
+msgstr end
 ";
             var testee = CreateTestee(testString);
-            var paragraphUnitMock1 = CreateParagraphUnitMock("4", "4");
-            var paragraphUnitMock2 = CreateParagraphUnitMock("8", "8");
+            var paragraphUnitMock1 = CreateParagraphUnitMock(4, 4);
+            var paragraphUnitMock2 = CreateParagraphUnitMock(8, 8);
 
             testee.ProcessParagraphUnit(paragraphUnitMock1);
 
@@ -83,26 +94,66 @@ line 8
 
         [Test]
         public void
-            ProcessParagraphUnit_ShouldWriteNewMsgstr()
+            ProcessParagraphUnit_WhenEntryHasOneMessageString_ShouldWriteMessageString()
         {
             // Arrange
             var testString = @"line 1
 line 2
 line 3
-line 4
-line 5
+msgstr end
 ";
             var testee = CreateTestee(testString);
+            var paragraphUnitMock = CreateParagraphUnitMock(4, 4);
 
-            var paragraphUnitMock = CreateParagraphUnitMock("4", "4");
-
-            A.CallTo(() => _segmentReader.GetTargetText(A<IEnumerable<ISegmentPair>>.Ignored)).Returns("sometext");
+            A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""sometext""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened();
+        }
+
+        [Test]
+        public void
+            ProcessParagraphUnit_WhenEntryHasOneMessageStringOnMultipleLines_ShouldWriteMessageStringWithTextLines()
+        {
+            // Arrange
+            var testString = @"msgstr end";
+
+            var testee = CreateTestee(testString);
+            var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
+
+            A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
+
+            // Act
+            testee.ProcessParagraphUnit(paragraphUnitMock);
+
+            // Assert
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"""message string""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"""message string""")).MustHaveHappened();
+        }
+
+        [Test]
+        public void
+            ProcessParagraphUnit_WhenEntryHasPluralForm_ShouldWriteMessageStringPlurals()
+        {
+            // Arrange
+            var testString = @"msgstr[2] end";
+
+            var testee = CreateTestee(testString);
+            var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
+
+            A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
+
+            // Act
+            testee.ProcessParagraphUnit(paragraphUnitMock);
+
+            // Assert
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr[0] ""message string""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr[1] ""message string""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr[2] ""message string""")).MustHaveHappened();
         }
 
         [Test]
@@ -150,7 +201,7 @@ line 5
 
             var filePropertiesMock = A.Fake<IFileProperties>();
 
-            var testee = new PoFileWriter(fileHelperMock, _segmentReader);
+            var testee = new PoFileWriter(fileHelperMock, _segmentReader, _lineParserMock, _entryBuilderMock);
             testee.SetOutputProperties(nativeOutputFilePropertiesMock);
             testee.GetProposedOutputFileInfo(persistentFileConversionPropertiesMock, outputFileInfoMock);
             testee.SetFileProperties(filePropertiesMock);
@@ -158,11 +209,11 @@ line 5
             return testee;
         }
 
-        private static IParagraphUnit CreateParagraphUnitMock(string messageStringStart, string messageStringEnd)
+        private static IParagraphUnit CreateParagraphUnitMock(int messageStringStart, int messageStringEnd)
         {
             var entryPositionsMock = A.Fake<IContextInfo>();
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringStart)).Returns(messageStringStart);
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringEnd)).Returns(messageStringEnd);
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringStart)).Returns(messageStringStart.ToString());
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringEnd)).Returns(messageStringEnd.ToString());
 
             var contextInfoMocks = new List<IContextInfo>
             {
@@ -176,9 +227,54 @@ line 5
             var paragraphUnitPropertiesMock = A.Fake<IParagraphUnitProperties>();
             A.CallTo(() => paragraphUnitPropertiesMock.Contexts).Returns(contextPropertiesMock);
 
+            var segmentPairCount = (messageStringEnd - messageStringStart) + 1;
+            var segmentPairs = new List<ISegmentPair>();
+
+            for (var i = 0; i < segmentPairCount; i++)
+            {
+                segmentPairs.Add(A.Fake<ISegmentPair>());
+            }
+
             var paragraphUnitMock = A.Fake<IParagraphUnit>();
+            A.CallTo(() => paragraphUnitMock.SegmentPairs).Returns(segmentPairs);
             A.CallTo(() => paragraphUnitMock.Properties).Returns(paragraphUnitPropertiesMock);
             return paragraphUnitMock;
+
+           
+        }
+    }
+
+    public class EntryBuilderFake : IEntryBuilder
+    {
+        public Entry CompleteEntry { get; private set; }
+
+        public void Add(IParseResult parseResult, int lineNumber)
+        {
+            CompleteEntry = null;
+
+            if (parseResult.LineType == LineType.MessageString && parseResult.LineContent == "msgstr end")
+            {
+                CompleteEntry = new Entry
+                {
+                    MessageId = "message id",
+                    MessageString = "message string"
+                };
+            }else if (parseResult.LineType == LineType.MessageStringPlural && parseResult.LineContent == "msgstr[2] end")
+            {
+                CompleteEntry = new Entry
+                {
+                    MessageId = "message id",
+                    MessageIdPlural = "message id plural",
+                    MessageStringPlural = new List<string>
+                    {
+                        "message string 0",
+                        "message string 1",
+                        "message string 2"
+                    }
+                };
+            }
+
+
         }
     }
 }
