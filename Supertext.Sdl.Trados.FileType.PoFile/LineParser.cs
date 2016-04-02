@@ -32,16 +32,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         static LineParser()
         {
-            BeginOfFile = new LinePattern(LineType.BeginOfFile, "(" + MarkerLines.BeginOfFile + ")", string.Empty);
-            var emptyLine = new LinePattern(LineType.Empty, "(^$)", string.Empty);
-            var msgctxt = new LinePattern(LineType.MessageContext, @"(msgctxt)\s+"".*""", @"""(.*)""");
-            var msgid = new LinePattern(LineType.MessageId, @"(msgid)\s+"".*""", @"""(.*)""");
-            var msgidplural = new LinePattern(LineType.MessageIdPlural, @"(msgid_plural)\s+"".*""", @"""(.*)""");
-            var msgstr = new LinePattern(LineType.MessageString, @"(msgstr)\s+"".*""", @"""(.*)""");
-            var msgstrplural = new LinePattern(LineType.MessageStringPlural, @"(msgstr\[\d+\])\s+"".*""", @"""(.*)""");
-            var text = new LinePattern(LineType.Text, "(\")", @"""(.*)""");
-            var comment = new LinePattern(LineType.Comment, "(#)", @"#([\s:,.|]\s*.*)");
-            var endOfFile = new LinePattern(LineType.EndOfFile, "(" + MarkerLines.EndOfFile + ")", string.Empty);
+            BeginOfFile = new LinePattern(LineType.BeginOfFile, MarkerLines.BeginOfFile, string.Empty);
+            var emptyLine = new LinePattern(LineType.Empty, "^$", string.Empty);
+            var msgctxt = new LinePattern(LineType.MessageContext, @"msgctxt\s+"".*""", @"""(.*)""");
+            var msgid = new LinePattern(LineType.MessageId, @"msgid\s+"".*""", @"""(.*)""");
+            var msgidplural = new LinePattern(LineType.MessageIdPlural, @"msgid_plural\s+"".*""", @"""(.*)""");
+            var msgstr = new LinePattern(LineType.MessageString, @"msgstr\s+"".*""", @"""(.*)""");
+            var msgstrplural = new LinePattern(LineType.MessageStringPlural, @"msgstr\[\d+\]\s+"".*""", @"""(.*)""");
+            var text = new LinePattern(LineType.Text, "\"", @"""(.*)""");
+            var comment = new LinePattern(LineType.Comment, "#", @"#([\s:,.|]\s*.*)");
+            var endOfFile = new LinePattern(LineType.EndOfFile, MarkerLines.EndOfFile, string.Empty);
 
             BeginOfFile
                 .CanBeFollowedBy(msgid)
