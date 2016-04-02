@@ -25,37 +25,37 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             //Create here for performance reasons, not needed to be created for each test.
             _lineParsingSessionMock = A.Fake<ILineParsingSession>();
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgctxt ""The msgctxt text"""))
-                .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text", @"msgctxt ""The msgctxt text"""));
+                .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The msgid text"""))
-                .Returns(new ParseResult(LineType.MessageId, "The msgid text", @"msgid ""The msgid text"""));
+                .Returns(new ParseResult(LineType.MessageId, "The msgid text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid_plural ""The msgid_plural text"""))
-                .Returns(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", @"msgid_plural ""The msgid_plural text"""));
+                .Returns(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid_plural """""))
-                .Returns(new ParseResult(LineType.MessageIdPlural, "", @"msgid_plural """""));
+                .Returns(new ParseResult(LineType.MessageIdPlural, ""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr ""The msgstr text"""))
-                .Returns(new ParseResult(LineType.MessageString, "The msgstr text", @"msgstr ""The msgstr text"""));
+                .Returns(new ParseResult(LineType.MessageString, "The msgstr text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[0] ""The msgstr[0] text"""))
-                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", @"msgstr[0] ""The msgstr[0] text"""));
+                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[0] """""))
-                .Returns(new ParseResult(LineType.MessageStringPlural, "", @"msgstr[0] """""));
+                .Returns(new ParseResult(LineType.MessageStringPlural, ""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[1] ""The msgstr[1] text"""))
-                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text", @"msgstr[1] ""The msgstr[1] text"""));
+                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid """""))
-                .Returns(new ParseResult(LineType.MessageId, "", @"msgid """""));
+                .Returns(new ParseResult(LineType.MessageId, ""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr """""))
-                .Returns(new ParseResult(LineType.MessageString, "", @"msgstr """""));
+                .Returns(new ParseResult(LineType.MessageString, ""));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The text"""))
-                .Returns(new ParseResult(LineType.MessageId, "The text", @"msgid ""The text"""));
+                .Returns(new ParseResult(LineType.MessageId, "The text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"""The text"""))
-                .Returns(new ParseResult(LineType.Text, "The text", @"""The text"""));
+                .Returns(new ParseResult(LineType.Text, "The text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"""The second text"""))
-                .Returns(new ParseResult(LineType.Text, "The second text", @"""The second text"""));
+                .Returns(new ParseResult(LineType.Text, "The second text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"#: a comment"))
-                .Returns(new ParseResult(LineType.Comment, "a comment", @"#: a comment"));
+                .Returns(new ParseResult(LineType.Comment, "a comment"));
             A.CallTo(() => _lineParsingSessionMock.Parse(string.Empty))
-                .Returns(new ParseResult(LineType.Empty, string.Empty, string.Empty));
+                .Returns(new ParseResult(LineType.Empty, string.Empty));
             A.CallTo(() => _lineParsingSessionMock.Parse(MarkerLines.EndOfFile))
-                .Returns(new ParseResult(LineType.EndOfFile, string.Empty, MarkerLines.EndOfFile));
+                .Returns(new ParseResult(LineType.EndOfFile, string.Empty));
         }
 
         [SetUp]

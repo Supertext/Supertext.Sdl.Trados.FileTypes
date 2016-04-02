@@ -30,16 +30,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var lineParsingSession = A.Fake<ILineParsingSession>();
             A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(lineParsingSession);
             A.CallTo(() => lineParsingSession.Parse(A<string>.Ignored))
-                .Returns(new ParseResult(LineType.Empty, string.Empty, string.Empty));
+                .Returns(new ParseResult(LineType.Empty, string.Empty));
 
             A.CallTo(() => lineParsingSession.Parse("msgstr end"))
-                .Returns(new ParseResult(LineType.MessageString, "msgstr end", "msgstr"));
+                .Returns(new ParseResult(LineType.MessageString, "msgstr end"));
 
             A.CallTo(() => lineParsingSession.Parse("msgstr[2] end"))
-                .Returns(new ParseResult(LineType.MessageStringPlural, "msgstr[2] end", "msgstr[2]"));
+                .Returns(new ParseResult(LineType.MessageStringPlural, "msgstr[2] end"));
 
             A.CallTo(() => lineParsingSession.Parse("msgid empty"))
-                .Returns(new ParseResult(LineType.MessageId, "msgid empty", "msgid"));
+                .Returns(new ParseResult(LineType.MessageId, "msgid empty"));
         }
 
         [Test]

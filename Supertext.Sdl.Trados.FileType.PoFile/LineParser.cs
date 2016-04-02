@@ -129,8 +129,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             _lastLinePattern = applyingLinePattern.IsIgnored ? _lastLinePattern : applyingLinePattern;
 
-            return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line),
-                applyingLinePattern.GetLineKeyword(line));
+            return new ParseResult(applyingLinePattern.LineType, applyingLinePattern.GetContent(line));
         }
 
         private static LinePattern GetApplyingLinePattern(LinePattern context, LinePattern lastLinePattern,
@@ -232,12 +231,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             public string GetContent(string line)
             {
                 var match = _lineContentRegex.Match(line);
-                return match.Groups[1].Value;
-            }
-
-            public string GetLineKeyword(string line)
-            {
-                var match = _lineKeywordRegex.Match(line);
                 return match.Groups[1].Value;
             }
 

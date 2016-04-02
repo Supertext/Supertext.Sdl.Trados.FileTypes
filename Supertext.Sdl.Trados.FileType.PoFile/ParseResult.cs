@@ -5,23 +5,19 @@
         LineType LineType { get; }
 
         string LineContent { get; }
-
-        string LineKeyword { get;}
     }
 
     public class ParseResult : IParseResult
     {
-        public ParseResult(LineType lineType, string lineContent, string lineKeyword)
+        public ParseResult(LineType lineType, string lineContent)
         {
             LineType = lineType;
             LineContent = lineContent;
-            LineKeyword = lineKeyword;
         }
 
         public LineType LineType { get; }
 
         public string LineContent { get; }
 
-        public string LineKeyword { get; }
     }
 }

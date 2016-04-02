@@ -3,7 +3,6 @@ using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
-using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {
@@ -16,7 +15,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = new EntryBuilder();
             // Act
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
 
             // Assert
             testee.CompleteEntry.Should().BeNull();
@@ -27,11 +26,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
 
             // Act
-            testee.Add(new ParseResult(LineType.EndOfFile, string.Empty, MarkerLines.EndOfFile), 3);
+            testee.Add(new ParseResult(LineType.EndOfFile, string.Empty), 3);
 
             // Assert
             testee.CompleteEntry.Should().NotBeNull();
@@ -42,11 +41,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 3);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 3);
 
             // Assert
             testee.CompleteEntry.Should().NotBeNull();
@@ -57,11 +56,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
 
             // Act
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 3);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 3);
 
             // Assert
             testee.CompleteEntry.Should().NotBeNull();
@@ -72,14 +71,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text", "msgctxt"), 1);
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 2);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text"), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 3);
 
             // Act
-            testee.Add(new ParseResult(LineType.MessageId, "The second msgid text", "msgid"), 4);
-            testee.Add(new ParseResult(LineType.MessageString, "The second msgstr text", "msgstr"), 5);
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 6);
+            testee.Add(new ParseResult(LineType.MessageId, "The second msgid text"), 4);
+            testee.Add(new ParseResult(LineType.MessageString, "The second msgstr text"), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 6);
 
             // Assert
             testee.CompleteEntry.MessageContext.Should().BeEmpty();
@@ -90,13 +89,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 1);
-            testee.Add(new ParseResult(LineType.Comment, "# some comment", "#"), 2);
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 3);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 1);
+            testee.Add(new ParseResult(LineType.Comment, "# some comment"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.Start.Should().Be(2);
@@ -107,13 +106,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 1);
-            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text", "msgctxt"), 2);
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 3);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 1);
+            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.Start.Should().Be(2);
@@ -125,12 +124,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 1);
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 2);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 3);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 4);
 
             // Assert
             testee.CompleteEntry.Start.Should().Be(2);
@@ -142,11 +141,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 3);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 3);
 
             // Assert
             testee.CompleteEntry.MessageId.Should().Be("The msgid text");
@@ -157,13 +156,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 2);
-            testee.Add(new ParseResult(LineType.Text, "The second text", "\""), 3);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+            testee.Add(new ParseResult(LineType.MessageId, ""), 1);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 2);
+            testee.Add(new ParseResult(LineType.Text, "The second text"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.MessageId.Should().Be("The textThe second text");
@@ -174,13 +173,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 2);
-            testee.Add(new ParseResult(LineType.Text, "The second text", "\""), 3);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 2);
+            testee.Add(new ParseResult(LineType.Text, "The second text"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.MessageId.Should().Be("The msgid textThe textThe second text");
@@ -191,11 +190,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 3);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 3);
 
             // Assert
             testee.CompleteEntry.MessageString.Should().Be("The msgstr text");
@@ -206,13 +205,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "", "msgstr"), 2);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 3);
-            testee.Add(new ParseResult(LineType.Text, "The second text", "\""), 4);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, ""), 2);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 3);
+            testee.Add(new ParseResult(LineType.Text, "The second text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.MessageString.Should().Be("The textThe second text");
@@ -223,13 +222,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 3);
-            testee.Add(new ParseResult(LineType.Text, "The second text", "\""), 4);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 3);
+            testee.Add(new ParseResult(LineType.Text, "The second text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.MessageString.Should().Be("The msgstr textThe textThe second text");
@@ -240,11 +239,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 3);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 3);
 
             // Assert
             testee.CompleteEntry.MessageIdStart.Should().Be(1);
@@ -256,13 +255,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 2);
-            testee.Add(new ParseResult(LineType.Text, "The second text", "\""), 3);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+            testee.Add(new ParseResult(LineType.MessageId, ""), 1);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 2);
+            testee.Add(new ParseResult(LineType.Text, "The second text"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.MessageIdStart.Should().Be(1);
@@ -274,12 +273,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 3);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 4);
 
             // Assert
             testee.CompleteEntry.MessageIdStart.Should().Be(1);
@@ -291,11 +290,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 2);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 3);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 3);
 
             // Assert
             testee.CompleteEntry.MessageStringStart.Should().Be(2);
@@ -307,13 +306,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageString, "", "msgstr"), 2);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 3);
-            testee.Add(new ParseResult(LineType.Text, "The second text", "\""), 4);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageString, ""), 2);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 3);
+            testee.Add(new ParseResult(LineType.Text, "The second text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.MessageStringStart.Should().Be(2);
@@ -325,14 +324,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", "msgstr[0]"), 3);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text", "msgstr[1]"), 4);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[2] text", "msgstr[2]"), 5);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"), 2);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text"), 3);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text"), 4);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[2] text"), 5);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 6);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 6);
 
             // Assert
             testee.CompleteEntry.MessageStringStart.Should().Be(3);
@@ -344,12 +343,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text", "msgctxt"), 1);
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 2);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt text"), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 3);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 4);
 
             // Assert
             testee.CompleteEntry.MessageContext.Should().Be("The msgctxt text");
@@ -360,12 +359,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", "msgstr[0]"), 3);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"), 2);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text"), 3);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 4);
 
             // Assert
             testee.CompleteEntry.MessageIdPlural.Should().Be("The msgid_plural text");
@@ -376,14 +375,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 3);
-            testee.Add(new ParseResult(LineType.Text, "The second text", "\""), 4);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", "msgstr[0]"), 5);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"), 2);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 3);
+            testee.Add(new ParseResult(LineType.Text, "The second text"), 4);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text"), 5);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 6);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 6);
 
             // Assert
             testee.CompleteEntry.MessageIdPlural.Should().Be("The msgid_plural textThe textThe second text");
@@ -394,13 +393,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", "msgstr[0]"), 3);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text", "msgstr[0]"), 4);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"), 2);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text"), 3);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.MessageStringPlural[0].Should().Be("The msgstr[0] text");
@@ -412,14 +411,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 1);
-            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text", "msgid_plural"), 2);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text", "msgstr[0]"), 3);
-            testee.Add(new ParseResult(LineType.Text, "The text", "\""), 4);
-            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text", "msgstr[0]"), 5);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 1);
+            testee.Add(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"), 2);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text"), 3);
+            testee.Add(new ParseResult(LineType.Text, "The text"), 4);
+            testee.Add(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text"), 5);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 6);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 6);
 
             // Assert
             testee.CompleteEntry.MessageStringPlural[0].Should().Be("The msgstr[0] textThe text");
@@ -430,12 +429,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.Comment, ", the comment text", "#"), 1);
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 2);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 3);
+            testee.Add(new ParseResult(LineType.Comment, ", the comment text"), 1);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 2);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 3);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 4);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 4);
 
             // Assert
             testee.CompleteEntry.Comments[0].Should().Be(", the comment text");
@@ -446,13 +445,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testee = new EntryBuilder();
-            testee.Add(new ParseResult(LineType.Comment, ", the comment text", "#"), 1);
-            testee.Add(new ParseResult(LineType.Comment, ", the second comment text", "#"), 2);
-            testee.Add(new ParseResult(LineType.MessageId, "The msgid text", "msgid"), 3);
-            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text", "msgstr"), 4);
+            testee.Add(new ParseResult(LineType.Comment, ", the comment text"), 1);
+            testee.Add(new ParseResult(LineType.Comment, ", the second comment text"), 2);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 3);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 4);
 
             // Act
-            testee.Add(new ParseResult(LineType.Empty, string.Empty, string.Empty), 5);
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
             testee.CompleteEntry.Comments[0].Should().Be(", the comment text");
