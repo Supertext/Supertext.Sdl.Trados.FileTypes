@@ -31,17 +31,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(_lineParsingSession);
 
             MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
-            MathParseResultWithEntry("msgstr message string", new ParseResult(LineType.MessageString, "message string"), new Entry
+            MathParseResultWithEntry(@"msgstr ""message string""", new ParseResult(LineType.MessageString, "message string"), new Entry
             {
                 MessageId = "message id",
                 MessageString = "message string"
             });
-            MathParseResultWithEntry("msgid", new ParseResult(LineType.MessageId, string.Empty), new Entry
+            MathParseResultWithEntry(@"msgid """"", new ParseResult(LineType.MessageId, string.Empty), new Entry
             {
                 MessageId = string.Empty,
                 MessageString = "message string"
             });
-            MathParseResultWithEntry("msgstr[2] message string 2", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
+            MathParseResultWithEntry(@"msgstr[2] ""message string 2""", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
             {
                 MessageId = "message id",
                 MessageIdPlural = "message id plural",
@@ -96,11 +96,11 @@ line 5
             var testString = @"line 1
 line 2
 line 3
-msgstr message string
+msgstr ""message string""
 line 5
 line 6
 line 7
-msgstr message string
+msgstr ""message string""
 ";
             var testee = CreateTestee(testString);
             var paragraphUnitMock1 = CreateParagraphUnitMock(4, 4);
@@ -125,7 +125,7 @@ msgstr message string
             var testString = @"line 1
 line 2
 line 3
-msgstr message string
+msgstr ""message string""
 ";
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 4);
@@ -144,7 +144,7 @@ msgstr message string
             ProcessParagraphUnit_WhenEntryHasOneMessageStringOnMultipleLines_ShouldWriteMessageStringWithTextLines()
         {
             // Arrange
-            var testString = @"msgstr message string";
+            var testString = @"msgstr ""message string""";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
@@ -165,7 +165,7 @@ msgstr message string
             ProcessParagraphUnit_WhenEntryHasPluralForm_ShouldWriteMessageStringPlurals()
         {
             // Arrange
-            var testString = @"msgstr[2] message string 2";
+            var testString = @"msgstr[2] ""message string 2""";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
@@ -186,7 +186,7 @@ msgstr message string
             ProcessParagraphUnit_WhenMsgidIsEmpty_ShouldIgnoreEntry()
         {
             // Arrange
-            var testString = @"msgid";
+            var testString = @"msgid """"";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(2, 2);
@@ -223,6 +223,7 @@ msgstr message string
             // Assert
             A.CallTo(() => _streamWriterMock.Close()).MustHaveHappened();
         }
+
 
         public PoFileWriter CreateTestee(string testString)
         {

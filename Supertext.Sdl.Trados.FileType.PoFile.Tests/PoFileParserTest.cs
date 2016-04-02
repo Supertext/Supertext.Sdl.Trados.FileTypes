@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -13,7 +14,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     {
         private const string TestFilePath = "sample_file_ok";
 
-        private readonly ILineParsingSession _lineParsingSessionMock;
+        private ILineParser _lineParserMock;
+        private ILineParsingSession _lineParsingSessionMock;
+        private IEntryBuilder _entryBuilderMock;
         private IPropertiesFactory _propertiesFactoryMock;
         private IBilingualContentHandler _bilingualContentHandlerMock;
         private IUserSettings _userSettingsMock;
@@ -23,7 +26,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public PoFileParserTest()
         {
             //Create here for performance reasons, not needed to be created for each test.
-            _lineParsingSessionMock = A.Fake<ILineParsingSession>();
+            /*_lineParsingSessionMock = A.Fake<ILineParsingSession>();
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgctxt ""The msgctxt text"""))
                 .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text"));
             A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The msgid text"""))
@@ -55,7 +58,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _lineParsingSessionMock.Parse(string.Empty))
                 .Returns(new ParseResult(LineType.Empty, string.Empty));
             A.CallTo(() => _lineParsingSessionMock.Parse(MarkerLines.EndOfFile))
-                .Returns(new ParseResult(LineType.EndOfFile, string.Empty));
+                .Returns(new ParseResult(LineType.EndOfFile, string.Empty));*/
         }
 
         [SetUp]
@@ -71,6 +74,44 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _userSettingsMock = A.Fake<IUserSettings>();
 
             _paragraphUnitFactoryMock = A.Fake<IParagraphUnitFactory>();
+
+            _lineParserMock = A.Fake<ILineParser>();
+            _entryBuilderMock = A.Fake<IEntryBuilder>();
+            _lineParsingSessionMock = A.Fake<ILineParsingSession>();
+            A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
+
+            MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
+            MathParseResultWithEntry(@"msgstr ""message string""", new ParseResult(LineType.MessageString, "message string"), new Entry
+            {
+                MessageId = "message id",
+                MessageString = "message string"
+            });
+            MathParseResultWithEntry(@"msgid """"", new ParseResult(LineType.MessageId, string.Empty), new Entry
+            {
+                MessageId = string.Empty,
+                MessageString = "message string"
+            });
+            MathParseResultWithEntry(@"msgstr[2] ""message string 2""", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
+            {
+                MessageId = "message id",
+                MessageIdPlural = "message id plural",
+                MessageStringPlural = new List<string>
+                    {
+                        "message string 0",
+                        "message string 1",
+                        "message string 2"
+                    }
+            });
+        }
+
+        private void MathParseResultWithEntry(string line, IParseResult parseResult, Entry completeEntry)
+        {
+            A.CallTo(() => _lineParsingSessionMock.Parse(line ?? A<string>.Ignored)).Returns(parseResult);
+
+            A.CallTo(() => _entryBuilderMock.Add(parseResult, A<int>.Ignored)).Invokes(() =>
+            {
+                A.CallTo(() => _entryBuilderMock.CompleteEntry).Returns(completeEntry);
+            });
         }
 
         [Test]
@@ -137,14 +178,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         {
             // Arrange
             var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 
-msgid ""The msgid text""
-msgstr ""The msgstr text""";
+msgid ""message id""
+msgstr ""message string""";
 
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -186,11 +227,11 @@ msgstr ""The msgstr text""";
             // Arrange
             var testString = @"
 #: a comment
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -207,8 +248,8 @@ msgstr ""The msgstr text""
         {
             // Arrange
             var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -226,17 +267,17 @@ msgstr ""The msgstr text""
         {
             // Arrange
             var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -256,7 +297,7 @@ msgstr ""The msgstr text""
             // Arrange
             var testString = @"
 msgid """"
-msgstr ""The msgstr text""
+msgstr ""somehting like header""
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -279,8 +320,8 @@ msgstr ""The msgstr text""
         {
             // Arrange
             var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -305,8 +346,8 @@ msgstr ""The msgstr text""
         {
             // Arrange
             var testString = @"
-msgid ""The msgid text""
-msgstr ""The msgstr text""
+msgid ""message id""
+msgstr ""message string""
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -335,17 +376,13 @@ msgstr ""The msgstr text""
                     ExtendedStreamReaderFake.Create(testString),
                     ExtendedStreamReaderFake.Create(testString));
 
-            var lineParserMock = A.Fake<ILineParser>();
-            A.CallTo(() => lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
-
             var persistentFileConversionPropertiesMock = A.Fake<IPersistentFileConversionProperties>();
             A.CallTo(() => persistentFileConversionPropertiesMock.OriginalFilePath).Returns(TestFilePath);
 
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            //TODO use mock EntryBuilder
-            var testee = new PoFileParser(fileHelperMock, lineParserMock, _userSettingsMock, _paragraphUnitFactoryMock, new EntryBuilder())
+            var testee = new PoFileParser(fileHelperMock, _lineParserMock, _userSettingsMock, _paragraphUnitFactoryMock, _entryBuilderMock)
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock
