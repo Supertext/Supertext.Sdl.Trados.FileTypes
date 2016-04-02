@@ -146,16 +146,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             private readonly List<LinePattern> _followingLinePatterns;
             private readonly Dictionary<LinePattern, List<LinePattern>> _contextfollowingLinePatterns;
-            private readonly Regex _lineKeywordRegex;
+            private readonly Regex _lineRegex;
             private readonly Regex _lineContentRegex;
 
             private LinePattern _context;
 
-            public LinePattern(LineType lineType, string lineKeywordRegex, string lineContentPattern)
+            public LinePattern(LineType lineType, string linePattern, string lineContentPattern)
             {
                 LineType = lineType;
 
-                _lineKeywordRegex = new Regex(StartOfStringPattern + lineKeywordRegex);
+                _lineRegex = new Regex(StartOfStringPattern + linePattern);
                 _lineContentRegex = new Regex(lineContentPattern);
                 _followingLinePatterns = new List<LinePattern>();
                 _contextfollowingLinePatterns = new Dictionary<LinePattern, List<LinePattern>>();
@@ -225,7 +225,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public bool IsApplyingTo(string line)
             {
-                return _lineKeywordRegex.IsMatch(line);
+                return _lineRegex.IsMatch(line);
             }
 
             public string GetContent(string line)
@@ -236,7 +236,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             public override string ToString()
             {
-                return LineType + "(" + _lineKeywordRegex + ")";
+                return LineType + "(" + _lineRegex + ")";
             }
         }
     }
