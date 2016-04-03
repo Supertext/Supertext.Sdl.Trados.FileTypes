@@ -8,6 +8,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         IList<Fragment> Process(string value);
     }
 
+    //TODO small but complicated, needs to be refactored to easy understandable code
     public class TextProcessor : ITextProcessor
     {
         private readonly Dictionary<string, InlineType> _embeddedContentPatterns;
