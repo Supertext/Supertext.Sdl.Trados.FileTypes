@@ -24,35 +24,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             CompleteEntry = null;
 
-            if (_collectText != null && parseResult.LineType == LineType.Text)
+            var isMoreToCollect = CollectText(parseResult, lineNumber);
+
+            if (isMoreToCollect)
             {
-                _collectText(parseResult.LineContent);
                 return;
             }
-
-            _collectText = null;
-
-            if (_finishCollectingText != null)
-            {
-                _finishCollectingText(lineNumber);
-            }
-
-            _finishCollectingText = null;
-
-            if (_collectMessageStringPlural != null && parseResult.LineType == LineType.MessageStringPlural)
-            {
-                _collectMessageStringPlural(parseResult.LineContent);
-                return;
-            }
-
-            _collectMessageStringPlural = null;
-
-            if (_finishCollectingMessageStringPlural != null)
-            {
-                _finishCollectingMessageStringPlural(lineNumber);
-            }
-
-            _finishCollectingMessageStringPlural = null;
 
             if (_entryInCreation == null &&
                 (parseResult.LineType == LineType.Comment ||
@@ -68,6 +45,40 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             CollectMessage(parseResult, lineNumber);
 
             CollectComment(parseResult);
+        }
+
+        private bool CollectText(IParseResult parseResult, int lineNumber)
+        {
+            if (_collectText != null && parseResult.LineType == LineType.Text)
+            {
+                _collectText(parseResult.LineContent);
+                return true;
+            }
+
+            _collectText = null;
+
+            if (_finishCollectingText != null)
+            {
+                _finishCollectingText(lineNumber);
+            }
+
+            _finishCollectingText = null;
+
+            if (_collectMessageStringPlural != null && parseResult.LineType == LineType.MessageStringPlural)
+            {
+                _collectMessageStringPlural(parseResult.LineContent);
+                return true;
+            }
+
+            _collectMessageStringPlural = null;
+
+            if (_finishCollectingMessageStringPlural != null)
+            {
+                _finishCollectingMessageStringPlural(lineNumber);
+            }
+
+            _finishCollectingMessageStringPlural = null;
+            return false;
         }
 
         private void CollectMessage(IParseResult parseResult, int lineNumber)

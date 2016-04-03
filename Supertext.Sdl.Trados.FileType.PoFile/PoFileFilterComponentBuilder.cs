@@ -1,7 +1,5 @@
-﻿using System.Linq.Expressions;
-using Sdl.Core.Globalization;
+﻿using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework;
-using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
