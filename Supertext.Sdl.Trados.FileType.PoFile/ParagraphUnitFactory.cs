@@ -35,26 +35,30 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             if (entry.IsPluralForm)
             {
-                var counter = 0;
-                foreach (var messageString in entry.MessageStringPlural)
-                {
-                    var messageId = counter == 0 ? entry.MessageId : entry.MessageIdPlural;
-
-                    AddSegmentPair(paragraphUnit, messageId, messageString,
-                        sourceLineType, isTargetTextNeeded);
-
-                    ++counter;
-                }
+                AddPluralFormSegmentPairs(paragraphUnit, entry, sourceLineType, isTargetTextNeeded);
             }
             else
             {
                 AddSegmentPair(paragraphUnit, entry.MessageId, entry.MessageString, sourceLineType, isTargetTextNeeded);
             }
             
-
             paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
 
             return paragraphUnit;
+        }
+
+        private void AddPluralFormSegmentPairs(IParagraphUnit paragraphUnit, Entry entry, LineType sourceLineType, bool isTargetTextNeeded)
+        {
+            var counter = 0;
+            foreach (var messageString in entry.MessageStringPlural)
+            {
+                var messageId = counter == 0 ? entry.MessageId : entry.MessageIdPlural;
+
+                AddSegmentPair(paragraphUnit, messageId, messageString,
+                    sourceLineType, isTargetTextNeeded);
+
+                ++counter;
+            }
         }
 
         private void AddSegmentPair(IParagraphUnit paragraphUnit, string messageId, string messageString, LineType sourceLineType, bool isTargetTextNeeded)
@@ -167,7 +171,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var contextProperties = PropertiesFactory.CreateContextProperties();
 
             contextProperties.Contexts.Add(CreateFieldContextInfo(entry));
-
             contextProperties.Contexts.Add(CreateLocationContextInfo(entry));
 
             if (!string.IsNullOrEmpty(entry.MessageContext))
