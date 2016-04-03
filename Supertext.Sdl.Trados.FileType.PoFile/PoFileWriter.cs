@@ -6,6 +6,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileWriter : AbstractBilingualFileTypeComponent, IBilingualWriter, INativeOutputSettingsAware
     {
+        private static string MessageStringKeyword = "msgstr";
+        private static string MessageStringPluralKeyword = "msgstr[{0}]";
+
         private readonly IFileHelper _fileHelper;
         private readonly ISegmentReader _segmentReader;
         private readonly ILineParser _lineParser;
@@ -23,6 +26,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _segmentReader = segmentReader;
             _lineParser = lineParser;
             _entryBuilder = entryBuilder;
+        }
+
+        private static string CreateMessageStringPluralLine(int segmentPairCounter, string lineContent)
+        {
+            return string.Format(MessageStringPluralKeyword, segmentPairCounter) + " \"" + lineContent + "\"";
+        }
+
+        private static string CreateMessageStringLine(string lineContent)
+        {
+            return MessageStringKeyword + " \"" + lineContent + "\"";
+        }
+
+        private static string CreateTextLine(string lineContent)
+        {
+            return "\"" + lineContent + "\"";
         }
 
         public void Initialize(IDocumentProperties documentInfo)
@@ -71,36 +89,44 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 if (_entryBuilder.CompleteEntry.IsPluralForm)
                 {
-                    var segmentPairCounter = 0;
-                    foreach (var segmentPair in paragraphUnit.SegmentPairs)
-                    {
-                        _streamWriter.WriteLine("msgstr["+segmentPairCounter+"] \"" + _segmentReader.GetTargetText(segmentPair) + "\"");
-
-                        segmentPairCounter++;
-                    }
+                    WriteMessageStringPlural(paragraphUnit);
                 }
                 else
                 {
-                    var segmentPairCounter = 0;
-                    foreach (var segmentPair in paragraphUnit.SegmentPairs)
-                    {
-                        if (segmentPairCounter == 0)
-                        {
-                            _streamWriter.WriteLine("msgstr \"" + _segmentReader.GetTargetText(segmentPair) + "\"");
-
-                        }
-                        else
-                        {
-                            _streamWriter.WriteLine("\"" + _segmentReader.GetTargetText(segmentPair) + "\"");
-                        }
-
-                        segmentPairCounter++;
-                    }
+                    WriteMessageString(paragraphUnit);
                 }
 
                 break;
             }
 
+        }
+
+        private void WriteMessageStringPlural(IParagraphUnit paragraphUnit)
+        {
+            var segmentPairCounter = 0;
+            foreach (var segmentPair in paragraphUnit.SegmentPairs)
+            {
+                var lineContent = _segmentReader.GetTargetText(segmentPair);
+
+                _streamWriter.WriteLine(CreateMessageStringPluralLine(segmentPairCounter, lineContent));
+
+                segmentPairCounter++;
+            }
+        }
+
+        private void WriteMessageString(IParagraphUnit paragraphUnit)
+        {
+            var segmentPairCounter = 0;
+            foreach (var segmentPair in paragraphUnit.SegmentPairs)
+            {
+                var lineContent = _segmentReader.GetTargetText(segmentPair);
+
+                _streamWriter.WriteLine(segmentPairCounter == 0
+                    ? CreateMessageStringLine(lineContent)
+                    : CreateTextLine(lineContent));
+
+                segmentPairCounter++;
+            }
         }
 
         public void Complete()
