@@ -254,8 +254,8 @@ msgstr ""message string""
         private static IParagraphUnit CreateParagraphUnitMock(int messageStringStart, int messageStringEnd)
         {
             var entryPositionsMock = A.Fake<IContextInfo>();
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringStart)).Returns(messageStringStart.ToString());
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MessageStringEnd)).Returns(messageStringEnd.ToString());
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MetaMessageStringStart)).Returns(messageStringStart.ToString());
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MetaMessageStringEnd)).Returns(messageStringEnd.ToString());
 
             var contextInfoMocks = new List<IContextInfo>
             {

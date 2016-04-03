@@ -135,8 +135,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.Create(entry, LineType.MessageId, false);
 
             // Assert
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringStart, "4")).MustHaveHappened();
-            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MessageStringEnd, "5")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MetaMessageStringStart, "4")).MustHaveHappened();
+            A.CallTo(() => contextInfoMock.SetMetaData(ContextKeys.MetaMessageStringEnd, "5")).MustHaveHappened();
             A.CallTo(() => contextPropertiesMock.Contexts.Add(contextInfoMock)).MustHaveHappened();
         }
 

@@ -49,7 +49,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
             var contextInfo = paragraphUnit.Properties.Contexts.Contexts[1];
-            var messageStringStart = int.Parse(contextInfo.GetMetaData(ContextKeys.MessageStringStart));
+            var messageStringStart = int.Parse(contextInfo.GetMetaData(ContextKeys.MetaMessageStringStart));
 
             string currentOriginalLine;
 
