@@ -32,7 +32,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             if (_regex == null)
             {
-                CreateRegex();
+                _regex = new Regex("(" + string.Join(")|(", _embeddedContentPatterns.Keys) + ")");
+                _types = new List<InlineType>(_embeddedContentPatterns.Values);
             }
             
             var matches = _regex.Matches(value);
@@ -42,14 +43,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             foreach (Match match in matches)
             {
-                var type = InlineType.Text;
-                for (var i = 1; i < match.Groups.Count; ++i)
-                {
-                    if (match.Groups[i].Value == match.Value)
-                    {
-                        type = _types[i - 1];
-                    }
-                }
+                var type = GetInlineTypeFor(match.Value, match.Groups);
 
                 var textBeforeLength = match.Index - lastIndex;
 
@@ -73,10 +67,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return fragments;
         }
 
-        private void CreateRegex()
+        private InlineType GetInlineTypeFor(string matchValue, GroupCollection groups)
         {
-            _regex = new Regex("(" + string.Join(")|(", _embeddedContentPatterns.Keys) + ")");
-            _types = new List<InlineType>(_embeddedContentPatterns.Values);
+            var type = InlineType.Text;
+            for (var i = 1; i < groups.Count; ++i)
+            {
+                if (groups[i].Value == matchValue)
+                {
+                    type = _types[i - 1];
+                }
+            }
+            return type;
         }
     }
 }
