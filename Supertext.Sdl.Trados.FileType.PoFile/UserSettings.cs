@@ -48,7 +48,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public override void ResetToDefaults()
         {
             SourceLineType = DefaultSourceLineType;
-            IsTargetTextNeeded = false;
+            IsTargetTextNeeded = DefaultIsTargetTextNeededSetting;
         }
 
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
@@ -62,6 +62,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
             UpdateSettingInSettingsGroup(settingsGroup, SourceLineTypeSetting, SourceLineType, DefaultSourceLineType);
+            UpdateSettingInSettingsGroup(settingsGroup, IsTargetTextNeededSetting, IsTargetTextNeeded, DefaultIsTargetTextNeededSetting);
         }
     }
 }
