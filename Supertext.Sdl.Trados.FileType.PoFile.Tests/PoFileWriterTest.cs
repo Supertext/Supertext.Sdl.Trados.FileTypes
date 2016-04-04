@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
@@ -83,7 +84,7 @@ entryComplete
 ";
             var testee = CreateTestee(testString);
 
-            var paragraphUnitMock = CreateParagraphUnitMock(4, 4);
+            var paragraphUnitMock = CreateParagraphUnitMock(4);
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -109,8 +110,8 @@ msgstr ""message string2""
 entryComplete
 ";
             var testee = CreateTestee(testString);
-            var paragraphUnitMock1 = CreateParagraphUnitMock(3, 3);
-            var paragraphUnitMock2 = CreateParagraphUnitMock(7, 7);
+            var paragraphUnitMock1 = CreateParagraphUnitMock(3);
+            var paragraphUnitMock2 = CreateParagraphUnitMock(7);
 
             testee.ProcessParagraphUnit(paragraphUnitMock1);
 
@@ -137,8 +138,8 @@ msgstr ""message string2""
 entryComplete
 ";
             var testee = CreateTestee(testString);
-            var paragraphUnitMock1 = CreateParagraphUnitMock(3, 3);
-            var paragraphUnitMock2 = CreateParagraphUnitMock(7, 7);
+            var paragraphUnitMock1 = CreateParagraphUnitMock(3);
+            var paragraphUnitMock2 = CreateParagraphUnitMock(7);
 
             using (var scope = Fake.CreateScope())
             {
@@ -172,7 +173,7 @@ msgstr ""message string""
 entryComplete
 ";
             var testee = CreateTestee(testString);
-            var paragraphUnitMock = CreateParagraphUnitMock(3, 3);
+            var paragraphUnitMock = CreateParagraphUnitMock(3);
 
             
 
@@ -197,7 +198,7 @@ msgstr ""message string""
 entryComplete";
 
             var testee = CreateTestee(testString);
-            var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
+            var paragraphUnitMock = CreateParagraphUnitMockForMessageStringWithText(4, 6);
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -222,7 +223,7 @@ msgstr[2] ""message string""
 msgstrPluralEntryComplete";
 
             var testee = CreateTestee(testString);
-            var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
+            var paragraphUnitMock = CreateParagraphUnitMockForMessageStringPlural(4, 6);
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -235,13 +236,40 @@ msgstrPluralEntryComplete";
 
         [Test]
         public void
+            ProcessParagraphUnit_WhenEntryHasPluralFormAndTextLines_ShouldWriteMessageStringPluralsWithText()
+        {
+            // Arrange
+            var testString = @"line 1
+msgid ""message id""
+msgid_plural ""message id plural""
+msgstr[0] ""message string""
+msgstr[1] ""message string""
+msgstr[2] ""message string""
+""message string""
+msgstrPluralEntryComplete";
+
+            var testee = CreateTestee(testString);
+            var paragraphUnitMock = CreateParagraphUnitMockForMessageStringPluralWithText(4, 7, 6, 7);
+
+            // Act
+            testee.ProcessParagraphUnit(paragraphUnitMock);
+
+            // Assert
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr[0] ""message string""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr[1] ""message string""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr[2] ""message string""")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"""message string""")).MustHaveHappened();
+        }
+
+        [Test]
+        public void
             ProcessParagraphUnit_WhenMsgidIsEmpty_ShouldIgnoreEntry()
         {
             // Arrange
             var testString = @"emptyMsgidEntryComplete";
 
             var testee = CreateTestee(testString);
-            var paragraphUnitMock = CreateParagraphUnitMock(2, 2);
+            var paragraphUnitMock = CreateParagraphUnitMock(2);
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -303,11 +331,86 @@ msgstrPluralEntryComplete";
             return testee;
         }
 
-        private static IParagraphUnit CreateParagraphUnitMock(int messageStringStart, int messageStringEnd)
+        private static IParagraphUnit CreateParagraphUnitMock(int messageStringStartAndEnd)
+        {
+            var paragraphUnitPropertiesMock = CreateParagraphUnitPropertiesMock(messageStringStartAndEnd, messageStringStartAndEnd);
+
+            var propertiesMock = A.Fake<ISegmentPairProperties>();
+            A.CallTo(() => propertiesMock.Id).Returns(new SegmentId(1));
+            var segmentPair = A.Fake<ISegmentPair>();
+            A.CallTo(() => segmentPair.Properties).Returns(propertiesMock);
+            var segmentPairs = new List<ISegmentPair> {segmentPair};
+
+            return CreateParagraphUnitMock(segmentPairs, paragraphUnitPropertiesMock);
+        }
+
+        private static IParagraphUnit CreateParagraphUnitMockForMessageStringWithText(int messageStringStart, int messageStringEnd)
+        {
+            var paragraphUnitPropertiesMock = CreateParagraphUnitPropertiesMock(messageStringStart, messageStringEnd);
+
+            var segmentPairs = new List<ISegmentPair>();
+
+            var splittedIdSupplement = new[] { " a", " b", " c", " d" };
+            var splittedIdSupplementCounter = 0;
+            for (var i = messageStringStart; i <= messageStringEnd; i++)
+            {
+                var propertiesMock = A.Fake<ISegmentPairProperties>();
+                A.CallTo(() => propertiesMock.Id).Returns(new SegmentId(i + splittedIdSupplement[splittedIdSupplementCounter++]));
+                var segmentPair = A.Fake<ISegmentPair>();
+                A.CallTo(() => segmentPair.Properties).Returns(propertiesMock);
+                segmentPairs.Add(segmentPair);
+            }
+
+            return CreateParagraphUnitMock(segmentPairs, paragraphUnitPropertiesMock);
+        }
+
+        private static IParagraphUnit CreateParagraphUnitMockForMessageStringPlural(int messageStringStart, int messageStringEnd)
+        {
+            var paragraphUnitPropertiesMock = CreateParagraphUnitPropertiesMock(messageStringStart, messageStringEnd);
+
+            var segmentPairs = new List<ISegmentPair>();
+
+            for (var i = messageStringStart; i <= messageStringEnd; i++)
+            {
+                var propertiesMock = A.Fake<ISegmentPairProperties>();
+                A.CallTo(() => propertiesMock.Id).Returns(new SegmentId(i));
+                var segmentPair = A.Fake<ISegmentPair>();
+                A.CallTo(() => segmentPair.Properties).Returns(propertiesMock);
+                segmentPairs.Add(segmentPair);
+            }
+
+            return CreateParagraphUnitMock(segmentPairs, paragraphUnitPropertiesMock);
+        }
+
+        private static IParagraphUnit CreateParagraphUnitMockForMessageStringPluralWithText(int messageStringStart, int messageStringEnd, int pluralWithTextStart, int pluralWithTextEnd)
+        {
+            var paragraphUnitPropertiesMock = CreateParagraphUnitPropertiesMock(messageStringStart, messageStringEnd);
+
+            var segmentPairs = new List<ISegmentPair>();
+
+            var splittedIdSupplement = new[] { " a", " b", " c", " d" };
+            var splittedIdSupplementCounter = 0;
+            for (var i = messageStringStart; i <= messageStringEnd; i++)
+            {
+                var id = i >= pluralWithTextStart && i <=
+                pluralWithTextEnd ? i + splittedIdSupplement[splittedIdSupplementCounter++] : i.ToString();
+                var propertiesMock = A.Fake<ISegmentPairProperties>();
+                A.CallTo(() => propertiesMock.Id).Returns(new SegmentId(id));
+                var segmentPair = A.Fake<ISegmentPair>();
+                A.CallTo(() => segmentPair.Properties).Returns(propertiesMock);
+                segmentPairs.Add(segmentPair);
+            }
+
+            return CreateParagraphUnitMock(segmentPairs, paragraphUnitPropertiesMock);
+        }
+
+        private static IParagraphUnitProperties CreateParagraphUnitPropertiesMock(int messageStringStart, int messageStringEnd)
         {
             var entryPositionsMock = A.Fake<IContextInfo>();
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MetaMessageStringStart)).Returns(messageStringStart.ToString());
-            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MetaMessageStringEnd)).Returns(messageStringEnd.ToString());
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MetaMessageStringStart))
+                .Returns(messageStringStart.ToString());
+            A.CallTo(() => entryPositionsMock.GetMetaData(ContextKeys.MetaMessageStringEnd))
+                .Returns(messageStringEnd.ToString());
 
             var contextInfoMocks = new List<IContextInfo>
             {
@@ -320,15 +423,12 @@ msgstrPluralEntryComplete";
 
             var paragraphUnitPropertiesMock = A.Fake<IParagraphUnitProperties>();
             A.CallTo(() => paragraphUnitPropertiesMock.Contexts).Returns(contextPropertiesMock);
+            return paragraphUnitPropertiesMock;
+        }
 
-            var segmentPairCount = (messageStringEnd - messageStringStart) + 1;
-            var segmentPairs = new List<ISegmentPair>();
-
-            for (var i = 0; i < segmentPairCount; i++)
-            {
-                segmentPairs.Add(A.Fake<ISegmentPair>());
-            }
-
+        private static IParagraphUnit CreateParagraphUnitMock(List<ISegmentPair> segmentPairs,
+            IParagraphUnitProperties paragraphUnitPropertiesMock)
+        {
             var paragraphUnitMock = A.Fake<IParagraphUnit>();
             A.CallTo(() => paragraphUnitMock.SegmentPairs).Returns(segmentPairs);
             A.CallTo(() => paragraphUnitMock.Properties).Returns(paragraphUnitPropertiesMock);

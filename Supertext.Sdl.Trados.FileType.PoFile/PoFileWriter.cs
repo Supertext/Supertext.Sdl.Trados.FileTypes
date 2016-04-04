@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
@@ -8,6 +9,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         private static string MessageStringKeyword = "msgstr";
         private static string MessageStringPluralKeyword = "msgstr[{0}]";
+        private static string SplittedSegmentIdStartPattern = @"\d+\sa";
+        private static string SplittedSegmentIdNextPattern = @"\d+\s[a-z]+";
 
         private readonly IFileHelper _fileHelper;
         private readonly ISegmentReader _segmentReader;
@@ -17,10 +20,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private INativeOutputFileProperties _nativeFileProperties;
         private IExtendedStreamReader _extendedStreamReader;
         private IStreamWriter _streamWriter;
-
         private ILineParsingSession _lineParsingSession;
+        private Regex _splittedSegmentIdStartRegex = new Regex(SplittedSegmentIdStartPattern);
+        private Regex _splittedSegmentIdNextRegex = new Regex(SplittedSegmentIdNextPattern);
 
-        public PoFileWriter(IFileHelper fileHelper, ISegmentReader segmentReader, ILineParser lineParser, IEntryBuilder entryBuilder)
+        public PoFileWriter(IFileHelper fileHelper, ISegmentReader segmentReader, ILineParser lineParser,
+            IEntryBuilder entryBuilder)
         {
             _fileHelper = fileHelper;
             _segmentReader = segmentReader;
@@ -54,7 +59,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _lineParsingSession = _lineParser.StartLineParsingSession();
         }
 
-        public void GetProposedOutputFileInfo(IPersistentFileConversionProperties fileProperties, IOutputFileInfo proposedFileInfo)
+        public void GetProposedOutputFileInfo(IPersistentFileConversionProperties fileProperties,
+            IOutputFileInfo proposedFileInfo)
         {
             _originalFileProperties = fileProperties;
         }
@@ -113,7 +119,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             {
                 var lineContent = _segmentReader.GetTargetText(segmentPair);
 
-                _streamWriter.WriteLine(CreateMessageStringPluralLine(segmentPairCounter, lineContent));
+                string toWrite;
+
+                if (_splittedSegmentIdStartRegex.IsMatch(segmentPair.Properties.Id.Id) || !_splittedSegmentIdNextRegex.IsMatch(segmentPair.Properties.Id.Id))
+                {
+                    toWrite = CreateMessageStringPluralLine(segmentPairCounter, lineContent);
+                }
+                else 
+                {
+                    toWrite = CreateTextLine(lineContent);
+                }
+
+                _streamWriter.WriteLine(toWrite);
 
                 segmentPairCounter++;
             }
@@ -121,16 +138,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private void WriteMessageString(IParagraphUnit paragraphUnit)
         {
-            var segmentPairCounter = 0;
             foreach (var segmentPair in paragraphUnit.SegmentPairs)
             {
                 var lineContent = _segmentReader.GetTargetText(segmentPair);
 
-                _streamWriter.WriteLine(segmentPairCounter == 0
-                    ? CreateMessageStringLine(lineContent)
-                    : CreateTextLine(lineContent));
+                string toWrite;
 
-                segmentPairCounter++;
+                if (_splittedSegmentIdStartRegex.IsMatch(segmentPair.Properties.Id.Id) || !_splittedSegmentIdNextRegex.IsMatch(segmentPair.Properties.Id.Id))
+                {
+                    toWrite = CreateMessageStringLine(lineContent);
+                }
+                else
+                {
+                    toWrite = CreateTextLine(lineContent);
+                }
+
+                _streamWriter.WriteLine(toWrite);
             }
         }
 
