@@ -90,7 +90,7 @@ line 5
 
         [Test]
         public void
-            ProcessParagraphUnit_WhenParagraphUnitAlreadyProcessed_ShouldWriteLinesFromProcessedToNewParagraphUnitWithMsgid()
+            ProcessParagraphUnit_WhenMultipleEntries_ShouldWriteLinesBetweenEntries()
         {
             // Arrange
             var testString = @"line 1
