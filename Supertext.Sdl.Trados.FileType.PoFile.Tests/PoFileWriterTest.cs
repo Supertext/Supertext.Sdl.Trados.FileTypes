@@ -56,6 +56,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                         "message string 2"
                     }
             });
+
+            A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
         }
 
         private void MathParseResultWithEntry(string line, IParseResult parseResult, Entry completeEntry)
@@ -122,6 +124,44 @@ entryComplete
         }
 
         [Test]
+        public void ProcessParagraphUnit_WhenMultipleEntries_ShouldWriteLinesInCorrectOrder()
+        {
+            // Arrange
+            var testString = @"line 1
+msgid ""message id""
+msgstr ""message string""
+entryComplete
+line 5
+msgid ""message id2""
+msgstr ""message string2""
+entryComplete
+";
+            var testee = CreateTestee(testString);
+            var paragraphUnitMock1 = CreateParagraphUnitMock(3, 3);
+            var paragraphUnitMock2 = CreateParagraphUnitMock(7, 7);
+
+            using (var scope = Fake.CreateScope())
+            {
+                // Act
+                testee.ProcessParagraphUnit(paragraphUnitMock1);
+                testee.ProcessParagraphUnit(paragraphUnitMock2);
+
+                // Assert
+                using (scope.OrderedAssertions())
+                {
+                    A.CallTo(() => _streamWriterMock.WriteLine("line 1")).MustHaveHappened();
+                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id""")).MustHaveHappened();
+                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened();
+                    A.CallTo(() => _streamWriterMock.WriteLine("entryComplete")).MustHaveHappened();
+                    A.CallTo(() => _streamWriterMock.WriteLine("line 5")).MustHaveHappened();
+                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id2""")).MustHaveHappened();
+                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened();
+                    A.CallTo(() => _streamWriterMock.WriteLine("entryComplete")).MustHaveHappened();
+                }
+            }
+        }
+
+        [Test]
         public void
             ProcessParagraphUnit_WhenEntryHasOneMessageString_ShouldWriteMessageString()
         {
@@ -134,7 +174,7 @@ entryComplete
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(3, 3);
 
-            A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
+            
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -158,8 +198,6 @@ entryComplete";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
-
-            A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);
@@ -185,8 +223,6 @@ msgstrPluralEntryComplete";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
-
-            A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
 
             // Act
             testee.ProcessParagraphUnit(paragraphUnitMock);

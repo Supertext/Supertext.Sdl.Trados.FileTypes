@@ -74,7 +74,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             while ((currentOriginalLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
-                if (_extendedStreamReader.CurrentLineNumber < messageStringStart || _extendedStreamReader.CurrentLineNumber > messageStringEnd)
+                if (_extendedStreamReader.CurrentLineNumber < messageStringStart)
                 {
                     _streamWriter.WriteLine(currentOriginalLine);
                 }
@@ -95,6 +95,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 else
                 {
                     WriteMessageString(paragraphUnit);
+                }
+
+                if (_extendedStreamReader.CurrentLineNumber > messageStringEnd)
+                {
+                    _streamWriter.WriteLine(currentOriginalLine);
                 }
 
                 break;
