@@ -7,11 +7,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileWriter : AbstractBilingualFileTypeComponent, IBilingualWriter, INativeOutputSettingsAware
     {
-        private static string MessageStringKeyword = "msgstr";
-        private static string MessageStringPluralKeyword = "msgstr[{0}]";
-        private static string SplittedSegmentIdStartPattern = @"\d+\sa";
-        private static string SplittedSegmentIdNextPattern = @"\d+\s[a-z]+";
+        private const string MessageStringKeyword = "msgstr";
+        private const string MessageStringPluralKeyword = "msgstr[{0}]";
+        private const string SplittedSegmentIdStartPattern = @"\d+\sa";
+        private const string SplittedSegmentIdNextPattern = @"\d+\s[a-z]+";
 
+        private readonly Regex _splittedSegmentIdStartRegex = new Regex(SplittedSegmentIdStartPattern);
+        private readonly Regex _splittedSegmentIdNextRegex = new Regex(SplittedSegmentIdNextPattern);
         private readonly IFileHelper _fileHelper;
         private readonly ISegmentReader _segmentReader;
         private readonly ILineParser _lineParser;
@@ -21,8 +23,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private IExtendedStreamReader _extendedStreamReader;
         private IStreamWriter _streamWriter;
         private ILineParsingSession _lineParsingSession;
-        private Regex _splittedSegmentIdStartRegex = new Regex(SplittedSegmentIdStartPattern);
-        private Regex _splittedSegmentIdNextRegex = new Regex(SplittedSegmentIdNextPattern);
 
         public PoFileWriter(IFileHelper fileHelper, ISegmentReader segmentReader, ILineParser lineParser,
             IEntryBuilder entryBuilder)

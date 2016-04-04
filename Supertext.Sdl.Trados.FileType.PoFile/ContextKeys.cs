@@ -2,9 +2,9 @@
 {
     public static class ContextKeys
     {
-        public static string LocationContextType = "Entry_Location";
-        public static string MessageContext = "Message_Context";
-        public static string MetaMessageStringStart = "Meta_Message_String_Start";
-        public static string MetaMessageStringEnd = "Meta_Message_String_End";
+        public const string LocationContextType = "Entry_Location";
+        public const string MessageContext = "Message_Context";
+        public const string MetaMessageStringStart = "Meta_Message_String_Start";
+        public const string MetaMessageStringEnd = "Meta_Message_String_End";
     }
 }
