@@ -44,17 +44,19 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
 
-            MathParseResultWithEntry(@"msgstr ""message string""", new ParseResult(LineType.MessageString, "message string"), new Entry
+            MathParseResultWithEntry(@"entryComplete", new ParseResult(LineType.MessageString, "message string"), new Entry
             {
                 MessageId = "message id",
                 MessageString = "message string"
             });
-            MathParseResultWithEntry(@"msgid """"", new ParseResult(LineType.MessageId, string.Empty), new Entry
+
+            MathParseResultWithEntry(@"emptyMsgidEntryComplete", new ParseResult(LineType.MessageId, string.Empty), new Entry
             {
                 MessageId = string.Empty,
                 MessageString = "message string"
             });
-            MathParseResultWithEntry(@"msgstr[2] ""message string 2""", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
+
+            MathParseResultWithEntry(@"msgstrPluralEntryComplete", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
             {
                 MessageId = "message id",
                 MessageIdPlural = "message id plural",
@@ -192,9 +194,10 @@ msgstr ""message string""";
 #: a comment
 msgid ""message id""
 msgstr ""message string""
-
+entryComplete
 msgid ""message id""
 msgstr ""message string""
+entryComplete
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -213,6 +216,7 @@ msgstr ""message string""
             var testString = @"
 msgid ""message id""
 msgstr ""message string""
+entryComplete
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -232,15 +236,16 @@ msgstr ""message string""
             var testString = @"
 msgid ""message id""
 msgstr ""message string""
-
+entryComplete
 msgid ""message id""
 msgstr ""message string""
-
+entryComplete
 msgid ""message id""
 msgstr ""message string""
-
+entryComplete
 msgid ""message id""
 msgstr ""message string""
+entryComplete
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -285,6 +290,7 @@ msgstr ""somehting like header""
             var testString = @"
 msgid ""message id""
 msgstr ""message string""
+entryComplete
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
@@ -311,6 +317,7 @@ msgstr ""message string""
             var testString = @"
 msgid ""message id""
 msgstr ""message string""
+entryComplete
 ";
             var testee = CreateTestee(testString);
             testee.StartOfInput();
