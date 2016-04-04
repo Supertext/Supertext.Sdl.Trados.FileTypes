@@ -68,12 +68,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var contextInfo = paragraphUnit.Properties.Contexts.Contexts[1];
             var messageStringStart = int.Parse(contextInfo.GetMetaData(ContextKeys.MetaMessageStringStart));
+            var messageStringEnd = int.Parse(contextInfo.GetMetaData(ContextKeys.MetaMessageStringEnd));
 
             string currentOriginalLine;
 
             while ((currentOriginalLine = _extendedStreamReader.ReadLineWithEofLine()) != null)
             {
-                if (_extendedStreamReader.CurrentLineNumber < messageStringStart)
+                if (_extendedStreamReader.CurrentLineNumber < messageStringStart || _extendedStreamReader.CurrentLineNumber > messageStringEnd)
                 {
                     _streamWriter.WriteLine(currentOriginalLine);
                 }

@@ -159,7 +159,7 @@ somethingwrong
         {
             var fileHelperMock = A.Fake<IFileHelper>();
 
-            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath)).Returns(ExtendedStreamReaderFake.Create(testString));
+            A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath)).Returns(new ExtendedStreamReaderFake(testString));
 
             var lineParserMock = A.Fake<ILineParser>();
             A.CallTo(() => lineParserMock.StartLineValidationSession()).Returns(_lineValidationSessionMock);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FakeItEasy;
+using FluentAssertions;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -15,7 +16,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private ILineParser _lineParserMock;
         private IEntryBuilder _entryBuilderMock;
         private ILineParsingSession _lineParsingSession;
-        private IExtendedStreamReader _extendedStreamReaderMock;
+        private ExtendedStreamReaderFake _extendedStreamReaderMock;
         private const string TestFileInputPath = "sample_input_file_ok";
         private const string TestFileOutputPath = "sample_output_file_ok";
 
@@ -31,17 +32,20 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(_lineParsingSession);
 
             MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
-            MathParseResultWithEntry(@"msgstr ""message string""", new ParseResult(LineType.MessageString, "message string"), new Entry
+
+            MathParseResultWithEntry(@"entryComplete", new ParseResult(LineType.MessageString, "message string"), new Entry
             {
                 MessageId = "message id",
                 MessageString = "message string"
             });
-            MathParseResultWithEntry(@"msgid """"", new ParseResult(LineType.MessageId, string.Empty), new Entry
+
+            MathParseResultWithEntry(@"emptyMsgidEntryComplete", new ParseResult(LineType.MessageId, string.Empty), new Entry
             {
                 MessageId = string.Empty,
                 MessageString = "message string"
             });
-            MathParseResultWithEntry(@"msgstr[2] ""message string 2""", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
+
+            MathParseResultWithEntry(@"msgstrPluralEntryComplete", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
             {
                 MessageId = "message id",
                 MessageIdPlural = "message id plural",
@@ -71,9 +75,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testString = @"line 1
 line 2
-line 3
-line 4
-line 5
+msgid ""message id""
+msgstr ""message string""
+entryComplete
 ";
             var testee = CreateTestee(testString);
 
@@ -85,7 +89,7 @@ line 5
             // Assert
             A.CallTo(() => _streamWriterMock.WriteLine("line 1")).MustHaveHappened();
             A.CallTo(() => _streamWriterMock.WriteLine("line 2")).MustHaveHappened();
-            A.CallTo(() => _streamWriterMock.WriteLine("line 3")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id""")).MustHaveHappened();
         }
 
         [Test]
@@ -94,17 +98,17 @@ line 5
         {
             // Arrange
             var testString = @"line 1
-line 2
-line 3
+msgid ""message id""
 msgstr ""message string""
+entryComplete
 line 5
-line 6
-line 7
-msgstr ""message string""
+msgid ""message id2""
+msgstr ""message string2""
+entryComplete
 ";
             var testee = CreateTestee(testString);
-            var paragraphUnitMock1 = CreateParagraphUnitMock(4, 4);
-            var paragraphUnitMock2 = CreateParagraphUnitMock(8, 8);
+            var paragraphUnitMock1 = CreateParagraphUnitMock(3, 3);
+            var paragraphUnitMock2 = CreateParagraphUnitMock(7, 7);
 
             testee.ProcessParagraphUnit(paragraphUnitMock1);
 
@@ -112,9 +116,9 @@ msgstr ""message string""
             testee.ProcessParagraphUnit(paragraphUnitMock2);
 
             // Assert
+            A.CallTo(() => _streamWriterMock.WriteLine("entryComplete")).MustHaveHappened();
             A.CallTo(() => _streamWriterMock.WriteLine("line 5")).MustHaveHappened();
-            A.CallTo(() => _streamWriterMock.WriteLine("line 6")).MustHaveHappened();
-            A.CallTo(() => _streamWriterMock.WriteLine("line 7")).MustHaveHappened();
+            A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id2""")).MustHaveHappened();
         }
 
         [Test]
@@ -123,12 +127,12 @@ msgstr ""message string""
         {
             // Arrange
             var testString = @"line 1
-line 2
-line 3
+msgid ""message id""
 msgstr ""message string""
+entryComplete
 ";
             var testee = CreateTestee(testString);
-            var paragraphUnitMock = CreateParagraphUnitMock(4, 4);
+            var paragraphUnitMock = CreateParagraphUnitMock(3, 3);
 
             A.CallTo(() => _segmentReader.GetTargetText(A<ISegmentPair>.Ignored)).Returns("message string");
 
@@ -144,7 +148,13 @@ msgstr ""message string""
             ProcessParagraphUnit_WhenEntryHasOneMessageStringOnMultipleLines_ShouldWriteMessageStringWithTextLines()
         {
             // Arrange
-            var testString = @"msgstr ""message string""";
+            var testString = @"line 1
+line 2
+msgid ""message id""
+msgstr ""message string""
+""message string""
+""message string""
+entryComplete";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
@@ -165,7 +175,13 @@ msgstr ""message string""
             ProcessParagraphUnit_WhenEntryHasPluralForm_ShouldWriteMessageStringPlurals()
         {
             // Arrange
-            var testString = @"msgstr[2] ""message string 2""";
+            var testString = @"line 1
+msgid ""message id""
+msgid_plural ""message id plural""
+msgstr[0] ""message string""
+msgstr[1] ""message string""
+msgstr[2] ""message string""
+msgstrPluralEntryComplete";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(4, 6);
@@ -186,7 +202,7 @@ msgstr ""message string""
             ProcessParagraphUnit_WhenMsgidIsEmpty_ShouldIgnoreEntry()
         {
             // Arrange
-            var testString = @"msgid """"";
+            var testString = @"emptyMsgidEntryComplete";
 
             var testee = CreateTestee(testString);
             var paragraphUnitMock = CreateParagraphUnitMock(2, 2);
@@ -208,7 +224,7 @@ msgstr ""message string""
             testee.FileComplete();
 
             // Assert
-            A.CallTo(() => _extendedStreamReaderMock.Close()).MustHaveHappened();
+            _extendedStreamReaderMock.Closed.Should().BeTrue();
         }
 
         [Test]
@@ -229,7 +245,7 @@ msgstr ""message string""
         {
             var fileHelperMock = A.Fake<IFileHelper>();
 
-            _extendedStreamReaderMock = ExtendedStreamReaderFake.Create(testString);
+            _extendedStreamReaderMock = new ExtendedStreamReaderFake(testString);
             A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFileInputPath)).Returns(_extendedStreamReaderMock);
             A.CallTo(() => fileHelperMock.GetStreamWriter(TestFileOutputPath)).Returns(_streamWriterMock);
 

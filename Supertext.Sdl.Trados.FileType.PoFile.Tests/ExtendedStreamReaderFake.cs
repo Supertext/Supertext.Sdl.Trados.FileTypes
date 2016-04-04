@@ -1,24 +1,48 @@
 using System;
+using System.Collections.Generic;
 using FakeItEasy;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {
-    internal class ExtendedStreamReaderFake
+    //Could not create working fakeiteasy mock, thus own fake
+    internal class ExtendedStreamReaderFake : IExtendedStreamReader
     {
-        public static IExtendedStreamReader Create(string testString)
+        private readonly string[] _lines;
+
+        public ExtendedStreamReaderFake(string testString)
         {
-            var lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            var counter = 0;
-            var extendedStreamReaderMock = A.Fake<IExtendedStreamReader>();
-            A.CallTo(() => extendedStreamReaderMock.ReadLineWithEofLine()).ReturnsLazily(() => counter < lines.Length ? lines[counter++] : null);
-            A.CallTo(() => extendedStreamReaderMock.GetLinesWithEofLine()).ReturnsLazily(() =>
+            _lines = (testString + Environment.NewLine + MarkerLines.EndOfFile).Split(new[] { Environment.NewLine },
+                StringSplitOptions.None);
+        }
+
+        public int CurrentLineNumber { get; private set; }
+
+        public bool Closed { get; private set; }
+
+        public string ReadLineWithEofLine()
+        {
+            if (CurrentLineNumber == _lines.Length)
             {
-                counter = lines.Length;
-                return lines;
-            });
-            A.CallTo(() => extendedStreamReaderMock.CurrentLineNumber).ReturnsLazily(() => counter);
-            return extendedStreamReaderMock;
+                return null;
+            }
+
+            return _lines[CurrentLineNumber++];
+        }
+
+        public IEnumerable<string> GetLinesWithEofLine()
+        {
+            CurrentLineNumber = _lines.Length;
+            return _lines;
+        }
+
+        public void Close()
+        {
+            Closed = true;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

@@ -23,44 +23,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IDocumentItemFactory _itemFactoryMock;
         private IParagraphUnitFactory _paragraphUnitFactoryMock;
 
-        public PoFileParserTest()
-        {
-            //Create here for performance reasons, not needed to be created for each test.
-            /*_lineParsingSessionMock = A.Fake<ILineParsingSession>();
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgctxt ""The msgctxt text"""))
-                .Returns(new ParseResult(LineType.MessageContext, "The msgctxt text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The msgid text"""))
-                .Returns(new ParseResult(LineType.MessageId, "The msgid text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid_plural ""The msgid_plural text"""))
-                .Returns(new ParseResult(LineType.MessageIdPlural, "The msgid_plural text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid_plural """""))
-                .Returns(new ParseResult(LineType.MessageIdPlural, ""));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr ""The msgstr text"""))
-                .Returns(new ParseResult(LineType.MessageString, "The msgstr text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[0] ""The msgstr[0] text"""))
-                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[0] text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[0] """""))
-                .Returns(new ParseResult(LineType.MessageStringPlural, ""));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr[1] ""The msgstr[1] text"""))
-                .Returns(new ParseResult(LineType.MessageStringPlural, "The msgstr[1] text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid """""))
-                .Returns(new ParseResult(LineType.MessageId, ""));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgstr """""))
-                .Returns(new ParseResult(LineType.MessageString, ""));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"msgid ""The text"""))
-                .Returns(new ParseResult(LineType.MessageId, "The text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"""The text"""))
-                .Returns(new ParseResult(LineType.Text, "The text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"""The second text"""))
-                .Returns(new ParseResult(LineType.Text, "The second text"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(@"#: a comment"))
-                .Returns(new ParseResult(LineType.Comment, "a comment"));
-            A.CallTo(() => _lineParsingSessionMock.Parse(string.Empty))
-                .Returns(new ParseResult(LineType.Empty, string.Empty));
-            A.CallTo(() => _lineParsingSessionMock.Parse(MarkerLines.EndOfFile))
-                .Returns(new ParseResult(LineType.EndOfFile, string.Empty));*/
-        }
-
         [SetUp]
         public void SetUp()
         {
@@ -81,6 +43,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
 
             MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
+
             MathParseResultWithEntry(@"msgstr ""message string""", new ParseResult(LineType.MessageString, "message string"), new Entry
             {
                 MessageId = "message id",
@@ -373,8 +336,8 @@ msgstr ""message string""
 
             A.CallTo(() => fileHelperMock.GetExtendedStreamReader(TestFilePath))
                 .ReturnsNextFromSequence(
-                    ExtendedStreamReaderFake.Create(testString),
-                    ExtendedStreamReaderFake.Create(testString));
+                    new ExtendedStreamReaderFake(testString),
+                    new ExtendedStreamReaderFake(testString));
 
             var persistentFileConversionPropertiesMock = A.Fake<IPersistentFileConversionProperties>();
             A.CallTo(() => persistentFileConversionPropertiesMock.OriginalFilePath).Returns(TestFilePath);
