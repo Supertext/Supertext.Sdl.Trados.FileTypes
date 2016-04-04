@@ -16,7 +16,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private LineType _sourceLineType;
         private bool _isTargetTextNeeded;
         private const string SourceLineTypeSetting = "SourceLineType";
+        private const string IsTargetTextNeededSetting = "IsTargetTextNeeded";
         private const LineType DefaultSourceLineType = LineType.MessageId;
+        private const bool DefaultIsTargetTextNeededSetting = false;
 
         public UserSettings()
         {
@@ -53,6 +55,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
             SourceLineType = GetSettingFromSettingsGroup(settingsGroup, SourceLineTypeSetting, DefaultSourceLineType);
+            IsTargetTextNeeded = GetSettingFromSettingsGroup(settingsGroup, IsTargetTextNeededSetting, DefaultIsTargetTextNeededSetting);
         }
 
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)

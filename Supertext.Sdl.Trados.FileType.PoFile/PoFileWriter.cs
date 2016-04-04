@@ -99,7 +99,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 break;
             }
-
         }
 
         private void WriteMessageStringPlural(IParagraphUnit paragraphUnit)
