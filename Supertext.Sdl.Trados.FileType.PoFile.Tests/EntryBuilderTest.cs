@@ -402,8 +402,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.Add(new ParseResult(LineType.Empty, string.Empty), 5);
 
             // Assert
-            testee.CompleteEntry.MessageStringPlural[0].Should().Be("The msgstr[0] text");
-            testee.CompleteEntry.MessageStringPlural[1].Should().Be("The msgstr[1] text");
+            testee.CompleteEntry.MessageStringPlurals[0].Should().Be("The msgstr[0] text");
+            testee.CompleteEntry.MessageStringPlurals[1].Should().Be("The msgstr[1] text");
         }
 
         [Test]
@@ -421,7 +421,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.Add(new ParseResult(LineType.Empty, string.Empty), 6);
 
             // Assert
-            testee.CompleteEntry.MessageStringPlural[0].Should().Be("The msgstr[0] textThe text");
+            testee.CompleteEntry.MessageStringPlurals[0].Should().Be("The msgstr[0] textThe text");
         }
 
         [Test]

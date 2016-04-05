@@ -490,7 +490,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             {
                 MessageId = "message id",
                 MessageIdPlural = "message id plural",
-                MessageStringPlural = new List<string>
+                MessageStringPlurals = new List<string>
                 {
                     "message string 0",
                     "message string 1",
@@ -518,7 +518,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             {
                 MessageId = "message id",
                 MessageIdPlural = "message id plural",
-                MessageStringPlural = new List<string>
+                MessageStringPlurals = new List<string>
                 {
                     "message string 0",
                     "message string 1",
@@ -546,7 +546,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             {
                 MessageId = "message id",
                 MessageIdPlural = "message id plural",
-                MessageStringPlural = new List<string>
+                MessageStringPlurals = new List<string>
                 {
                     "message string 0",
                     "message string 1",

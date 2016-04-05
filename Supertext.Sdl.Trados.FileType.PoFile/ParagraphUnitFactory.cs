@@ -50,7 +50,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private void AddPluralFormSegmentPairs(IParagraphUnit paragraphUnit, Entry entry, LineType sourceLineType, bool isTargetTextNeeded)
         {
             var counter = 0;
-            foreach (var messageString in entry.MessageStringPlural)
+            foreach (var messageString in entry.MessageStringPlurals)
             {
                 var messageId = counter == 0 ? entry.MessageId : entry.MessageIdPlural;
 

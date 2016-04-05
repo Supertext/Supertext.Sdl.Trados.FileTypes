@@ -154,7 +154,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 currentLineNumber =>
                 {
                     _entryInCreation.MessageStringEnd = currentLineNumber - 1;
-                    _entryInCreation.MessageStringPlural.Add(_tmpMessageStringPluralContent);
+                    _entryInCreation.MessageStringPlurals.Add(_tmpMessageStringPluralContent);
                 };
         }
 
