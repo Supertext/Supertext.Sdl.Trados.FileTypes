@@ -45,7 +45,11 @@
     <Reference Include="Sdl.FileTypeSupport.Framework.Core.Settings">
       <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.FileTypeSupport.Framework.Core.Settings.dll</HintPath>
     </Reference>
+    <Reference Include="Sdl.FileTypeSupport.Framework.Core.Utilities">
+      <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.FileTypeSupport.Framework.Core.Utilities.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -57,6 +61,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmbeddedContentSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EmbeddedContentSettingsControl.Designer.cs">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmbeddedContentSettingsPage.cs" />
+    <Compile Include="RegexRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegexRuleForm.Designer.cs">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegexRuleListItem.cs" />
     <Compile Include="SettingsPage.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,9 +102,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PluginResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegexRuleForm.resx">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsUI.resx">
       <DependentUpon>SettingsUI.cs</DependentUpon>
