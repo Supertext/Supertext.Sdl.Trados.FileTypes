@@ -86,5 +86,32 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
                 return ResourceManager.GetString("Segment_Settings_Name", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message string as source.
+        /// </summary>
+        internal static string Setting_MessageString_As_Source {
+            get {
+                return ResourceManager.GetString("Setting_MessageString_As_Source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add target text during file parsing.
+        /// </summary>
+        internal static string Setting_Target_Text_Needed {
+            get {
+                return ResourceManager.GetString("Setting_Target_Text_Needed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
     }
 }

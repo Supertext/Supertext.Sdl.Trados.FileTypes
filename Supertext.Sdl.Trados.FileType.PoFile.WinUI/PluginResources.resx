@@ -126,4 +126,13 @@
   <data name="Segment_Settings_Name" xml:space="preserve">
     <value>Segment Settings</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Setting_MessageString_As_Source" xml:space="preserve">
+    <value>Message string as source</value>
+  </data>
+  <data name="Setting_Target_Text_Needed" xml:space="preserve">
+    <value>Add target text during file parsing</value>
+  </data>
 </root>

@@ -29,6 +29,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _embeddedContentPatterns = embeddedContentPatterns;
         }
 
+        //Todo: check performance, maybe slow with a lot of patterns
         public IList<Fragment> Process(string value)
         {
             if (_regex == null)

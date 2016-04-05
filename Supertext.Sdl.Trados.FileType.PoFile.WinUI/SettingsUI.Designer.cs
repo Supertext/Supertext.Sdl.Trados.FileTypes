@@ -28,55 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new System.Windows.Forms.GroupBox();
-            cb_MessageStringAsSource = new System.Windows.Forms.CheckBox();
-            cb_TargetTextNeeded = new System.Windows.Forms.CheckBox();
-            groupBox1.SuspendLayout();
-            SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cb_MessageStringAsSource = new System.Windows.Forms.CheckBox();
+            this.cb_TargetTextNeeded = new System.Windows.Forms.CheckBox();
+            this.groupBox1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(cb_MessageStringAsSource);
-            groupBox1.Controls.Add(cb_TargetTextNeeded);
-            groupBox1.Location = new System.Drawing.Point(13, 13);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(370, 308);
-            groupBox1.TabIndex = 1;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Source settings";
+            this.groupBox1.Controls.Add(this.cb_MessageStringAsSource);
+            this.groupBox1.Controls.Add(this.cb_TargetTextNeeded);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(392, 332);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Settings";
             // 
             // cb_MessageStringAsSource
             // 
-            cb_MessageStringAsSource.AutoSize = true;
-            cb_MessageStringAsSource.Location = new System.Drawing.Point(12, 34);
-            cb_MessageStringAsSource.Name = "cb_MessageStringAsSource";
-            cb_MessageStringAsSource.Size = new System.Drawing.Size(121, 17);
-            cb_MessageStringAsSource.TabIndex = 0;
-            cb_MessageStringAsSource.Text = "Message string as source";
-            cb_MessageStringAsSource.UseVisualStyleBackColor = true;
-            cb_MessageStringAsSource.CheckedChanged += new System.EventHandler(cb_MessageStringAsSource_CheckedChanged);
+            this.cb_MessageStringAsSource.AutoSize = true;
+            this.cb_MessageStringAsSource.Location = new System.Drawing.Point(12, 34);
+            this.cb_MessageStringAsSource.Name = "cb_MessageStringAsSource";
+            this.cb_MessageStringAsSource.Size = new System.Drawing.Size(146, 17);
+            this.cb_MessageStringAsSource.TabIndex = 0;
+            this.cb_MessageStringAsSource.Text = PluginResources.Setting_MessageString_As_Source;
+            this.cb_MessageStringAsSource.UseVisualStyleBackColor = true;
+            this.cb_MessageStringAsSource.CheckedChanged += new System.EventHandler(this.cb_MessageStringAsSource_CheckedChanged);
             //
+            // 
+            //
+
+            // 
             // cb_TargetTextNeeded
-            //
-            cb_TargetTextNeeded.AutoSize = true;
-            cb_TargetTextNeeded.Location = new System.Drawing.Point(12, 68);
-            cb_TargetTextNeeded.Name = "cb_TargetTextNeeded";
-            cb_TargetTextNeeded.Size = new System.Drawing.Size(121, 17);
-            cb_TargetTextNeeded.TabIndex = 0;
-            cb_TargetTextNeeded.Text = "Add target text during file parsing";
-            cb_TargetTextNeeded.UseVisualStyleBackColor = true;
-            cb_TargetTextNeeded.CheckedChanged += new System.EventHandler(cb_TargetTextNeeded_CheckedChanged);
+            // 
+            this.cb_TargetTextNeeded.AutoSize = true;
+            this.cb_TargetTextNeeded.Location = new System.Drawing.Point(12, 140);
+            this.cb_TargetTextNeeded.Name = "cb_TargetTextNeeded";
+            this.cb_TargetTextNeeded.Size = new System.Drawing.Size(180, 17);
+            this.cb_TargetTextNeeded.TabIndex = 0;
+            this.cb_TargetTextNeeded.Text = PluginResources.Setting_Target_Text_Needed;
+            this.cb_TargetTextNeeded.UseVisualStyleBackColor = true;
+            this.cb_TargetTextNeeded.CheckedChanged += new System.EventHandler(this.cb_TargetTextNeeded_CheckedChanged);
             // 
             // SettingsUI
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(groupBox1);
-            Name = "SettingsUI";
-            Size = new System.Drawing.Size(392, 332);
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox1);
+            this.Name = "SettingsUI";
+            this.Size = new System.Drawing.Size(392, 332);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
