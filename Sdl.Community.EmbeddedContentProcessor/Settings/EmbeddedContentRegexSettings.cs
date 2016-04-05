@@ -1,5 +1,7 @@
 ﻿using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
+using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
+using Sdl.FileTypeSupport.Framework.NativeApi;
 
 namespace Sdl.Community.EmbeddedContentProcessor.Settings
 {
@@ -77,11 +79,61 @@ namespace Sdl.Community.EmbeddedContentProcessor.Settings
 
         }
 
-        public override sealed void ResetToDefaults()
+        public sealed override void ResetToDefaults()
         {
             Enabled = DefaultRegexEmbeddingEnabled;
-            StructureInfos = new ObservableList<string>();
-            MatchRules = new ComplexObservableList<MatchRule>();
+            StructureInfos = GetDefaultContexts();
+            MatchRules = GetDefaultRules();
+        }
+
+        private ComplexObservableList<MatchRule> GetDefaultRules()
+        {
+            return new ComplexObservableList<MatchRule>
+            {
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = "(\\\\{2})?</?[a-z][a-z0-9]*[^<>]*>",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = "%\\d+",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = "\\$\\[\\w+\\]",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = "%\\w+",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = "\\$\\w+",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                }
+            };
+        }
+
+        private ObservableList<string> GetDefaultContexts()
+        {
+            return new ObservableList<string>
+            {
+                StandardContextTypes.Field
+            };
         }
 
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
