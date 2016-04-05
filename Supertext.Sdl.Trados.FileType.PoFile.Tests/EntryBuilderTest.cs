@@ -3,6 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
+using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {

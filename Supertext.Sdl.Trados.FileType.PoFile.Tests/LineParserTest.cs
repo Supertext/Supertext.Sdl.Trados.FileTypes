@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
+using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {

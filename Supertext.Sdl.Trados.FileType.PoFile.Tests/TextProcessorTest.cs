@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {

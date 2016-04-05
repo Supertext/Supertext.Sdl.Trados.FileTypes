@@ -1,4 +1,4 @@
-﻿namespace Supertext.Sdl.Trados.FileType.PoFile
+﻿namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
 {
     public enum LineType
     {

@@ -2,16 +2,10 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Text;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
+using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
-    public interface ISegmentReader
-    {
-        string GetTargetText(IEnumerable<ISegmentPair> segmentPairs);
-
-        string GetTargetText(ISegmentPair segmentPair);
-    }
-
     public class SegmentReader : ISegmentReader, IMarkupDataVisitor
     {
         private StringBuilder _textStringBuilder;

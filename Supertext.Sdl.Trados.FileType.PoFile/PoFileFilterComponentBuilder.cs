@@ -3,6 +3,11 @@ using Sdl.FileTypeSupport.Framework;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
+using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
+using Supertext.Sdl.Trados.FileType.PoFile.ElementFactories;
+using Supertext.Sdl.Trados.FileType.PoFile.Resources;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
+using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {

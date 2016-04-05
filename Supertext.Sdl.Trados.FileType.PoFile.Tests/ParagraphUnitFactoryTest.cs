@@ -6,6 +6,9 @@ using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
+using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
+using Supertext.Sdl.Trados.FileType.PoFile.ElementFactories;
+using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {

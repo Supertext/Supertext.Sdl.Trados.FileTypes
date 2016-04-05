@@ -3,27 +3,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
 {
-    public interface ILineValidationSession
-    {
-        bool IsValid(string line);
-
-        string NextExpectedLineDescription { get; }
-    }
-
-    public interface ILineParsingSession
-    {
-        IParseResult Parse(string line);
-    }
-
-    public interface ILineParser
-    {
-        ILineValidationSession StartLineValidationSession();
-
-        ILineParsingSession StartLineParsingSession();
-    }
-
     public class LineParser : ILineParser, ILineValidationSession, ILineParsingSession
     {
         private static readonly LinePattern BeginOfFile;

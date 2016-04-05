@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
+using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {

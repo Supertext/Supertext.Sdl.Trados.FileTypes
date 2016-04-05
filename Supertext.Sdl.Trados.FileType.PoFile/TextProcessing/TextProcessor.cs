@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
-    public interface ITextProcessor
-    {
-        IList<Fragment> Process(string value);
-    }
-
     //TODO small but complicated, needs to be refactored to easy understandable code
     public class TextProcessor : ITextProcessor
     {

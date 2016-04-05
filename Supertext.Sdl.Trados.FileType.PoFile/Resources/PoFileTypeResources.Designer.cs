@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Supertext.Sdl.Trados.FileType.PoFile {
+namespace Supertext.Sdl.Trados.FileType.PoFile.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Supertext.Sdl.Trados.FileType.PoFile.PoFileTypeResources", typeof(PoFileTypeResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Supertext.Sdl.Trados.FileType.PoFile.Resources.PoFileTypeResources", typeof(PoFileTypeResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -4,18 +4,12 @@ using System.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
+using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
+using Supertext.Sdl.Trados.FileType.PoFile.Resources;
+using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
 {
-    public interface IParagraphUnitFactory
-    {
-        IDocumentItemFactory ItemFactory { get; set; }
-
-        IPropertiesFactory PropertiesFactory { get; set; }
-
-        IParagraphUnit Create(Entry entry, LineType sourceLineType, bool isTargetTextNeeded);
-    }
-
     public class ParagraphUnitFactory : IParagraphUnitFactory
     {
         private readonly ITextProcessor _textProcessor;

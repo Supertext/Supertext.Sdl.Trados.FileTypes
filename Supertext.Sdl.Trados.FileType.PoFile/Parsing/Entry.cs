@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Supertext.Sdl.Trados.FileType.PoFile.Resources;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
 {
     public class Entry
     {

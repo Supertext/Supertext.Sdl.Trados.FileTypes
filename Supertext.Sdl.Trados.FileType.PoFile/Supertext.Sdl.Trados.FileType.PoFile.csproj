@@ -65,9 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextKeys.cs" />
-    <Compile Include="Entry.cs" />
-    <Compile Include="EntryBuilder.cs" />
+    <Compile Include="Parsing\IEntryBuilder.cs" />
+    <Compile Include="ElementFactories\ContextKeys.cs" />
+    <Compile Include="Parsing\Entry.cs" />
+    <Compile Include="Parsing\EntryBuilder.cs" />
     <Compile Include="FileHandling\FileHelper.cs" />
     <Compile Include="FileHandling\IFileHelper.cs" />
     <Compile Include="FileHandling\IStreamReader.cs" />
@@ -76,9 +77,19 @@
     <Compile Include="FileHandling\StreamWriterWrapper.cs" />
     <Compile Include="FileHandling\ExtendedStreamReader.cs" />
     <Compile Include="FileHandling\IExtendedStreamReader.cs" />
-    <Compile Include="Fragment.cs" />
-    <Compile Include="InlineType.cs" />
-    <Compile Include="ParagraphUnitFactory.cs" />
+    <Compile Include="ElementFactories\IParagraphUnitFactory.cs" />
+    <Compile Include="Resources\PoFileTypeResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PoFileTypeResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TextProcessing\Fragment.cs" />
+    <Compile Include="TextProcessing\InlineType.cs" />
+    <Compile Include="ElementFactories\ParagraphUnitFactory.cs" />
+    <Compile Include="Parsing\ILineParser.cs" />
+    <Compile Include="Parsing\ILineParsingSession.cs" />
+    <Compile Include="Parsing\ILineValidationSession.cs" />
+    <Compile Include="Parsing\IParseResult.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -90,21 +101,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SegmentReader.cs" />
-    <Compile Include="TextProcessor.cs" />
-    <Compile Include="UserSettings.cs" />
-    <Compile Include="LineType.cs" />
+    <Compile Include="TextProcessing\ISegmentReader.cs" />
+    <Compile Include="TextProcessing\ITextProcessor.cs" />
+    <Compile Include="TextProcessing\SegmentReader.cs" />
+    <Compile Include="Settings\IUserSettings.cs" />
+    <Compile Include="TextProcessing\TextProcessor.cs" />
+    <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="Parsing\LineType.cs" />
     <Compile Include="FileHandling\MarkerLines.cs" />
-    <Compile Include="ParseResult.cs" />
-    <Compile Include="LineParser.cs" />
+    <Compile Include="Parsing\ParseResult.cs" />
+    <Compile Include="Parsing\LineParser.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />
     <Compile Include="PoFileParser.cs" />
     <Compile Include="PoFileSniffer.cs" />
-    <Compile Include="PoFileTypeResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PoFileTypeResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -112,10 +121,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PluginResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="PoFileTypeResources.resx">
+    <EmbeddedResource Include="Resources\PoFileTypeResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PoFileTypeResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>PoFileTypeResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

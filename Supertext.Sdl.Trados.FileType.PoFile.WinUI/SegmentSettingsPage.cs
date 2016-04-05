@@ -1,4 +1,5 @@
 ﻿using Sdl.FileTypeSupport.Framework.Core.Settings;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {
