@@ -65,9 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Settings\ContentMatch.cs" />
     <Compile Include="ContextKeys.cs" />
-    <Compile Include="Settings\EmbeddedContentRegexSettings.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="EntryBuilder.cs" />
     <Compile Include="FileHandling\FileHelper.cs" />
@@ -80,7 +78,6 @@
     <Compile Include="FileHandling\IExtendedStreamReader.cs" />
     <Compile Include="Fragment.cs" />
     <Compile Include="InlineType.cs" />
-    <Compile Include="Settings\MatchRule.cs" />
     <Compile Include="ParagraphUnitFactory.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -93,10 +90,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings\SegmentationHint.cs" />
     <Compile Include="SegmentReader.cs" />
     <Compile Include="TextProcessor.cs" />
-    <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="UserSettings.cs" />
     <Compile Include="LineType.cs" />
     <Compile Include="FileHandling\MarkerLines.cs" />
     <Compile Include="ParseResult.cs" />
