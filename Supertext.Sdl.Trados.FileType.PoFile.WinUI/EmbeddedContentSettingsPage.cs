@@ -1,6 +1,5 @@
 ﻿using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile;
-using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.WinUI;
 
 namespace Sdl.Community.EmbeddedContentProcessor.UI

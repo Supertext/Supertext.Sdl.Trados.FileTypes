@@ -2,8 +2,9 @@
 using System.Text.RegularExpressions;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
+using Sdl.FileTypeSupport.Framework.NativeApi;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
+namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class MatchRule : ISerializableListItem, INotifyPropertyChanged
     {
