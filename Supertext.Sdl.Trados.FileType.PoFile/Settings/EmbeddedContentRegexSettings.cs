@@ -1,7 +1,7 @@
 ﻿using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
     public class EmbeddedContentRegexSettings: FileTypeSettingsBase
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
     public class ContentMatch
     {

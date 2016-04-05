@@ -1,7 +1,7 @@
 ﻿using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
     public interface IUserSettings
     {
@@ -15,8 +15,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         private LineType _sourceLineType;
         private bool _isTargetTextNeeded;
-        private const string SourceLineTypeSetting = "SourceLineType";
-        private const string IsTargetTextNeededSetting = "IsTargetTextNeeded";
+        private const string SettingSourceLineType = "SourceLineType";
+        private const string SettingIsTargetTextNeeded = "IsTargetTextNeeded";
         private const LineType DefaultSourceLineType = LineType.MessageId;
         private const bool DefaultIsTargetTextNeededSetting = false;
 
@@ -54,15 +54,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
-            SourceLineType = GetSettingFromSettingsGroup(settingsGroup, SourceLineTypeSetting, DefaultSourceLineType);
-            IsTargetTextNeeded = GetSettingFromSettingsGroup(settingsGroup, IsTargetTextNeededSetting, DefaultIsTargetTextNeededSetting);
+            SourceLineType = GetSettingFromSettingsGroup(settingsGroup, SettingSourceLineType, DefaultSourceLineType);
+            IsTargetTextNeeded = GetSettingFromSettingsGroup(settingsGroup, SettingIsTargetTextNeeded, DefaultIsTargetTextNeededSetting);
         }
 
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
-            UpdateSettingInSettingsGroup(settingsGroup, SourceLineTypeSetting, SourceLineType, DefaultSourceLineType);
-            UpdateSettingInSettingsGroup(settingsGroup, IsTargetTextNeededSetting, IsTargetTextNeeded, DefaultIsTargetTextNeededSetting);
+            UpdateSettingInSettingsGroup(settingsGroup, SettingSourceLineType, SourceLineType, DefaultSourceLineType);
+            UpdateSettingInSettingsGroup(settingsGroup, SettingIsTargetTextNeeded, IsTargetTextNeeded, DefaultIsTargetTextNeededSetting);
         }
     }
 }

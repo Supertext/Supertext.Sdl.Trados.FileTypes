@@ -1,4 +1,4 @@
-﻿namespace Supertext.Sdl.Trados.FileType.PoFile
+﻿namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
     public enum SegmentationHint
     {
