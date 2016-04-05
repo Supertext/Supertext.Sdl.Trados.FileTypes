@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileTy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.PoFile.WinUI", "Supertext.Sdl.Trados.FileType.PoFile.WinUI\Supertext.Sdl.Trados.FileType.PoFile.WinUI.csproj", "{69A1B57A-393C-4909-AD05-2418AFF3D6FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdl.Community.EmbeddedContentProcessor", "Sdl.Community.EmbeddedContentProcessor\Sdl.Community.EmbeddedContentProcessor.csproj", "{D0748E67-8C59-4441-89FF-878B5113C103}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{69A1B57A-393C-4909-AD05-2418AFF3D6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69A1B57A-393C-4909-AD05-2418AFF3D6FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69A1B57A-393C-4909-AD05-2418AFF3D6FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0748E67-8C59-4441-89FF-878B5113C103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0748E67-8C59-4441-89FF-878B5113C103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0748E67-8C59-4441-89FF-878B5113C103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0748E67-8C59-4441-89FF-878B5113C103}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
