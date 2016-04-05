@@ -135,4 +135,19 @@
   <data name="Setting_Target_Text_Needed" xml:space="preserve">
     <value>Add target text during file parsing</value>
   </data>
+  <data name="Entry_Example_Msgid" xml:space="preserve">
+    <value>msgid "{0}"</value>
+  </data>
+  <data name="Entry_Example_Msgstr" xml:space="preserve">
+    <value>msgstr "{0}"</value>
+  </data>
+  <data name="Example_Msgid_Value" xml:space="preserve">
+    <value>example</value>
+  </data>
+  <data name="Example_Msgstr_Value" xml:space="preserve">
+    <value>Beispiel</value>
+  </data>
+  <data name="Segment_Settings_Note" xml:space="preserve">
+    <value>Note: it is always the message string (msgstr) that will be replaced by the target text.</value>
+  </data>
 </root>

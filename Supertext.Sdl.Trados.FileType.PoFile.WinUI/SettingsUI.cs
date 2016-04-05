@@ -45,8 +45,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         #region "UpdateControl"
         public void UpdateControl()
         {
-            cb_MessageStringAsSource.Checked = _userSettings.SourceLineType == LineType.MessageString;
+            var isMessageStringSource = _userSettings.SourceLineType == LineType.MessageString;
+            cb_MessageStringAsSource.Checked = isMessageStringSource;
             cb_TargetTextNeeded.Checked = _userSettings.IsTargetTextNeeded;
+            tb_sourceSegment.Text = isMessageStringSource ? PluginResources.Example_Msgstr_Value : PluginResources.Example_Msgid_Value;
+            tb_targetSegment.Text = _userSettings.IsTargetTextNeeded ? PluginResources.Example_Msgstr_Value : string.Empty;
+            tb_example.Text = string.Format(PluginResources.Entry_Example_Msgid, PluginResources.Example_Msgid_Value);
+            tb_example.Text += Environment.NewLine;
+            tb_example.Text += string.Format(PluginResources.Entry_Example_Msgstr, PluginResources.Example_Msgstr_Value);
+            tb_note.Text = PluginResources.Segment_Settings_Note;
         }
 
         #endregion
@@ -62,6 +69,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         #region "SaveSetting"
         private void cb_MessageStringAsSource_CheckedChanged(object sender, EventArgs e)
         {
+            tb_sourceSegment.Text = cb_MessageStringAsSource.Checked ? PluginResources.Example_Msgstr_Value : PluginResources.Example_Msgid_Value;
+
             _userSettings.SourceLineType = cb_MessageStringAsSource.Checked
                 ? LineType.MessageString
                 : LineType.MessageId;
@@ -69,6 +78,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
         private void cb_TargetTextNeeded_CheckedChanged(object sender, EventArgs e)
         {
+            tb_targetSegment.Text = cb_TargetTextNeeded.Checked ? PluginResources.Example_Msgstr_Value : string.Empty;
+
             _userSettings.IsTargetTextNeeded = cb_TargetTextNeeded.Checked;
         }
         #endregion
