@@ -9,7 +9,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
     /// </summary>
 
     #region "ClassDeclaration"
-    public partial class SettingsUI : UserControl, IFileTypeSettingsAware<UserSettings>
+    public partial class SegmentSettingsUI : UserControl, IFileTypeSettingsAware<UserSettings>
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         /// </summary>
 
         #region "Initialize"
-        public SettingsUI()
+        public SegmentSettingsUI()
         {
             InitializeComponent();
         }

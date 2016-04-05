@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {
-    partial class SettingsUI
+    partial class SegmentSettingsUI
     {
         /// <summary> 
         /// Required designer variable.
@@ -122,12 +122,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.tb_note.Size = new System.Drawing.Size(383, 179);
             this.tb_note.TabIndex = 3;
             // 
-            // SettingsUI
+            // SegmentSettingsUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
-            this.Name = "SettingsUI";
+            this.Name = "SegmentSettingsUI";
             this.Size = new System.Drawing.Size(392, 332);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
