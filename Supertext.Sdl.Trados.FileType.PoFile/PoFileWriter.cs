@@ -85,24 +85,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     _streamWriter.WriteLine(currentOriginalLine);
                 }
 
-                var parseResult = _lineParsingSession.Parse(currentOriginalLine);
+                var completeEntry = GetCompleteEntry(currentOriginalLine);
 
-                _entryBuilder.Add(parseResult, _extendedStreamReader.CurrentLineNumber);
-
-                if (_entryBuilder.CompleteEntry == null || string.IsNullOrEmpty(_entryBuilder.CompleteEntry.MessageId))
+                if (completeEntry == null || string.IsNullOrEmpty(completeEntry.MessageId))
                 {
                     continue;
                 }
 
-                if (_entryBuilder.CompleteEntry.IsPluralForm)
-                {
-                    WriteMessageStringPlural(paragraphUnit);
-                }
-                else
-                {
-                    WriteMessageString(paragraphUnit);
-                }
-
+                WriteMessageString(paragraphUnit, completeEntry.IsPluralForm);
+                
                 if (_extendedStreamReader.CurrentLineNumber > messageStringEnd)
                 {
                     _streamWriter.WriteLine(currentOriginalLine);
@@ -112,7 +103,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
         }
 
-        private void WriteMessageStringPlural(IParagraphUnit paragraphUnit)
+        private Entry GetCompleteEntry(string currentOriginalLine)
+        {
+            var parseResult = _lineParsingSession.Parse(currentOriginalLine);
+
+            _entryBuilder.Add(parseResult, _extendedStreamReader.CurrentLineNumber);
+
+            return _entryBuilder.CompleteEntry;
+        }
+
+        private void WriteMessageString(IParagraphUnit paragraphUnit, bool isPluralForm)
         {
             var segmentPairCounter = 0;
             foreach (var segmentPair in paragraphUnit.SegmentPairs)
@@ -123,30 +123,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 if (_splittedSegmentIdStartRegex.IsMatch(segmentPair.Properties.Id.Id) || !_splittedSegmentIdNextRegex.IsMatch(segmentPair.Properties.Id.Id))
                 {
-                    toWrite = CreateMessageStringPluralLine(segmentPairCounter, lineContent);
-                }
-                else 
-                {
-                    toWrite = CreateTextLine(lineContent);
-                }
-
-                _streamWriter.WriteLine(toWrite);
-
-                segmentPairCounter++;
-            }
-        }
-
-        private void WriteMessageString(IParagraphUnit paragraphUnit)
-        {
-            foreach (var segmentPair in paragraphUnit.SegmentPairs)
-            {
-                var lineContent = _segmentReader.GetTargetText(segmentPair);
-
-                string toWrite;
-
-                if (_splittedSegmentIdStartRegex.IsMatch(segmentPair.Properties.Id.Id) || !_splittedSegmentIdNextRegex.IsMatch(segmentPair.Properties.Id.Id))
-                {
-                    toWrite = CreateMessageStringLine(lineContent);
+                    toWrite = isPluralForm ? CreateMessageStringPluralLine(segmentPairCounter, lineContent) : CreateMessageStringLine(lineContent);
                 }
                 else
                 {
@@ -154,6 +131,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 }
 
                 _streamWriter.WriteLine(toWrite);
+
+                segmentPairCounter++;
             }
         }
 
