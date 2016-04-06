@@ -4,7 +4,7 @@ using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
-    public sealed class UserSettings : FileTypeSettingsBase, IUserSettings
+    public sealed class SegmentSettings : FileTypeSettingsBase, IUserSettings
     {
         private LineType _sourceLineType;
         private bool _isTargetTextNeeded;
@@ -13,7 +13,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         private const LineType DefaultSourceLineType = LineType.MessageId;
         private const bool DefaultIsTargetTextNeededSetting = false;
 
-        public UserSettings()
+        public SegmentSettings()
         {
             ResetToDefaults();
         }

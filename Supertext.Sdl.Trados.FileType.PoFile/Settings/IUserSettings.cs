@@ -6,7 +6,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
     public interface IUserSettings
     {
         LineType SourceLineType { get; }
-        bool IsTargetTextNeeded { get; set; }
+
+        bool IsTargetTextNeeded { get; }
 
         void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId);
     }

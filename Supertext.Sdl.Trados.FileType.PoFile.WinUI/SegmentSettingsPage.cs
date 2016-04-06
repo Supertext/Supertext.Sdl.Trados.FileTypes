@@ -4,7 +4,7 @@ using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {
     [FileTypeSettingsPage(Id = "PoFile_Segment_Settings", Name = "Segment_Settings_Name", Description = "Segment_Settings_Description")]
-    public class SegmentSettingsPage : AbstractFileTypeSettingsPage<SegmentSettingsUI, UserSettings>
+    public class SegmentSettingsPage : AbstractFileTypeSettingsPage<SegmentSettingsUI, SegmentSettings>
     {
         /// <summary>
         /// Triggered, when the user clicks the button Reset to Defaults button in 

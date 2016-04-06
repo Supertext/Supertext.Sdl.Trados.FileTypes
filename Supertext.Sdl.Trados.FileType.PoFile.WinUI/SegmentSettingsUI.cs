@@ -11,17 +11,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
     /// </summary>
 
     #region "ClassDeclaration"
-    public partial class SegmentSettingsUI : UserControl, IFileTypeSettingsAware<UserSettings>
+    public partial class SegmentSettingsUI : UserControl, IFileTypeSettingsAware<SegmentSettings>
 
         #endregion
 
     {
         /// <summary>
-        /// Create a settings object based on the UserSettings class. 
+        /// Create a settings object based on the SegmentSettings class. 
         /// </summary>
 
         #region "SettingsObject"
-        private UserSettings _userSettings;
+        private SegmentSettings _segmentSettings;
 
         #endregion
 
@@ -47,11 +47,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         #region "UpdateControl"
         public void UpdateControl()
         {
-            var isMessageStringSource = _userSettings.SourceLineType == LineType.MessageString;
+            var isMessageStringSource = _segmentSettings.SourceLineType == LineType.MessageString;
             cb_MessageStringAsSource.Checked = isMessageStringSource;
-            cb_TargetTextNeeded.Checked = _userSettings.IsTargetTextNeeded;
+            cb_TargetTextNeeded.Checked = _segmentSettings.IsTargetTextNeeded;
             tb_sourceSegment.Text = isMessageStringSource ? PluginResources.Example_Msgstr_Value : PluginResources.Example_Msgid_Value;
-            tb_targetSegment.Text = _userSettings.IsTargetTextNeeded ? PluginResources.Example_Msgstr_Value : string.Empty;
+            tb_targetSegment.Text = _segmentSettings.IsTargetTextNeeded ? PluginResources.Example_Msgstr_Value : string.Empty;
             tb_example.Text = string.Format(PluginResources.Entry_Example_Msgid, PluginResources.Example_Msgid_Value);
             tb_example.Text += Environment.NewLine;
             tb_example.Text += string.Format(PluginResources.Entry_Example_Msgstr, PluginResources.Example_Msgstr_Value);
@@ -62,7 +62,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
         /// <summary>
         /// Save the settings based on the value of the the check box.
-        /// The setting is saved through the UserSettings class, which
+        /// The setting is saved through the SegmentSettings class, which
         /// handles the plug-in settings bundle.
         /// </summary>
         /// <param name="sender"></param>
@@ -73,7 +73,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         {
             tb_sourceSegment.Text = cb_MessageStringAsSource.Checked ? PluginResources.Example_Msgstr_Value : PluginResources.Example_Msgid_Value;
 
-            _userSettings.SourceLineType = cb_MessageStringAsSource.Checked
+            _segmentSettings.SourceLineType = cb_MessageStringAsSource.Checked
                 ? LineType.MessageString
                 : LineType.MessageId;
         }
@@ -82,7 +82,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         {
             tb_targetSegment.Text = cb_TargetTextNeeded.Checked ? PluginResources.Example_Msgstr_Value : string.Empty;
 
-            _userSettings.IsTargetTextNeeded = cb_TargetTextNeeded.Checked;
+            _segmentSettings.IsTargetTextNeeded = cb_TargetTextNeeded.Checked;
         }
         #endregion
 
@@ -92,12 +92,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         /// </summary>
 
         #region "ApplySettings"
-        public UserSettings Settings
+        public SegmentSettings Settings
         {
-            get { return _userSettings; }
+            get { return _segmentSettings; }
             set
             {
-                _userSettings = value;
+                _segmentSettings = value;
                 UpdateControl();
             }
         }

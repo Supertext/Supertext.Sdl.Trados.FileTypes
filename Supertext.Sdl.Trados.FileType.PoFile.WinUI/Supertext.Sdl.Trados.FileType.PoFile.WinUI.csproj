@@ -57,6 +57,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmbeddedContentSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EmbeddedContentSettingsControl.Designer.cs">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmbeddedContentSettingsPage.cs" />
+    <Compile Include="RegexRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegexRuleForm.Designer.cs">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegexRuleListItem.cs" />
     <Compile Include="SegmentSettingsPage.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,9 +98,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PluginResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegexRuleForm.resx">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SegmentSettingsUI.resx">
       <DependentUpon>SegmentSettingsUI.cs</DependentUpon>

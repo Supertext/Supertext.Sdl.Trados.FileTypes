@@ -83,6 +83,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PoFileTypeResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings\EmbeddedContentRegexSettings.cs" />
+    <Compile Include="Settings\MatchRule.cs" />
     <Compile Include="TextProcessing\Fragment.cs" />
     <Compile Include="TextProcessing\InlineType.cs" />
     <Compile Include="ElementFactories\ParagraphUnitFactory.cs" />
@@ -106,7 +108,7 @@
     <Compile Include="TextProcessing\SegmentReader.cs" />
     <Compile Include="Settings\IUserSettings.cs" />
     <Compile Include="TextProcessing\TextProcessor.cs" />
-    <Compile Include="Settings\UserSettings.cs" />
+    <Compile Include="Settings\SegmentSettings.cs" />
     <Compile Include="Parsing\LineType.cs" />
     <Compile Include="FileHandling\MarkerLines.cs" />
     <Compile Include="Parsing\ParseResult.cs" />
