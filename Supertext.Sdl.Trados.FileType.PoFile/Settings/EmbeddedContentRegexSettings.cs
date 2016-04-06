@@ -3,17 +3,17 @@ using Sdl.FileTypeSupport.Framework.Core.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
-    public class EmbeddedContentRegexSettings: FileTypeSettingsBase
+    public sealed class EmbeddedContentRegexSettings: FileTypeSettingsBase
     {
-        const string SettingRegexEmbeddingEnabled = "RegexEmbeddingEnabled";
-        const string SettingStructureInfoList = "StructureInfoList";
-        const string SettingMatchRuleList = "MatchRuleList";
+        private const string SettingRegexEmbeddingEnabled = "RegexEmbeddingEnabled";
+        private const string SettingStructureInfoList = "StructureInfoList";
+        private const string SettingMatchRuleList = "MatchRuleList";
 
-        bool _isEnabled;
-        ObservableList<string> _structureInfos;
-        ComplexObservableList<MatchRule> _matchRules;
+        private bool _isEnabled;
+        private ObservableList<string> _structureInfos;
+        private ComplexObservableList<MatchRule> _matchRules;
 
-        protected bool DefaultRegexEmbeddingEnabled = false;
+        private bool DefaultRegexEmbeddingEnabled = false;
 
         public EmbeddedContentRegexSettings()
         {
@@ -59,29 +59,29 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             }
         }
 
+        public override void ResetToDefaults()
+        {
+            Enabled = DefaultRegexEmbeddingEnabled;
+            StructureInfos = new ObservableList<string>();
+            MatchRules = new ComplexObservableList<MatchRule>();
+        }
+
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
-
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
             Enabled = GetSettingFromSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, DefaultRegexEmbeddingEnabled);
+
             if (settingsGroup.ContainsSetting(SettingStructureInfoList))
             {
                 _structureInfos.Clear();
                 _structureInfos.PopulateFromSettingsGroup(settingsGroup, SettingStructureInfoList);
             }
+
             if (settingsGroup.ContainsSetting(SettingMatchRuleList))
             {
                 _matchRules.Clear();
                 _matchRules.PopulateFromSettingsGroup(settingsGroup, SettingMatchRuleList);
             }
-
-        }
-
-        public override sealed void ResetToDefaults()
-        {
-            Enabled = DefaultRegexEmbeddingEnabled;
-            StructureInfos = new ObservableList<string>();
-            MatchRules = new ComplexObservableList<MatchRule>();
         }
 
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
@@ -90,7 +90,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             UpdateSettingInSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, Enabled, DefaultRegexEmbeddingEnabled);
             _structureInfos.SaveToSettingsGroup(settingsGroup, SettingStructureInfoList);
             _matchRules.SaveToSettingsGroup(settingsGroup, SettingMatchRuleList);
-
         }
     }
 }

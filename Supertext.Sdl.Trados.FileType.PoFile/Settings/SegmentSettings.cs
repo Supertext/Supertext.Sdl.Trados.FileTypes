@@ -6,12 +6,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
     public sealed class SegmentSettings : FileTypeSettingsBase, ISegmentSettings
     {
-        private LineType _sourceLineType;
-        private bool _isTargetTextNeeded;
         private const string SourceLineTypeSetting = "SourceLineType";
         private const string IsTargetTextNeededSetting = "IsTargetTextNeeded";
         private const LineType DefaultSourceLineType = LineType.MessageId;
         private const bool DefaultIsTargetTextNeededSetting = false;
+        private LineType _sourceLineType;
+        private bool _isTargetTextNeeded;
 
         public SegmentSettings()
         {
