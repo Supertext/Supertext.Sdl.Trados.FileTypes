@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.Resources;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
@@ -13,10 +15,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
     public class ParagraphUnitFactory : IParagraphUnitFactory
     {
         private readonly ITextProcessor _textProcessor;
+        private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
 
-        public ParagraphUnitFactory(ITextProcessor textProcessor)
+        public ParagraphUnitFactory(ITextProcessor textProcessor, IEmbeddedContentRegexSettings embeddedContentRegexSettings)
         {
             _textProcessor = textProcessor;
+            _embeddedContentRegexSettings = embeddedContentRegexSettings;
         }
 
         public IDocumentItemFactory ItemFactory { get; set; }
@@ -39,6 +43,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
             paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
 
             return paragraphUnit;
+        }
+
+        public void InitializeSettings(ISettingsBundle settingsBundleMock, string configurationId)
+        {
+            _embeddedContentRegexSettings.PopulateFromSettingsBundle(settingsBundleMock, configurationId);
         }
 
         private void AddPluralFormSegmentPairs(IParagraphUnit paragraphUnit, Entry entry, LineType sourceLineType, bool isTargetTextNeeded)

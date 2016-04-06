@@ -1,19 +1,19 @@
-﻿using Sdl.Core.Settings;
+﻿using System.ComponentModel;
+using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
-    public sealed class EmbeddedContentRegexSettings: FileTypeSettingsBase
+    public sealed class EmbeddedContentRegexSettings: FileTypeSettingsBase, IEmbeddedContentRegexSettings
     {
         private const string SettingRegexEmbeddingEnabled = "RegexEmbeddingEnabled";
         private const string SettingStructureInfoList = "StructureInfoList";
         private const string SettingMatchRuleList = "MatchRuleList";
+        private const bool DefaultRegexEmbeddingEnabled = false;
 
         private bool _isEnabled;
         private ObservableList<string> _structureInfos;
         private ComplexObservableList<MatchRule> _matchRules;
-
-        private bool DefaultRegexEmbeddingEnabled = false;
 
         public EmbeddedContentRegexSettings()
         {

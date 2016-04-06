@@ -4,10 +4,12 @@ using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.ElementFactories;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
@@ -16,6 +18,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     public class ParagraphUnitFactoryTest
     {
         private ITextProcessor _textProcessorMock;
+        private IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
         private IDocumentItemFactory _itemFactoryMock;
         private IPropertiesFactory _propertiesFactoryMock;
         private IParagraphUnit _paragraphUnitMock;
@@ -35,13 +38,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private ISegment _targetSegment2Mock;
         private ISegment _sourceSegment3Mock;
         private ISegment _targetSegment3Mock;
-        private ISegment _sourceSegment4Mock;
-        private ISegment _targetSegment4Mock;
 
         [SetUp]
         public void SetUp()
         {
             _textProcessorMock = A.Fake<ITextProcessor>();
+            _embeddedContentRegexSettings = A.Fake<IEmbeddedContentRegexSettings>();
             _itemFactoryMock = A.Fake<IDocumentItemFactory>();
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
 
@@ -567,9 +569,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _paragraphTargetMock.Add(_targetSegment2Mock)).MustHaveHappened();
         }
 
-        public ParagraphUnitFactory CreateTestee()
+        [Test]
+        public void InitializeSettings_ShouldSetSettingsByPopulatingFromSettingsBundle()
         {
-            return new ParagraphUnitFactory(_textProcessorMock)
+            // Arrange
+            var testee = CreateTestee();
+            const string configurationId = "testId";
+            var settingsBundleMock = A.Fake<ISettingsBundle>();
+
+            // Act
+            testee.InitializeSettings(settingsBundleMock, configurationId);
+
+            // Assert
+            A.CallTo(() => _embeddedContentRegexSettings.PopulateFromSettingsBundle(settingsBundleMock, configurationId)).MustHaveHappened();
+        }
+
+    public ParagraphUnitFactory CreateTestee()
+        {
+            return new ParagraphUnitFactory(_textProcessorMock, _embeddedContentRegexSettings)
             {
                 ItemFactory = _itemFactoryMock,
                 PropertiesFactory = _propertiesFactoryMock,

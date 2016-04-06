@@ -55,11 +55,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public IFileExtractor BuildFileExtractor(string name)
         {
+            var textProcessor = new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns);
+            var paragraphUnitFactory =
+                new ParagraphUnitFactory(textProcessor,
+                    new EmbeddedContentRegexSettings());
             var parser = new PoFileParser(
                 new FileHelper(),
                 new LineParser(),
                 new SegmentSettings(),
-                new ParagraphUnitFactory(new TextProcessor(TextProcessor.DefaultEmbeddedContentPatterns)), new EntryBuilder());
+                paragraphUnitFactory, new EntryBuilder());
 
             var fileExtractor = FileTypeManager.BuildFileExtractor(parser, this);
 

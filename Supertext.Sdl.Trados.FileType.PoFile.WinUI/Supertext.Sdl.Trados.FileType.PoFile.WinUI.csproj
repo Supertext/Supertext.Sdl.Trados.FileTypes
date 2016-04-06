@@ -42,10 +42,17 @@
     <Reference Include="Sdl.Core.Settings">
       <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.Core.Settings.dll</HintPath>
     </Reference>
+    <Reference Include="Sdl.FileTypeSupport.Framework.Core">
+      <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.FileTypeSupport.Framework.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Sdl.FileTypeSupport.Framework.Core.Settings">
       <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.FileTypeSupport.Framework.Core.Settings.dll</HintPath>
     </Reference>
+    <Reference Include="Sdl.FileTypeSupport.Framework.Core.Utilities">
+      <HintPath>..\..\..\..\Program Files (x86)\SDL\SDL Trados Studio\Studio4\Sdl.FileTypeSupport.Framework.Core.Utilities.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

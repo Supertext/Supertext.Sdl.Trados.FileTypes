@@ -84,6 +84,7 @@
       <DependentUpon>PoFileTypeResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings\EmbeddedContentRegexSettings.cs" />
+    <Compile Include="Settings\IEmbeddedContentRegexSettings.cs" />
     <Compile Include="Settings\MatchRule.cs" />
     <Compile Include="TextProcessing\Fragment.cs" />
     <Compile Include="TextProcessing\InlineType.cs" />

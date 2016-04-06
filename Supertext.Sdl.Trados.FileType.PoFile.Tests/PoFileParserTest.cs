@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
+using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
@@ -47,39 +48,40 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
 
-            MathParseResultWithEntry(@"entryComplete", new ParseResult(LineType.MessageString, "message string"), new Entry
-            {
-                MessageId = "message id",
-                MessageString = "message string"
-            });
+            MathParseResultWithEntry(@"entryComplete", new ParseResult(LineType.MessageString, "message string"),
+                new Entry
+                {
+                    MessageId = "message id",
+                    MessageString = "message string"
+                });
 
-            MathParseResultWithEntry(@"emptyMsgidEntryComplete", new ParseResult(LineType.MessageId, string.Empty), new Entry
-            {
-                MessageId = string.Empty,
-                MessageString = "message string"
-            });
+            MathParseResultWithEntry(@"emptyMsgidEntryComplete", new ParseResult(LineType.MessageId, string.Empty),
+                new Entry
+                {
+                    MessageId = string.Empty,
+                    MessageString = "message string"
+                });
 
-            MathParseResultWithEntry(@"msgstrPluralEntryComplete", new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
-            {
-                MessageId = "message id",
-                MessageIdPlural = "message id plural",
-                MessageStringPlurals = new List<string>
+            MathParseResultWithEntry(@"msgstrPluralEntryComplete",
+                new ParseResult(LineType.MessageStringPlural, "message string 2"), new Entry
+                {
+                    MessageId = "message id",
+                    MessageIdPlural = "message id plural",
+                    MessageStringPlurals = new List<string>
                     {
                         "message string 0",
                         "message string 1",
                         "message string 2"
                     }
-            });
+                });
         }
 
         private void MathParseResultWithEntry(string line, IParseResult parseResult, Entry completeEntry)
         {
             A.CallTo(() => _lineParsingSessionMock.Parse(line ?? A<string>.Ignored)).Returns(parseResult);
 
-            A.CallTo(() => _entryBuilderMock.Add(parseResult, A<int>.Ignored)).Invokes(() =>
-            {
-                A.CallTo(() => _entryBuilderMock.CompleteEntry).Returns(completeEntry);
-            });
+            A.CallTo(() => _entryBuilderMock.Add(parseResult, A<int>.Ignored))
+                .Invokes(() => { A.CallTo(() => _entryBuilderMock.CompleteEntry).Returns(completeEntry); });
         }
 
         [Test]
@@ -139,6 +141,25 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             _paragraphUnitFactoryMock.ItemFactory.Should().Be(_itemFactoryMock);
             _paragraphUnitFactoryMock.PropertiesFactory.Should().Be(_propertiesFactoryMock);
+        }
+
+        [Test]
+        public void InitializeSettings_ShouldSetSettingsByPopulatingFromSettingsBundle()
+        {
+            // Arrange
+            var testString = string.Empty;
+            var testee = CreateTestee(testString);
+            const string configurationId = "testId";
+            ISettingsBundle settingsBundleMock = A.Fake<ISettingsBundle>();
+
+            // Act
+            testee.InitializeSettings(settingsBundleMock, configurationId);
+
+            // Assert
+            A.CallTo(() => _segmentSettingsMock.PopulateFromSettingsBundle(settingsBundleMock, configurationId))
+                .MustHaveHappened();
+            A.CallTo(() =>_paragraphUnitFactoryMock.InitializeSettings(settingsBundleMock, configurationId))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -278,14 +299,14 @@ msgstr ""somehting like header""
 
             // Assert
             A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.Ignored,
-                       A<LineType>.Ignored,
-                       A<bool>.Ignored))
-               .MustNotHaveHappened();
+                () =>
+                    _paragraphUnitFactoryMock.Create(
+                        A<Entry>.Ignored,
+                        A<LineType>.Ignored,
+                        A<bool>.Ignored))
+                .MustNotHaveHappened();
         }
-        
+
         [Test]
         public void ParseNext_WhenMsgidIsSourceLineType_ShouldTakeMsgidAsSource()
         {
@@ -305,12 +326,12 @@ entryComplete
 
             // Assert
             A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.Ignored,
-                       LineType.MessageId,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
+                () =>
+                    _paragraphUnitFactoryMock.Create(
+                        A<Entry>.Ignored,
+                        LineType.MessageId,
+                        A<bool>.Ignored))
+                .MustHaveHappened();
         }
 
         [Test]
@@ -332,12 +353,12 @@ entryComplete
 
             // Assert
             A.CallTo(
-               () =>
-                   _paragraphUnitFactoryMock.Create(
-                       A<Entry>.Ignored,
-                       LineType.MessageString,
-                       A<bool>.Ignored))
-               .MustHaveHappened();
+                () =>
+                    _paragraphUnitFactoryMock.Create(
+                        A<Entry>.Ignored,
+                        LineType.MessageString,
+                        A<bool>.Ignored))
+                .MustHaveHappened();
         }
 
         private PoFileParser CreateTestee(string testString)
@@ -355,7 +376,8 @@ entryComplete
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelperMock, _lineParserMock, _segmentSettingsMock, _paragraphUnitFactoryMock, _entryBuilderMock)
+            var testee = new PoFileParser(fileHelperMock, _lineParserMock, _segmentSettingsMock,
+                _paragraphUnitFactoryMock, _entryBuilderMock)
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock
