@@ -22,7 +22,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IEntryBuilder _entryBuilderMock;
         private IPropertiesFactory _propertiesFactoryMock;
         private IBilingualContentHandler _bilingualContentHandlerMock;
-        private IUserSettings _userSettingsMock;
+        private ISegmentSettings _segmentSettingsMock;
         private IDocumentItemFactory _itemFactoryMock;
         private IParagraphUnitFactory _paragraphUnitFactoryMock;
 
@@ -36,7 +36,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             _bilingualContentHandlerMock = A.Fake<IBilingualContentHandler>();
 
-            _userSettingsMock = A.Fake<IUserSettings>();
+            _segmentSettingsMock = A.Fake<ISegmentSettings>();
 
             _paragraphUnitFactoryMock = A.Fake<IParagraphUnitFactory>();
 
@@ -298,7 +298,7 @@ entryComplete
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageId);
+            A.CallTo(() => _segmentSettingsMock.SourceLineType).Returns(LineType.MessageId);
 
             // Act
             testee.ParseNext();
@@ -325,7 +325,7 @@ entryComplete
             var testee = CreateTestee(testString);
             testee.StartOfInput();
 
-            A.CallTo(() => _userSettingsMock.SourceLineType).Returns(LineType.MessageString);
+            A.CallTo(() => _segmentSettingsMock.SourceLineType).Returns(LineType.MessageString);
 
             // Act
             testee.ParseNext();
@@ -355,7 +355,7 @@ entryComplete
             var filePropertiesMock = A.Fake<IFileProperties>();
             A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(persistentFileConversionPropertiesMock);
 
-            var testee = new PoFileParser(fileHelperMock, _lineParserMock, _userSettingsMock, _paragraphUnitFactoryMock, _entryBuilderMock)
+            var testee = new PoFileParser(fileHelperMock, _lineParserMock, _segmentSettingsMock, _paragraphUnitFactoryMock, _entryBuilderMock)
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock

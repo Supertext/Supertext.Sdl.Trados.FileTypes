@@ -14,7 +14,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
     {
         private readonly IFileHelper _fileHelper;
         private readonly ILineParser _lineParser;
-        private readonly IUserSettings _userSettings;
+        private readonly ISegmentSettings _segmentSettings;
         private readonly IParagraphUnitFactory _paragraphUnitFactory;
         private readonly IEntryBuilder _entryBuilder;
         private string _originalFilePath;
@@ -25,11 +25,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private byte _progressInPercent;
         private int _totalNumberOfLines;
 
-        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, IUserSettings defaultUserSettings, IParagraphUnitFactory paragraphUnitFactory, IEntryBuilder entryBuilder)
+        public PoFileParser(IFileHelper fileHelper, ILineParser lineParser, ISegmentSettings defaultSegmentSettings, IParagraphUnitFactory paragraphUnitFactory, IEntryBuilder entryBuilder)
         {
             _fileHelper = fileHelper;
             _lineParser = lineParser;
-            _userSettings = defaultUserSettings;
+            _segmentSettings = defaultSegmentSettings;
             _paragraphUnitFactory = paragraphUnitFactory;
             _entryBuilder = entryBuilder;
         }
@@ -82,7 +82,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
-            _userSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
+            _segmentSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
         }
 
         public override bool ParseNext()
@@ -104,8 +104,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 var paragraphUnit = _paragraphUnitFactory.Create(
                     _entryBuilder.CompleteEntry,
-                    _userSettings.SourceLineType,
-                    _userSettings.IsTargetTextNeeded);
+                    _segmentSettings.SourceLineType,
+                    _segmentSettings.IsTargetTextNeeded);
 
                 Output.ProcessParagraphUnit(paragraphUnit);
 

@@ -3,7 +3,7 @@ using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
-    public interface IUserSettings
+    public interface ISegmentSettings
     {
         LineType SourceLineType { get; }
 

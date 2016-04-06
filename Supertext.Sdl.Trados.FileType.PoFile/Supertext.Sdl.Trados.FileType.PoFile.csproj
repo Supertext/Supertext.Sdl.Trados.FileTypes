@@ -106,7 +106,7 @@
     <Compile Include="TextProcessing\ISegmentReader.cs" />
     <Compile Include="TextProcessing\ITextProcessor.cs" />
     <Compile Include="TextProcessing\SegmentReader.cs" />
-    <Compile Include="Settings\IUserSettings.cs" />
+    <Compile Include="Settings\ISegmentSettings.cs" />
     <Compile Include="TextProcessing\TextProcessor.cs" />
     <Compile Include="Settings\SegmentSettings.cs" />
     <Compile Include="Parsing\LineType.cs" />
