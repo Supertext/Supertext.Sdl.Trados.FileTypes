@@ -3,6 +3,7 @@ using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
+using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
@@ -32,7 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private void ProcessParagraph(IParagraph paragraph)
         {
-            var embeddedContentVisitor = new EmbeddedContentVisitor(ItemFactory, _settings.MatchRules.ToList());
+            var embeddedContentVisitor = new EmbeddedContentVisitor(ItemFactory, _settings.MatchRules.ToList(), new TextProcessor());
 
             foreach (var current in paragraph)
             {

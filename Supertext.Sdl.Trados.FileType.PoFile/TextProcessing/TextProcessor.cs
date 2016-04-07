@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
@@ -9,22 +10,34 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
         private List<InlineType> _types;
         private Regex _regex;
 
-        public static Dictionary<string, InlineType> DefaultEmbeddedContentPatterns = new Dictionary<string, InlineType>
-            {
-                { @"%\d+", InlineType.Placeholder },
-                { @"%\w+", InlineType.Placeholder },
-                { @"\$\w+", InlineType.Placeholder },
-                { @"<[a-z][a-z0-9]*[^<>]*>", InlineType.StartTag },
-                { @"</[a-z][a-z0-9]*[^<>]*>", InlineType.EndTag }
-            };
-
         //Todo: check performance, maybe slow with a lot of patterns
-        public IList<Fragment> Process(string value, Dictionary<string, InlineType> embeddedContentPatterns)
+        public IList<Fragment> Process(string value, List<MatchRule> matchRules)
         {
             if (_regex == null)
             {
-                _regex = new Regex("(" + string.Join(")|(", embeddedContentPatterns.Keys) + ")");
-                _types = new List<InlineType>(embeddedContentPatterns.Values);
+                _types = new List<InlineType>();
+
+                var fullPattnern = "";
+
+                foreach (var matchRule in matchRules)
+                {
+                    if (matchRule.TagType == MatchRule.TagTypeOption.TagPair)
+                    {
+                        fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
+                        _types.Add(InlineType.StartTag);
+                        fullPattnern += "(" + matchRule.EndTagRegexValue + ")|";
+                        _types.Add(InlineType.EndTag);
+                    }
+                    else if(matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
+                    {
+                        fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
+                        _types.Add(InlineType.Placeholder);
+                    }
+                }
+
+                fullPattnern = fullPattnern.Substring(0, fullPattnern.Length - 1);
+
+                _regex = new Regex(fullPattnern);
             }
             
             var matches = _regex.Matches(value);

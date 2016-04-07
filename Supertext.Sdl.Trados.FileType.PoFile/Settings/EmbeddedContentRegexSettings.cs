@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
+using Sdl.FileTypeSupport.Framework.NativeApi;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
@@ -10,10 +11,51 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         private const string SettingStructureInfoList = "StructureInfoList";
         private const string SettingMatchRuleList = "MatchRuleList";
         private const bool DefaultRegexEmbeddingEnabled = false;
+        public static ComplexObservableList<MatchRule> DefaultMatchRules = new ComplexObservableList<MatchRule>
+            {
+
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = @"%\d+",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = @"\$\[\w+\]",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = @"%\w+",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    StartTagRegexValue = @"\$\w+",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.TagPair,
+                    StartTagRegexValue =  @"<[a-z][a-z0-9]*[^<>]*>",
+                    EndTagRegexValue =  @"<\/[a-z][a-z0-9]*[^<>]*>",
+                    SegmentationHint = SegmentationHint.IncludeWithText
+                }
+            };
 
         private bool _isEnabled;
         private ObservableList<string> _structureInfos;
         private ComplexObservableList<MatchRule> _matchRules;
+
 
         public EmbeddedContentRegexSettings()
         {
@@ -62,8 +104,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         public override void ResetToDefaults()
         {
             Enabled = DefaultRegexEmbeddingEnabled;
-            StructureInfos = new ObservableList<string>();
-            MatchRules = new ComplexObservableList<MatchRule>();
+            StructureInfos = new ObservableList<string>
+            {
+                "sdl:field"
+            };
+            MatchRules = DefaultMatchRules;
         }
 
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)

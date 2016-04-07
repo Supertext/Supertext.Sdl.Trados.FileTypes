@@ -1,22 +1,29 @@
+using System;
 using System.Collections.Generic;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
+using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class EmbeddedContentVisitor : IMarkupDataVisitor
     {
-        private readonly IDocumentItemFactory _factory;
+        private readonly IDocumentItemFactory _itemFactory;
+        private readonly IPropertiesFactory _propertiesFactory;
         private readonly List<MatchRule> _matchRules;
+        private readonly ITextProcessor _textProcessor;
 
         private IAbstractMarkupDataContainer _currentContainer;
 
-        public EmbeddedContentVisitor(IDocumentItemFactory factory, List<MatchRule> matchRules)
+        public EmbeddedContentVisitor(IDocumentItemFactory itemFactory, List<MatchRule> matchRules,
+            ITextProcessor textProcessor)
         {
-            _factory = factory;
+            _itemFactory = itemFactory;
+            _propertiesFactory = itemFactory.PropertiesFactory;
             _matchRules = matchRules;
-            GeneratedParagraph = factory.CreateParagraphUnit(LockTypeFlags.Unlocked).Source;
+            _textProcessor = textProcessor;
+            GeneratedParagraph = itemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked).Source;
             _currentContainer = GeneratedParagraph;
         }
 
@@ -24,55 +31,55 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void VisitCommentMarker(ICommentMarker commentMarker)
         {
-            ICommentMarker commentMarker2 = _factory.CreateCommentMarker(commentMarker.Comments);
+            var commentMarker2 = _itemFactory.CreateCommentMarker(commentMarker.Comments);
             _currentContainer.Add(commentMarker2);
-            this._currentContainer = commentMarker2;
-            foreach (IAbstractMarkupData current in commentMarker)
+            _currentContainer = commentMarker2;
+            foreach (var current in commentMarker)
             {
                 current.AcceptVisitor(this);
             }
-            this._currentContainer = commentMarker2.Parent;
+            _currentContainer = commentMarker2.Parent;
         }
 
         public void VisitLocationMarker(ILocationMarker location)
         {
-            this._currentContainer.Add((ILocationMarker)location.Clone());
+            _currentContainer.Add((ILocationMarker) location.Clone());
         }
 
         public void VisitLockedContent(ILockedContent lockedContent)
         {
-            this._currentContainer.Add((ILockedContent)lockedContent.Clone());
+            _currentContainer.Add((ILockedContent) lockedContent.Clone());
         }
 
         public void VisitOtherMarker(IOtherMarker marker)
         {
-            IOtherMarker otherMarker = this._factory.CreateOtherMarker();
+            var otherMarker = _itemFactory.CreateOtherMarker();
             otherMarker.Id = marker.Id;
             otherMarker.MarkerType = marker.MarkerType;
-            this._currentContainer.Add(otherMarker);
-            this._currentContainer = otherMarker;
-            foreach (IAbstractMarkupData current in marker)
+            _currentContainer.Add(otherMarker);
+            _currentContainer = otherMarker;
+            foreach (var current in marker)
             {
                 current.AcceptVisitor(this);
             }
-            this._currentContainer = otherMarker.Parent;
+            _currentContainer = otherMarker.Parent;
         }
 
         public void VisitPlaceholderTag(IPlaceholderTag tag)
         {
-            this._currentContainer.Add((IPlaceholderTag)tag.Clone());
+            _currentContainer.Add((IPlaceholderTag) tag.Clone());
         }
 
         public void VisitRevisionMarker(IRevisionMarker revisionMarker)
         {
-            IRevisionMarker revisionMarker2 = this.CreateRevisionOrFeedback(revisionMarker.Properties);
-            this._currentContainer.Add(revisionMarker2);
-            this._currentContainer = revisionMarker2;
+            var revisionMarker2 = CreateRevisionOrFeedback(revisionMarker.Properties);
+            _currentContainer.Add(revisionMarker2);
+            _currentContainer = revisionMarker2;
             foreach (IAbstractMarkupData current in revisionMarker)
             {
                 current.AcceptVisitor(this);
             }
-            this._currentContainer = revisionMarker2.Parent;
+            _currentContainer = revisionMarker2.Parent;
         }
 
         private IRevisionMarker CreateRevisionOrFeedback(IRevisionProperties properties)
@@ -82,130 +89,182 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 case RevisionType.Insert:
                 case RevisionType.Delete:
                 case RevisionType.Unchanged:
-                    return this._factory.CreateRevision(properties);
+                    return _itemFactory.CreateRevision(properties);
                 case RevisionType.FeedbackComment:
                 case RevisionType.FeedbackAdded:
                 case RevisionType.FeedbackDeleted:
-                    return this._factory.CreateFeedback(properties);
+                    return _itemFactory.CreateFeedback(properties);
                 default:
-                    return this._factory.CreateRevision(properties);
+                    return _itemFactory.CreateRevision(properties);
             }
         }
 
         public void VisitSegment(ISegment segment)
         {
-            ISegment segment2 = this._factory.CreateSegment(segment.Properties);
-            this._currentContainer.Add(segment2);
-            this._currentContainer = segment2;
-            foreach (IAbstractMarkupData current in segment)
+            var segment2 = _itemFactory.CreateSegment(segment.Properties);
+            _currentContainer.Add(segment2);
+            _currentContainer = segment2;
+            foreach (var current in segment)
             {
                 current.AcceptVisitor(this);
             }
-            this._currentContainer = segment2.Parent;
+            _currentContainer = segment2.Parent;
         }
 
         public void VisitTagPair(ITagPair tagPair)
         {
-            ITagPair tagPair2 = this._factory.CreateTagPair(tagPair.StartTagProperties, tagPair.EndTagProperties);
-            this._currentContainer.Add(tagPair2);
-            this._currentContainer = tagPair2;
+            var tagPair2 = _itemFactory.CreateTagPair(tagPair.StartTagProperties, tagPair.EndTagProperties);
+            _currentContainer.Add(tagPair2);
+            _currentContainer = tagPair2;
             foreach (IAbstractMarkupData current in tagPair)
             {
                 current.AcceptVisitor(this);
             }
-            this._currentContainer = tagPair2.Parent;
+            _currentContainer = tagPair2.Parent;
         }
 
         public void VisitText(IText text)
         {
-            /*string text2 = text.Properties.Text;
-            List<RegexMatch> list = RegexProcessorHelper.ApplyRegexRules(text2, this._matchRules);
-            int num = 0;
-            foreach (RegexMatch current in list)
+            var fragments = new Queue<Fragment>(_textProcessor.Process(text.Properties.Text, _matchRules));
+
+            while (fragments.Count > 0)
             {
-                if (current.Index > num)
+                var fragment = fragments.Dequeue();
+
+                switch (fragment.InlineType)
                 {
-                    this._currentContainer.Add(this.CreateText(text2.Substring(num, current.Index - num)));
-                }
-                else if (num > current.Index)
-                {
-                    continue;
-                }
-                switch (current.Type)
-                {
-                    case RegexMatch.TagType.Placeholder:
-                        this._currentContainer.Add(this.CreatePlaceholderTag(current));
+                    case InlineType.Text:
+                        _currentContainer.Add(CreateText(fragment.Content));
                         break;
-                    case RegexMatch.TagType.TagPairOpening:
-                        this.AddOpenTagContainer(current);
+                    case InlineType.Placeholder:
+                        _currentContainer.Add(CreatePlaceholder(fragment.Content));
                         break;
-                    case RegexMatch.TagType.TagPairClosing:
-                        this.AddCloseTagContainer();
+                    case InlineType.StartTag:
+                        _currentContainer.Add(CreateTagPair(fragment, fragments));
                         break;
+                    case InlineType.EndTag:
+                        throw new ArithmeticException();
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
-                num = current.Index + current.Value.Length;
             }
-            if (num < text2.Length)
+        }
+
+        private IText CreateText(string value)
+        {
+            var textProperties = _propertiesFactory.CreateTextProperties(value);
+
+            return _itemFactory.CreateText(textProperties);
+        }
+
+        private IPlaceholderTag CreatePlaceholder(string content)
+        {
+            var placeholderProperties = _propertiesFactory.CreatePlaceholderTagProperties(content);
+            placeholderProperties.TagContent = content;
+            placeholderProperties.DisplayText = content;
+
+            return _itemFactory.CreatePlaceholderTag(placeholderProperties);
+        }
+
+        private ITagPair CreateTagPair(Fragment startTagfragment, Queue<Fragment> fragments)
+        {
+            var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagfragment.Content);
+            startTagProperties.DisplayText = startTagfragment.Content;
+
+            var enclosedContent = new List<IAbstractMarkupData>();
+
+            while (fragments.Count > 0)
             {
-                this._currentContainer.Add(this.CreateText(text2.Substring(num, text2.Length - num)));
+                var fragment = fragments.Dequeue();
+
+                switch (fragment.InlineType)
+                {
+                    case InlineType.Text:
+                        enclosedContent.Add(CreateText(fragment.Content));
+                        break;
+                    case InlineType.Placeholder:
+                        enclosedContent.Add(CreatePlaceholder(fragment.Content));
+                        break;
+                    case InlineType.StartTag:
+                        enclosedContent.Add(CreateTagPair(fragment, fragments));
+                        break;
+                    case InlineType.EndTag:
+                        var endTagProperties = _propertiesFactory.CreateEndTagProperties(fragment.Content);
+                        endTagProperties.DisplayText = fragment.Content;
+
+                        var tagPair = _itemFactory.CreateTagPair(startTagProperties, endTagProperties);
+
+                        foreach (var abstractMarkupData in enclosedContent)
+                        {
+                            tagPair.Add(abstractMarkupData);
+                        }
+
+                        return tagPair;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            throw new ArgumentOutOfRangeException();
+
+
+            /*
+            private void AddOpenTagContainer(RegexMatch match)
+            {
+                if (match.Rule.IsContentTranslatable)
+                {
+                    ITagPair tagPair = this.CreateTagPair(match);
+                    this._currentContainer.Add(tagPair);
+                    this._currentContainer = tagPair;
+                    return;
+                }
+                ILockedContent lockedContent = this.CreateLockedContent(match);
+                this._currentContainer.Add(lockedContent);
+                this._currentContainer = lockedContent.Content;
+            }
+
+            private void AddCloseTagContainer()
+            {
+                ITagPair tagPair = this._currentContainer as ITagPair;
+                if (tagPair != null)
+                {
+                    this._currentContainer = tagPair.Parent;
+                    return;
+                }
+                ILockedContainer lockedContainer = this._currentContainer as ILockedContainer;
+                if (lockedContainer != null)
+                {
+                    this._currentContainer = lockedContainer.LockedContent.Parent;
+                }
+            }
+
+            private ILockedContent CreateLockedContent(RegexMatch match)
+            {
+                ILockedContentProperties properties = this._itemFactory.PropertiesFactory.CreateLockedContentProperties(LockTypeFlags.Manual);
+                return this._itemFactory.CreateLockedContent(properties);
+            }
+
+            private IText CreateText(string textContent)
+            {
+                ITextProperties textInfo = this._itemFactory.PropertiesFactory.CreateTextProperties(textContent);
+                return this._itemFactory.CreateText(textInfo);
+            }
+
+            private ITagPair CreateTagPair(RegexMatch match)
+            {
+                IStartTagProperties startTagProperties = RegexProcessorHelper.CreateStartTagProperties(this._itemFactory.PropertiesFactory, match.Value, match.Rule);
+                startTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
+                IEndTagProperties endTagProperties = RegexProcessorHelper.CreateEndTagProperties(this._itemFactory.PropertiesFactory, match.Value, match.Rule);
+                endTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
+                return this._itemFactory.CreateTagPair(startTagProperties, endTagProperties);
+            }
+
+            private IPlaceholderTag CreatePlaceholderTag(RegexMatch match)
+            {
+                IPlaceholderTagProperties placeholderTagProperties = RegexProcessorHelper.CreatePlaceholderTagProperties(this._itemFactory.PropertiesFactory, match.Value, match.Rule);
+                placeholderTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
+                return this._itemFactory.CreatePlaceholderTag(placeholderTagProperties);
             }*/
         }
-
-        /*private void AddOpenTagContainer(RegexMatch match)
-        {
-            if (match.Rule.IsContentTranslatable)
-            {
-                ITagPair tagPair = this.CreateTagPair(match);
-                this._currentContainer.Add(tagPair);
-                this._currentContainer = tagPair;
-                return;
-            }
-            ILockedContent lockedContent = this.CreateLockedContent(match);
-            this._currentContainer.Add(lockedContent);
-            this._currentContainer = lockedContent.Content;
-        }
-
-        private void AddCloseTagContainer()
-        {
-            ITagPair tagPair = this._currentContainer as ITagPair;
-            if (tagPair != null)
-            {
-                this._currentContainer = tagPair.Parent;
-                return;
-            }
-            ILockedContainer lockedContainer = this._currentContainer as ILockedContainer;
-            if (lockedContainer != null)
-            {
-                this._currentContainer = lockedContainer.LockedContent.Parent;
-            }
-        }
-
-        private ILockedContent CreateLockedContent(RegexMatch match)
-        {
-            ILockedContentProperties properties = this._factory.PropertiesFactory.CreateLockedContentProperties(LockTypeFlags.Manual);
-            return this._factory.CreateLockedContent(properties);
-        }
-
-        private IText CreateText(string textContent)
-        {
-            ITextProperties textInfo = this._factory.PropertiesFactory.CreateTextProperties(textContent);
-            return this._factory.CreateText(textInfo);
-        }
-
-        private ITagPair CreateTagPair(RegexMatch match)
-        {
-            IStartTagProperties startTagProperties = RegexProcessorHelper.CreateStartTagProperties(this._factory.PropertiesFactory, match.Value, match.Rule);
-            startTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
-            IEndTagProperties endTagProperties = RegexProcessorHelper.CreateEndTagProperties(this._factory.PropertiesFactory, match.Value, match.Rule);
-            endTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
-            return this._factory.CreateTagPair(startTagProperties, endTagProperties);
-        }
-
-        private IPlaceholderTag CreatePlaceholderTag(RegexMatch match)
-        {
-            IPlaceholderTagProperties placeholderTagProperties = RegexProcessorHelper.CreatePlaceholderTagProperties(this._factory.PropertiesFactory, match.Value, match.Rule);
-            placeholderTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
-            return this._factory.CreatePlaceholderTag(placeholderTagProperties);
-        }*/
     }
 }
