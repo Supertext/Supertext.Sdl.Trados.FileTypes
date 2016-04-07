@@ -83,7 +83,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
             _segmentSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
-            _paragraphUnitFactory.InitializeSettings(settingsBundle, configurationId);
         }
 
         public override bool ParseNext()

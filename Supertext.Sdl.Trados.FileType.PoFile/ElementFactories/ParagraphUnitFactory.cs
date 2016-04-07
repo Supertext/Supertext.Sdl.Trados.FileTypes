@@ -14,15 +14,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
 {
     public class ParagraphUnitFactory : IParagraphUnitFactory
     {
-        private readonly ITextProcessor _textProcessor;
-        private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
-
-        public ParagraphUnitFactory(ITextProcessor textProcessor, IEmbeddedContentRegexSettings embeddedContentRegexSettings)
-        {
-            _textProcessor = textProcessor;
-            _embeddedContentRegexSettings = embeddedContentRegexSettings;
-        }
-
         public IDocumentItemFactory ItemFactory { get; set; }
 
         public IPropertiesFactory PropertiesFactory { get; set; }
@@ -43,11 +34,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
             paragraphUnit.Properties.Contexts = CreateContextProperties(entry);
 
             return paragraphUnit;
-        }
-
-        public void InitializeSettings(ISettingsBundle settingsBundleMock, string configurationId)
-        {
-            _embeddedContentRegexSettings.PopulateFromSettingsBundle(settingsBundleMock, configurationId);
         }
 
         private void AddPluralFormSegmentPairs(IParagraphUnit paragraphUnit, Entry entry, LineType sourceLineType, bool isTargetTextNeeded)
@@ -86,29 +72,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
 
         private void AddText(ISegment segment, string text)
         {
-            var fragments = new Queue<Fragment>(_textProcessor.Process(text));
-
-            while (fragments.Count > 0)
-            {
-                var fragment = fragments.Dequeue();
-
-                switch (fragment.InlineType)
-                {
-                    case InlineType.Text:
-                        segment.Add(CreateText(fragment.Content));
-                        break;
-                    case InlineType.Placeholder:
-                        segment.Add(CreatePlaceholder(fragment.Content));
-                        break;
-                    case InlineType.StartTag:
-                        segment.Add(CreateTagPair(fragment, fragments));
-                        break;
-                    case InlineType.EndTag:
-                        throw new ArithmeticException();
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
+            segment.Add(CreateText(text));
         }
 
         private IText CreateText(string value)

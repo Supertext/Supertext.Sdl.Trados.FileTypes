@@ -12,6 +12,5 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
         IPropertiesFactory PropertiesFactory { get; set; }
 
         IParagraphUnit Create(Entry entry, LineType sourceLineType, bool isTargetTextNeeded);
-        void InitializeSettings(ISettingsBundle settingsBundleMock, string configurationId);
     }
 }

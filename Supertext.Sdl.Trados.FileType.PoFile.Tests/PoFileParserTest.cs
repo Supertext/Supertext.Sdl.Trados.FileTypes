@@ -158,8 +158,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             A.CallTo(() => _segmentSettingsMock.PopulateFromSettingsBundle(settingsBundleMock, configurationId))
                 .MustHaveHappened();
-            A.CallTo(() =>_paragraphUnitFactoryMock.InitializeSettings(settingsBundleMock, configurationId))
-                .MustHaveHappened();
         }
 
         [Test]

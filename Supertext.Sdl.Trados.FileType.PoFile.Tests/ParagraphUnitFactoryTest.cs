@@ -195,7 +195,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Create_WhenTextIsTextInlineType_ShouldAddText()
+        public void Create_ShouldAddText()
         {
             // Arrange
             var testee = CreateTestee();
@@ -216,193 +216,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Assert
             A.CallTo(() => _sourceSegment0Mock.Add(_textMsgidMock)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Create_WhenTextIsPlaceholderInlineType_ShouldAddPlaceholder()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            var entry = new Entry
-            {
-                MessageId = "message id",
-                MessageString = "message string",
-            };
-
-            var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties("message id")).Returns(placeholderTagPropertiesMock);
-
-            var placeholderTagMock = A.Fake<IPlaceholderTag>();
-            A.CallTo(() => _itemFactoryMock.CreatePlaceholderTag(placeholderTagPropertiesMock)).Returns(placeholderTagMock);
-
-            A.CallTo(() => _textProcessorMock.Process("message id")).Returns(new List<Fragment>
-            {
-                new Fragment(InlineType.Placeholder, "message id")
-            });
-
-            // Act
-            testee.Create(entry, LineType.MessageId, false);
-
-            // Assert
-            A.CallTo(() => _sourceSegment0Mock.Add(placeholderTagMock)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Create_WhenTextHasTags_ShouldAddTagPair()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            var entry = new Entry
-            {
-                MessageId = "start message id end",
-                MessageString = "message string",
-            };
-
-            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
-
-            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
-
-            var tagPairMock = A.Fake<ITagPair>();
-            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock))
-                .Returns(tagPairMock);
-
-            A.CallTo(() => _textProcessorMock.Process("start message id end")).Returns(new List<Fragment>
-            {
-                new Fragment(InlineType.StartTag, "start"),
-                new Fragment(InlineType.Text, "message id"),
-                new Fragment(InlineType.EndTag, "end")
-            });
-
-            // Act
-            testee.Create(entry, LineType.MessageId, false);
-
-            // Assert
-            A.CallTo(() => _sourceSegment0Mock.Add(tagPairMock)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Create_WhenTextHasStartTagButNoEndTag_ShouldThrowArgumentOutOfRangeException()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            var entry = new Entry
-            {
-                MessageId = "start message id",
-                MessageString = "message string",
-            };
-
-            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
-
-            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
-
-            var tagPairMock = A.Fake<ITagPair>();
-            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock))
-                .Returns(tagPairMock);
-
-            A.CallTo(() => _textProcessorMock.Process("start message id")).Returns(new List<Fragment>
-            {
-                new Fragment(InlineType.StartTag, "start"),
-                new Fragment(InlineType.Text, "message id")
-            });
-
-            // Act, Assert
-            testee.Invoking(factory => factory.Create(entry, LineType.MessageId, false))
-                .ShouldThrow<ArgumentOutOfRangeException>();
-        }
-
-        [Test]
-        public void Create_WhenTextHasNestedTags_ShouldAddAllTagPairs()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            var entry = new Entry
-            {
-                MessageId = "start1 message start2 id end2 end1",
-                MessageString = "message string",
-            };
-
-            var startTagPropertiesMock1 = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start1")).Returns(startTagPropertiesMock1);
-
-            var endTagPropertiesMock1 = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end1")).Returns(endTagPropertiesMock1);
-
-            var tagPairMock1 = A.Fake<ITagPair>();
-            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock1, endTagPropertiesMock1))
-                .Returns(tagPairMock1);
-
-            var startTagPropertiesMock2 = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start2")).Returns(startTagPropertiesMock2);
-
-            var endTagPropertiesMock2 = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end2")).Returns(endTagPropertiesMock2);
-
-            var tagPairMock2 = A.Fake<ITagPair>();
-            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock2, endTagPropertiesMock2))
-                .Returns(tagPairMock1);
-
-            A.CallTo(() => _textProcessorMock.Process("start1 message start2 id end2 end1")).Returns(new List<Fragment>
-            {
-                new Fragment(InlineType.StartTag, "start1"),
-                new Fragment(InlineType.Text, "message "),
-                new Fragment(InlineType.StartTag, "start2"),
-                new Fragment(InlineType.Text, "id "),
-                new Fragment(InlineType.EndTag, "end2"),
-                new Fragment(InlineType.EndTag, "end1")
-            });
-
-            // Act
-            testee.Create(entry, LineType.MessageId, false);
-
-            // Assert
-            A.CallTo(() => tagPairMock1.Add(tagPairMock2));
-            A.CallTo(() => _sourceSegment0Mock.Add(tagPairMock1)).MustHaveHappened();
-        }
-
-        [Test]
-        public void Create_WhenTextHasTagsWithPlaceholderEnclosed_ShouldAddTagPairWithPlaceholder()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            var entry = new Entry
-            {
-                MessageId = "start message id placeholder end",
-                MessageString = "message string",
-            };
-
-            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
-
-            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
-
-            var tagPairMock = A.Fake<ITagPair>();
-            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock))
-                .Returns(tagPairMock);
-
-            A.CallTo(() => _textProcessorMock.Process("start message id placeholder end")).Returns(new List<Fragment>
-            {
-                new Fragment(InlineType.StartTag, "start"),
-                new Fragment(InlineType.Text, "message id"),
-                new Fragment(InlineType.Placeholder, "placeholder"),
-                new Fragment(InlineType.EndTag, "end")
-            });
-
-            // Act
-            testee.Create(entry, LineType.MessageId, false);
-
-            // Assert
-            A.CallTo(() => tagPairMock.Add(_textMsgidMock)).MustHaveHappened();
-            A.CallTo(() => _sourceSegment0Mock.Add(tagPairMock)).MustHaveHappened();
         }
 
         [Test]
@@ -569,24 +382,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _paragraphTargetMock.Add(_targetSegment2Mock)).MustHaveHappened();
         }
 
-        [Test]
-        public void InitializeSettings_ShouldSetSettingsByPopulatingFromSettingsBundle()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            const string configurationId = "testId";
-            var settingsBundleMock = A.Fake<ISettingsBundle>();
-
-            // Act
-            testee.InitializeSettings(settingsBundleMock, configurationId);
-
-            // Assert
-            A.CallTo(() => _embeddedContentRegexSettings.PopulateFromSettingsBundle(settingsBundleMock, configurationId)).MustHaveHappened();
-        }
 
     public ParagraphUnitFactory CreateTestee()
         {
-            return new ParagraphUnitFactory(_textProcessorMock, _embeddedContentRegexSettings)
+            return new ParagraphUnitFactory
             {
                 ItemFactory = _itemFactoryMock,
                 PropertiesFactory = _propertiesFactoryMock,
