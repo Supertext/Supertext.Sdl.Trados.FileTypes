@@ -6,7 +6,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
     //TODO small but complicated, needs to be refactored to easy understandable code
     public class TextProcessor : ITextProcessor
     {
-        private readonly Dictionary<string, InlineType> _embeddedContentPatterns;
         private List<InlineType> _types;
         private Regex _regex;
 
@@ -19,18 +18,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                 { @"</[a-z][a-z0-9]*[^<>]*>", InlineType.EndTag }
             };
 
-        public TextProcessor(Dictionary<string, InlineType> embeddedContentPatterns)
-        {
-            _embeddedContentPatterns = embeddedContentPatterns;
-        }
-
         //Todo: check performance, maybe slow with a lot of patterns
-        public IList<Fragment> Process(string value)
+        public IList<Fragment> Process(string value, Dictionary<string, InlineType> embeddedContentPatterns)
         {
             if (_regex == null)
             {
-                _regex = new Regex("(" + string.Join(")|(", _embeddedContentPatterns.Keys) + ")");
-                _types = new List<InlineType>(_embeddedContentPatterns.Values);
+                _regex = new Regex("(" + string.Join(")|(", embeddedContentPatterns.Keys) + ")");
+                _types = new List<InlineType>(embeddedContentPatterns.Values);
             }
             
             var matches = _regex.Matches(value);

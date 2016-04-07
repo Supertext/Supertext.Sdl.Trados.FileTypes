@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmbeddedContentVisitor.cs" />
     <Compile Include="Parsing\IEntryBuilder.cs" />
     <Compile Include="ElementFactories\ContextKeys.cs" />
     <Compile Include="Parsing\Entry.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="FileHandling\ExtendedStreamReader.cs" />
     <Compile Include="FileHandling\IExtendedStreamReader.cs" />
     <Compile Include="ElementFactories\IParagraphUnitFactory.cs" />
+    <Compile Include="RegexEmbeddedBilingualProcessor.cs" />
     <Compile Include="Resources\PoFileTypeResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -17,8 +17,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     [TestFixture]
     public class ParagraphUnitFactoryTest
     {
-        private ITextProcessor _textProcessorMock;
-        private IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
         private IDocumentItemFactory _itemFactoryMock;
         private IPropertiesFactory _propertiesFactoryMock;
         private IParagraphUnit _paragraphUnitMock;
@@ -42,8 +40,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         [SetUp]
         public void SetUp()
         {
-            _textProcessorMock = A.Fake<ITextProcessor>();
-            _embeddedContentRegexSettings = A.Fake<IEmbeddedContentRegexSettings>();
             _itemFactoryMock = A.Fake<IDocumentItemFactory>();
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
 
@@ -71,12 +67,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 _sourceSegment2Mock, _targetSegment2Mock,
                 _sourceSegment3Mock, _targetSegment3Mock
                 );
-
-            //Default
-            A.CallTo(() => _textProcessorMock.Process(A<string>.Ignored)).ReturnsLazily((string value) => new List<Fragment>
-            {
-                new Fragment(InlineType.Text, value)
-            });
 
             var textPropertiesMsgidMock = A.Fake<ITextProperties>();
             A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMsgidMock);
@@ -205,11 +195,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                 MessageId = "message id",
                 MessageString = "message string",
             };
-
-            A.CallTo(() => _textProcessorMock.Process("message id")).Returns(new List<Fragment>
-            {
-                new Fragment(InlineType.Text, "message id")
-            });
 
             // Act
             testee.Create(entry, LineType.MessageId, false);
