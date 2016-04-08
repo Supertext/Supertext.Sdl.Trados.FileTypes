@@ -5,52 +5,57 @@ using Sdl.FileTypeSupport.Framework.NativeApi;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
-    public sealed class EmbeddedContentRegexSettings: FileTypeSettingsBase, IEmbeddedContentRegexSettings
+    public sealed class EmbeddedContentRegexSettings : FileTypeSettingsBase, IEmbeddedContentRegexSettings
     {
         private const string SettingRegexEmbeddingEnabled = "RegexEmbeddingEnabled";
         private const string SettingStructureInfoList = "StructureInfoList";
         private const string SettingMatchRuleList = "MatchRuleList";
         private const bool DefaultRegexEmbeddingEnabled = false;
+        private static readonly ObservableList<string> defaultStructureInfos =  new ObservableList<string>
+        {
+            "sdl:field"
+        };
         public static ComplexObservableList<MatchRule> DefaultMatchRules = new ComplexObservableList<MatchRule>
+        {
+            new MatchRule
             {
-
-                new MatchRule
-                {
-                    CanHide = false,
-                    TagType = MatchRule.TagTypeOption.Placeholder,
-                    StartTagRegexValue = @"%\d+",
-                    SegmentationHint = SegmentationHint.IncludeWithText
-                },
-                new MatchRule
-                {
-                    CanHide = false,
-                    TagType = MatchRule.TagTypeOption.Placeholder,
-                    StartTagRegexValue = @"\$\[\w+\]",
-                    SegmentationHint = SegmentationHint.IncludeWithText
-                },
-                new MatchRule
-                {
-                    CanHide = false,
-                    TagType = MatchRule.TagTypeOption.Placeholder,
-                    StartTagRegexValue = @"%\w+",
-                    SegmentationHint = SegmentationHint.IncludeWithText
-                },
-                new MatchRule
-                {
-                    CanHide = false,
-                    TagType = MatchRule.TagTypeOption.Placeholder,
-                    StartTagRegexValue = @"\$\w+",
-                    SegmentationHint = SegmentationHint.IncludeWithText
-                },
-                new MatchRule
-                {
-                    CanHide = false,
-                    TagType = MatchRule.TagTypeOption.TagPair,
-                    StartTagRegexValue =  @"<[a-z][a-z0-9]*[^<>]*>",
-                    EndTagRegexValue =  @"<\/[a-z][a-z0-9]*[^<>]*>",
-                    SegmentationHint = SegmentationHint.IncludeWithText
-                }
-            };
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"%\d+",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"\$\[\w+\]",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"%\w+",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"\$\w+",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.TagPair,
+                StartTagRegexValue = @"<[a-z][a-z0-9]*[^<>]*>",
+                EndTagRegexValue = @"<\/[a-z][a-z0-9]*[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+                ,
+                IsContentTranslatable = true
+            }
+        };
 
         private bool _isIsEnabled;
         private ObservableList<string> _structureInfos;
@@ -63,10 +68,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 
         public bool IsEnabled
         {
-            get
-            {
-                return _isIsEnabled;
-            }
+            get { return _isIsEnabled; }
             set
             {
                 _isIsEnabled = value;
@@ -76,10 +78,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 
         public ObservableList<string> StructureInfos
         {
-            get
-            {
-                return _structureInfos;
-            }
+            get { return _structureInfos; }
             set
             {
                 _structureInfos = value;
@@ -89,10 +88,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 
         public ComplexObservableList<MatchRule> MatchRules
         {
-            get
-            {
-                return _matchRules;
-            }
+            get { return _matchRules; }
             set
             {
                 _matchRules = value;
@@ -102,18 +98,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 
         public override void ResetToDefaults()
         {
-            IsEnabled = DefaultRegexEmbeddingEnabled;
-            StructureInfos = new ObservableList<string>
-            {
-                "sdl:field"
-            };
+            IsEnabled = DefaultRegexEmbeddingEnabled;            
+            StructureInfos = defaultStructureInfos;
             MatchRules = DefaultMatchRules;
         }
 
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
-            IsEnabled = GetSettingFromSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, DefaultRegexEmbeddingEnabled);
+            IsEnabled = GetSettingFromSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled,
+                DefaultRegexEmbeddingEnabled);
 
             if (settingsGroup.ContainsSetting(SettingStructureInfoList))
             {
@@ -131,7 +125,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
-            UpdateSettingInSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, IsEnabled, DefaultRegexEmbeddingEnabled);
+            UpdateSettingInSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, IsEnabled,
+                DefaultRegexEmbeddingEnabled);
             _structureInfos.SaveToSettingsGroup(settingsGroup, SettingStructureInfoList);
             _matchRules.SaveToSettingsGroup(settingsGroup, SettingMatchRuleList);
         }

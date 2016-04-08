@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
@@ -162,10 +163,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
             return _itemFactory.CreatePlaceholderTag(placeholderProperties);
         }
 
-        private IAbstractMarkupData CreateTags(Fragment startTagfragment, Queue<Fragment> fragments)
+        private IAbstractMarkupData CreateTags(Fragment startTagFragment, Queue<Fragment> fragments)
         {
-            var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagfragment.Content);
-            startTagProperties.DisplayText = startTagfragment.Content;
+            var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagFragment.Content);
+            startTagProperties.DisplayText = startTagFragment.Content;
+            startTagProperties.SegmentationHint = startTagFragment.MatchRule.SegmentationHint;
 
             var enclosedContent = new List<IAbstractMarkupData>();
 
