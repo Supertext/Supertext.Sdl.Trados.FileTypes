@@ -15,7 +15,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
 
         public IParagraph GeneratedParagraph { get; private set; }
 
-        public IEmbeddedContentVisitor CreateVisitor(IDocumentItemFactory itemFactory, IPropertiesFactory propertiesFactory, ITextProcessor textProcessor)
+        public IEmbeddedContentVisitor CreateVisitor(IDocumentItemFactory itemFactory,
+            IPropertiesFactory propertiesFactory, ITextProcessor textProcessor)
         {
             _itemFactory = itemFactory;
             _propertiesFactory = propertiesFactory;
@@ -119,7 +120,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
                         _currentContainer.Add(CreatePlaceholder(fragment.Content));
                         break;
                     case InlineType.StartTag:
-                        _currentContainer.Add(CreateTagPair(fragment, fragments));
+                        _currentContainer.Add(CreateTags(fragment, fragments));
                         break;
                     case InlineType.EndTag:
                         throw new ArithmeticException();
@@ -161,12 +162,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
             return _itemFactory.CreatePlaceholderTag(placeholderProperties);
         }
 
-        private IAbstractMarkupData CreateTagPair(Fragment startTagfragment, Queue<Fragment> fragments)
+        private IAbstractMarkupData CreateTags(Fragment startTagfragment, Queue<Fragment> fragments)
         {
             var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagfragment.Content);
             startTagProperties.DisplayText = startTagfragment.Content;
-
-            var isContentTranslatable = startTagfragment.MatchRule.IsContentTranslatable;
 
             var enclosedContent = new List<IAbstractMarkupData>();
 
@@ -183,33 +182,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
                         enclosedContent.Add(CreatePlaceholder(fragment.Content));
                         break;
                     case InlineType.StartTag:
-                        enclosedContent.Add(CreateTagPair(fragment, fragments));
+                        enclosedContent.Add(CreateTags(fragment, fragments));
                         break;
                     case InlineType.EndTag:
                         var endTagProperties = _propertiesFactory.CreateEndTagProperties(fragment.Content);
                         endTagProperties.DisplayText = fragment.Content;
 
-                        if (isContentTranslatable)
-                        {
-                            var tagPair = _itemFactory.CreateTagPair(startTagProperties, endTagProperties);
-
-                            foreach (var enclosedData in enclosedContent)
-                            {
-                                tagPair.Add(enclosedData);
-                            }
-
-                            return tagPair;
-                        }
-
-                        var properties = _propertiesFactory.CreateLockedContentProperties(LockTypeFlags.Manual);
-                        var lockedContent = _itemFactory.CreateLockedContent(properties);
-                        foreach (var enclosedData in enclosedContent)
-                        {
-                            lockedContent.Content.Add(enclosedData);
-                        }
-
-                        return lockedContent;
-
+                        return fragment.MatchRule.IsContentTranslatable
+                            ? CreateTagPair(startTagProperties, endTagProperties, enclosedContent)
+                            : CreateLockedContent(enclosedContent);
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -218,62 +199,30 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
             throw new ArgumentOutOfRangeException();
         }
 
-        /*
-            private void AddOpenTagContainer(RegexMatch match)
+        private IAbstractMarkupData CreateLockedContent(IEnumerable<IAbstractMarkupData> enclosedContent)
+        {
+            var properties = _propertiesFactory.CreateLockedContentProperties(LockTypeFlags.Manual);
+            var lockedContent = _itemFactory.CreateLockedContent(properties);
+
+            foreach (var enclosedData in enclosedContent)
             {
-                if (match.Rule.IsContentTranslatable)
-                {
-                    ITagPair tagPair = this.CreateTagPair(match);
-                    this._currentContainer.Add(tagPair);
-                    this._currentContainer = tagPair;
-                    return;
-                }
-                ILockedContent lockedContent = this.CreateLockedContent(match);
-                this._currentContainer.Add(lockedContent);
-                this._currentContainer = lockedContent.Content;
+                lockedContent.Content.Add(enclosedData);
             }
 
-            private void AddCloseTagContainer()
+            return lockedContent;
+        }
+
+        private ITagPair CreateTagPair(IStartTagProperties startTagProperties, IEndTagProperties endTagProperties,
+            IEnumerable<IAbstractMarkupData> enclosedContent)
+        {
+            var tagPair = _itemFactory.CreateTagPair(startTagProperties, endTagProperties);
+
+            foreach (var enclosedData in enclosedContent)
             {
-                ITagPair tagPair = this._currentContainer as ITagPair;
-                if (tagPair != null)
-                {
-                    this._currentContainer = tagPair.Parent;
-                    return;
-                }
-                ILockedContainer lockedContainer = this._currentContainer as ILockedContainer;
-                if (lockedContainer != null)
-                {
-                    this._currentContainer = lockedContainer.LockedContent.Parent;
-                }
+                tagPair.Add(enclosedData);
             }
 
-            private ILockedContent CreateLockedContent(RegexMatch match)
-            {
-                ILockedContentProperties properties = this._itemFactory.PropertiesFactory.CreateLockedContentProperties(LockTypeFlags.Manual);
-                return this._itemFactory.CreateLockedContent(properties);
-            }
-
-            private ITagPair CreateTagPair(RegexMatch match)
-            {
-                IStartTagProperties startTagProperties = RegexProcessorHelper.CreateStartTagProperties(this._itemFactory.PropertiesFactory, match.Value, match.Rule);
-                startTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
-                IEndTagProperties endTagProperties = RegexProcessorHelper.CreateEndTagProperties(this._itemFactory.PropertiesFactory, match.Value, match.Rule);
-                endTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
-                return this._itemFactory.CreateTagPair(startTagProperties, endTagProperties);
-            }
-
-*/
-        
-    }
-
-    public interface IEmbeddedContentVisitor : IMarkupDataVisitor
-    {
-        IParagraph GeneratedParagraph { get; }
-    }
-
-    public interface IEmbeddedContentVisitorFactory
-    {
-        IEmbeddedContentVisitor CreateVisitor(IDocumentItemFactory itemFactory, IPropertiesFactory propertiesFactory, ITextProcessor textProcessor);
+            return tagPair;
+        }
     }
 }

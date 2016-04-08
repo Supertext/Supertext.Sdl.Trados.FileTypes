@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Paragraphing\EmbeddedContentVisitorFactory.cs" />
+    <Compile Include="Paragraphing\IEmbeddedContentVisitor.cs" />
+    <Compile Include="Paragraphing\IEmbeddedContentVisitorFactory.cs" />
     <Compile Include="Parsing\IEntryBuilder.cs" />
     <Compile Include="Paragraphing\ContextKeys.cs" />
     <Compile Include="Parsing\Entry.cs" />
