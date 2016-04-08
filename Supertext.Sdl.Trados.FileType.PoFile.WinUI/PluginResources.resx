@@ -148,6 +148,14 @@
     <value>Beispiel</value>
   </data>
   <data name="Segment_Settings_Note" xml:space="preserve">
-    <value>Note: it is always the message string (msgstr) that will be replaced by the target text.</value>
+    <value>Note:
+It is always the message string (msgstr) that will be replaced by the target text.
+Read more here: https://blog.supertext.ch/2016/04/po-file-type-for-trados/</value>
+  </data>
+  <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
+    <value>Embedded Content</value>
+  </data>
+  <data name="Community_Embedded_Content_Processor_Settings_Name" xml:space="preserve">
+    <value>Embedded Content</value>
   </data>
 </root>

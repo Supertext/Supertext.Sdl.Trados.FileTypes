@@ -98,28 +98,28 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             // 
             // tb_sourceSegment
             // 
-            this.tb_sourceSegment.Location = new System.Drawing.Point(25, 101);
+            this.tb_sourceSegment.Location = new System.Drawing.Point(25, 104);
             this.tb_sourceSegment.Name = "tb_sourceSegment";
             this.tb_sourceSegment.ReadOnly = true;
-            this.tb_sourceSegment.Size = new System.Drawing.Size(126, 20);
+            this.tb_sourceSegment.Size = new System.Drawing.Size(173, 20);
             this.tb_sourceSegment.TabIndex = 2;
             // 
             // tb_targetSegment
             // 
-            this.tb_targetSegment.Location = new System.Drawing.Point(157, 101);
+            this.tb_targetSegment.Location = new System.Drawing.Point(204, 104);
             this.tb_targetSegment.Name = "tb_targetSegment";
             this.tb_targetSegment.ReadOnly = true;
-            this.tb_targetSegment.Size = new System.Drawing.Size(126, 20);
+            this.tb_targetSegment.Size = new System.Drawing.Size(173, 20);
             this.tb_targetSegment.TabIndex = 0;
             // 
             // tb_note
             // 
             this.tb_note.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tb_note.Location = new System.Drawing.Point(6, 147);
+            this.tb_note.Location = new System.Drawing.Point(25, 137);
             this.tb_note.Multiline = true;
             this.tb_note.Name = "tb_note";
             this.tb_note.ReadOnly = true;
-            this.tb_note.Size = new System.Drawing.Size(383, 179);
+            this.tb_note.Size = new System.Drawing.Size(367, 179);
             this.tb_note.TabIndex = 3;
             // 
             // SegmentSettingsUI

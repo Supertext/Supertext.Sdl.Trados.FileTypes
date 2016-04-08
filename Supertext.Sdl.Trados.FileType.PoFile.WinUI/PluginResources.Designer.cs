@@ -61,6 +61,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Embedded Content.
+        /// </summary>
+        internal static string Community_Embedded_Content_Processor_Settings_Description {
+            get {
+                return ResourceManager.GetString("Community_Embedded_Content_Processor_Settings_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Embedded Content.
+        /// </summary>
+        internal static string Community_Embedded_Content_Processor_Settings_Name {
+            get {
+                return ResourceManager.GetString("Community_Embedded_Content_Processor_Settings_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to msgid &quot;{0}&quot;.
         /// </summary>
         internal static string Entry_Example_Msgid {
@@ -124,7 +142,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note: it is always the message string (msgstr) that will be replaced by the target text..
+        ///   Looks up a localized string similar to Note:
+        ///It is always the message string (msgstr) that will be replaced by the target text.
+        ///Read more here: https://blog.supertext.ch/2016/04/po-file-type-for-trados/.
         /// </summary>
         internal static string Segment_Settings_Note {
             get {

@@ -4,8 +4,8 @@ using Supertext.Sdl.Trados.FileType.PoFile.WinUI;
 
 namespace Sdl.Community.EmbeddedContentProcessor.UI
 {
-    [FileTypeSettingsPage(Id = "CommunityEmbedddedContentProcessor_Settings", Name = "Community Embedded Content Processor",
-       Description = "Community Embedded Content Processor", HelpTopic = "Embedded_Regex_Content")]
+    [FileTypeSettingsPage(Id = "CommunityEmbedddedContentProcessor_Settings", Name = "Community_Embedded_Content_Processor_Settings_Name",
+       Description = "Community_Embedded_Content_Processor_Settings_Description", HelpTopic = "Embedded_Regex_Content")]
     public class EmbeddedContentSettingsPage : AbstractFileTypeSettingsPage<EmbeddedContentSettingsControl, EmbeddedContentRegexSettings>
     {
         public override void ResetToDefaults()
