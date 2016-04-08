@@ -187,14 +187,27 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
                         var endTagProperties = _propertiesFactory.CreateEndTagProperties(fragment.Content);
                         endTagProperties.DisplayText = fragment.Content;
 
-                        var tagPair = _itemFactory.CreateTagPair(startTagProperties, endTagProperties);
-
-                        foreach (var abstractMarkupData in enclosedContent)
+                        if (fragment.IsContentTranslatable)
                         {
-                            tagPair.Add(abstractMarkupData);
+                            var tagPair = _itemFactory.CreateTagPair(startTagProperties, endTagProperties);
+
+                            foreach (var enclosedData in enclosedContent)
+                            {
+                                tagPair.Add(enclosedData);
+                            }
+
+                            return tagPair;
                         }
 
-                        return tagPair;
+                        var properties = _propertiesFactory.CreateLockedContentProperties(LockTypeFlags.Manual);
+                        var lockedContent = _itemFactory.CreateLockedContent(properties);
+                        foreach (var enclosedData in enclosedContent)
+                        {
+                            lockedContent.Content.Add(enclosedData);
+                        }
+
+                        return lockedContent;
+
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

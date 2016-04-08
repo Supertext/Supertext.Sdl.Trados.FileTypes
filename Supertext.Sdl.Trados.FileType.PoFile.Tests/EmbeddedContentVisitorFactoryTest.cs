@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Paragraphing;
-using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
@@ -115,6 +114,47 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Assert
             A.CallTo(() => _sourceParagraphMock.Add(tagPairMock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void VisitText_WhenTextHasTagsButNotTranslatable_ShouldAddLockedContent()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            {
+                new Fragment(InlineType.StartTag, NewContentTestString, false),
+                new Fragment(InlineType.Text, NewContentTestString),
+                new Fragment(InlineType.EndTag, NewContentTestString, false)
+            });
+
+            var textPropertiesMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(NewContentTestString)).Returns(textPropertiesMock);
+
+            var newTextMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(newTextMock);
+
+            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties(NewContentTestString)).Returns(startTagPropertiesMock);
+
+            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties(NewContentTestString)).Returns(endTagPropertiesMock);
+
+            var lockedContentPropertiesMock = A.Fake<ILockedContentProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateLockedContentProperties(LockTypeFlags.Manual))
+                .Returns(lockedContentPropertiesMock);
+            var lockedContentMock = A.Fake<ILockedContent>();
+            var lockedContainerMock= A.Fake<ILockedContainer>();
+            A.CallTo(() => lockedContentMock.Content).Returns(lockedContainerMock);
+            A.CallTo(() => _itemFactoryMock.CreateLockedContent(lockedContentPropertiesMock)).Returns(lockedContentMock);
+
+            // Act
+            testee.VisitText(_textMock);
+
+            // Assert
+            A.CallTo(() => lockedContainerMock.Add(newTextMock)).MustHaveHappened();
+            A.CallTo(() => _sourceParagraphMock.Add(lockedContentMock)).MustHaveHappened();
         }
 
         [Test]
