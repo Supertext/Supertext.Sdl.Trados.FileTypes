@@ -33,7 +33,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>key.snk.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Sdl.Core.PluginFramework">
@@ -96,9 +96,6 @@
     <Content Include="pluginpackage.manifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="key.snk.pfx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Supertext.Sdl.Trados.FileType.PoFile\Supertext.Sdl.Trados.FileType.PoFile.csproj">
       <Project>{c0bbd9dc-300a-4ce2-88bc-5889c5ad0523}</Project>
       <Name>Supertext.Sdl.Trados.FileType.PoFile</Name>
@@ -118,6 +115,9 @@
     <EmbeddedResource Include="SegmentSettingsUI.resx">
       <DependentUpon>SegmentSettingsUI.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
