@@ -24,7 +24,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
             _settings.PopulateFromSettingsBundle(settingsBundle, configurationId);
-            _textProcessor.InitializeWith(_settings.MatchRules.ToList());
+            _textProcessor.InitializeWith(_settings.MatchRules);
         }
 
         public override void ProcessParagraphUnit(IParagraphUnit paragraphUnit)

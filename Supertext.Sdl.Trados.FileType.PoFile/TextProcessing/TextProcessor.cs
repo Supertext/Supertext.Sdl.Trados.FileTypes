@@ -17,7 +17,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
         }
 
         //Todo: check performance, maybe slow with a lot of patterns
-        public void InitializeWith(List<MatchRule> matchRules)
+        public void InitializeWith(IEnumerable<MatchRule> matchRules)
         {
             _types = new List<InlineType>();
 
