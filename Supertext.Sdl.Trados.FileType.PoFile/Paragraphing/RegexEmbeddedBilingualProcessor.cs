@@ -12,19 +12,19 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
     {
         private readonly IEmbeddedContentVisitorFactory _embeddedContentVisitorFactory;
         private readonly IEmbeddedContentRegexSettings _settings;
-        private ITextProcessor _textProcessor;
+        private readonly ITextProcessor _textProcessor;
 
-        public RegexEmbeddedBilingualProcessor(IEmbeddedContentVisitorFactory embeddedContentVisitorFactory, IEmbeddedContentRegexSettings settings)
+        public RegexEmbeddedBilingualProcessor(IEmbeddedContentVisitorFactory embeddedContentVisitorFactory, IEmbeddedContentRegexSettings settings, ITextProcessor textProcessor)
         {
             _embeddedContentVisitorFactory = embeddedContentVisitorFactory;
             _settings = settings;
-            _textProcessor = new TextProcessor(new List<MatchRule>());
+            _textProcessor = textProcessor;
         }
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
             _settings.PopulateFromSettingsBundle(settingsBundle, configurationId);
-            _textProcessor = new TextProcessor(_settings.MatchRules.ToList());
+            _textProcessor.InitializeWith(_settings.MatchRules.ToList());
         }
 
         public override void ProcessParagraphUnit(IParagraphUnit paragraphUnit)

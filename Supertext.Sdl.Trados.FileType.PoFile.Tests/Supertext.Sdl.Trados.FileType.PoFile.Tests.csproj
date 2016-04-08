@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="EntryBuilderTest.cs" />
     <Compile Include="ParagraphUnitFactoryTest.cs" />
+    <Compile Include="RegexEmbeddedBilingualProcessorTest.cs" />
     <Compile Include="TextProcessorTest.cs" />
     <Compile Include="ExtendedStreamReaderFake.cs" />
     <Compile Include="ExtendedStreamReaderTest.cs" />

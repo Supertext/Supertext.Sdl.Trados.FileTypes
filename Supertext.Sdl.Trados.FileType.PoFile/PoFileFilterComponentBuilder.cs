@@ -61,12 +61,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 new FileHelper(),
                 new LineParser(),
                 new SegmentSettings(),
-                new ParagraphUnitFactory(), 
+                new ParagraphUnitFactory(),
                 new EntryBuilder());
 
             var fileExtractor = FileTypeManager.BuildFileExtractor(parser, this);
 
-            var processor = new RegexEmbeddedBilingualProcessor(new EmbeddedContentVisitorFactory(), new EmbeddedContentRegexSettings());
+            var processor = new RegexEmbeddedBilingualProcessor(
+                new EmbeddedContentVisitorFactory(),
+                new EmbeddedContentRegexSettings(),
+                new TextProcessor());
+
             fileExtractor.AddBilingualProcessor(processor);
 
             return fileExtractor;

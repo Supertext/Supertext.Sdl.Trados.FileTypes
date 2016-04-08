@@ -7,10 +7,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
     //TODO small but complicated, needs to be refactored to easy understandable code
     public class TextProcessor : ITextProcessor
     {
-        private readonly List<InlineType> _types;
-        private readonly Regex _regex;
+        private List<InlineType> _types;
+        private Regex _regex;
 
-        public TextProcessor(List<MatchRule> matchRules)
+        public TextProcessor()
+        {
+            _types = new List<InlineType> {InlineType.Text};
+            _regex = new Regex(".*");
+        }
+
+        //Todo: check performance, maybe slow with a lot of patterns
+        public void InitializeWith(List<MatchRule> matchRules)
         {
             _types = new List<InlineType>();
 
@@ -35,9 +42,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             fullPattnern = fullPattnern.Substring(0, fullPattnern.Length - 1);
 
             _regex = new Regex(fullPattnern);
-        }
+        }   
 
-        //Todo: check performance, maybe slow with a lot of patterns
         public IList<Fragment> Process(string value)
         {
             var matches = _regex.Matches(value);
