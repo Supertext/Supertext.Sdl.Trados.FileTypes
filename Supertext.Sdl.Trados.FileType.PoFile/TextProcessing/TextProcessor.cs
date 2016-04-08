@@ -17,7 +17,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             _regex = new Regex(".*");
         }
 
-        //Todo: check performance, maybe slow with a lot of patterns
         public void InitializeWith(IEnumerable<MatchRule> matchRules)
         {
             _types = new List<InlineType>();
@@ -47,8 +46,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             fullPattnern = fullPattnern.Substring(0, fullPattnern.Length - 1);
 
             _regex = new Regex(fullPattnern);
-        }   
+        }
 
+        //Todo: check performance, maybe slow with a lot of patterns
         public IList<Fragment> Process(string value)
         {
             var matches = _regex.Matches(value);
