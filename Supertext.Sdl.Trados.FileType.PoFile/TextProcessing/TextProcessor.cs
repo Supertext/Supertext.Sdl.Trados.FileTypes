@@ -8,6 +8,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
     public class TextProcessor : ITextProcessor
     {
         private List<InlineType> _types;
+        private List<MatchRule> _rules;
         private Regex _regex;
 
         public TextProcessor()
@@ -20,6 +21,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
         public void InitializeWith(IEnumerable<MatchRule> matchRules)
         {
             _types = new List<InlineType>();
+            _rules = new List<MatchRule>();
 
             var fullPattnern = "";
 
@@ -29,13 +31,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                 {
                     fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
                     _types.Add(InlineType.StartTag);
+                    _rules.Add(matchRule);
                     fullPattnern += "(" + matchRule.EndTagRegexValue + ")|";
                     _types.Add(InlineType.EndTag);
+                    _rules.Add(matchRule);
                 }
                 else if (matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
                 {
                     fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
                     _types.Add(InlineType.Placeholder);
+                    _rules.Add(matchRule);
                 }
             }
 
@@ -54,6 +59,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             foreach (Match match in matches)
             {
                 var type = GetInlineTypeFor(match.Value, match.Groups);
+                var matchRule = GetMatchRuleFor(match.Value, match.Groups);
 
                 var textBeforeLength = match.Index - lastIndex;
 
@@ -64,7 +70,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                 }
  
                 var inlineContent = value.Substring(match.Index, match.Length);
-                fragments.Add(new Fragment(type, inlineContent));
+                fragments.Add(new Fragment(type, inlineContent, matchRule));
 
                 lastIndex = match.Index + match.Length;
             }
@@ -79,15 +85,28 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 
         private InlineType GetInlineTypeFor(string matchValue, GroupCollection groups)
         {
-            var type = InlineType.Text;
             for (var i = 1; i < groups.Count; ++i)
             {
                 if (groups[i].Value == matchValue)
                 {
-                    type = _types[i - 1];
+                   return _types[i - 1];
                 }
             }
-            return type;
+           
+            return InlineType.Text;
+        }
+
+        private MatchRule GetMatchRuleFor(string matchValue, GroupCollection groups)
+        {
+            for (var i = 1; i < groups.Count; ++i)
+            {
+                if (groups[i].Value == matchValue)
+                {
+                    return _rules[i - 1];
+                }
+            }
+
+            return null;
         }
     }
 }

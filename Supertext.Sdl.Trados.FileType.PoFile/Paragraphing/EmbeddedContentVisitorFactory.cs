@@ -166,6 +166,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
             var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagfragment.Content);
             startTagProperties.DisplayText = startTagfragment.Content;
 
+            var isContentTranslatable = startTagfragment.MatchRule.IsContentTranslatable;
+
             var enclosedContent = new List<IAbstractMarkupData>();
 
             while (fragments.Count > 0)
@@ -187,7 +189,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
                         var endTagProperties = _propertiesFactory.CreateEndTagProperties(fragment.Content);
                         endTagProperties.DisplayText = fragment.Content;
 
-                        if (fragment.IsContentTranslatable)
+                        if (isContentTranslatable)
                         {
                             var tagPair = _itemFactory.CreateTagPair(startTagProperties, endTagProperties);
 

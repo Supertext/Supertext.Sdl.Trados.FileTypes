@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Paragraphing;
+using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
@@ -96,8 +97,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, NewContentTestString),
-                new Fragment(InlineType.EndTag, NewContentTestString)
+                new Fragment(InlineType.StartTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true}),
+                new Fragment(InlineType.EndTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true})
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -124,9 +125,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, NewContentTestString, false),
+                new Fragment(InlineType.StartTag, NewContentTestString, new MatchRule {IsContentTranslatable = false}),
                 new Fragment(InlineType.Text, NewContentTestString),
-                new Fragment(InlineType.EndTag, NewContentTestString, false)
+                new Fragment(InlineType.EndTag, NewContentTestString, new MatchRule {IsContentTranslatable = false})
             });
 
             var textPropertiesMock = A.Fake<ITextProperties>();
@@ -165,7 +166,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, NewContentTestString)
+                new Fragment(InlineType.StartTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true})
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -190,12 +191,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, "start1"),
+                new Fragment(InlineType.StartTag, "start1", new MatchRule {IsContentTranslatable =  true}),
                 new Fragment(InlineType.Text, "message "),
-                new Fragment(InlineType.StartTag, "start2"),
+                new Fragment(InlineType.StartTag, "start2", new MatchRule {IsContentTranslatable =  true}),
                 new Fragment(InlineType.Text, "id "),
-                new Fragment(InlineType.EndTag, "end2"),
-                new Fragment(InlineType.EndTag, "end1")
+                new Fragment(InlineType.EndTag, "end2", new MatchRule {IsContentTranslatable =  true}),
+                new Fragment(InlineType.EndTag, "end1", new MatchRule {IsContentTranslatable =  true})
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -232,9 +233,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, "start1"),
+                new Fragment(InlineType.StartTag, "start1", new MatchRule {IsContentTranslatable =  true}),
                 new Fragment(InlineType.Placeholder, NewContentTestString),
-                new Fragment(InlineType.EndTag, "end1")
+                new Fragment(InlineType.EndTag, "end1", new MatchRule {IsContentTranslatable =  true})
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
