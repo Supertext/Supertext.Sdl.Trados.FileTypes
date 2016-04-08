@@ -153,7 +153,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="..\buildTasks\Sdl.Core.PluginFramework.Build.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\SDL\SDLTradosStudio\12\Sdl.Core.PluginFramework.Build.targets" />
   <PropertyGroup>
     <CreatePluginPackage>true</CreatePluginPackage>
   </PropertyGroup>
