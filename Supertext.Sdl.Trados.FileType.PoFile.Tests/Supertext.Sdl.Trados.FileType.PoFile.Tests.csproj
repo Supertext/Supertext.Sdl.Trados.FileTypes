@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmbeddedContentVisitorFactoryTest.cs" />
     <Compile Include="EntryBuilderTest.cs" />
     <Compile Include="ParagraphUnitFactoryTest.cs" />
     <Compile Include="RegexEmbeddedBilingualProcessorTest.cs" />

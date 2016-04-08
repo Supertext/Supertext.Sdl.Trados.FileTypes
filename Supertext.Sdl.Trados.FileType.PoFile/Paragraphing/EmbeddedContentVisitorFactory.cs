@@ -71,7 +71,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
             var revisionMarker2 = CreateRevisionOrFeedback(revisionMarker.Properties);
             _currentContainer.Add(revisionMarker2);
             _currentContainer = revisionMarker2;
-            foreach (IAbstractMarkupData current in revisionMarker)
+            foreach (var current in revisionMarker)
             {
                 current.AcceptVisitor(this);
             }
@@ -95,7 +95,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
             var tagPair2 = _itemFactory.CreateTagPair(tagPair.StartTagProperties, tagPair.EndTagProperties);
             _currentContainer.Add(tagPair2);
             _currentContainer = tagPair2;
-            foreach (IAbstractMarkupData current in tagPair)
+            foreach (var current in tagPair)
             {
                 current.AcceptVisitor(this);
             }
