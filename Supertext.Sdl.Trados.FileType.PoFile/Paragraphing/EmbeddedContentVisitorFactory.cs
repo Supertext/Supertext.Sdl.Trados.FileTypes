@@ -2,32 +2,28 @@ using System;
 using System.Collections.Generic;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
 {
-    public class EmbeddedContentVisitor : IMarkupDataVisitor
+    public class EmbeddedContentVisitorFactory : IEmbeddedContentVisitorFactory, IEmbeddedContentVisitor
     {
-        private readonly IDocumentItemFactory _itemFactory;
-        private readonly IPropertiesFactory _propertiesFactory;
-        private readonly List<MatchRule> _matchRules;
-        private readonly ITextProcessor _textProcessor;
-
+        private IDocumentItemFactory _itemFactory;
+        private IPropertiesFactory _propertiesFactory;
+        private ITextProcessor _textProcessor;
         private IAbstractMarkupDataContainer _currentContainer;
 
-        public EmbeddedContentVisitor(IDocumentItemFactory itemFactory, List<MatchRule> matchRules,
-            ITextProcessor textProcessor)
+        public IParagraph GeneratedParagraph { get; private set; }
+
+        public IEmbeddedContentVisitor CreateVisitor(IDocumentItemFactory itemFactory, IPropertiesFactory propertiesFactory, ITextProcessor textProcessor)
         {
             _itemFactory = itemFactory;
-            _propertiesFactory = itemFactory.PropertiesFactory;
-            _matchRules = matchRules;
+            _propertiesFactory = propertiesFactory;
             _textProcessor = textProcessor;
-            GeneratedParagraph = itemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked).Source;
+            GeneratedParagraph = _itemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked).Source;
             _currentContainer = GeneratedParagraph;
+            return this;
         }
-
-        public IParagraph GeneratedParagraph { get; }
 
         public void VisitCommentMarker(ICommentMarker commentMarker)
         {
@@ -82,23 +78,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _currentContainer = revisionMarker2.Parent;
         }
 
-        private IRevisionMarker CreateRevisionOrFeedback(IRevisionProperties properties)
-        {
-            switch (properties.RevisionType)
-            {
-                case RevisionType.Insert:
-                case RevisionType.Delete:
-                case RevisionType.Unchanged:
-                    return _itemFactory.CreateRevision(properties);
-                case RevisionType.FeedbackComment:
-                case RevisionType.FeedbackAdded:
-                case RevisionType.FeedbackDeleted:
-                    return _itemFactory.CreateFeedback(properties);
-                default:
-                    return _itemFactory.CreateRevision(properties);
-            }
-        }
-
         public void VisitSegment(ISegment segment)
         {
             var segment2 = _itemFactory.CreateSegment(segment.Properties);
@@ -125,7 +104,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void VisitText(IText text)
         {
-            var fragments = new Queue<Fragment>(_textProcessor.Process(text.Properties.Text, _matchRules));
+            var fragments = new Queue<Fragment>(_textProcessor.Process(text.Properties.Text));
 
             while (fragments.Count > 0)
             {
@@ -150,10 +129,26 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
         }
 
+        private IRevisionMarker CreateRevisionOrFeedback(IRevisionProperties properties)
+        {
+            switch (properties.RevisionType)
+            {
+                case RevisionType.Insert:
+                case RevisionType.Delete:
+                case RevisionType.Unchanged:
+                    return _itemFactory.CreateRevision(properties);
+                case RevisionType.FeedbackComment:
+                case RevisionType.FeedbackAdded:
+                case RevisionType.FeedbackDeleted:
+                    return _itemFactory.CreateFeedback(properties);
+                default:
+                    return _itemFactory.CreateRevision(properties);
+            }
+        }
+
         private IText CreateText(string value)
         {
             var textProperties = _propertiesFactory.CreateTextProperties(value);
-
             return _itemFactory.CreateText(textProperties);
         }
 
@@ -166,7 +161,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             return _itemFactory.CreatePlaceholderTag(placeholderProperties);
         }
 
-        private ITagPair CreateTagPair(Fragment startTagfragment, Queue<Fragment> fragments)
+        private IAbstractMarkupData CreateTagPair(Fragment startTagfragment, Queue<Fragment> fragments)
         {
             var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagfragment.Content);
             startTagProperties.DisplayText = startTagfragment.Content;
@@ -206,9 +201,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             }
 
             throw new ArgumentOutOfRangeException();
+        }
 
-
-            /*
+        /*
             private void AddOpenTagContainer(RegexMatch match)
             {
                 if (match.Rule.IsContentTranslatable)
@@ -244,12 +239,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return this._itemFactory.CreateLockedContent(properties);
             }
 
-            private IText CreateText(string textContent)
-            {
-                ITextProperties textInfo = this._itemFactory.PropertiesFactory.CreateTextProperties(textContent);
-                return this._itemFactory.CreateText(textInfo);
-            }
-
             private ITagPair CreateTagPair(RegexMatch match)
             {
                 IStartTagProperties startTagProperties = RegexProcessorHelper.CreateStartTagProperties(this._itemFactory.PropertiesFactory, match.Value, match.Rule);
@@ -259,12 +248,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 return this._itemFactory.CreateTagPair(startTagProperties, endTagProperties);
             }
 
-            private IPlaceholderTag CreatePlaceholderTag(RegexMatch match)
-            {
-                IPlaceholderTagProperties placeholderTagProperties = RegexProcessorHelper.CreatePlaceholderTagProperties(this._itemFactory.PropertiesFactory, match.Value, match.Rule);
-                placeholderTagProperties.SetMetaData("OriginalEmbeddedContent", match.Value);
-                return this._itemFactory.CreatePlaceholderTag(placeholderTagProperties);
-            }*/
-        }
+*/
+        
+    }
+
+    public interface IEmbeddedContentVisitor : IMarkupDataVisitor
+    {
+        IParagraph GeneratedParagraph { get; }
+    }
+
+    public interface IEmbeddedContentVisitorFactory
+    {
+        IEmbeddedContentVisitor CreateVisitor(IDocumentItemFactory itemFactory, IPropertiesFactory propertiesFactory, ITextProcessor textProcessor);
     }
 }

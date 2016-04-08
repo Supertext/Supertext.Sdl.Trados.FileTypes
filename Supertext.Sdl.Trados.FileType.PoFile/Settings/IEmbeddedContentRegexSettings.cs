@@ -5,7 +5,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
     public interface IEmbeddedContentRegexSettings
     {
-        bool Enabled { get; set; }
+        bool IsEnabled { get; set; }
 
         ObservableList<string> StructureInfos { get; set; }
 

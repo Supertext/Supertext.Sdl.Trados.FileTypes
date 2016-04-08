@@ -52,26 +52,25 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
                 }
             };
 
-        private bool _isEnabled;
+        private bool _isIsEnabled;
         private ObservableList<string> _structureInfos;
         private ComplexObservableList<MatchRule> _matchRules;
-
 
         public EmbeddedContentRegexSettings()
         {
             ResetToDefaults();
         }
 
-        public bool Enabled
+        public bool IsEnabled
         {
             get
             {
-                return _isEnabled;
+                return _isIsEnabled;
             }
             set
             {
-                _isEnabled = value;
-                OnPropertyChanged("Enabled");
+                _isIsEnabled = value;
+                OnPropertyChanged("IsEnabled");
             }
         }
 
@@ -103,7 +102,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 
         public override void ResetToDefaults()
         {
-            Enabled = DefaultRegexEmbeddingEnabled;
+            IsEnabled = DefaultRegexEmbeddingEnabled;
             StructureInfos = new ObservableList<string>
             {
                 "sdl:field"
@@ -114,7 +113,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
-            Enabled = GetSettingFromSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, DefaultRegexEmbeddingEnabled);
+            IsEnabled = GetSettingFromSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, DefaultRegexEmbeddingEnabled);
 
             if (settingsGroup.ContainsSetting(SettingStructureInfoList))
             {
@@ -132,7 +131,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
-            UpdateSettingInSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, Enabled, DefaultRegexEmbeddingEnabled);
+            UpdateSettingInSettingsGroup(settingsGroup, SettingRegexEmbeddingEnabled, IsEnabled, DefaultRegexEmbeddingEnabled);
             _structureInfos.SaveToSettingsGroup(settingsGroup, SettingStructureInfoList);
             _matchRules.SaveToSettingsGroup(settingsGroup, SettingMatchRuleList);
         }

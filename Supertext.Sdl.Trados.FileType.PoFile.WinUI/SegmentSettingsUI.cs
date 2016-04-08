@@ -17,7 +17,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
     {
         /// <summary>
-        /// Create a settings object based on the SegmentSettings class. 
+        /// CreateVisitor a settings object based on the SegmentSettings class. 
         /// </summary>
 
         #region "SettingsObject"

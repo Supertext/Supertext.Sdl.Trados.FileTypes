@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.Resources;
-using Supertext.Sdl.Trados.FileType.PoFile.Settings;
-using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
+namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
 {
     public class ParagraphUnitFactory : IParagraphUnitFactory
     {
@@ -57,7 +52,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
             var sourceText = sourceLineType == LineType.MessageString ? messageString : messageId;
 
             var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            AddText(sourceSegment, sourceText);
+            sourceSegment.Add(CreateText(sourceText));
             paragraphUnit.Source.Add(sourceSegment);
 
             if (!isTargetTextNeeded)
@@ -66,13 +61,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
             }
 
             var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            AddText(targetSegment, messageString);
+            targetSegment.Add(CreateText(messageString));
             paragraphUnit.Target.Add(targetSegment);
-        }
-
-        private void AddText(ISegment segment, string text)
-        {
-            segment.Add(CreateText(text));
         }
 
         private IText CreateText(string value)
@@ -80,57 +70,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
             var textProperties = PropertiesFactory.CreateTextProperties(value);
 
             return ItemFactory.CreateText(textProperties);
-        }
-
-        private IPlaceholderTag CreatePlaceholder(string content)
-        {
-            var placeholderProperties = PropertiesFactory.CreatePlaceholderTagProperties(content);
-            placeholderProperties.TagContent = content;
-            placeholderProperties.DisplayText = content;
-
-            return ItemFactory.CreatePlaceholderTag(placeholderProperties);
-        }
-
-        private ITagPair CreateTagPair(Fragment startTagfragment, Queue<Fragment> fragments)
-        {
-            var startTagProperties = PropertiesFactory.CreateStartTagProperties(startTagfragment.Content);
-            startTagProperties.DisplayText = startTagfragment.Content;
-
-            var enclosedContent = new List<IAbstractMarkupData>();
-
-            while (fragments.Count > 0)
-            {
-                var fragment = fragments.Dequeue();
-
-                switch (fragment.InlineType)
-                {
-                    case InlineType.Text:
-                        enclosedContent.Add(CreateText(fragment.Content));
-                        break;
-                    case InlineType.Placeholder:
-                        enclosedContent.Add(CreatePlaceholder(fragment.Content));
-                        break;
-                    case InlineType.StartTag:
-                        enclosedContent.Add(CreateTagPair(fragment, fragments));
-                        break;
-                    case InlineType.EndTag:
-                        var endTagProperties = PropertiesFactory.CreateEndTagProperties(fragment.Content);
-                        endTagProperties.DisplayText = fragment.Content;
-
-                        var tagPair = ItemFactory.CreateTagPair(startTagProperties, endTagProperties);
-
-                        foreach (var abstractMarkupData in enclosedContent)
-                        {
-                            tagPair.Add(abstractMarkupData);
-                        }
-
-                        return tagPair;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            throw new ArgumentOutOfRangeException();
         }
 
         private IContextProperties CreateContextProperties(Entry entry)

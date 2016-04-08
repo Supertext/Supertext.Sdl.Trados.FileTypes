@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -5,25 +6,30 @@ using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
 {
     public class RegexEmbeddedBilingualProcessor : AbstractBilingualContentProcessor, ISettingsAware
     {
-        private readonly EmbeddedContentRegexSettings _settings;
+        private readonly IEmbeddedContentVisitorFactory _embeddedContentVisitorFactory;
+        private readonly IEmbeddedContentRegexSettings _settings;
+        private ITextProcessor _textProcessor;
 
-        public RegexEmbeddedBilingualProcessor(EmbeddedContentRegexSettings settings)
+        public RegexEmbeddedBilingualProcessor(IEmbeddedContentVisitorFactory embeddedContentVisitorFactory, IEmbeddedContentRegexSettings settings)
         {
+            _embeddedContentVisitorFactory = embeddedContentVisitorFactory;
             _settings = settings;
+            _textProcessor = new TextProcessor(new List<MatchRule>());
         }
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
             _settings.PopulateFromSettingsBundle(settingsBundle, configurationId);
+            _textProcessor = new TextProcessor(_settings.MatchRules.ToList());
         }
 
         public override void ProcessParagraphUnit(IParagraphUnit paragraphUnit)
         {
-            if (_settings.Enabled)
+            if (_settings.IsEnabled)
             {
                 ProcessParagraph(paragraphUnit.Source);
                 ProcessParagraph(paragraphUnit.Target);
@@ -33,11 +39,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private void ProcessParagraph(IParagraph paragraph)
         {
-            var embeddedContentVisitor = new EmbeddedContentVisitor(ItemFactory, _settings.MatchRules.ToList(), new TextProcessor());
+            var embeddedContentVisitor = _embeddedContentVisitorFactory.CreateVisitor(ItemFactory, ItemFactory.PropertiesFactory, _textProcessor);
 
-            foreach (var current in paragraph)
+            foreach (var item in paragraph)
             {
-                current.AcceptVisitor(embeddedContentVisitor);
+                item.AcceptVisitor(embeddedContentVisitor);
             }
 
             var generatedParagraph = embeddedContentVisitor.GeneratedParagraph;
@@ -45,7 +51,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             CopyParagraphContents(generatedParagraph, paragraph);
         }
 
-        private void CopyParagraphContents(IParagraph fromParagraph, IParagraph toParagraph)
+        private static void CopyParagraphContents(IParagraph fromParagraph, IParagraph toParagraph)
         {
             toParagraph.Clear();
             while (fromParagraph.Count > 0)

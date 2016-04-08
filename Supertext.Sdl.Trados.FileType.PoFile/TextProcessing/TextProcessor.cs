@@ -7,39 +7,39 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
     //TODO small but complicated, needs to be refactored to easy understandable code
     public class TextProcessor : ITextProcessor
     {
-        private List<InlineType> _types;
-        private Regex _regex;
+        private readonly List<InlineType> _types;
+        private readonly Regex _regex;
+
+        public TextProcessor(List<MatchRule> matchRules)
+        {
+            _types = new List<InlineType>();
+
+            var fullPattnern = "";
+
+            foreach (var matchRule in matchRules)
+            {
+                if (matchRule.TagType == MatchRule.TagTypeOption.TagPair)
+                {
+                    fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
+                    _types.Add(InlineType.StartTag);
+                    fullPattnern += "(" + matchRule.EndTagRegexValue + ")|";
+                    _types.Add(InlineType.EndTag);
+                }
+                else if (matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
+                {
+                    fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
+                    _types.Add(InlineType.Placeholder);
+                }
+            }
+
+            fullPattnern = fullPattnern.Substring(0, fullPattnern.Length - 1);
+
+            _regex = new Regex(fullPattnern);
+        }
 
         //Todo: check performance, maybe slow with a lot of patterns
-        public IList<Fragment> Process(string value, List<MatchRule> matchRules)
+        public IList<Fragment> Process(string value)
         {
-            if (_regex == null)
-            {
-                _types = new List<InlineType>();
-
-                var fullPattnern = "";
-
-                foreach (var matchRule in matchRules)
-                {
-                    if (matchRule.TagType == MatchRule.TagTypeOption.TagPair)
-                    {
-                        fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
-                        _types.Add(InlineType.StartTag);
-                        fullPattnern += "(" + matchRule.EndTagRegexValue + ")|";
-                        _types.Add(InlineType.EndTag);
-                    }
-                    else if(matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
-                    {
-                        fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
-                        _types.Add(InlineType.Placeholder);
-                    }
-                }
-
-                fullPattnern = fullPattnern.Substring(0, fullPattnern.Length - 1);
-
-                _regex = new Regex(fullPattnern);
-            }
-            
             var matches = _regex.Matches(value);
 
             var fragments = new List<Fragment>();

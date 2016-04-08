@@ -14,7 +14,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenUsingCustomRegex_ShouldRecognizeRegexAndReturnCorrectType()
         {
             // Arrange
-            var testee = new TextProcessor();
             var matchRules = new List<MatchRule>
             {
                 new MatchRule
@@ -23,10 +22,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                     TagType = MatchRule.TagTypeOption.Placeholder
                 }
             };
+            var testee = new TextProcessor(matchRules);
             var testString = @"{4}";
 
             // Act
-            var result = testee.Process(testString, matchRules);
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.Placeholder);
@@ -37,7 +37,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenTextHasEmbeddedContentAtStart_ShouldReturnTextAfterEmbeddedContent()
         {
             // Arrange
-            var testee = new TextProcessor();
             var matchRules = new List<MatchRule>
             {
                 new MatchRule
@@ -46,10 +45,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                     TagType = MatchRule.TagTypeOption.Placeholder
                 }
             };
+            var testee = new TextProcessor(matchRules);
             var testString = @"{4} this is some text";
 
             // Act
-            var result = testee.Process(testString, matchRules);
+            var result = testee.Process(testString);
 
             // Assert
             result[1].InlineType.Should().Be(InlineType.Text);
@@ -60,7 +60,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenTextHasEmbeddedContentInMiddle_ShouldReturnTextBeforeAndAfterEmbeddedContent()
         {
             // Arrange
-            var testee = new TextProcessor();
             var matchRules = new List<MatchRule>
             {
                 new MatchRule
@@ -69,10 +68,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                     TagType = MatchRule.TagTypeOption.Placeholder
                 }
             };
+            var testee = new TextProcessor(matchRules);
             var testString = @"This is the start {4} and this is the end.";
 
             // Act
-            var result = testee.Process(testString, matchRules);
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.Text);
@@ -85,7 +85,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenTextHasEmbeddedContentAtEnd_ShouldReturnTextBeforeEmbeddedContent()
         {
             // Arrange
-            var testee = new TextProcessor();
             var matchRules = new List<MatchRule>
             {
                 new MatchRule
@@ -94,10 +93,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
                     TagType = MatchRule.TagTypeOption.Placeholder
                 }
             };
+            var testee = new TextProcessor(matchRules);
             var testString = @"This is the start {4}";
 
             // Act
-            var result = testee.Process(testString, matchRules);
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.Text);
@@ -108,25 +108,26 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasPercentPlaceholder_ShouldRecognizePlaceholder()
         {
             // Arrange
-            var testee = new TextProcessor();
+            var testee = new TextProcessor(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
             var testString = @"%123";
 
             // Act
-            var result = testee.Process(testString, EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.Placeholder);
         }
 
         [Test]
-        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasPercentWithWordPlaceholder_ShouldRecognizePlaceholder()
+        public void
+            Process_WhenUsingDefaultEmbeddedPatternsAndTextHasPercentWithWordPlaceholder_ShouldRecognizePlaceholder()
         {
             // Arrange
-            var testee = new TextProcessor();
+            var testee = new TextProcessor(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
             var testString = @"%s";
 
             // Act
-            var result = testee.Process(testString, EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.Placeholder);
@@ -136,11 +137,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasDollarPlaceholder_ShouldRecognizePlaceholder()
         {
             // Arrange
-            var testee = new TextProcessor();
+            var testee = new TextProcessor(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
             var testString = @"$test";
 
             // Act
-            var result = testee.Process(testString, EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.Placeholder);
@@ -150,11 +151,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasStartTag_ShouldRecognizeStartTag()
         {
             // Arrange
-            var testee = new TextProcessor();
+            var testee = new TextProcessor(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
             var testString = @"<a href=""http://www.supertext.ch"">";
 
             // Act
-            var result = testee.Process(testString, EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.StartTag);
@@ -164,15 +165,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasEndTag_ShouldRecognizeEndTag()
         {
             // Arrange
-            var testee = new TextProcessor();
+            var testee = new TextProcessor(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
             var testString = @"</a>";
 
             // Act
-            var result = testee.Process(testString, EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var result = testee.Process(testString);
 
             // Assert
             result[0].InlineType.Should().Be(InlineType.EndTag);
         }
     }
-
 }

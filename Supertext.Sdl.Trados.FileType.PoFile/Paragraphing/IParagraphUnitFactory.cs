@@ -1,9 +1,8 @@
-using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.ElementFactories
+namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
 {
     public interface IParagraphUnitFactory
     {

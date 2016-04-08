@@ -19,7 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
         public void UpdateSettings()
         {
-            Settings.Enabled = _enableProcessingCheckbox.Checked;
+            Settings.IsEnabled = _enableProcessingCheckbox.Checked;
 
             Settings.StructureInfos.Clear();
             Settings.StructureInfos.Add(StandardContextTypes.CData);
@@ -30,7 +30,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
         public void UpdateUi()
         {
-            _enableProcessingCheckbox.Checked = Settings.Enabled;
+            _enableProcessingCheckbox.Checked = Settings.IsEnabled;
 
            _rulesListView.Items.Clear();
 
