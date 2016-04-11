@@ -1,4 +1,4 @@
-﻿namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
+﻿namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
     public static class ContextKeys
     {

@@ -1,6 +1,6 @@
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
+namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
     public interface IEmbeddedContentVisitor : IMarkupDataVisitor
     {

@@ -5,7 +5,7 @@ using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.Resources;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
+namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
     public class ParagraphUnitFactory : IParagraphUnitFactory
     {

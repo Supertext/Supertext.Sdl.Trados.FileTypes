@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
-using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.Paragraphing
+namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
     public class RegexEmbeddedBilingualProcessor : AbstractBilingualContentProcessor, ISettingsAware
     {

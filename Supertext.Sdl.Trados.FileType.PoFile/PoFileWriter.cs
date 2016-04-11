@@ -2,7 +2,6 @@ using System.Text.RegularExpressions;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
-using Supertext.Sdl.Trados.FileType.PoFile.Paragraphing;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 

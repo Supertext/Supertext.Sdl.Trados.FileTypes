@@ -65,11 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Paragraphing\EmbeddedContentVisitorFactory.cs" />
-    <Compile Include="Paragraphing\IEmbeddedContentVisitor.cs" />
-    <Compile Include="Paragraphing\IEmbeddedContentVisitorFactory.cs" />
+    <Compile Include="TextProcessing\EmbeddedContentVisitorFactory.cs" />
+    <Compile Include="TextProcessing\IEmbeddedContentVisitor.cs" />
+    <Compile Include="TextProcessing\IEmbeddedContentVisitorFactory.cs" />
     <Compile Include="Parsing\IEntryBuilder.cs" />
-    <Compile Include="Paragraphing\ContextKeys.cs" />
+    <Compile Include="TextProcessing\ContextKeys.cs" />
     <Compile Include="Parsing\Entry.cs" />
     <Compile Include="Parsing\EntryBuilder.cs" />
     <Compile Include="FileHandling\FileHelper.cs" />
@@ -80,8 +80,8 @@
     <Compile Include="FileHandling\StreamWriterWrapper.cs" />
     <Compile Include="FileHandling\ExtendedStreamReader.cs" />
     <Compile Include="FileHandling\IExtendedStreamReader.cs" />
-    <Compile Include="Paragraphing\IParagraphUnitFactory.cs" />
-    <Compile Include="Paragraphing\RegexEmbeddedBilingualProcessor.cs" />
+    <Compile Include="TextProcessing\IParagraphUnitFactory.cs" />
+    <Compile Include="TextProcessing\RegexEmbeddedBilingualProcessor.cs" />
     <Compile Include="Resources\PoFileTypeResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,7 +92,7 @@
     <Compile Include="Settings\MatchRule.cs" />
     <Compile Include="TextProcessing\Fragment.cs" />
     <Compile Include="TextProcessing\InlineType.cs" />
-    <Compile Include="Paragraphing\ParagraphUnitFactory.cs" />
+    <Compile Include="TextProcessing\ParagraphUnitFactory.cs" />
     <Compile Include="Parsing\ILineParser.cs" />
     <Compile Include="Parsing\ILineParsingSession.cs" />
     <Compile Include="Parsing\ILineValidationSession.cs" />
