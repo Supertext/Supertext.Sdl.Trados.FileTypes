@@ -16,6 +16,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         #endregion
 
     {
+        private const string SourceExample = "Example";
+        private const string TargetExample = "Beispiel";
+
         /// <summary>
         /// CreateVisitor a settings object based on the SegmentSettings class. 
         /// </summary>
@@ -50,12 +53,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             var isMessageStringSource = _segmentSettings.SourceLineType == LineType.MessageString;
             cb_MessageStringAsSource.Checked = isMessageStringSource;
             cb_TargetTextNeeded.Checked = _segmentSettings.IsTargetTextNeeded;
-            tb_sourceSegment.Text = isMessageStringSource ? PluginResources.Example_Msgstr_Value : PluginResources.Example_Msgid_Value;
-            tb_targetSegment.Text = _segmentSettings.IsTargetTextNeeded ? PluginResources.Example_Msgstr_Value : string.Empty;
-            tb_example.Text = string.Format(PluginResources.Entry_Example_Msgid, PluginResources.Example_Msgid_Value);
-            tb_example.Text += Environment.NewLine;
-            tb_example.Text += string.Format(PluginResources.Entry_Example_Msgstr, PluginResources.Example_Msgstr_Value);
-            tb_note.Text = PluginResources.Segment_Settings_Note;
+            tb_sourceSegment.Text = isMessageStringSource ? TargetExample : SourceExample;
+            tb_targetSegment.Text = _segmentSettings.IsTargetTextNeeded ? TargetExample : string.Empty;
         }
 
         #endregion
@@ -71,7 +70,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         #region "SaveSetting"
         private void cb_MessageStringAsSource_CheckedChanged(object sender, EventArgs e)
         {
-            tb_sourceSegment.Text = cb_MessageStringAsSource.Checked ? PluginResources.Example_Msgstr_Value : PluginResources.Example_Msgid_Value;
+            tb_sourceSegment.Text = cb_MessageStringAsSource.Checked ? TargetExample : SourceExample;
 
             _segmentSettings.SourceLineType = cb_MessageStringAsSource.Checked
                 ? LineType.MessageString
@@ -80,7 +79,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
         private void cb_TargetTextNeeded_CheckedChanged(object sender, EventArgs e)
         {
-            tb_targetSegment.Text = cb_TargetTextNeeded.Checked ? PluginResources.Example_Msgstr_Value : string.Empty;
+            tb_targetSegment.Text = cb_TargetTextNeeded.Checked ? TargetExample : string.Empty;
 
             _segmentSettings.IsTargetTextNeeded = cb_TargetTextNeeded.Checked;
         }

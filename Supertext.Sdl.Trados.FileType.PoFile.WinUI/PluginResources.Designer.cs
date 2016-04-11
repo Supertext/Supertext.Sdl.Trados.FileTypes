@@ -79,42 +79,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to msgid &quot;{0}&quot;.
-        /// </summary>
-        internal static string Entry_Example_Msgid {
-            get {
-                return ResourceManager.GetString("Entry_Example_Msgid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to msgstr &quot;{0}&quot;.
-        /// </summary>
-        internal static string Entry_Example_Msgstr {
-            get {
-                return ResourceManager.GetString("Entry_Example_Msgstr", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to example.
-        /// </summary>
-        internal static string Example_Msgid_Value {
-            get {
-                return ResourceManager.GetString("Example_Msgid_Value", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Beispiel.
-        /// </summary>
-        internal static string Example_Msgstr_Value {
-            get {
-                return ResourceManager.GetString("Example_Msgstr_Value", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to PO File Filter Settings.
         /// </summary>
         internal static string Plugin_Name {
@@ -138,44 +102,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
         internal static string Segment_Settings_Name {
             get {
                 return ResourceManager.GetString("Segment_Settings_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Note:
-        ///It is always the message string (msgstr) that will be replaced by the target text.
-        ///Read more here: https://blog.supertext.ch/2016/04/po-file-type-for-trados/.
-        /// </summary>
-        internal static string Segment_Settings_Note {
-            get {
-                return ResourceManager.GetString("Segment_Settings_Note", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Message string as source.
-        /// </summary>
-        internal static string Setting_MessageString_As_Source {
-            get {
-                return ResourceManager.GetString("Setting_MessageString_As_Source", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add target text during file parsing.
-        /// </summary>
-        internal static string Setting_Target_Text_Needed {
-            get {
-                return ResourceManager.GetString("Setting_Target_Text_Needed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        internal static string Settings {
-            get {
-                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
     }

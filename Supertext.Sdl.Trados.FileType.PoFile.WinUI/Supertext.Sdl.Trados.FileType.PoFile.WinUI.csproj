@@ -102,6 +102,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EmbeddedContentSettingsControl.de.resx">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
