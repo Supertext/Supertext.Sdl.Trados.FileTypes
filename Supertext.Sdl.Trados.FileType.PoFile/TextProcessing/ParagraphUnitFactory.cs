@@ -1,4 +1,5 @@
 using System.Globalization;
+using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -47,7 +48,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 
         private void AddSegmentPair(IParagraphUnit paragraphUnit, string messageId, string messageString, LineType sourceLineType, bool isTargetTextNeeded)
         {
-            var segmentPairProperties = ItemFactory.CreateSegmentPairProperties();
+            var segmentPairProperties = CreateSegmentPairProperties();
 
             var sourceText = sourceLineType == LineType.MessageString ? messageString : messageId;
 
@@ -60,9 +61,25 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                 return;
             }
 
+            if (sourceLineType == LineType.MessageId && !string.IsNullOrEmpty(messageString))
+            {
+                segmentPairProperties.TranslationOrigin.OriginType = DefaultTranslationOrigin.MachineTranslation;
+                segmentPairProperties.ConfirmationLevel = ConfirmationLevel.Translated;
+            }
+
             var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
             targetSegment.Add(CreateText(messageString));
             paragraphUnit.Target.Add(targetSegment);
+        }
+
+        private ISegmentPairProperties CreateSegmentPairProperties()
+        {
+            var segmentPairProperties = ItemFactory.CreateSegmentPairProperties();
+            segmentPairProperties.TranslationOrigin = ItemFactory.CreateTranslationOrigin();
+            segmentPairProperties.TranslationOrigin.MatchPercent = 0;
+            segmentPairProperties.TranslationOrigin.OriginType = DefaultTranslationOrigin.NotTranslated;
+            segmentPairProperties.ConfirmationLevel = ConfirmationLevel.Unspecified;
+            return segmentPairProperties;
         }
 
         private IText CreateText(string value)

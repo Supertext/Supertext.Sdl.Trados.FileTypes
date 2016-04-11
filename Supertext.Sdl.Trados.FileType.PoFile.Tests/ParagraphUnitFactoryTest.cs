@@ -4,8 +4,10 @@ using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using Sdl.Core.Globalization;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
+using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
@@ -21,6 +23,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private IParagraphUnit _paragraphUnitMock;
         private IParagraph _paragraphSourceMock;
         private IParagraph _paragraphTargetMock;
+        private ISegmentPairProperties _segmentPairPropertiesMock;
+        private ITranslationOrigin _translationOriginMmock;
         private ISegment _sourceSegment0Mock;
         private ISegment _targetSegment0Mock;
         private IText _textMsgidMock;
@@ -51,6 +55,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _paragraphTargetMock = A.Fake<IParagraph>();
             A.CallTo(() => _paragraphUnitMock.Target).Returns(_paragraphTargetMock);
 
+            _segmentPairPropertiesMock = A.Fake<ISegmentPairProperties>();
+            A.CallTo(() => _itemFactoryMock.CreateSegmentPairProperties()).Returns(_segmentPairPropertiesMock);
+
+            _translationOriginMmock = A.Fake<ITranslationOrigin>();
+            A.CallTo(() => _itemFactoryMock.CreateTranslationOrigin()).Returns(_translationOriginMmock);
+
             _sourceSegment0Mock = A.Fake<ISegment>();
             _targetSegment0Mock = A.Fake<ISegment>();
             _sourceSegment1Mock = A.Fake<ISegment>();
@@ -61,29 +71,34 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _targetSegment3Mock = A.Fake<ISegment>();
             A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored))
                 .ReturnsNextFromSequence(
-                _sourceSegment0Mock, _targetSegment0Mock,
-                _sourceSegment1Mock, _targetSegment1Mock,
-                _sourceSegment2Mock, _targetSegment2Mock,
-                _sourceSegment3Mock, _targetSegment3Mock
+                    _sourceSegment0Mock, _targetSegment0Mock,
+                    _sourceSegment1Mock, _targetSegment1Mock,
+                    _sourceSegment2Mock, _targetSegment2Mock,
+                    _sourceSegment3Mock, _targetSegment3Mock
                 );
 
             var textPropertiesMsgidMock = A.Fake<ITextProperties>();
             A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id")).Returns(textPropertiesMsgidMock);
 
             var textPropertiesMsgidPluralMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id plural")).Returns(textPropertiesMsgidPluralMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id plural"))
+                .Returns(textPropertiesMsgidPluralMock);
 
             var textPropertiesMsgstrMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string")).Returns(textPropertiesMsgstrMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string"))
+                .Returns(textPropertiesMsgstrMock);
 
             var textPropertiesMsgstr0Mock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 0")).Returns(textPropertiesMsgstr0Mock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 0"))
+                .Returns(textPropertiesMsgstr0Mock);
 
             var textPropertiesMsgstr1Mock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 1")).Returns(textPropertiesMsgstr1Mock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 1"))
+                .Returns(textPropertiesMsgstr1Mock);
 
             var textPropertiesMsgstr2Mock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 2")).Returns(textPropertiesMsgstr2Mock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message string 2"))
+                .Returns(textPropertiesMsgstr2Mock);
 
             _textMsgidMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgidMock)).Returns(_textMsgidMock);
@@ -366,8 +381,48 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _paragraphTargetMock.Add(_targetSegment2Mock)).MustHaveHappened();
         }
 
+        [Test]
+        public void Create_ShouldSetSegmentPairToUnspecified()
+        {
+            // Arrange
+            var testee = CreateTestee();
 
-    public ParagraphUnitFactory CreateTestee()
+            var entry = new Entry
+            {
+                MessageId = "message id",
+                MessageString = "message string",
+            };
+
+            // Act
+            testee.Create(entry, LineType.MessageId, false);
+
+            // Assert
+            _segmentPairPropertiesMock.ConfirmationLevel.Should().Be(ConfirmationLevel.Unspecified);
+            _translationOriginMmock.OriginType.Should().Be(DefaultTranslationOrigin.NotTranslated);
+        }
+
+        [Test]
+        public void Create_WhenTargetTextIsNeededAndMsgstrIsSetAndSourceIsMsgid_ShouldSetSegmentPairToMachineTranslated()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var entry = new Entry
+            {
+                MessageId = "message id",
+                MessageString = "message string",
+            };
+
+            // Act
+            testee.Create(entry, LineType.MessageId, true);
+
+            // Assert
+            _segmentPairPropertiesMock.ConfirmationLevel.Should().Be(ConfirmationLevel.Translated);
+            _translationOriginMmock.OriginType.Should().Be(DefaultTranslationOrigin.MachineTranslation);
+        }
+
+
+        public ParagraphUnitFactory CreateTestee()
         {
             return new ParagraphUnitFactory
             {
