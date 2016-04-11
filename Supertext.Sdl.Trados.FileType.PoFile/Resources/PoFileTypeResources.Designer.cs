@@ -88,6 +88,33 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PO file.
+        /// </summary>
+        internal static string Po_File {
+            get {
+                return ResourceManager.GetString("Po_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Supertext file type handles GNU gettext PO files. It provides a setting to define which message is used as source and if the target should be displayed or not..
+        /// </summary>
+        internal static string Po_File_Filter_Description {
+            get {
+                return ResourceManager.GetString("Po_File_Filter_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PO files.
+        /// </summary>
+        internal static string Po_Files {
+            get {
+                return ResourceManager.GetString("Po_Files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon PoFileIcon {

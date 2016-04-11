@@ -26,9 +26,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
             info.FileTypeDefinitionId = new FileTypeDefinitionId("PO File Filter 1.0.0.0");
             info.FileTypeName = new LocalizableString("PO file");
-            info.FileTypeDocumentName = new LocalizableString("PO file");
-            info.FileTypeDocumentsName = new LocalizableString("PO files");
-            info.Description = new LocalizableString("This filter is used to process PO files.");
+            info.FileTypeDocumentName = new LocalizableString(PoFileTypeResources.Po_File);
+            info.FileTypeDocumentsName = new LocalizableString(PoFileTypeResources.Po_Files);
+            info.Description = new LocalizableString(PoFileTypeResources.Po_File_Filter_Description);
             info.FileDialogWildcardExpression = "*.po";
             info.DefaultFileExtension = "po";
             info.Icon = new IconDescriptor(PoFileTypeResources.PoFileIcon);

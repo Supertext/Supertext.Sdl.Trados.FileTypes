@@ -135,4 +135,13 @@
     <value>Entry located at {0}-{1}</value>
     <comment>{0}: entry start, {1}: entry end</comment>
   </data>
+  <data name="Po_File" xml:space="preserve">
+    <value>PO file</value>
+  </data>
+  <data name="Po_Files" xml:space="preserve">
+    <value>PO files</value>
+  </data>
+  <data name="Po_File_Filter_Description" xml:space="preserve">
+    <value>This Supertext file type handles GNU gettext PO files. It provides a setting to define which message is used as source and if the target should be displayed or not.</value>
+  </data>
 </root>
