@@ -115,9 +115,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
         private IContextInfo CreateLocationContextInfo(Entry entry)
         {
             var contextInfo = PropertiesFactory.CreateContextInfo(ContextKeys.LocationContextType);
-            contextInfo.DisplayName = PoFileTypeResources.ResourceManager.GetString(ContextKeys.LocationContextType);
+            contextInfo.DisplayName = PoFileTypeResources.Entry_Location;
             contextInfo.Purpose = ContextPurpose.Location;
-            contextInfo.Description = PoFileTypeResources.ResourceManager.GetString(ContextKeys.LocationContextType);
+            contextInfo.Description = PoFileTypeResources.Entry_Location;
             contextInfo.SetMetaData(ContextKeys.MetaMessageStringStart, entry.MessageStringStart.ToString(CultureInfo.InvariantCulture));
             contextInfo.SetMetaData(ContextKeys.MetaMessageStringEnd, entry.MessageStringEnd.ToString(CultureInfo.InvariantCulture));
             return contextInfo;
@@ -126,7 +126,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
         private IContextInfo CreateMessageContextInfo(Entry entry)
         {
             var contextInfo = PropertiesFactory.CreateContextInfo(ContextKeys.MessageContext);
-            contextInfo.DisplayName = PoFileTypeResources.ResourceManager.GetString(ContextKeys.MessageContext);
+            contextInfo.DisplayName = PoFileTypeResources.Message_Context;
             contextInfo.Purpose = ContextPurpose.Information;
             contextInfo.Description = entry.MessageContext;
             contextInfo.DisplayCode = "FCX";
