@@ -5,7 +5,7 @@ using Sdl.FileTypeSupport.Framework.NativeApi;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
-    public class EmbeddedContentVisitorFactory : IEmbeddedContentVisitorFactory, IEmbeddedContentVisitor
+    public class EmbeddedContentVisitor : IEmbeddedContentVisitorFactory, IEmbeddedContentVisitor
     {
         private IDocumentItemFactory _itemFactory;
         private IPropertiesFactory _propertiesFactory;

@@ -11,7 +11,7 @@ using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {
     [TestFixture]
-    public class EmbeddedContentVisitorFactoryTest
+    public class EmbeddedContentVisitorTest
     {
         const string NewContentTestString = "newContentTestString";
         const string OldContentTestString = "oldContentTestString";
@@ -287,7 +287,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
         private IEmbeddedContentVisitor CreateTestee()
         {
-            var testeeFactory = new EmbeddedContentVisitorFactory();
+            var testeeFactory = new EmbeddedContentVisitor();
 
             return testeeFactory.CreateVisitor(_itemFactoryMock, _propertiesFactoryMock, _textProcessorMock);
         }
