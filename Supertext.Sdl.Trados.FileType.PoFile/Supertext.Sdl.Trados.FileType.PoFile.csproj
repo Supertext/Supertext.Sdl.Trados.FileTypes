@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Supertext.Sdl.Trados.FileType.PoFile</RootNamespace>
     <AssemblyName>Supertext.Sdl.Trados.FileType.PoFile</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -158,7 +159,8 @@
     <CreatePluginPackage>true</CreatePluginPackage>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)Supertext.Sdl.Trados.FileType.PoFile.sdlplugin" "C:\Users\Heinrich Muralt\AppData\Local\SDL\SDL Trados Studio\12\Plugins\Packages"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <CreatePluginManifestTask ProjectDirectory="$(ProjectDir)" AssemblyFilePath="$(TargetPath)" PluginResxFilePath="$(ProjectDir)PluginResources.resx" />
