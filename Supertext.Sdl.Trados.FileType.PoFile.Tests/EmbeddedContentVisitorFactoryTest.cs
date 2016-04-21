@@ -183,6 +183,31 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void VisitText_WhenTextHasEndTagButNoStartTag_ShouldThrowArgumentOutOfRangeException()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            {
+                new Fragment(InlineType.EndTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true})
+            });
+
+            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties(NewContentTestString)).Returns(startTagPropertiesMock);
+
+            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties(NewContentTestString)).Returns(endTagPropertiesMock);
+
+            var tagPairMock = A.Fake<ITagPair>();
+            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock)).Returns(tagPairMock);
+
+            // Act, Assert
+            testee.Invoking(factory => testee.VisitText(_textMock))
+                .ShouldThrow<ArgumentOutOfRangeException>();
+        }
+
+        [Test]
         public void VisitText_WhenTextHasNestedTags_ShouldAddAllTagPairs()
         {
             // Arrange

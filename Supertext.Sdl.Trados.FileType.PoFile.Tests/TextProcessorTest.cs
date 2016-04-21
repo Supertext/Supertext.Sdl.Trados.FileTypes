@@ -185,6 +185,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasTags_ShouldRecognizeTags()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var testString = @"<a href=""http://www.supertext.ch"">Some text</a>";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.StartTag);
+            result[2].InlineType.Should().Be(InlineType.EndTag);
+        }
+
+        [Test]
         public void Process_WhenUsingNoMatchRules_ShouldRecognizeAllAsText()
         {
             // Arrange

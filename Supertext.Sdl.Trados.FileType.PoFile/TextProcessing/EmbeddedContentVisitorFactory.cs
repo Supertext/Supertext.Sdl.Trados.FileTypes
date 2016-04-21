@@ -122,7 +122,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                         _currentContainer.Add(CreateTags(fragment, fragments));
                         break;
                     case InlineType.EndTag:
-                        throw new ArithmeticException();
+                        throw new ArgumentOutOfRangeException();
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
