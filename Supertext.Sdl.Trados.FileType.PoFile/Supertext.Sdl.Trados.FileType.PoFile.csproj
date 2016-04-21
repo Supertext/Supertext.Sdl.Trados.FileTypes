@@ -157,6 +157,9 @@
   <PropertyGroup>
     <CreatePluginPackage>true</CreatePluginPackage>
   </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)Supertext.Sdl.Trados.FileType.PoFile.sdlplugin" "C:\Users\Heinrich Muralt\AppData\Local\SDL\SDL Trados Studio\12\Plugins\Packages"</PostBuildEvent>
+  </PropertyGroup>
   <Target Name="AfterBuild">
     <CreatePluginManifestTask ProjectDirectory="$(ProjectDir)" AssemblyFilePath="$(TargetPath)" PluginResxFilePath="$(ProjectDir)PluginResources.resx" />
   </Target>
