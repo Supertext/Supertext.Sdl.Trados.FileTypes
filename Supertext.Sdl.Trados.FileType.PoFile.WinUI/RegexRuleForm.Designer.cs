@@ -41,7 +41,6 @@
             this.l_Opening = new System.Windows.Forms.Label();
             this._endTagTextBox = new System.Windows.Forms.TextBox();
             this.l_Closing = new System.Windows.Forms.Label();
-            this._ignoreCaseCheckbox = new System.Windows.Forms.CheckBox();
             this._startTagTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -124,7 +123,6 @@
             this.tableLayoutPanel3.Controls.Add(this.l_Opening, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this._endTagTextBox, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.l_Closing, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this._ignoreCaseCheckbox, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this._startTagTextBox, 1, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
@@ -143,13 +141,6 @@
             // 
             resources.ApplyResources(this.l_Closing, "l_Closing");
             this.l_Closing.Name = "l_Closing";
-            // 
-            // _ignoreCaseCheckbox
-            // 
-            resources.ApplyResources(this._ignoreCaseCheckbox, "_ignoreCaseCheckbox");
-            this.tableLayoutPanel3.SetColumnSpan(this._ignoreCaseCheckbox, 2);
-            this._ignoreCaseCheckbox.Name = "_ignoreCaseCheckbox";
-            this._ignoreCaseCheckbox.UseVisualStyleBackColor = true;
             // 
             // _startTagTextBox
             // 
@@ -249,7 +240,6 @@
         private System.Windows.Forms.Label l_Opening;
         private System.Windows.Forms.TextBox _endTagTextBox;
         private System.Windows.Forms.Label l_Closing;
-        private System.Windows.Forms.CheckBox _ignoreCaseCheckbox;
         private System.Windows.Forms.TextBox _startTagTextBox;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;

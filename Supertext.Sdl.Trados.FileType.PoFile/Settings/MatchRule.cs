@@ -8,42 +8,37 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
 {
     public class MatchRule : ISerializableListItem, INotifyPropertyChanged
     {
-        const string SettingSegmentionHint = "SegmentationHint";
-        const string SettingTagType = "TagType";
-        const string SettingStartTagRegex = "StartTagRegex";
-        const string SettingEndTagRegex = "EndTagRegex";
-        const string SettingIgnoreCase = "IgnoreCase";
-        const string SettingContentTranslatable = "ContentTranslatable";
-        const string SettingWordStop = "WordStop";
-        const string SettingSoftBreak = "SoftBreak";
-        const string SettingCanHide = "CanHide";
-        const string SettingTextEquivalent = "TextEquivalent";
-        const string SettingFormatting = "Formatting";
-        const SegmentationHint DefaultSegmentationHint = SegmentationHint.Undefined;
-        const TagTypeOption DefaultTagType = TagTypeOption.Placeholder;
-        const bool DefaultIgnoreCase = false;
-        const bool DefaultContentTranslatable = false;
-        const bool DefaultWordStop = false;
-        const bool DefaultSoftBreak = false;
-        const bool DefaultCanHide = false;
+        private const string SettingSegmentionHint = "SegmentationHint";
+        private const string SettingTagType = "TagType";
+        private const string SettingStartTagRegex = "StartTagRegex";
+        private const string SettingEndTagRegex = "EndTagRegex";
+        private const string SettingContentTranslatable = "ContentTranslatable";
+        private const string SettingWordStop = "WordStop";
+        private const string SettingSoftBreak = "SoftBreak";
+        private const string SettingCanHide = "CanHide";
+        private const string SettingTextEquivalent = "TextEquivalent";
+        private const string SettingFormatting = "Formatting";
+        private const SegmentationHint DefaultSegmentationHint = SegmentationHint.Undefined;
+        private const TagTypeOption DefaultTagType = TagTypeOption.Placeholder;
+        private const bool DefaultContentTranslatable = false;
+        private const bool DefaultWordStop = false;
+        private const bool DefaultSoftBreak = false;
+        private const bool DefaultCanHide = false;
 
+        private SegmentationHint _segmentationHint;
+        private TagTypeOption _tagType;
+        private string _startTagRegex;
+        private string _endTagRegex;
+        private bool _isContentTranslatable;
+        private bool _isWordStop;
+        private bool _isSoftBreak;
+        private bool _canHide;
+        private string _textEquivalent;
+        private FormattingGroupSettings _formatting;
 
-        SegmentationHint _segmentationHint;
-        TagTypeOption _tagType;
-        string _startTagRegex;
-        string _endTagRegex;
-        bool _ignoreCase;
-        bool _isContentTranslatable;
-        bool _isWordStop;
-        bool _isSoftBreak;
-        bool _canHide;
-        string _textEquivalent;
-        FormattingGroupSettings _formatting;
-
-
-        readonly string _defaultStartTagRegex = string.Empty;
-        readonly string _defaultEndTagRegex = string.Empty;
-        readonly string _defaultTextEquivalent = string.Empty;
+        private readonly string _defaultStartTagRegex = string.Empty;
+        private readonly string _defaultEndTagRegex = string.Empty;
+        private readonly string _defaultTextEquivalent = string.Empty;
 
         public MatchRule()
         {
@@ -106,19 +101,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             {
                 _endTagRegex = value;
                 OnPropertyChanged("EndTagRegexValue");
-            }
-        }
-
-        public bool IgnoreCase
-        {
-            get
-            {
-                return _ignoreCase;
-            }
-            set
-            {
-                _ignoreCase = value;
-                OnPropertyChanged("IgnoreCase");
             }
         }
 
@@ -200,30 +182,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             }
         }
 
-        public Regex BuildStartTagRegex()
-        {
-            return new Regex(StartTagRegexValue,
-                IgnoreCase
-                ? RegexOptions.IgnoreCase
-                : RegexOptions.None);
-        }
-
-        public Regex BuildEndTagRegex()
-        {
-            return new Regex(EndTagRegexValue,
-                IgnoreCase
-                ? RegexOptions.IgnoreCase
-                : RegexOptions.None);
-        }
-
-
         public void ResetToDefaults()
         {
             SegmentationHint = DefaultSegmentationHint;
             TagType = DefaultTagType;
             StartTagRegexValue = _defaultStartTagRegex;
             EndTagRegexValue = _defaultEndTagRegex;
-            IgnoreCase = DefaultIgnoreCase;
             IsContentTranslatable = DefaultContentTranslatable;
             IsWordStop = DefaultWordStop;
             IsSoftBreak = DefaultSoftBreak;
@@ -240,7 +204,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             settingsGroup.RemoveSetting(listItemSetting + SettingTagType);
             settingsGroup.RemoveSetting(listItemSetting + SettingStartTagRegex);
             settingsGroup.RemoveSetting(listItemSetting + SettingEndTagRegex);
-            settingsGroup.RemoveSetting(listItemSetting + SettingIgnoreCase);
             settingsGroup.RemoveSetting(listItemSetting + SettingContentTranslatable);
             settingsGroup.RemoveSetting(listItemSetting + SettingWordStop);
             settingsGroup.RemoveSetting(listItemSetting + SettingSoftBreak);
@@ -256,7 +219,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             TagType = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingTagType, DefaultTagType);
             StartTagRegexValue = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingStartTagRegex, _defaultStartTagRegex);
             EndTagRegexValue = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingEndTagRegex, _defaultEndTagRegex);
-            IgnoreCase = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingIgnoreCase, DefaultIgnoreCase);
             IsContentTranslatable = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingContentTranslatable, DefaultContentTranslatable);
             IsWordStop = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingWordStop, DefaultWordStop);
             IsSoftBreak = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingSoftBreak, DefaultSoftBreak);
@@ -275,7 +237,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingTagType, TagType, DefaultTagType);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingStartTagRegex, StartTagRegexValue, _defaultStartTagRegex);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingEndTagRegex, EndTagRegexValue, _defaultEndTagRegex);
-            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingIgnoreCase, IgnoreCase, DefaultIgnoreCase);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingContentTranslatable, IsContentTranslatable, DefaultContentTranslatable);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingWordStop, IsWordStop, DefaultWordStop);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingSoftBreak, IsSoftBreak, DefaultSoftBreak);

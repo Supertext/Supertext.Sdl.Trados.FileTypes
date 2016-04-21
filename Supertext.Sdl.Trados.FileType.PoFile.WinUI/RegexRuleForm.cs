@@ -37,9 +37,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             {
                 _translateComboBox.Text = NotTranslatable;
             }
-
-            _ignoreCaseCheckbox.Checked = _rule.IgnoreCase;
-
         }
 
      

@@ -351,39 +351,6 @@
   <data name="&gt;&gt;l_Closing.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="_ignoreCaseCheckbox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <data name="_ignoreCaseCheckbox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="_ignoreCaseCheckbox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="_ignoreCaseCheckbox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 57</value>
-  </data>
-  <data name="_ignoreCaseCheckbox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>491, 17</value>
-  </data>
-  <data name="_ignoreCaseCheckbox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="_ignoreCaseCheckbox.Text" xml:space="preserve">
-    <value>Ignore case</value>
-  </data>
-  <data name="&gt;&gt;_ignoreCaseCheckbox.Name" xml:space="preserve">
-    <value>_ignoreCaseCheckbox</value>
-  </data>
-  <data name="&gt;&gt;_ignoreCaseCheckbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;_ignoreCaseCheckbox.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
-  </data>
-  <data name="&gt;&gt;_ignoreCaseCheckbox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="_startTagTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
@@ -406,7 +373,7 @@
     <value>tableLayoutPanel3</value>
   </data>
   <data name="&gt;&gt;_startTagTextBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="tableLayoutPanel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -436,7 +403,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="l_Opening" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_endTagTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="l_Closing" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_ignoreCaseCheckbox" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="_startTagTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="l_Opening" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_endTagTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="l_Closing" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_startTagTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="_ruleGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -729,12 +696,12 @@
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="groupBox2" Row="4" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="_ruleTypeComboBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_ruleGroupBox" Row="1" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="groupBox1" Row="2" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="groupBox3" Row="3" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,Percent,63,Percent,37,Absolute,56,Absolute,56" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="_errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="_errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </data>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
