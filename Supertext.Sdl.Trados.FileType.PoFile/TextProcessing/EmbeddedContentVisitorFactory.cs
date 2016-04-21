@@ -104,11 +104,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 
         public void VisitText(IText text)
         {
-            var queuedFragments = new Queue<Fragment>(_textProcessor.Process(text.Properties.Text));
+            var fragments = new Queue<Fragment>(_textProcessor.Process(text.Properties.Text));
 
-            while (queuedFragments.Count > 0)
+            while (fragments.Count > 0)
             {
-                var fragment = queuedFragments.Dequeue();
+                var fragment = fragments.Dequeue();
 
                 switch (fragment.InlineType)
                 {
@@ -119,12 +119,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                         _currentContainer.Add(CreatePlaceholder(fragment.Content));
                         break;
                     case InlineType.StartTag:
-                        _currentContainer.Add(CreateTags(fragment, queuedFragments));
+                        _currentContainer.Add(CreateTags(fragment, fragments));
                         break;
                     case InlineType.EndTag:
-                        //Situation: more end tags than start tags. Thus error in Text. Ignore and just add as text;
-                        _currentContainer.Add(CreateText(fragment.Content));
-                        break;
+                        throw new ArithmeticException();
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
