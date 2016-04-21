@@ -260,11 +260,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _sourceParagraphMock.Add(tagPairMock)).MustHaveHappened();
         }
 
-        private IEmbeddedContentVisitor CreateTestee()
+        private EmbeddedContentVisitorFactory CreateTestee()
         {
             var testeeFactory = new EmbeddedContentVisitorFactory();
 
-            return testeeFactory.CreateVisitor(_itemFactoryMock, _propertiesFactoryMock, _textProcessorMock);
+            return testeeFactory.CreateVisitor(_itemFactoryMock, _propertiesFactoryMock, _textProcessorMock) as EmbeddedContentVisitorFactory;
         }
     }
 }

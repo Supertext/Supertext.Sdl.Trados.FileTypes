@@ -14,5 +14,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             Content = content;
             MatchRule = matchRule;
         }
+
+        public override string ToString()
+        {
+            return InlineType + ": " + Content;
+        }
     }
 }
