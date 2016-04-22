@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
-    //TODO small but complicated, needs to be refactored to easy understandable code
+    //TODO needs to be refactored to easy understandable code
     public class TextProcessor : ITextProcessor
     {
         private List<InlineType> _types;
@@ -51,6 +52,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
         //Todo: check performance, maybe slow with a lot of patterns
         public IList<Fragment> Process(string value)
         {
+            var fragments = GetFragments(value);
+
+            var matchRulesWithIncompleteTagPairs = GetMatchRulesWithIncompleteTagPairs(fragments);
+
+            return matchRulesWithIncompleteTagPairs.Aggregate(fragments, ReplaceMatchRuleTagPairsWithPlaceholder);
+        }
+
+        private List<Fragment> GetFragments(string value)
+        {
             var matches = _regex.Matches(value);
 
             var fragments = new List<Fragment>();
@@ -68,7 +78,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                     var textBefore = value.Substring(lastIndex, textBeforeLength);
                     fragments.Add(new Fragment(InlineType.Text, textBefore));
                 }
- 
+
                 var inlineContent = value.Substring(match.Index, match.Length);
                 fragments.Add(new Fragment(type, inlineContent, matchRule));
 
@@ -79,7 +89,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             {
                 fragments.Add(new Fragment(InlineType.Text, value.Substring(lastIndex)));
             }
-
             return fragments;
         }
 
@@ -107,6 +116,45 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             }
 
             return null;
+        }
+
+        private static IEnumerable<MatchRule> GetMatchRulesWithIncompleteTagPairs(IEnumerable<Fragment> fragments)
+        {
+            var matchRuleIncompleteTagPairCounts = new Dictionary<MatchRule, int>();
+
+            foreach (var fragment in fragments.Where(fragment => fragment.InlineType == InlineType.StartTag || fragment.InlineType == InlineType.EndTag))
+            {
+                if (!matchRuleIncompleteTagPairCounts.ContainsKey(fragment.MatchRule))
+                {
+                    matchRuleIncompleteTagPairCounts.Add(fragment.MatchRule, 0);
+                }
+
+                matchRuleIncompleteTagPairCounts[fragment.MatchRule] =
+                    matchRuleIncompleteTagPairCounts[fragment.MatchRule] + (fragment.InlineType == InlineType.StartTag ? 1 : -1);
+            }
+
+           return matchRuleIncompleteTagPairCounts
+                .Where(matchRuleIncompleteTagPairCount => matchRuleIncompleteTagPairCount.Value != 0)
+                .Select(matchRuleIncompleteTagPairCount => matchRuleIncompleteTagPairCount.Key);
+        }
+
+        private static List<Fragment> ReplaceMatchRuleTagPairsWithPlaceholder(IEnumerable<Fragment> fragments, MatchRule matchRule)
+        {
+            var newFragements = new List<Fragment>();
+
+            foreach (var fragment in fragments)
+            {
+                if (fragment.MatchRule == matchRule && (fragment.InlineType == InlineType.StartTag || fragment.InlineType == InlineType.EndTag))
+                {
+                    newFragements.Add(new Fragment(InlineType.Placeholder, fragment.Content, fragment.MatchRule));
+                }
+                else
+                {
+                    newFragements.Add(fragment);
+                }
+            }
+
+            return newFragements;
         }
     }
 }

@@ -51,8 +51,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
                 TagType = MatchRule.TagTypeOption.TagPair,
                 StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
                 EndTagRegexValue = @"<\/[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
-                SegmentationHint = SegmentationHint.IncludeWithText
-                ,
+                SegmentationHint = SegmentationHint.IncludeWithText,
                 IsContentTranslatable = true
             }
         };

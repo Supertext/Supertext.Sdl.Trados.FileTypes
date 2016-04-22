@@ -155,36 +155,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasStartTag_ShouldRecognizeStartTag()
-        {
-            // Arrange
-            var testee = new TextProcessor();
-            testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
-            var testString = @"<a href=""http://www.supertext.ch"">";
-
-            // Act
-            var result = testee.Process(testString);
-
-            // Assert
-            result[0].InlineType.Should().Be(InlineType.StartTag);
-        }
-
-        [Test]
-        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasEndTag_ShouldRecognizeEndTag()
-        {
-            // Arrange
-            var testee = new TextProcessor();
-            testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
-            var testString = @"</a>";
-
-            // Act
-            var result = testee.Process(testString);
-
-            // Assert
-            result[0].InlineType.Should().Be(InlineType.EndTag);
-        }
-
-        [Test]
         public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasTags_ShouldRecognizeTags()
         {
             // Arrange
@@ -198,6 +168,88 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             result[0].InlineType.Should().Be(InlineType.StartTag);
             result[2].InlineType.Should().Be(InlineType.EndTag);
+        }
+
+        [Test]
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasStartTagButNoEndTag_ShouldRecognizePlaceholder()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var testString = @"<a href=""http://www.supertext.ch"">";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Placeholder);
+        }
+
+        [Test]
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasEndTagButNoStartTag_ShouldRecognizePlaceholder()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var testString = @"</a>";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Placeholder);
+        }
+
+        [Test]
+        public void Process_WhenUsingDefaultEmbeddedPatternsAndTextHasIncompleteTags_ShouldRecognizeAllAsPlaceholder()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var testString = @"<a href=""http://www.supertext.ch"">Some text with <span>more text</a>";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Placeholder);
+            result[1].InlineType.Should().Be(InlineType.Text);
+            result[2].InlineType.Should().Be(InlineType.Placeholder);
+            result[3].InlineType.Should().Be(InlineType.Text);
+            result[4].InlineType.Should().Be(InlineType.Placeholder);
+        }
+
+        [Test]
+        public void Process_WhenTextHasCompleteTagsFromOneMatchRuleAndIncompleteTagsFromOtherMatchRule_ShouldRecognizeCompleteTagsFromOneMatchRuleAsStartAndEndTag()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(new List<MatchRule>
+            {
+                new MatchRule
+                {
+                    StartTagRegexValue = @"\[\[",
+                    EndTagRegexValue = @"\]\]",
+                    TagType = MatchRule.TagTypeOption.TagPair
+                },
+                new MatchRule
+                {
+                    TagType = MatchRule.TagTypeOption.TagPair,
+                    StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
+                    EndTagRegexValue = @"<\/[a-zA-Z][a-zA-Z0-9]*[^<>]*>"
+                }
+            });
+            var testString = @"<a href=""http://www.supertext.ch"">Some text with [[more text</a>";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.StartTag);
+            result[1].InlineType.Should().Be(InlineType.Text);
+            result[2].InlineType.Should().Be(InlineType.Placeholder);
+            result[3].InlineType.Should().Be(InlineType.Text);
+            result[4].InlineType.Should().Be(InlineType.EndTag);
         }
 
         [Test]
