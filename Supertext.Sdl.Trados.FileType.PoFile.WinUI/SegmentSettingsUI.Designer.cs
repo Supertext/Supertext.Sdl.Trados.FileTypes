@@ -46,17 +46,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.tb_sourceSegment = new System.Windows.Forms.TextBox();
             this.tb_targetSegment = new System.Windows.Forms.TextBox();
             this.tb_note = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.cb_MessageStringAsSource);
             this.groupBox1.Controls.Add(this.cb_TargetTextNeeded);
-            this.groupBox1.Controls.Add(this.tb_example);
-            this.groupBox1.Controls.Add(this.tb_sourceSegment);
-            this.groupBox1.Controls.Add(this.tb_targetSegment);
             this.groupBox1.Controls.Add(this.tb_note);
+            this.groupBox1.Controls.Add(this.groupBox2);
             resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
@@ -101,6 +101,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.tb_note.Name = "tb_note";
             this.tb_note.ReadOnly = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.tb_targetSegment);
+            this.groupBox2.Controls.Add(this.tb_sourceSegment);
+            this.groupBox2.Controls.Add(this.tb_example);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
+            // 
             // SegmentSettingsUI
             // 
             resources.ApplyResources(this, "$this");
@@ -109,10 +118,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.Name = "SegmentSettingsUI";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private GroupBox groupBox2;
     }
 }

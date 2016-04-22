@@ -126,13 +126,13 @@
     <value>6, 19</value>
   </data>
   <data name="cb_MessageStringAsSource.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 17</value>
+    <value>170, 17</value>
   </data>
   <data name="cb_MessageStringAsSource.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="cb_MessageStringAsSource.Text" xml:space="preserve">
-    <value>Use message string (msgstr) as source</value>
+    <value>Show PO target text as source</value>
   </data>
   <data name="&gt;&gt;cb_MessageStringAsSource.Name" xml:space="preserve">
     <value>cb_MessageStringAsSource</value>
@@ -153,13 +153,13 @@
     <value>6, 42</value>
   </data>
   <data name="cb_TargetTextNeeded.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 17</value>
+    <value>113, 17</value>
   </data>
   <data name="cb_TargetTextNeeded.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="cb_TargetTextNeeded.Text" xml:space="preserve">
-    <value>Add target text</value>
+    <value>Add PO target text</value>
   </data>
   <data name="&gt;&gt;cb_TargetTextNeeded.Name" xml:space="preserve">
     <value>cb_TargetTextNeeded</value>
@@ -173,84 +173,14 @@
   <data name="&gt;&gt;cb_TargetTextNeeded.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tb_example.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 65</value>
-  </data>
-  <data name="tb_example.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="tb_example.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 30</value>
-  </data>
-  <data name="tb_example.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tb_example.Text" xml:space="preserve">
-    <value>msgid "Example"
-msgstr "Beispiel</value>
-  </data>
-  <data name="&gt;&gt;tb_example.Name" xml:space="preserve">
-    <value>tb_example</value>
-  </data>
-  <data name="&gt;&gt;tb_example.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tb_example.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tb_example.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tb_sourceSegment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 104</value>
-  </data>
-  <data name="tb_sourceSegment.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 20</value>
-  </data>
-  <data name="tb_sourceSegment.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tb_sourceSegment.Name" xml:space="preserve">
-    <value>tb_sourceSegment</value>
-  </data>
-  <data name="&gt;&gt;tb_sourceSegment.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tb_sourceSegment.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tb_sourceSegment.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tb_targetSegment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>204, 104</value>
-  </data>
-  <data name="tb_targetSegment.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 20</value>
-  </data>
-  <data name="tb_targetSegment.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tb_targetSegment.Name" xml:space="preserve">
-    <value>tb_targetSegment</value>
-  </data>
-  <data name="&gt;&gt;tb_targetSegment.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tb_targetSegment.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;tb_targetSegment.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="tb_note.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 137</value>
+    <value>25, 171</value>
   </data>
   <data name="tb_note.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="tb_note.Size" type="System.Drawing.Size, System.Drawing">
-    <value>367, 179</value>
+    <value>367, 58</value>
   </data>
   <data name="tb_note.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -270,7 +200,67 @@ Read more here: https://blog.supertext.ch/2016/04/po-file-type-for-trados/</valu
     <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;tb_note.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.Name" xml:space="preserve">
+    <value>tb_targetSegment</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.Name" xml:space="preserve">
+    <value>tb_sourceSegment</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tb_example.Name" xml:space="preserve">
+    <value>tb_example</value>
+  </data>
+  <data name="&gt;&gt;tb_example.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_example.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;tb_example.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>25, 65</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>367, 100</value>
+  </data>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -298,6 +288,76 @@ Read more here: https://blog.supertext.ch/2016/04/po-file-type-for-trados/</valu
     <value>$this</value>
   </data>
   <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tb_example.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 19</value>
+  </data>
+  <data name="tb_example.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tb_example.Size" type="System.Drawing.Size, System.Drawing">
+    <value>349, 30</value>
+  </data>
+  <data name="tb_example.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tb_example.Text" xml:space="preserve">
+    <value>msgid "Example" (PO source text)
+msgstr "Beispiel" (PO target text)</value>
+  </data>
+  <data name="&gt;&gt;tb_example.Name" xml:space="preserve">
+    <value>tb_example</value>
+  </data>
+  <data name="&gt;&gt;tb_example.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_example.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;tb_example.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tb_sourceSegment.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 65</value>
+  </data>
+  <data name="tb_sourceSegment.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 20</value>
+  </data>
+  <data name="tb_sourceSegment.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.Name" xml:space="preserve">
+    <value>tb_sourceSegment</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;tb_sourceSegment.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tb_targetSegment.Location" type="System.Drawing.Point, System.Drawing">
+    <value>183, 65</value>
+  </data>
+  <data name="tb_targetSegment.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 20</value>
+  </data>
+  <data name="tb_targetSegment.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.Name" xml:space="preserve">
+    <value>tb_targetSegment</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;tb_targetSegment.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
