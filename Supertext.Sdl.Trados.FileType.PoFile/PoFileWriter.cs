@@ -17,6 +17,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private const string MessageStringPluralKeyword = @"msgstr[{1}] ""{0}""";
         private const string MessageStringText = @"""{0}""";
         private const string SplittedSegmentIdNextPattern = @"\d+\s[b-z]+";
+        private const string LineBreak = "\n";
+        private const string SoftLineBreak = "\\n";
 
         private readonly Regex _splittedSegmentIdNextRegex = new Regex(SplittedSegmentIdNextPattern);
         private readonly IFileHelper _fileHelper;
@@ -197,7 +199,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private IEnumerable<string> GetLines(string targetText)
         {
-            if (!targetText.Contains("\n"))
+            if (!targetText.Contains(LineBreak))
             {
                 return new List<string>
                 {
@@ -205,13 +207,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 };
             }
 
-            var lines = targetText.Split(new[] {"\n"},
-                StringSplitOptions.None).Select(line => line + "\\n").ToList();
+            var lines = targetText.Split(new[] {LineBreak},
+                StringSplitOptions.None).Select(line => line + SoftLineBreak).ToList();
 
             var lastLine = lines.Last();
             lines.RemoveAt(lines.Count - 1);
 
-            if (lastLine != "\\n")
+            if (lastLine != SoftLineBreak)
             {
                 lines.Add(lastLine.Substring(0, lastLine.Length-2));
             }
