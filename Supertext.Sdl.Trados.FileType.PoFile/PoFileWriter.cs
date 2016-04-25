@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -9,12 +12,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public class PoFileWriter : AbstractBilingualFileTypeComponent, IBilingualWriter, INativeOutputSettingsAware
     {
-        private const string MessageStringKeyword = "msgstr";
-        private const string MessageStringPluralKeyword = "msgstr[{0}]";
-        private const string SplittedSegmentIdStartPattern = @"\d+\sa";
-        private const string SplittedSegmentIdNextPattern = @"\d+\s[a-z]+";
+        private const string MessageStringKeyword = @"msgstr ""{0}""";
+        private const string MessageStringPluralKeyword = @"msgstr[{1}] ""{0}""";
+        private const string MessageStringText = @"""{0}""";
+        private const string SplittedSegmentIdNextPattern = @"\d+\s[b-z]+";
 
-        private readonly Regex _splittedSegmentIdStartRegex = new Regex(SplittedSegmentIdStartPattern);
         private readonly Regex _splittedSegmentIdNextRegex = new Regex(SplittedSegmentIdNextPattern);
         private readonly IFileHelper _fileHelper;
         private readonly ISegmentReader _segmentReader;
@@ -37,17 +39,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private static string CreateMessageStringPluralLine(int segmentPairCounter, string lineContent)
         {
-            return string.Format(MessageStringPluralKeyword, segmentPairCounter) + " \"" + lineContent + "\"";
+            return string.Format(MessageStringPluralKeyword, lineContent, segmentPairCounter);
         }
 
         private static string CreateMessageStringLine(string lineContent)
         {
-            return MessageStringKeyword + " \"" + lineContent + "\"";
+            return string.Format(MessageStringKeyword, lineContent);
         }
 
         private static string CreateTextLine(string lineContent)
         {
-            return "\"" + lineContent + "\"";
+            return string.Format(MessageStringText, lineContent);
         }
 
         public void Initialize(IDocumentProperties documentInfo)
@@ -116,26 +118,106 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         private void WriteMessageString(IParagraphUnit paragraphUnit, bool isPluralForm)
         {
-            var segmentPairCounter = 0;
-            foreach (var segmentPair in paragraphUnit.SegmentPairs)
+            var segmentPairsLines = GetSegmentPairsLines(paragraphUnit.SegmentPairs);
+
+            if (isPluralForm)
             {
-                var lineContent = _segmentReader.GetTargetText(segmentPair);
+                WriteMessageStringPluralLines(segmentPairsLines);
+            }
+            else
+            {
+                WriteMessageStringLines(segmentPairsLines);
+            }
+        }
 
-                string toWrite;
+        private void WriteMessageStringPluralLines(Dictionary<string, List<string>> segmentPairsLines)
+        {
+            var segmentPairCounter = 0;
 
-                if (_splittedSegmentIdStartRegex.IsMatch(segmentPair.Properties.Id.Id) || !_splittedSegmentIdNextRegex.IsMatch(segmentPair.Properties.Id.Id))
+            foreach (var segmentPairLines in segmentPairsLines)
+            {
+                var isFirstLine = true;
+                foreach (var segmentPairLine in segmentPairLines.Value)
                 {
-                    toWrite = isPluralForm ? CreateMessageStringPluralLine(segmentPairCounter, lineContent) : CreateMessageStringLine(lineContent);
-                }
-                else
-                {
-                    toWrite = CreateTextLine(lineContent);
-                }
+                    var toWrite = isFirstLine && !_splittedSegmentIdNextRegex.IsMatch(segmentPairLines.Key)
+                        ? CreateMessageStringPluralLine(segmentPairCounter, segmentPairLine)
+                        : CreateTextLine(segmentPairLine);
 
-                _streamWriter.WriteLine(toWrite);
+                    _streamWriter.WriteLine(toWrite);
+
+                    isFirstLine = false;
+                }
 
                 segmentPairCounter++;
             }
+        }
+
+        private void WriteMessageStringLines(Dictionary<string, List<string>> segmentPairsLines)
+        {
+            var firstSegmentPairLines = segmentPairsLines.First();
+
+            if (segmentPairsLines.Count > 1 || firstSegmentPairLines.Value.Count > 1)
+            {
+                var messageStringLine = CreateMessageStringLine(string.Empty);
+                _streamWriter.WriteLine(messageStringLine);
+
+                foreach (var segmentPairLines in segmentPairsLines)
+                {
+                    foreach (var segmentPairLine in segmentPairLines.Value)
+                    {
+                        _streamWriter.WriteLine(CreateTextLine(segmentPairLine));
+                    }
+                }
+            }
+            else
+            {
+                _streamWriter.WriteLine(CreateMessageStringLine(firstSegmentPairLines.Value[0]));
+            }
+        }
+
+        private Dictionary<string, List<string>> GetSegmentPairsLines(IEnumerable<ISegmentPair> segmentPairs)
+        {
+            var allLines = new Dictionary<string, List<string>> ();
+
+            foreach (var segmentPair in segmentPairs)
+            {
+                var targetText = _segmentReader.GetTargetText(segmentPair);
+
+                var lines = GetLines(targetText);
+
+                foreach (var line in lines)
+                {
+                    if (!allLines.ContainsKey(segmentPair.Properties.Id.Id))
+                    {
+                        allLines.Add(segmentPair.Properties.Id.Id, new List<string>());
+                    }
+
+                    allLines[segmentPair.Properties.Id.Id].Add(line);
+                }
+            }
+
+            return allLines;
+        }
+
+        private IEnumerable<string> GetLines(string targetText)
+        {
+            if (!targetText.Contains("\n"))
+            {
+                return new List<string>
+                {
+                    targetText
+                };
+            }
+
+            var lines = targetText.Split(new[] {"\n"},
+                StringSplitOptions.None).Select(line => line + "\\n").ToList();
+
+            if (lines.Last() == "\\n")
+            {
+                lines.RemoveAt(lines.Count-1);
+            }
+
+            return lines;
         }
 
         public void Complete()

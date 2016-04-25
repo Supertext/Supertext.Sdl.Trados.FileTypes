@@ -218,6 +218,31 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void Create_WhenTextHasSoftLineBreaks_ShouldReplaceSoftLineBreaks()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var entry = new Entry
+            {
+                MessageId = "message id\\n",
+                MessageString = "message string",
+            };
+
+            var textPropertiesMsgidMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("message id\n")).Returns(textPropertiesMsgidMock);
+
+           var textMsgidMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMsgidMock)).Returns(textMsgidMock);
+
+            // Act
+            testee.Create(entry, LineType.MessageId, false);
+
+            // Assert
+            A.CallTo(() => _sourceSegment0Mock.Add(textMsgidMock)).MustHaveHappened();
+        }
+
+        [Test]
         public void Create_WhenSourceLineTypeIsMessageId_ShouldUseMessageIdAsSourceText()
         {
             // Arrange

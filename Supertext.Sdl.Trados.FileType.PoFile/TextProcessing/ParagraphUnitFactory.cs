@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
@@ -84,8 +85,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 
         private IText CreateText(string value)
         {
-            var textProperties = PropertiesFactory.CreateTextProperties(value);
-
+            var valueWithReplacedLineBreaks = Regex.Replace(value, "\\\\n", "\n");
+            
+            var textProperties = PropertiesFactory.CreateTextProperties(valueWithReplacedLineBreaks);
+           
             return ItemFactory.CreateText(textProperties);
         }
 

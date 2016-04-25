@@ -1,10 +1,8 @@
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Text;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
-using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
     public class SegmentReader : ISegmentReader, IMarkupDataVisitor
     {
