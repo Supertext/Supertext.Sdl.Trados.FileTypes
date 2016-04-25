@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -89,7 +90,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                     _streamWriter.WriteLine(currentOriginalLine);
                 }
 
-                var completeEntry = GetCompleteEntry(currentOriginalLine);
+                var parseResult = _lineParsingSession.Parse(currentOriginalLine);
+
+                _entryBuilder.Add(parseResult, _extendedStreamReader.CurrentLineNumber);
+
+                var completeEntry = _entryBuilder.CompleteEntry;
 
                 if (completeEntry == null || string.IsNullOrEmpty(completeEntry.MessageId))
                 {
@@ -98,22 +103,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
                 WriteMessageString(paragraphUnit, completeEntry.IsPluralForm);
                 
-                if (_extendedStreamReader.CurrentLineNumber > messageStringEnd)
+                if (_extendedStreamReader.CurrentLineNumber > messageStringEnd && parseResult.LineType != LineType.EndOfFile)
                 {
                     _streamWriter.WriteLine(currentOriginalLine);
                 }
 
                 break;
             }
-        }
-
-        private Entry GetCompleteEntry(string currentOriginalLine)
-        {
-            var parseResult = _lineParsingSession.Parse(currentOriginalLine);
-
-            _entryBuilder.Add(parseResult, _extendedStreamReader.CurrentLineNumber);
-
-            return _entryBuilder.CompleteEntry;
         }
 
         private void WriteMessageString(IParagraphUnit paragraphUnit, bool isPluralForm)
