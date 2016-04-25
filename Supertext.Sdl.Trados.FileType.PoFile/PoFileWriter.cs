@@ -208,9 +208,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var lines = targetText.Split(new[] {"\n"},
                 StringSplitOptions.None).Select(line => line + "\\n").ToList();
 
-            if (lines.Last() == "\\n")
+            var lastLine = lines.Last();
+            lines.RemoveAt(lines.Count - 1);
+
+            if (lastLine != "\\n")
             {
-                lines.RemoveAt(lines.Count-1);
+                lines.Add(lastLine.Substring(0, lastLine.Length-2));
             }
 
             return lines;
