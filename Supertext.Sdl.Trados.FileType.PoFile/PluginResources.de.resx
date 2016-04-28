@@ -118,45 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Plugin_Name" xml:space="preserve">
-    <value>PO File Filter Settings</value>
-  </data>
-  <data name="Segment_Settings_Description" xml:space="preserve">
-    <value>Segment Settings</value>
-  </data>
-  <data name="Segment_Settings_Name" xml:space="preserve">
-    <value>Segment Settings</value>
-  </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
-    <value>Embedded Content</value>
-  </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Name" xml:space="preserve">
-    <value>Embedded Content</value>
-  </data>
-  <data name="Not_Translatable" xml:space="preserve">
-    <value>Not_Translatable</value>
-  </data>
-  <data name="Placeholder" xml:space="preserve">
-    <value>Placeholder</value>
-  </data>
-  <data name="Tag_Pair" xml:space="preserve">
-    <value>Tag Pair</value>
-  </data>
-  <data name="Translatable" xml:space="preserve">
-    <value>Translatable</value>
-  </data>
-  <data name="Exclude" xml:space="preserve">
-    <value>Exclude</value>
-  </data>
-  <data name="Include" xml:space="preserve">
-    <value>Include</value>
-  </data>
-  <data name="Include_with_text" xml:space="preserve">
-    <value>Include with text</value>
-  </data>
-  <data name="May_Exclude" xml:space="preserve">
-    <value>May Exclude</value>
-  </data>
-  <data name="Undefined" xml:space="preserve">
-    <value>Undefined</value>
+    <value>PO File Filter Plugin</value>
   </data>
 </root>

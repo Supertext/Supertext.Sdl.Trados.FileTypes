@@ -128,13 +128,13 @@
     <value>528, 26</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Sie können eingebettete Inhalte verarbeiten, die nicht im Dateiformat des aktuellen Dateityps vorliegen. Hierzu verwenden Sie reguläre Ausdrücke.</value>
+    <value>Einstellungen für die Verarbeitung eingebetteter Inhalte (z.B. HTML eingebettete in XML) mittels regulären Ausdrücke.</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
-    <value>Regulärer Ausdruck für das Start-Tag</value>
+    <value>Start-Tag Ausdruck</value>
   </data>
   <data name="columnHeader2.Text" xml:space="preserve">
-    <value>Regulärer Ausdruck für das End-Tag</value>
+    <value>End-Tag Ausdruck</value>
   </data>
   <data name="columnHeader3.Text" xml:space="preserve">
     <value>Tag-Typ</value>

@@ -42,22 +42,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cb_MessageStringAsSource = new System.Windows.Forms.CheckBox();
             this.cb_TargetTextNeeded = new System.Windows.Forms.CheckBox();
-            this.tb_example = new System.Windows.Forms.TextBox();
-            this.tb_sourceSegment = new System.Windows.Forms.TextBox();
-            this.tb_targetSegment = new System.Windows.Forms.TextBox();
             this.tb_note = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tb_targetSegment = new System.Windows.Forms.TextBox();
+            this.tb_sourceSegment = new System.Windows.Forms.TextBox();
+            this.tb_example = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.cb_MessageStringAsSource);
             this.groupBox1.Controls.Add(this.cb_TargetTextNeeded);
             this.groupBox1.Controls.Add(this.tb_note);
             this.groupBox1.Controls.Add(this.groupBox2);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -75,18 +75,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.cb_TargetTextNeeded.UseVisualStyleBackColor = true;
             this.cb_TargetTextNeeded.CheckedChanged += new System.EventHandler(this.cb_TargetTextNeeded_CheckedChanged);
             // 
-            // tb_example
+            // tb_note
             // 
-            this.tb_example.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tb_example, "tb_example");
-            this.tb_example.Name = "tb_example";
-            this.tb_example.ReadOnly = true;
+            resources.ApplyResources(this.tb_note, "tb_note");
+            this.tb_note.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tb_note.Name = "tb_note";
+            this.tb_note.ReadOnly = true;
             // 
-            // tb_sourceSegment
+            // groupBox2
             // 
-            resources.ApplyResources(this.tb_sourceSegment, "tb_sourceSegment");
-            this.tb_sourceSegment.Name = "tb_sourceSegment";
-            this.tb_sourceSegment.ReadOnly = true;
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.tb_targetSegment);
+            this.groupBox2.Controls.Add(this.tb_sourceSegment);
+            this.groupBox2.Controls.Add(this.tb_example);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
             // 
             // tb_targetSegment
             // 
@@ -94,21 +97,18 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.tb_targetSegment.Name = "tb_targetSegment";
             this.tb_targetSegment.ReadOnly = true;
             // 
-            // tb_note
+            // tb_sourceSegment
             // 
-            this.tb_note.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tb_note, "tb_note");
-            this.tb_note.Name = "tb_note";
-            this.tb_note.ReadOnly = true;
+            resources.ApplyResources(this.tb_sourceSegment, "tb_sourceSegment");
+            this.tb_sourceSegment.Name = "tb_sourceSegment";
+            this.tb_sourceSegment.ReadOnly = true;
             // 
-            // groupBox2
+            // tb_example
             // 
-            this.groupBox2.Controls.Add(this.tb_targetSegment);
-            this.groupBox2.Controls.Add(this.tb_sourceSegment);
-            this.groupBox2.Controls.Add(this.tb_example);
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
+            resources.ApplyResources(this.tb_example, "tb_example");
+            this.tb_example.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tb_example.Name = "tb_example";
+            this.tb_example.ReadOnly = true;
             // 
             // SegmentSettingsUI
             // 

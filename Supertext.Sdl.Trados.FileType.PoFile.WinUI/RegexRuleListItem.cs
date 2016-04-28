@@ -23,13 +23,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             SubItems.Add(rule.EndTagRegexValue);
 
             string tagType = rule.TagType == MatchRule.TagTypeOption.TagPair
-                ? "Tag Pair"
-                : "Placeholder";
+                ? PluginResources.Tag_Pair
+                : PluginResources.Placeholder;
             SubItems.Add(tagType);
 
             string isTranslatable = rule.IsContentTranslatable
-                ? "Translatable"
-                : "Not translatable";
+                ? PluginResources.Translatable
+                : PluginResources.Not_Translatable;
             SubItems.Add(isTranslatable);
         }
 

@@ -36,8 +36,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             info.WinFormSettingsPageIds = new[]
             {
                 "PoFile_Segment_Settings",
-                "Community_Embeddded_Content_Processor_Settings",
-                "QuickInserts_Settings",
+                "Community_Embeddded_Content_Processor_Settings"
             };
 
             return info;

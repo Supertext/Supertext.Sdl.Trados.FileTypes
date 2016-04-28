@@ -117,46 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugin_Name" xml:space="preserve">
-    <value>PO File Filter Settings</value>
+  <data name="Entry_Location" xml:space="preserve">
+    <value>Eintragsort</value>
   </data>
-  <data name="Segment_Settings_Description" xml:space="preserve">
-    <value>Segment Settings</value>
+  <data name="Message_Context" xml:space="preserve">
+    <value>Message context</value>
   </data>
-  <data name="Segment_Settings_Name" xml:space="preserve">
-    <value>Segment Settings</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="PoFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>PoFileIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
-    <value>Embedded Content</value>
+  <data name="Sniffer_Unexpected_Line" xml:space="preserve">
+    <value>Unerwartete Zeile ({0}), nächst erwarete mustern: {1}</value>
+    <comment>{0}: line that is invalid, {1}: next expected lines</comment>
   </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Name" xml:space="preserve">
-    <value>Embedded Content</value>
+  <data name="Entry_With_Location" xml:space="preserve">
+    <value>Eintrag auf Zeilen {0}-{1}</value>
+    <comment>{0}: entry start, {1}: entry end</comment>
   </data>
-  <data name="Not_Translatable" xml:space="preserve">
-    <value>Not_Translatable</value>
+  <data name="Po_File" xml:space="preserve">
+    <value>PO-Datei</value>
   </data>
-  <data name="Placeholder" xml:space="preserve">
-    <value>Placeholder</value>
+  <data name="Po_Files" xml:space="preserve">
+    <value>PO-Dateien</value>
   </data>
-  <data name="Tag_Pair" xml:space="preserve">
-    <value>Tag Pair</value>
-  </data>
-  <data name="Translatable" xml:space="preserve">
-    <value>Translatable</value>
-  </data>
-  <data name="Exclude" xml:space="preserve">
-    <value>Exclude</value>
-  </data>
-  <data name="Include" xml:space="preserve">
-    <value>Include</value>
-  </data>
-  <data name="Include_with_text" xml:space="preserve">
-    <value>Include with text</value>
-  </data>
-  <data name="May_Exclude" xml:space="preserve">
-    <value>May Exclude</value>
-  </data>
-  <data name="Undefined" xml:space="preserve">
-    <value>Undefined</value>
+  <data name="Po_File_Filter_Description" xml:space="preserve">
+    <value>Diese Supertext Dateitypdefinition unterstützt die Lokalisierung von GNU gettext Portable-Object (PO) Dateien. In den Einstelllungen können mit regulären Ausdrücke eingebettete Inhalte angegeben werden. Der Ausgangstext der PO-Dateien kann oft nicht als Grundlage für Übersetzungen verwenden werden, da dieser nur als Referenz im Quellcode der Anwendung dient. Daher kann ebenfalls in den Einstellungen festgelegt werden, ob der Zieltext der PO-Datei als Ausgangstext in Trados angezeigt werden soll. Dies ermöglicht es zum Beispiel Englisch/Englisch nach Englisch/Deutsch mittels Zieltext der Englisch/Englisch Datei zu übersetzen.</value>
   </data>
 </root>

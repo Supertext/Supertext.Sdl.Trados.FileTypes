@@ -72,6 +72,11 @@
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedContentSettingsPage.cs" />
+    <Compile Include="PluginResources.de.Designer.cs">
+      <DependentUpon>PluginResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="RegexRuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,12 +114,22 @@
     <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PluginResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PluginResources.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PluginResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RegexRuleForm.de.resx">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RegexRuleForm.resx">
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SegmentSettingsUI.de.resx">
+      <DependentUpon>SegmentSettingsUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SegmentSettingsUI.resx">
       <DependentUpon>SegmentSettingsUI.cs</DependentUpon>

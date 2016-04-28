@@ -12,10 +12,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
     public partial class RegexRuleForm : Form
     {
         readonly MatchRule _rule;
-        private const string TagPair = "Tag Pair";
-        private const string PlaceholderType = "Placeholder";
-        private const string Translatable = "Translatable";
-        private const string NotTranslatable = "Not translatable";
+        private static readonly string TagPair = PluginResources.Tag_Pair;
+        private static readonly string PlaceholderType = PluginResources.Placeholder;
+        private static readonly string Translatable = PluginResources.Translatable;
+        private static readonly string NotTranslatable = PluginResources.Not_Translatable;
        
         
         public RegexRuleForm(MatchRule rule)
@@ -167,11 +167,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
     {
         public SegmentationHintComboItems()
         {
-            Add(new SegmentationHintComboItem { DisplayValue = "Include", SegmentationHint = SegmentationHint.Include });
-            Add(new SegmentationHintComboItem { DisplayValue = "Include with text", SegmentationHint = SegmentationHint.IncludeWithText });
-            Add(new SegmentationHintComboItem { DisplayValue = "Exclude", SegmentationHint = SegmentationHint.Exclude });
-            Add(new SegmentationHintComboItem { DisplayValue = "May Exclude", SegmentationHint = SegmentationHint.MayExclude });
-            Add(new SegmentationHintComboItem { DisplayValue = "Undefined", SegmentationHint = SegmentationHint.Undefined });
+            Add(new SegmentationHintComboItem { DisplayValue = PluginResources.Include, SegmentationHint = SegmentationHint.Include });
+            Add(new SegmentationHintComboItem { DisplayValue = PluginResources.Include_with_text, SegmentationHint = SegmentationHint.IncludeWithText });
+            Add(new SegmentationHintComboItem { DisplayValue = PluginResources.Exclude, SegmentationHint = SegmentationHint.Exclude });
+            Add(new SegmentationHintComboItem { DisplayValue = PluginResources.May_Exclude, SegmentationHint = SegmentationHint.MayExclude });
+            Add(new SegmentationHintComboItem { DisplayValue = PluginResources.Undefined, SegmentationHint = SegmentationHint.Undefined });
         }
     }
 }

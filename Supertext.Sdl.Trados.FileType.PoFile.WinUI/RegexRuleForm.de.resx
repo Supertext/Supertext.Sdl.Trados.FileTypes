@@ -117,46 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugin_Name" xml:space="preserve">
-    <value>PO File Filter Settings</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Tag-Definitionsregel hinzufügen/bearbeiten</value>
   </data>
-  <data name="Segment_Settings_Description" xml:space="preserve">
-    <value>Segment Settings</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Tag-Typ:</value>
   </data>
-  <data name="Segment_Settings_Name" xml:space="preserve">
-    <value>Segment Settings</value>
+  <data name="l_Opening.Text" xml:space="preserve">
+    <value>Start-Tag:</value>
   </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
-    <value>Embedded Content</value>
+  <data name="l_Closing.Text" xml:space="preserve">
+    <value>End-Tag:</value>
   </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Name" xml:space="preserve">
-    <value>Embedded Content</value>
+  <data name="_ruleGroupBox.Text" xml:space="preserve">
+    <value>Regulärer Ausdruck</value>
   </data>
-  <data name="Not_Translatable" xml:space="preserve">
-    <value>Not_Translatable</value>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Übersetzen:</value>
   </data>
-  <data name="Placeholder" xml:space="preserve">
-    <value>Placeholder</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Tag-Eigenschaften</value>
   </data>
-  <data name="Tag_Pair" xml:space="preserve">
-    <value>Tag Pair</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_segmentationHintComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 5</value>
   </data>
-  <data name="Translatable" xml:space="preserve">
-    <value>Translatable</value>
+  <data name="_segmentationHintComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>367, 21</value>
   </data>
-  <data name="Exclude" xml:space="preserve">
-    <value>Exclude</value>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 13</value>
   </data>
-  <data name="Include" xml:space="preserve">
-    <value>Include</value>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Segmentierungshinweis</value>
   </data>
-  <data name="Include_with_text" xml:space="preserve">
-    <value>Include with text</value>
-  </data>
-  <data name="May_Exclude" xml:space="preserve">
-    <value>May Exclude</value>
-  </data>
-  <data name="Undefined" xml:space="preserve">
-    <value>Undefined</value>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Erweiterte Tag-Eigenschaften</value>
   </data>
 </root>

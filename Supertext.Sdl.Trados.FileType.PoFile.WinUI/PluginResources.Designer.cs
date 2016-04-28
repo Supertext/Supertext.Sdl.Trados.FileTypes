@@ -79,6 +79,60 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exclude.
+        /// </summary>
+        internal static string Exclude {
+            get {
+                return ResourceManager.GetString("Exclude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include.
+        /// </summary>
+        internal static string Include {
+            get {
+                return ResourceManager.GetString("Include", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include with text.
+        /// </summary>
+        internal static string Include_with_text {
+            get {
+                return ResourceManager.GetString("Include_with_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to May Exclude.
+        /// </summary>
+        internal static string May_Exclude {
+            get {
+                return ResourceManager.GetString("May_Exclude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not_Translatable.
+        /// </summary>
+        internal static string Not_Translatable {
+            get {
+                return ResourceManager.GetString("Not_Translatable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Placeholder.
+        /// </summary>
+        internal static string Placeholder {
+            get {
+                return ResourceManager.GetString("Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PO File Filter Settings.
         /// </summary>
         internal static string Plugin_Name {
@@ -102,6 +156,33 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
         internal static string Segment_Settings_Name {
             get {
                 return ResourceManager.GetString("Segment_Settings_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag Pair.
+        /// </summary>
+        internal static string Tag_Pair {
+            get {
+                return ResourceManager.GetString("Tag_Pair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translatable.
+        /// </summary>
+        internal static string Translatable {
+            get {
+                return ResourceManager.GetString("Translatable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undefined.
+        /// </summary>
+        internal static string Undefined {
+            get {
+                return ResourceManager.GetString("Undefined", resourceCulture);
             }
         }
     }
