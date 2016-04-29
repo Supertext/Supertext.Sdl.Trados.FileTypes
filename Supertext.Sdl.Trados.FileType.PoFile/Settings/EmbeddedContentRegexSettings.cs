@@ -10,8 +10,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         private const string SettingRegexEmbeddingEnabled = "RegexEmbeddingEnabled";
         private const string SettingStructureInfoList = "StructureInfoList";
         private const string SettingMatchRuleList = "MatchRuleList";
-        private const bool DefaultRegexEmbeddingEnabled = false;
-        private static readonly ObservableList<string> defaultStructureInfos =  new ObservableList<string>
+        private const bool DefaultRegexEmbeddingEnabled = true;
+        private static readonly ObservableList<string> DefaultStructureInfos =  new ObservableList<string>
         {
             "sdl:field"
         };
@@ -98,7 +98,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
         public override void ResetToDefaults()
         {
             IsEnabled = DefaultRegexEmbeddingEnabled;            
-            StructureInfos = defaultStructureInfos;
+            StructureInfos = DefaultStructureInfos;
             MatchRules = DefaultMatchRules;
         }
 
