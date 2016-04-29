@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ExternalPreview_Name" xml:space="preserve">
-    <value>PO File</value>
+    <value>PO file</value>
   </data>
   <data name="InternalRealTimeNavigablePreview_Name" xml:space="preserve">
-    <value>PO File</value>
+    <value>PO file</value>
   </data>
   <data name="InternalStaticPreview_Name" xml:space="preserve">
-    <value>PO File</value>
+    <value>PO file</value>
   </data>
 </root>

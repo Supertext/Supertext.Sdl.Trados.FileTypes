@@ -169,7 +169,7 @@
     <value>5</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>Allows processing of content embedded in a document into tagged markup according to a set of regular expression rules.</value>
+    <value>Settings for processing embedded content (e.g. HTML embedded within XML) according to a set of regular expression rules.</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -187,19 +187,19 @@
     <value>2</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
-    <value>Start Tag Expression</value>
+    <value>Start tag expression</value>
   </data>
   <data name="columnHeader1.Width" type="System.Int32, mscorlib">
     <value>117</value>
   </data>
   <data name="columnHeader2.Text" xml:space="preserve">
-    <value>End Tag Expression</value>
+    <value>End tag expression</value>
   </data>
   <data name="columnHeader2.Width" type="System.Int32, mscorlib">
     <value>114</value>
   </data>
   <data name="columnHeader3.Text" xml:space="preserve">
-    <value>Tag Type</value>
+    <value>Tag type</value>
   </data>
   <data name="columnHeader3.Width" type="System.Int32, mscorlib">
     <value>89</value>

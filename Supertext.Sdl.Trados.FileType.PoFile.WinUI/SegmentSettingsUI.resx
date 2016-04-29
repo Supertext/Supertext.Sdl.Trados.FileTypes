@@ -303,7 +303,7 @@ msgstr "Beispiel" (PO target text)</value>
   </data>
   <data name="tb_note.Text" xml:space="preserve">
     <value>Note:
-It is always the message string (msgstr) that will be replaced by the target text.
+The PO target text (msgstr) is always replaced by the Trados target text.
 Read more here: https://blog.supertext.ch/2016/04/po-file-type-for-trados/</value>
   </data>
   <data name="&gt;&gt;cb_MessageStringAsSource.ZOrder" xml:space="preserve">

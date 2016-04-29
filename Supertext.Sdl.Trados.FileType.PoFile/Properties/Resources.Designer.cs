@@ -61,7 +61,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PO File.
+        ///   Looks up a localized string similar to PO file.
         /// </summary>
         public static string ExternalPreview_Name {
             get {
@@ -70,7 +70,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PO File.
+        ///   Looks up a localized string similar to PO file.
         /// </summary>
         public static string InternalRealTimeNavigablePreview_Name {
             get {
@@ -79,7 +79,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PO File.
+        ///   Looks up a localized string similar to PO file.
         /// </summary>
         public static string InternalStaticPreview_Name {
             get {

@@ -229,7 +229,7 @@
     <value>0</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Add/Edit Embedded Content Rule</value>
+    <value>Add/Edit embedded content rule</value>
   </data>
   <data name="l_Opening.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -439,7 +439,7 @@
     <value>tableLayoutPanel3</value>
   </data>
   <data name="_ruleGroupBox.Text" xml:space="preserve">
-    <value>Regular Expression</value>
+    <value>Regular expression</value>
   </data>
   <data name="_ruleGroupBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 30</value>
@@ -877,7 +877,7 @@
     <value>MiddleRight</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
-    <value>Tag Properties</value>
+    <value>Tag properties</value>
   </data>
   <data name="_endTagTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>390, 20</value>

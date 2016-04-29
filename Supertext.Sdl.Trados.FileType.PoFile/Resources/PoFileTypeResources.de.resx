@@ -128,7 +128,7 @@
     <value>PoFileIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Sniffer_Unexpected_Line" xml:space="preserve">
-    <value>Unerwartete Zeile ({0}), nächst erwarete mustern: {1}</value>
+    <value>Unerwartete Zeile ({0}), erwartete Zeilen-Muster: {1}</value>
     <comment>{0}: line that is invalid, {1}: next expected lines</comment>
   </data>
   <data name="Entry_With_Location" xml:space="preserve">
@@ -142,6 +142,6 @@
     <value>PO-Dateien</value>
   </data>
   <data name="Po_File_Filter_Description" xml:space="preserve">
-    <value>Diese Supertext Dateitypdefinition unterstützt die Lokalisierung von GNU gettext Portable-Object (PO) Dateien. In den Einstelllungen können mit regulären Ausdrücke eingebettete Inhalte angegeben werden. Der Ausgangstext der PO-Dateien kann oft nicht als Grundlage für Übersetzungen verwenden werden, da dieser nur als Referenz im Quellcode der Anwendung dient. Daher kann ebenfalls in den Einstellungen festgelegt werden, ob der Zieltext der PO-Datei als Ausgangstext in Trados angezeigt werden soll. Dies ermöglicht es zum Beispiel Englisch/Englisch nach Englisch/Deutsch mittels Zieltext der Englisch/Englisch Datei zu übersetzen.</value>
+    <value>Diese Supertext Dateitypdefinition unterstützt die Lokalisierung von GNU gettext Portable-Object (PO) Dateien. In den Einstelllungen können mit regulären Ausdrücke eingebettete Inhalte angegeben werden. Der Ausgangstext der PO-Dateien kann oft nicht als Grundlage für Übersetzungen verwenden werden, da dieser nur als Referenz im Quellcode der Anwendung dient. Daher kann ebenfalls in den Einstellungen festgelegt werden, ob der Zieltext der PO-Datei als Ausgangstext in Trados angezeigt werden soll.</value>
   </data>
 </root>
