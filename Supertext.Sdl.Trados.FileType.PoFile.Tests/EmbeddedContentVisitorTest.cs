@@ -13,8 +13,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
     [TestFixture]
     public class EmbeddedContentVisitorTest
     {
-        const string NewContentTestString = "newContentTestString";
-        const string OldContentTestString = "oldContentTestString";
+        private const string TexBeforeProcessing = "textBeforeProcessing";
 
         private IDocumentItemFactory _itemFactoryMock;
         private IPropertiesFactory _propertiesFactoryMock;
@@ -36,7 +35,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => paragraphUnitMock.Source).Returns(_sourceParagraphMock);
 
             var propertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => propertiesMock.Text).Returns(OldContentTestString);
+            A.CallTo(() => propertiesMock.Text).Returns(TexBeforeProcessing);
             A.CallTo(() => _textMock.Properties).Returns(propertiesMock);
         }
 
@@ -46,13 +45,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.Text, NewContentTestString)
+                new Fragment(InlineType.Text, "text")
             });
 
             var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(NewContentTestString)).Returns(textPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("text")).Returns(textPropertiesMock);
 
             var newTextMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(newTextMock);
@@ -70,13 +69,13 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.Placeholder, NewContentTestString)
+                new Fragment(InlineType.Placeholder, "{0}")
             });
 
             var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties(NewContentTestString)).Returns(placeholderTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties("{0}")).Returns(placeholderTagPropertiesMock);
 
             var newPlactholderMock = A.Fake<IPlaceholderTag>();
             A.CallTo(() => _itemFactoryMock.CreatePlaceholderTag(placeholderTagPropertiesMock)).Returns(newPlactholderMock);
@@ -94,17 +93,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true}),
-                new Fragment(InlineType.EndTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.StartTag, "start", new MatchRule {IsContentTranslatable =  true}),
+                new Fragment(InlineType.EndTag, "end", new MatchRule {IsContentTranslatable =  true})
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties(NewContentTestString)).Returns(startTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
 
             var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties(NewContentTestString)).Returns(endTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
 
             var tagPairMock = A.Fake<ITagPair>();
             A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock)).Returns(tagPairMock);
@@ -122,24 +121,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, NewContentTestString, new MatchRule {IsContentTranslatable = false}),
-                new Fragment(InlineType.Text, NewContentTestString),
-                new Fragment(InlineType.EndTag, NewContentTestString, new MatchRule {IsContentTranslatable = false})
+                new Fragment(InlineType.StartTag, "start", new MatchRule {IsContentTranslatable = false}),
+                new Fragment(InlineType.Text, "text"),
+                new Fragment(InlineType.EndTag, "end", new MatchRule {IsContentTranslatable = false})
             });
 
             var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(NewContentTestString)).Returns(textPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties("text")).Returns(textPropertiesMock);
 
             var newTextMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(newTextMock);
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties(NewContentTestString)).Returns(startTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
 
             var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties(NewContentTestString)).Returns(endTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
 
             var lockedContentPropertiesMock = A.Fake<ILockedContentProperties>();
             A.CallTo(() => _propertiesFactoryMock.CreateLockedContentProperties(LockTypeFlags.Manual))
@@ -163,16 +162,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.StartTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.StartTag, "start", new MatchRule {IsContentTranslatable =  true})
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties(NewContentTestString)).Returns(startTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
 
             var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties(NewContentTestString)).Returns(endTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
 
             var tagPairMock = A.Fake<ITagPair>();
             A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock)).Returns(tagPairMock);
@@ -188,16 +187,16 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
-                new Fragment(InlineType.EndTag, NewContentTestString, new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.EndTag, "end", new MatchRule {IsContentTranslatable =  true})
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties(NewContentTestString)).Returns(startTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
 
             var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties(NewContentTestString)).Returns(endTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
 
             var tagPairMock = A.Fake<ITagPair>();
             A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock)).Returns(tagPairMock);
@@ -213,7 +212,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
                 new Fragment(InlineType.StartTag, "start1", new MatchRule {IsContentTranslatable =  true}),
                 new Fragment(InlineType.Text, "message "),
@@ -255,10 +254,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(OldContentTestString)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
             {
                 new Fragment(InlineType.StartTag, "start1", new MatchRule {IsContentTranslatable =  true}),
-                new Fragment(InlineType.Placeholder, NewContentTestString),
+                new Fragment(InlineType.Placeholder, "placeholder"),
                 new Fragment(InlineType.EndTag, "end1", new MatchRule {IsContentTranslatable =  true})
             });
 
@@ -272,7 +271,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock)).Returns(tagPairMock);
 
             var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties(NewContentTestString)).Returns(placeholderTagPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties("placeholder")).Returns(placeholderTagPropertiesMock);
 
             var placeholderMock = A.Fake<IPlaceholderTag>();
             A.CallTo(() => _itemFactoryMock.CreatePlaceholderTag(placeholderTagPropertiesMock)).Returns(placeholderMock);
@@ -283,6 +282,35 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             A.CallTo(() => tagPairMock.Add(placeholderMock)).MustHaveHappened();
             A.CallTo(() => _sourceParagraphMock.Add(tagPairMock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void VisitText_WhenTextHasTags_ShouldAddTagPairWithDisplayText()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            {
+                new Fragment(InlineType.StartTag, @"<test attr=""23"">", new MatchRule {IsContentTranslatable =  true}),
+                new Fragment(InlineType.EndTag, "</test>", new MatchRule {IsContentTranslatable =  true})
+            });
+
+            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties(@"<test attr=""23"">")).Returns(startTagPropertiesMock);
+
+            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("</test>")).Returns(endTagPropertiesMock);
+
+            var tagPairMock = A.Fake<ITagPair>();
+            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock)).Returns(tagPairMock);
+
+            // Act
+            testee.VisitText(_textMock);
+
+            // Assert
+            startTagPropertiesMock.DisplayText.Should().Be("test");
+            endTagPropertiesMock.DisplayText.Should().Be("test");
         }
 
         private IEmbeddedContentVisitor CreateTestee()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 
@@ -7,6 +8,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
     public class EmbeddedContentVisitor : IEmbeddedContentVisitorFactory, IEmbeddedContentVisitor
     {
+        private const string DisplayTextpattern = @"(\w+)";
+
         private IDocumentItemFactory _itemFactory;
         private IPropertiesFactory _propertiesFactory;
         private ITextProcessor _textProcessor;
@@ -164,7 +167,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
         private IAbstractMarkupData CreateTags(Fragment startTagFragment, Queue<Fragment> fragments)
         {
             var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagFragment.Content);
-            startTagProperties.DisplayText = startTagFragment.Content;
+            startTagProperties.DisplayText = CreateDisplayText(startTagFragment.Content);
             startTagProperties.SegmentationHint = startTagFragment.MatchRule.SegmentationHint;
 
             var enclosedContent = new List<IAbstractMarkupData>();
@@ -186,7 +189,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                         break;
                     case InlineType.EndTag:
                         var endTagProperties = _propertiesFactory.CreateEndTagProperties(fragment.Content);
-                        endTagProperties.DisplayText = fragment.Content;
+                        endTagProperties.DisplayText = CreateDisplayText(fragment.Content);
 
                         return fragment.MatchRule.IsContentTranslatable
                             ? CreateTagPair(startTagProperties, endTagProperties, enclosedContent)
@@ -197,6 +200,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             }
 
             throw new ArgumentOutOfRangeException();
+        }
+
+        private static string CreateDisplayText(string tagContent)
+        {
+            var displayTextRegex = new Regex(DisplayTextpattern, RegexOptions.IgnoreCase);
+            var match = displayTextRegex.Match(tagContent);
+
+            return match.Success ? match.Value : tagContent;
         }
 
         private IAbstractMarkupData CreateLockedContent(IEnumerable<IAbstractMarkupData> enclosedContent)
