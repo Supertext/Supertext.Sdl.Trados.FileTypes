@@ -44,8 +44,10 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                 var startTagInlineType = InlineType.StartTag;
                 var endTagInlineType = InlineType.EndTag;
 
-                var startTagMatches = GetTagMatches(tagMatchesPerChar, startTagRegexMatches, startTagInlineType, matchRule).Count();
-                var endTagMatches = GetTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule).Count();
+                var startTagMatches =
+                    GetTagMatches(tagMatchesPerChar, startTagRegexMatches, startTagInlineType, matchRule).Count();
+                var endTagMatches =
+                    GetTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule).Count();
 
                 if (startTagMatches != endTagMatches)
                 {
@@ -77,7 +79,8 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 
                 if (i == tagMatch.Start && stringFragmentBuilder.Length > 0)
                 {
-                    fragments.Add(new Fragment(InlineType.Text, stringFragmentBuilder.ToString(), SegmentationHint.Include, true));
+                    fragments.Add(new Fragment(InlineType.Text, stringFragmentBuilder.ToString(),
+                        SegmentationHint.Include, true));
                     stringFragmentBuilder.Clear();
                 }
 
@@ -88,33 +91,37 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                     continue;
                 }
 
-                fragments.Add(new Fragment(tagMatch.InlineType, stringFragmentBuilder.ToString(), tagMatch.MatchRule.SegmentationHint, tagMatch.MatchRule.IsContentTranslatable));
+                fragments.Add(new Fragment(tagMatch.InlineType, stringFragmentBuilder.ToString(),
+                    tagMatch.MatchRule.SegmentationHint, tagMatch.MatchRule.IsContentTranslatable));
                 stringFragmentBuilder.Clear();
             }
 
             if (stringFragmentBuilder.Length > 0)
             {
-                fragments.Add(new Fragment(InlineType.Text, stringFragmentBuilder.ToString(), SegmentationHint.Include, true));
+                fragments.Add(new Fragment(InlineType.Text, stringFragmentBuilder.ToString(), SegmentationHint.Include,
+                    true));
             }
 
             return fragments;
         }
 
-        private static void AddTagMatches(IList<TagMatch> tagMatchesPerChar, IEnumerable regexMatches, InlineType inlineType,
+        private static void AddTagMatches(IList<TagMatch> tagMatchesPerChar, IEnumerable regexMatches,
+            InlineType inlineType,
             MatchRule matchRule)
         {
             var newTagMatches = GetTagMatches(tagMatchesPerChar, regexMatches, inlineType, matchRule);
 
-            foreach (var tagMatch in newTagMatches)
+            foreach (var newTagMatch in newTagMatches)
             {
-                for (var i = tagMatch.Start; i <= tagMatch.End; ++i)
+                for (var i = newTagMatch.Start; i <= newTagMatch.End; ++i)
                 {
-                    tagMatchesPerChar[i] = tagMatch;
+                    tagMatchesPerChar[i] = newTagMatch;
                 }
             }
         }
 
-        private static IEnumerable<TagMatch> GetTagMatches(IList<TagMatch> tagMatchesPerChar, IEnumerable regexMatches, InlineType inlineType,
+        private static IEnumerable<TagMatch> GetTagMatches(IList<TagMatch> tagMatchesPerChar, IEnumerable regexMatches,
+            InlineType inlineType,
             MatchRule matchRule)
         {
             foreach (Match regexMatch in regexMatches)
@@ -127,18 +134,19 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                     continue;
                 }
 
-                var lastTagMatch = newTagMatch.Start == 0 ? null : tagMatchesPerChar[newTagMatch.Start - 1];
-                if (lastTagMatch != null && lastTagMatch.End >= newTagMatch.Start)
+                var indexBeforeNewTagMatch = newTagMatch.Start - 1;
+
+                if (newTagMatch.Start != 0 && tagMatchesPerChar[indexBeforeNewTagMatch] != null &&
+                    tagMatchesPerChar[indexBeforeNewTagMatch].End >= newTagMatch.Start)
                 {
                     continue;
                 }
 
-                var indexAfterCurrentTagMatch = newTagMatch.Start + newTagMatch.Length;
-                var nextTagMatch = indexAfterCurrentTagMatch == tagMatchesPerChar.Count
-                    ? null
-                    : tagMatchesPerChar[indexAfterCurrentTagMatch];
+                var indexAfterNewTagMatch = newTagMatch.Start + newTagMatch.Length;
 
-                if (nextTagMatch != null && nextTagMatch.Start <= newTagMatch.End)
+                if (indexAfterNewTagMatch != tagMatchesPerChar.Count &&
+                    tagMatchesPerChar[indexAfterNewTagMatch] != null &&
+                    tagMatchesPerChar[indexAfterNewTagMatch].Start <= newTagMatch.End)
                 {
                     continue;
                 }
