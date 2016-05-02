@@ -5,4 +5,7 @@
   <Description>Supertext.Sdl.Trados.FileType.PoFile</Description>
   <Author></Author>
   <RequiredProduct name="SDLTradosStudio" minversion="9.1" />
+  <Include>
+    <File>Supertext.Sdl.Trados.FileType.Utils.dll</File>
+  </Include>
 </PluginPackage>

@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PluginPackage xmlns="http://www.sdl.com/Plugins/PluginPackage/1.0">
-  <PlugInName>Supertext.Sdl.Trados.FileType.PoFile.WinUI</PlugInName>
+  <PlugInName>Supertext.Sdl.Trados.FileType.JsonFile</PlugInName>
   <Version>1.0</Version>
-  <Description>Supertext.Sdl.Trados.FileType.PoFile.WinUI</Description>
+  <Description>Supertext.Sdl.Trados.FileType.JsonFile</Description>
   <Author></Author>
   <RequiredProduct name="SDLTradosStudio" minversion="9.1" />
   <Include>
     <File>Supertext.Sdl.Trados.FileType.Utils.dll</File>
+    <File>Newtonsoft.Json.dll</File>
   </Include>
 </PluginPackage>
