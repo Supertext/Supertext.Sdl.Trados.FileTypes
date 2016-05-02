@@ -1,12 +1,15 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
+using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Resources;
+using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
@@ -14,19 +17,22 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
     public class JsonFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
+        private readonly IJsonFactory _jsonFactory;
         private readonly ITextProcessor _textProcessor;
+        private readonly IParsingSettings _parsingSettings;
+        private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
 
         //State during parsing
-        private StreamReader _file;
         private IPersistentFileConversionProperties _fileConversionProperties;
-        private JsonTextReader _reader;
+        private IJsonTextReader _reader;
         private int _totalNumberOfLines;
 
-        public JsonFileParser(ITextProcessor textProcessor, IEmbeddedContentRegexSettings embeddedContentRegexSettings)
+        public JsonFileParser(IJsonFactory jsonFactory, ITextProcessor textProcessor, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings)
         {
             _textProcessor = textProcessor;
+            _jsonFactory = jsonFactory;
             _embeddedContentRegexSettings = embeddedContentRegexSettings;
+            _parsingSettings = parsingSettings;
         }
 
         public void SetFileProperties(IFileProperties properties)
@@ -53,8 +59,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             OnProgress(0);
 
             _totalNumberOfLines = File.ReadLines(_fileConversionProperties.OriginalFilePath).Count();
-            _file = File.OpenText(_fileConversionProperties.OriginalFilePath);
-            _reader = new JsonTextReader(_file);
+            _reader = _jsonFactory.CreateJsonTextReader(_fileConversionProperties.OriginalFilePath);
         }
 
         protected override bool DuringParsing()
@@ -63,10 +68,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             {
                 OnProgress((byte) (_reader.LineNumber*100/_totalNumberOfLines));
 
-                var isPathToProcess = _reader.Path.EndsWith("html") ||
-                                      _reader.Path.EndsWith("seo_description") ||
-                                      _reader.Path.EndsWith("seo_keywords") ||
-                                      _reader.Path.EndsWith("seo_title");
+                var isPathToProcess = CheckIsPathToProcess(_reader.Path);
 
                 if (_reader.Value == null || _reader.TokenType != JsonToken.String || !isPathToProcess)
                 {
@@ -82,11 +84,15 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             return false;
         }
 
+        private bool CheckIsPathToProcess(string path)
+        {
+            return _parsingSettings.PathPatterns.Select(pathPattern => new Regex(pathPattern).Match(path)).Any(match => match.Success);
+        }
+
         protected override void AfterParsing()
         {
             _reader.Close();
-            _file.Close();
-            _file.Dispose();
+            _reader.Dispose();
         }
 
         private void WriteText(string value)
