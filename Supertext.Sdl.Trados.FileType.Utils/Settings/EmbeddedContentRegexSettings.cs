@@ -90,6 +90,48 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             {
                 CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<keygen[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<link[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<param[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<source[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<track[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<wbr[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*\s*\/>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
