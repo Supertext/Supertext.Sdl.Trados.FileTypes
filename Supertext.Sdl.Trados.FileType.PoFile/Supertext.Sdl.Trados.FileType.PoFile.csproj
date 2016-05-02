@@ -85,14 +85,6 @@
     <Compile Include="TextProcessing\ContextKeys.cs" />
     <Compile Include="Parsing\Entry.cs" />
     <Compile Include="Parsing\EntryBuilder.cs" />
-    <Compile Include="FileHandling\FileHelper.cs" />
-    <Compile Include="FileHandling\IFileHelper.cs" />
-    <Compile Include="FileHandling\IStreamReader.cs" />
-    <Compile Include="FileHandling\IStreamWriter.cs" />
-    <Compile Include="FileHandling\StreamReaderWrapper.cs" />
-    <Compile Include="FileHandling\StreamWriterWrapper.cs" />
-    <Compile Include="FileHandling\ExtendedStreamReader.cs" />
-    <Compile Include="FileHandling\IExtendedStreamReader.cs" />
     <Compile Include="TextProcessing\IParagraphUnitFactory.cs" />
     <Compile Include="Resources\PoFileTypeResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -120,7 +112,6 @@
     <Compile Include="Settings\ISegmentSettings.cs" />
     <Compile Include="Settings\SegmentSettings.cs" />
     <Compile Include="Parsing\LineType.cs" />
-    <Compile Include="FileHandling\MarkerLines.cs" />
     <Compile Include="Parsing\ParseResult.cs" />
     <Compile Include="Parsing\LineParser.cs" />
     <Compile Include="PoFileFilterComponentBuilder.cs" />

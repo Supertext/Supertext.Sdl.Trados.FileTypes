@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
+namespace Supertext.Sdl.Trados.FileType.Utils.FileHandling
 {
     public class FileHelper : IFileHelper
     {

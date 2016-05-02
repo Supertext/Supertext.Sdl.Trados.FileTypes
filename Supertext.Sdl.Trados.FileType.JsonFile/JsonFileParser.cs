@@ -15,7 +15,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
     public class JsonFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
         private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
-        private readonly TextProcessor _textProcessor;
+        private readonly ITextProcessor _textProcessor;
 
         //State during parsing
         private StreamReader _file;
@@ -23,7 +23,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         private JsonTextReader _reader;
         private int _totalNumberOfLines;
 
-        public JsonFileParser(TextProcessor textProcessor, IEmbeddedContentRegexSettings embeddedContentRegexSettings)
+        public JsonFileParser(ITextProcessor textProcessor, IEmbeddedContentRegexSettings embeddedContentRegexSettings)
         {
             _textProcessor = textProcessor;
             _embeddedContentRegexSettings = embeddedContentRegexSettings;

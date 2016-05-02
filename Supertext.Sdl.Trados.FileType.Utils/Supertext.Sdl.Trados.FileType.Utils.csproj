@@ -58,6 +58,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileHandling\ExtendedStreamReader.cs" />
+    <Compile Include="FileHandling\FileHelper.cs" />
+    <Compile Include="FileHandling\IExtendedStreamReader.cs" />
+    <Compile Include="FileHandling\IFileHelper.cs" />
+    <Compile Include="FileHandling\IStreamReader.cs" />
+    <Compile Include="FileHandling\IStreamWriter.cs" />
+    <Compile Include="FileHandling\MarkerLines.cs" />
+    <Compile Include="FileHandling\StreamReaderWrapper.cs" />
+    <Compile Include="FileHandling\StreamWriterWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\EmbeddedContentRegexSettings.cs" />
     <Compile Include="Settings\IEmbeddedContentRegexSettings.cs" />
@@ -75,6 +84,7 @@
   <ItemGroup>
     <None Include="key.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

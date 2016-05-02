@@ -3,7 +3,7 @@ using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
+using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {

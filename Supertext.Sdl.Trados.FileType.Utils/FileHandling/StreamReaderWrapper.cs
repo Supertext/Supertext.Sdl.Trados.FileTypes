@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.FileHandling
+namespace Supertext.Sdl.Trados.FileType.Utils.FileHandling
 {
     public class StreamReaderWrapper : IStreamReader
     {

@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.FileHandling;
+using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
