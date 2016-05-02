@@ -3,10 +3,10 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.Settings;
-using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
+using Supertext.Sdl.Trados.FileType.Utils.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
+namespace Supertext.Sdl.Trados.FileType.Utils.Tests
 {
     [TestFixture]
     public class TextProcessorTest

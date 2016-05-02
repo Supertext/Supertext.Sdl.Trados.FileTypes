@@ -1,4 +1,4 @@
-namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
+namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 {
     public enum InlineType
     {

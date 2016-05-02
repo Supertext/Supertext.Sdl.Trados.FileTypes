@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
+namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 {
     //Todo refactor
     public class TextProcessor : ITextProcessor

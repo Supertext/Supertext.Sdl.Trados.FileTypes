@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using Supertext.Sdl.Trados.FileType.PoFile.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {

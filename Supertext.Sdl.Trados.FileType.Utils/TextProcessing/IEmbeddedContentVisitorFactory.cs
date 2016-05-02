@@ -1,7 +1,7 @@
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
+namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 {
     public interface IEmbeddedContentVisitorFactory
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
-using Supertext.Sdl.Trados.FileType.PoFile.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {
