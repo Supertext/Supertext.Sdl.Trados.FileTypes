@@ -45,7 +45,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
                 new Fragment(InlineType.Text, "text")
             });
@@ -69,7 +69,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
                 new Fragment(InlineType.Placeholder, "{0}")
             });
@@ -93,10 +93,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
-                new Fragment(InlineType.StartTag, "start", new MatchRule {IsContentTranslatable =  true}),
-                new Fragment(InlineType.EndTag, "end", new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.StartTag, "start", SegmentationHint.Undefined, true),
+                new Fragment(InlineType.EndTag, "end", SegmentationHint.Undefined, true)
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -121,11 +121,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
-                new Fragment(InlineType.StartTag, "start", new MatchRule {IsContentTranslatable = false}),
+                new Fragment(InlineType.StartTag, "start", SegmentationHint.Undefined, false),
                 new Fragment(InlineType.Text, "text"),
-                new Fragment(InlineType.EndTag, "end", new MatchRule {IsContentTranslatable = false})
+                new Fragment(InlineType.EndTag, "end", SegmentationHint.Undefined, false)
             });
 
             var textPropertiesMock = A.Fake<ITextProperties>();
@@ -162,9 +162,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
-                new Fragment(InlineType.StartTag, "start", new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.StartTag, "start", SegmentationHint.Undefined, true)
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -187,9 +187,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
-                new Fragment(InlineType.EndTag, "end", new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.EndTag, "end", SegmentationHint.Undefined, true)
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -212,14 +212,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
-                new Fragment(InlineType.StartTag, "start1", new MatchRule {IsContentTranslatable =  true}),
+                new Fragment(InlineType.StartTag, "start1", SegmentationHint.Undefined, true),
                 new Fragment(InlineType.Text, "message "),
-                new Fragment(InlineType.StartTag, "start2", new MatchRule {IsContentTranslatable =  true}),
+                new Fragment(InlineType.StartTag, "start2", SegmentationHint.Undefined, true),
                 new Fragment(InlineType.Text, "id "),
-                new Fragment(InlineType.EndTag, "end2", new MatchRule {IsContentTranslatable =  true}),
-                new Fragment(InlineType.EndTag, "end1", new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.EndTag, "end2", SegmentationHint.Undefined, true),
+                new Fragment(InlineType.EndTag, "end1", SegmentationHint.Undefined, true)
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -254,11 +254,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
-                new Fragment(InlineType.StartTag, "start1", new MatchRule {IsContentTranslatable =  true}),
+                new Fragment(InlineType.StartTag, "start1", SegmentationHint.Undefined, true),
                 new Fragment(InlineType.Placeholder, "placeholder"),
-                new Fragment(InlineType.EndTag, "end1", new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.EndTag, "end1", SegmentationHint.Undefined, true)
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();
@@ -290,10 +290,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Arrange
             var testee = CreateTestee();
 
-            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<Fragment>
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
             {
-                new Fragment(InlineType.StartTag, @"<test attr=""23"">", new MatchRule {IsContentTranslatable =  true}),
-                new Fragment(InlineType.EndTag, "</test>", new MatchRule {IsContentTranslatable =  true})
+                new Fragment(InlineType.StartTag, @"<test attr=""23"">", SegmentationHint.Undefined, true),
+                new Fragment(InlineType.EndTag, "</test>", SegmentationHint.Undefined, true)
             });
 
             var startTagPropertiesMock = A.Fake<IStartTagProperties>();

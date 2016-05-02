@@ -5,7 +5,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
     public interface ITextProcessor
     {
-        IList<Fragment> Process(string value);
+        IList<IFragment> Process(string value);
 
         void InitializeWith(IEnumerable<MatchRule> matchRules);
     }

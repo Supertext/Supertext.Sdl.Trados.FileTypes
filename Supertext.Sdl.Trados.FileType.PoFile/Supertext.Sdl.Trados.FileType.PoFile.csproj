@@ -96,6 +96,7 @@
     <Compile Include="FileHandling\StreamWriterWrapper.cs" />
     <Compile Include="FileHandling\ExtendedStreamReader.cs" />
     <Compile Include="FileHandling\IExtendedStreamReader.cs" />
+    <Compile Include="TextProcessing\IFragment.cs" />
     <Compile Include="TextProcessing\IParagraphUnitFactory.cs" />
     <Compile Include="TextProcessing\RegexEmbeddedBilingualProcessor.cs" />
     <Compile Include="Resources\PoFileTypeResources.Designer.cs">

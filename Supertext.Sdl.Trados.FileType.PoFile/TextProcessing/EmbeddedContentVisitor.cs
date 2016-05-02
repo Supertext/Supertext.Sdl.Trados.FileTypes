@@ -107,7 +107,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 
         public void VisitText(IText text)
         {
-            var fragments = new Queue<Fragment>(_textProcessor.Process(text.Properties.Text));
+            var fragments = new Queue<IFragment>(_textProcessor.Process(text.Properties.Text));
 
             while (fragments.Count > 0)
             {
@@ -164,11 +164,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
             return _itemFactory.CreatePlaceholderTag(placeholderProperties);
         }
 
-        private IAbstractMarkupData CreateTags(Fragment startTagFragment, Queue<Fragment> fragments)
+        private IAbstractMarkupData CreateTags(IFragment startTagFragment, Queue<IFragment> fragments)
         {
             var startTagProperties = _propertiesFactory.CreateStartTagProperties(startTagFragment.Content);
             startTagProperties.DisplayText = CreateDisplayText(startTagFragment.Content);
-            startTagProperties.SegmentationHint = startTagFragment.MatchRule.SegmentationHint;
+            startTagProperties.SegmentationHint = startTagFragment.SegmentationHint;
 
             var enclosedContent = new List<IAbstractMarkupData>();
 
@@ -191,7 +191,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
                         var endTagProperties = _propertiesFactory.CreateEndTagProperties(fragment.Content);
                         endTagProperties.DisplayText = CreateDisplayText(fragment.Content);
 
-                        return fragment.MatchRule.IsContentTranslatable
+                        return fragment.IsContentTranslatable
                             ? CreateTagPair(startTagProperties, endTagProperties, enclosedContent)
                             : CreateLockedContent(enclosedContent);
                     default:

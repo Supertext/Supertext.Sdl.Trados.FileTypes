@@ -1,160 +1,163 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
-    //TODO needs to be refactored to easy understandable code
+    //Todo refactor
     public class TextProcessor : ITextProcessor
     {
-        private List<InlineType> _types;
-        private List<MatchRule> _rules;
-        private Regex _regex;
-
-        public TextProcessor()
-        {
-            _types = new List<InlineType> {InlineType.Text};
-            _regex = new Regex(".*");
-        }
+        private List<MatchRule> _matchRules = new List<MatchRule>();
 
         public void InitializeWith(IEnumerable<MatchRule> matchRules)
         {
-            _types = new List<InlineType>();
-            _rules = new List<MatchRule>();
-
-            var fullPattnern = "";
-
-            foreach (var matchRule in matchRules)
-            {
-                if (matchRule.TagType == MatchRule.TagTypeOption.TagPair)
-                {
-                    fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
-                    _types.Add(InlineType.StartTag);
-                    _rules.Add(matchRule);
-                    fullPattnern += "(" + matchRule.EndTagRegexValue + ")|";
-                    _types.Add(InlineType.EndTag);
-                    _rules.Add(matchRule);
-                }
-                else if (matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
-                {
-                    fullPattnern += "(" + matchRule.StartTagRegexValue + ")|";
-                    _types.Add(InlineType.Placeholder);
-                    _rules.Add(matchRule);
-                }
-            }
-
-            fullPattnern = fullPattnern.Substring(0, fullPattnern.Length - 1);
-
-            _regex = new Regex(fullPattnern);
+            _matchRules = matchRules.ToList();
         }
 
         //Todo: check performance, maybe slow with a lot of patterns
-        public IList<Fragment> Process(string value)
+        public IList<IFragment> Process(string value)
         {
-            var fragments = GetFragments(value);
+            var tagMatches = GetTagMatches(value);
 
-            var matchRulesWithIncompleteTagPairs = GetMatchRulesWithIncompleteTagPairs(fragments);
-
-            return matchRulesWithIncompleteTagPairs.Aggregate(fragments, ReplaceMatchRuleTagPairsWithPlaceholder);
+            return CreateFragments(value, tagMatches);
         }
 
-        private List<Fragment> GetFragments(string value)
+        private TagMatch[] GetTagMatches(string value)
         {
-            var matches = _regex.Matches(value);
+            var tagMatches = new TagMatch[value.Length];
 
-            var fragments = new List<Fragment>();
-            var lastIndex = 0;
-
-            foreach (Match match in matches)
+            foreach (var matchRule in _matchRules)
             {
-                var type = GetInlineTypeFor(match.Value, match.Groups);
-                var matchRule = GetMatchRuleFor(match.Value, match.Groups);
+                var startTagRegexMatches = new Regex(matchRule.StartTagRegexValue).Matches(value);
 
-                var textBeforeLength = match.Index - lastIndex;
-
-                if (textBeforeLength > 0)
+                if (matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
                 {
-                    var textBefore = value.Substring(lastIndex, textBeforeLength);
-                    fragments.Add(new Fragment(InlineType.Text, textBefore));
+                    AddTagMatches(tagMatches, startTagRegexMatches, InlineType.Placeholder, matchRule);
+                    continue;
                 }
 
-                var inlineContent = value.Substring(match.Index, match.Length);
-                fragments.Add(new Fragment(type, inlineContent, matchRule));
+                var endTagRegexMatches = new Regex(matchRule.EndTagRegexValue).Matches(value);
+                var startTagInlineType = InlineType.StartTag;
+                var endTagInlineType = InlineType.EndTag;
 
-                lastIndex = match.Index + match.Length;
+                if (startTagRegexMatches.Count != endTagRegexMatches.Count)
+                {
+                    startTagInlineType = InlineType.Placeholder;
+                    endTagInlineType = InlineType.Placeholder;
+                }
+
+                AddTagMatches(tagMatches, startTagRegexMatches, startTagInlineType, matchRule);
+                AddTagMatches(tagMatches, endTagRegexMatches, endTagInlineType, matchRule);
             }
+            return tagMatches;
+        }
 
-            if (lastIndex != value.Length)
+        private static IList<IFragment> CreateFragments(string value, IReadOnlyList<TagMatch> tagMatches)
+        {
+            var fragments = new List<IFragment>();
+
+            var stringFragmentBuilder = new StringBuilder();
+
+            for (var i = 0; i < tagMatches.Count; ++i)
             {
-                fragments.Add(new Fragment(InlineType.Text, value.Substring(lastIndex)));
+                var tagMatch = tagMatches[i];
+
+                if (tagMatch == null)
+                {
+                    stringFragmentBuilder.Append(value[i]);
+                    continue;
+                }
+
+                if (i == tagMatch.Start && stringFragmentBuilder.Length > 0)
+                {
+                    fragments.Add(new Fragment(InlineType.Text, stringFragmentBuilder.ToString(), SegmentationHint.Include, true));
+                    stringFragmentBuilder.Clear();
+                }
+
+                stringFragmentBuilder.Append(value[i]);
+
+                if (i != tagMatch.End)
+                {
+                    continue;
+                }
+
+                fragments.Add(new Fragment(tagMatch.InlineType, stringFragmentBuilder.ToString(), tagMatch.MatchRule.SegmentationHint, tagMatch.MatchRule.IsContentTranslatable));
+                stringFragmentBuilder.Clear();
             }
+
+            if (stringFragmentBuilder.Length > 0)
+            {
+                fragments.Add(new Fragment(InlineType.Text, stringFragmentBuilder.ToString(), SegmentationHint.Include, true));
+            }
+
             return fragments;
         }
 
-        private InlineType GetInlineTypeFor(string matchValue, GroupCollection groups)
+        private static void AddTagMatches(IList<TagMatch> tagMatches, IEnumerable regexMatches, InlineType inlineType,
+            MatchRule matchRule)
         {
-            for (var i = 1; i < groups.Count; ++i)
+            foreach (Match regexMatch in regexMatches)
             {
-                if (groups[i].Value == matchValue)
+                var currentTagMatch = new TagMatch(inlineType, regexMatch, matchRule);
+                var lastTagMatch = currentTagMatch.Start == 0 ? null : tagMatches[currentTagMatch.Start - 1];
+
+                if (lastTagMatch != null && lastTagMatch.End >= currentTagMatch.Start &&
+                    lastTagMatch.Length > currentTagMatch.Length)
                 {
-                   return _types[i - 1];
+                    continue;
+                }
+
+                var indexAfterCurrentTagMatch = currentTagMatch.Start + currentTagMatch.Length;
+                var nextTagMatch = indexAfterCurrentTagMatch == tagMatches.Count
+                    ? null
+                    : tagMatches[indexAfterCurrentTagMatch];
+
+                if (nextTagMatch != null && nextTagMatch.Start <= currentTagMatch.End &&
+                    nextTagMatch.Length > currentTagMatch.Length)
+                {
+                    continue;
+                }
+
+                for (var i = currentTagMatch.Start; i <= currentTagMatch.End; ++i)
+                {
+                    tagMatches[i] = currentTagMatch;
                 }
             }
-           
-            return InlineType.Text;
         }
 
-        private MatchRule GetMatchRuleFor(string matchValue, GroupCollection groups)
+        private class TagMatch
         {
-            for (var i = 1; i < groups.Count; ++i)
+            private readonly Match _match;
+
+            public TagMatch(InlineType inlineType, Match match, MatchRule matchRule)
             {
-                if (groups[i].Value == matchValue)
-                {
-                    return _rules[i - 1];
-                }
+                _match = match;
+                InlineType = inlineType;
+                MatchRule = matchRule;
             }
 
-            return null;
-        }
+            public InlineType InlineType { get; }
 
-        private static IEnumerable<MatchRule> GetMatchRulesWithIncompleteTagPairs(IEnumerable<Fragment> fragments)
-        {
-            var matchRuleIncompleteTagPairCounts = new Dictionary<MatchRule, int>();
+            public MatchRule MatchRule { get; }
 
-            foreach (var fragment in fragments.Where(fragment => fragment.InlineType == InlineType.StartTag || fragment.InlineType == InlineType.EndTag))
+            public int Start
             {
-                if (!matchRuleIncompleteTagPairCounts.ContainsKey(fragment.MatchRule))
-                {
-                    matchRuleIncompleteTagPairCounts.Add(fragment.MatchRule, 0);
-                }
-
-                matchRuleIncompleteTagPairCounts[fragment.MatchRule] =
-                    matchRuleIncompleteTagPairCounts[fragment.MatchRule] + (fragment.InlineType == InlineType.StartTag ? 1 : -1);
+                get { return _match.Index; }
             }
 
-           return matchRuleIncompleteTagPairCounts
-                .Where(matchRuleIncompleteTagPairCount => matchRuleIncompleteTagPairCount.Value != 0)
-                .Select(matchRuleIncompleteTagPairCount => matchRuleIncompleteTagPairCount.Key);
-        }
-
-        private static List<Fragment> ReplaceMatchRuleTagPairsWithPlaceholder(IEnumerable<Fragment> fragments, MatchRule matchRule)
-        {
-            var newFragements = new List<Fragment>();
-
-            foreach (var fragment in fragments)
+            public int Length
             {
-                if (fragment.MatchRule == matchRule && (fragment.InlineType == InlineType.StartTag || fragment.InlineType == InlineType.EndTag))
-                {
-                    newFragements.Add(new Fragment(InlineType.Placeholder, fragment.Content, fragment.MatchRule));
-                }
-                else
-                {
-                    newFragements.Add(fragment);
-                }
+                get { return _match.Length; }
             }
 
-            return newFragements;
+            public int End
+            {
+                get { return Start + Length - 1; }
+            }
         }
     }
 }

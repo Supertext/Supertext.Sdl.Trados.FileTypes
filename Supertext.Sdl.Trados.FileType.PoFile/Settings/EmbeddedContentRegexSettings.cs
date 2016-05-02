@@ -21,13 +21,6 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             {
                 CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
-                StartTagRegexValue = @"%\d+",
-                SegmentationHint = SegmentationHint.IncludeWithText
-            },
-            new MatchRule
-            {
-                CanHide = false,
-                TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"\$\[\w+\]",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
@@ -48,8 +41,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Settings
             new MatchRule
             {
                 CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*\s*\/>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
                 TagType = MatchRule.TagTypeOption.TagPair,
-                StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
+                StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*([^<>\/]|\"".*\"")*>",
                 EndTagRegexValue = @"<\/[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText,
                 IsContentTranslatable = true
