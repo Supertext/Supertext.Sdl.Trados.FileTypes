@@ -269,6 +269,42 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
         }
 
         [Test]
+        public void Process_WhenTextHasTagsAndOneTagIsAlsoPlaceholder_ShouldReturnTagsAsTag()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(new List<MatchRule>
+            {
+                new MatchRule
+                {
+                    StartTagRegexValue = @"<br\s*>",
+                    TagType = MatchRule.TagTypeOption.Placeholder
+                },
+                new MatchRule
+                {
+                    CanHide = false,
+                    TagType = MatchRule.TagTypeOption.TagPair,
+                    StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*([^<>\/]|\"".*\"")*>",
+                    EndTagRegexValue = @"<\/[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
+                    SegmentationHint = SegmentationHint.IncludeWithText,
+                    IsContentTranslatable = true
+                }
+            });
+            var testString = @"<span>This <br> is a test</span>";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.StartTag);
+            result[1].InlineType.Should().Be(InlineType.Text);
+            result[2].InlineType.Should().Be(InlineType.Placeholder);
+            result[3].InlineType.Should().Be(InlineType.Text);
+            result[4].InlineType.Should().Be(InlineType.EndTag);
+
+        }
+
+        [Test]
         public void Process_WhenTextHasCompleteTagsFromOneMatchRuleAndIncompleteTagsFromOtherMatchRule_ShouldRecognizeCompleteTagsFromOneMatchRuleAsStartAndEndTag()
         {
             // Arrange

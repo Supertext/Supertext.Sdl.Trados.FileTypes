@@ -41,6 +41,55 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             {
                 CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<area[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<br[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<col[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<embed[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<hr[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<img[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"<input[^<>]*>",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                CanHide = false,
+                TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*\s*\/>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },

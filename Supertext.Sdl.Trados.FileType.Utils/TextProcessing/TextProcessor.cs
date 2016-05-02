@@ -21,14 +21,14 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
         //Todo: check performance, maybe slow with a lot of patterns
         public IList<IFragment> Process(string value)
         {
-            var tagMatches = GetTagMatches(value);
+            var tagMatchesPerChar = GetTagMatchesPerChar(value);
 
-            return CreateFragments(value, tagMatches);
+            return CreateFragments(value, tagMatchesPerChar);
         }
 
-        private TagMatch[] GetTagMatches(string value)
+        private TagMatch[] GetTagMatchesPerChar(string value)
         {
-            var tagMatches = new TagMatch[value.Length];
+            var tagMatchesPerChar = new TagMatch[value.Length];
 
             foreach (var matchRule in _matchRules)
             {
@@ -36,7 +36,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 
                 if (matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
                 {
-                    AddTagMatches(tagMatches, startTagRegexMatches, InlineType.Placeholder, matchRule);
+                    AddTagMatches(tagMatchesPerChar, startTagRegexMatches, InlineType.Placeholder, matchRule);
                     continue;
                 }
 
@@ -44,27 +44,30 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                 var startTagInlineType = InlineType.StartTag;
                 var endTagInlineType = InlineType.EndTag;
 
-                if (startTagRegexMatches.Count != endTagRegexMatches.Count)
+                var startTagMatches = GetTagMatches(tagMatchesPerChar, startTagRegexMatches, startTagInlineType, matchRule).Count();
+                var endTagMatches = GetTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule).Count();
+
+                if (startTagMatches != endTagMatches)
                 {
                     startTagInlineType = InlineType.Placeholder;
                     endTagInlineType = InlineType.Placeholder;
                 }
 
-                AddTagMatches(tagMatches, startTagRegexMatches, startTagInlineType, matchRule);
-                AddTagMatches(tagMatches, endTagRegexMatches, endTagInlineType, matchRule);
+                AddTagMatches(tagMatchesPerChar, startTagRegexMatches, startTagInlineType, matchRule);
+                AddTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule);
             }
-            return tagMatches;
+            return tagMatchesPerChar;
         }
 
-        private static IList<IFragment> CreateFragments(string value, IReadOnlyList<TagMatch> tagMatches)
+        private static IList<IFragment> CreateFragments(string value, IReadOnlyList<TagMatch> tagMatchesPerChar)
         {
             var fragments = new List<IFragment>();
 
             var stringFragmentBuilder = new StringBuilder();
 
-            for (var i = 0; i < tagMatches.Count; ++i)
+            for (var i = 0; i < tagMatchesPerChar.Count; ++i)
             {
-                var tagMatch = tagMatches[i];
+                var tagMatch = tagMatchesPerChar[i];
 
                 if (tagMatch == null)
                 {
@@ -97,35 +100,50 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
             return fragments;
         }
 
-        private static void AddTagMatches(IList<TagMatch> tagMatches, IEnumerable regexMatches, InlineType inlineType,
+        private static void AddTagMatches(IList<TagMatch> tagMatchesPerChar, IEnumerable regexMatches, InlineType inlineType,
+            MatchRule matchRule)
+        {
+            var newTagMatches = GetTagMatches(tagMatchesPerChar, regexMatches, inlineType, matchRule);
+
+            foreach (var tagMatch in newTagMatches)
+            {
+                for (var i = tagMatch.Start; i <= tagMatch.End; ++i)
+                {
+                    tagMatchesPerChar[i] = tagMatch;
+                }
+            }
+        }
+
+        private static IEnumerable<TagMatch> GetTagMatches(IList<TagMatch> tagMatchesPerChar, IEnumerable regexMatches, InlineType inlineType,
             MatchRule matchRule)
         {
             foreach (Match regexMatch in regexMatches)
             {
-                var currentTagMatch = new TagMatch(inlineType, regexMatch, matchRule);
-                var lastTagMatch = currentTagMatch.Start == 0 ? null : tagMatches[currentTagMatch.Start - 1];
+                var newTagMatch = new TagMatch(inlineType, regexMatch, matchRule);
 
-                if (lastTagMatch != null && lastTagMatch.End >= currentTagMatch.Start &&
-                    lastTagMatch.Length > currentTagMatch.Length)
+                var currentTagMatch = tagMatchesPerChar[newTagMatch.Start];
+                if (currentTagMatch != null && currentTagMatch.End == newTagMatch.End)
                 {
                     continue;
                 }
 
-                var indexAfterCurrentTagMatch = currentTagMatch.Start + currentTagMatch.Length;
-                var nextTagMatch = indexAfterCurrentTagMatch == tagMatches.Count
+                var lastTagMatch = newTagMatch.Start == 0 ? null : tagMatchesPerChar[newTagMatch.Start - 1];
+                if (lastTagMatch != null && lastTagMatch.End >= newTagMatch.Start)
+                {
+                    continue;
+                }
+
+                var indexAfterCurrentTagMatch = newTagMatch.Start + newTagMatch.Length;
+                var nextTagMatch = indexAfterCurrentTagMatch == tagMatchesPerChar.Count
                     ? null
-                    : tagMatches[indexAfterCurrentTagMatch];
+                    : tagMatchesPerChar[indexAfterCurrentTagMatch];
 
-                if (nextTagMatch != null && nextTagMatch.Start <= currentTagMatch.End &&
-                    nextTagMatch.Length > currentTagMatch.Length)
+                if (nextTagMatch != null && nextTagMatch.Start <= newTagMatch.End)
                 {
                     continue;
                 }
 
-                for (var i = currentTagMatch.Start; i <= currentTagMatch.End; ++i)
-                {
-                    tagMatches[i] = currentTagMatch;
-                }
+                yield return newTagMatch;
             }
         }
 
