@@ -186,28 +186,28 @@
   <data name="tableLayoutPanel3.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="_pathRuleTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="_pathPatternTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
-  <data name="_pathRuleTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>61, 9</value>
+  <data name="_pathPatternTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>77, 9</value>
   </data>
-  <data name="_pathRuleTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>433, 20</value>
+  <data name="_pathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>417, 20</value>
   </data>
-  <data name="_pathRuleTextBox.TabIndex" type="System.Int32, mscorlib">
+  <data name="_pathPatternTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;_pathRuleTextBox.Name" xml:space="preserve">
-    <value>_pathRuleTextBox</value>
+  <data name="&gt;&gt;_pathPatternTextBox.Name" xml:space="preserve">
+    <value>_pathPatternTextBox</value>
   </data>
-  <data name="&gt;&gt;_pathRuleTextBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;_pathPatternTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_pathRuleTextBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;_pathPatternTextBox.Parent" xml:space="preserve">
     <value>tableLayoutPanel3</value>
   </data>
-  <data name="&gt;&gt;_pathRuleTextBox.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;_pathPatternTextBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="l_Opening.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -223,13 +223,13 @@
     <value>3, 12</value>
   </data>
   <data name="l_Opening.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 13</value>
+    <value>68, 13</value>
   </data>
   <data name="l_Opening.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="l_Opening.Text" xml:space="preserve">
-    <value>Path rule:</value>
+    <value>Path pattern:</value>
   </data>
   <data name="&gt;&gt;l_Opening.Name" xml:space="preserve">
     <value>l_Opening</value>
@@ -271,7 +271,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_pathRuleTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="l_Opening" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_pathPatternTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="l_Opening" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="_ruleGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>

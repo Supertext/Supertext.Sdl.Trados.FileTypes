@@ -30,15 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PathRuleForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.l_Opening = new System.Windows.Forms.Label();
-            this._pathRuleTextBox = new System.Windows.Forms.TextBox();
-            this._ruleGroupBox = new System.Windows.Forms.GroupBox();
-            this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
+            this._ruleGroupBox = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this._pathPatternTextBox = new System.Windows.Forms.TextBox();
+            this.l_Opening = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
             this._ruleGroupBox.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -49,22 +49,19 @@
             this.tableLayoutPanel1.Controls.Add(this._ruleGroupBox, 0, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
-            // tableLayoutPanel3
+            // btnCancel
             // 
-            resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
-            this.tableLayoutPanel3.Controls.Add(this._pathRuleTextBox, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.l_Opening, 0, 0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // l_Opening
+            // btnOk
             // 
-            resources.ApplyResources(this.l_Opening, "l_Opening");
-            this.l_Opening.Name = "l_Opening";
-            // 
-            // _pathRuleTextBox
-            // 
-            resources.ApplyResources(this._pathRuleTextBox, "_pathRuleTextBox");
-            this._pathRuleTextBox.Name = "_pathRuleTextBox";
+            resources.ApplyResources(this.btnOk, "btnOk");
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.Name = "btnOk";
+            this.btnOk.UseVisualStyleBackColor = true;
             // 
             // _ruleGroupBox
             // 
@@ -74,19 +71,22 @@
             this._ruleGroupBox.Name = "_ruleGroupBox";
             this._ruleGroupBox.TabStop = false;
             // 
-            // btnOk
+            // tableLayoutPanel3
             // 
-            resources.ApplyResources(this.btnOk, "btnOk");
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Name = "btnOk";
-            this.btnOk.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
+            this.tableLayoutPanel3.Controls.Add(this._pathPatternTextBox, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.l_Opening, 0, 0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
-            // btnCancel
+            // _pathPatternTextBox
             // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this._pathPatternTextBox, "_pathPatternTextBox");
+            this._pathPatternTextBox.Name = "_pathPatternTextBox";
+            // 
+            // l_Opening
+            // 
+            resources.ApplyResources(this.l_Opening, "l_Opening");
+            this.l_Opening.Name = "l_Opening";
             // 
             // PathRuleForm
             // 
@@ -96,9 +96,9 @@
             this.Name = "PathRuleForm";
             this.ShowIcon = false;
             this.tableLayoutPanel1.ResumeLayout(false);
+            this._ruleGroupBox.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this._ruleGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -110,7 +110,7 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.GroupBox _ruleGroupBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.TextBox _pathRuleTextBox;
+        private System.Windows.Forms.TextBox _pathPatternTextBox;
         private System.Windows.Forms.Label l_Opening;
     }
 }

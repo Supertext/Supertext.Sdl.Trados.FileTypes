@@ -5,28 +5,28 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 {
     public partial class PathRuleForm : Form
     {
-        private readonly string _originalRule;
+        private readonly string _originalPathPattern;
 
-        public PathRuleForm(string rule)
+        public PathRuleForm(string pathPattern)
         {
             InitializeComponent();
 
-            _originalRule = rule;
-            _pathRuleTextBox.Text = rule;
-            Rule = rule;
+            _originalPathPattern = pathPattern;
+            _pathPatternTextBox.Text = pathPattern;
+            PathPattern = pathPattern;
         }
 
-        public string Rule { get; private set; }
+        public string PathPattern { get; private set; }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             if (DialogResult != DialogResult.OK)
             {
-                Rule = _originalRule;
+                PathPattern = _originalPathPattern;
                 return;
             }
 
-            Rule = _pathRuleTextBox.Text;
+            PathPattern = _pathPatternTextBox.Text;
         }
     }
 }

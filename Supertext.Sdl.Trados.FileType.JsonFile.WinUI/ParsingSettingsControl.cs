@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
@@ -39,7 +34,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
             Settings.IsPathFilteringEnabled = _enablePathFilter.Checked;
 
             Settings.PathPatterns.Clear();
-            Settings.PathPatterns.AddRange(GetPathRulePatterns());
+            Settings.PathPatterns.AddRange(GetPathPatterns());
         }
 
         public void UpdateUi()
@@ -67,7 +62,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
             _removeAllButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
         }
 
-        private IEnumerable<string> GetPathRulePatterns()
+        private IEnumerable<string> GetPathPatterns()
         {
             return _rulesListView.Items.Cast<ListViewItem>().Select(ruleListViewItem => ruleListViewItem.Text).ToList();
         }
@@ -96,7 +91,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
                     return;
                 }
 
-                _rulesListView.Items.Add(new ListViewItem(pathRuleForm.Rule));
+                _rulesListView.Items.Add(new ListViewItem(pathRuleForm.PathPattern));
 
                 UpdateEnabledState();
             }
@@ -122,7 +117,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
             {
                 if (pathRuleForm.ShowDialog(this) == DialogResult.OK)
                 {
-                    ruleListViewItem.Text = pathRuleForm.Rule;
+                    ruleListViewItem.Text = pathRuleForm.PathPattern;
                 }
             }
         }
