@@ -79,11 +79,18 @@
       <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ParsingSettingsPage.cs" />
+    <Compile Include="PathRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PathRuleForm.Designer.cs">
+      <DependentUpon>PathRuleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PluginResources.de.Designer.cs">
       <DependentUpon>PluginResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RegexRuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ParsingSettingsControl.resx">
       <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleForm.resx">
+      <DependentUpon>PathRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -130,11 +130,11 @@
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 166</value>
   </data>
-  <data name="&gt;&gt;_ruleGroupBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_segmentationHintComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="_endTagTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="tableLayoutPanel1.IconPadding" type="System.Int32, mscorlib">
@@ -146,33 +146,27 @@
   <data name="label3.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 13</value>
-  </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
     <value>503, 50</value>
   </data>
-  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
   <data name="l_Closing.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;_translateComboBox.Name" xml:space="preserve">
-    <value>_translateComboBox</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_ruleGroupBox.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
   </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
+  <data name="tableLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
     <value>341, 49</value>
+  </data>
+  <data name="&gt;&gt;_startTagTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="l_Closing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -210,8 +204,14 @@
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="_endTagTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
   <data name="&gt;&gt;btnOk.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -225,9 +225,6 @@
   <data name="_translateComboBox.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="_segmentationHintComboBox.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Add/Edit embedded content rule</value>
   </data>
@@ -236,9 +233,6 @@
   </data>
   <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
-  </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Advanced Tag Properties</value>
   </data>
   <data name="tableLayoutPanel3.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
@@ -257,6 +251,9 @@
   </data>
   <data name="_segmentationHintComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>104, 5</value>
+  </data>
+  <data name="l_Opening.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 13</value>
   </data>
   <data name="&gt;&gt;l_Opening.Name" xml:space="preserve">
     <value>l_Opening</value>
@@ -285,14 +282,14 @@
   <data name="&gt;&gt;_startTagTextBox.Name" xml:space="preserve">
     <value>_startTagTextBox</value>
   </data>
-  <data name="&gt;&gt;_ruleTypeComboBox.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="_endTagTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>104, 30</value>
   </data>
   <data name="groupBox3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -308,6 +305,9 @@
   </data>
   <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
     <value>groupBox1</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>503, 81</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -345,9 +345,6 @@
   <data name="_segmentationHintComboBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
   <data name="tableLayoutPanel3.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
@@ -378,9 +375,6 @@
   <data name="&gt;&gt;l_Closing.Parent" xml:space="preserve">
     <value>tableLayoutPanel3</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -402,9 +396,6 @@
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 7</value>
   </data>
-  <data name="&gt;&gt;_endTagTextBox.Name" xml:space="preserve">
-    <value>_endTagTextBox</value>
-  </data>
   <data name="_translateComboBox.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
   </data>
@@ -413,9 +404,6 @@
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>RegexRuleForm</value>
-  </data>
-  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="btnOk.Error" xml:space="preserve">
     <value />
@@ -441,9 +429,6 @@
   <data name="_ruleGroupBox.Text" xml:space="preserve">
     <value>Regular expression</value>
   </data>
-  <data name="_ruleGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 30</value>
-  </data>
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
   </data>
@@ -452,9 +437,6 @@
   </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>tableLayoutPanel1</value>
-  </data>
-  <data name="label1.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="l_Closing.Text" xml:space="preserve">
     <value>End Tag:</value>
@@ -465,6 +447,9 @@
   <data name="label3.Error" xml:space="preserve">
     <value />
   </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 222</value>
+  </data>
   <data name="label3.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
   </data>
@@ -474,8 +459,14 @@
   <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="label2.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
   <data name="l_Closing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
+  </data>
+  <data name="&gt;&gt;_segmentationHintComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -489,11 +480,11 @@
   <data name="&gt;&gt;btnOk.Name" xml:space="preserve">
     <value>btnOk</value>
   </data>
-  <data name="label1.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
   <data name="_startTagTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>104, 3</value>
+  </data>
+  <data name="&gt;&gt;_errorProvider.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tableLayoutPanel2.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
@@ -537,11 +528,17 @@
   <data name="&gt;&gt;_translateComboBox.Parent" xml:space="preserve">
     <value>tableLayoutPanel2</value>
   </data>
+  <data name="l_Opening.Error" xml:space="preserve">
+    <value />
+  </data>
   <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;_endTagTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_ruleTypeComboBox.Name" xml:space="preserve">
+    <value>_ruleTypeComboBox</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 110</value>
@@ -561,8 +558,8 @@
   <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>497, 55</value>
   </data>
-  <data name="_endTagTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
+  <data name="&gt;&gt;_ruleTypeComboBox.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
   </data>
   <data name="_startTagTextBox.Error" xml:space="preserve">
     <value />
@@ -570,20 +567,14 @@
   <data name="btnCancel.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
   </data>
-  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label2.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="tableLayoutPanel4.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="_ruleTypeComboBox.Error" xml:space="preserve">
     <value />
   </data>
-  <data name="l_Opening.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 13</value>
+  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="groupBox3.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
@@ -627,8 +618,8 @@
   <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="_ruleTypeComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 21</value>
+  <data name="label2.Error" xml:space="preserve">
+    <value />
   </data>
   <data name="tableLayoutPanel4.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
@@ -648,17 +639,17 @@
   <data name="btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
   <data name="btnCancel.Error" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;_ruleTypeComboBox.Name" xml:space="preserve">
-    <value>_ruleTypeComboBox</value>
+  <data name="_ruleGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 30</value>
   </data>
   <data name="tableLayoutPanel4.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel4.Parent" xml:space="preserve">
     <value>groupBox3</value>
@@ -669,17 +660,20 @@
   <data name="&gt;&gt;_segmentationHintComboBox.Parent" xml:space="preserve">
     <value>tableLayoutPanel4</value>
   </data>
+  <data name="_endTagTextBox.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="l_Opening" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_endTagTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="l_Closing" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_startTagTextBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="l_Opening.Error" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;_errorProvider.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Translate:</value>
@@ -720,26 +714,20 @@
   <data name="tableLayoutPanel3.Error" xml:space="preserve">
     <value />
   </data>
-  <data name="_endTagTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 13</value>
   </data>
   <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="tableLayoutPanel4.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 13</value>
   </data>
-  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 222</value>
+  <data name="label1.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
   </data>
   <data name="groupBox1.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
-  </data>
-  <data name="_translateComboBox.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -753,17 +741,20 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Tag Type:</value>
   </data>
-  <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_segmentationHintComboBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="&gt;&gt;_startTagTextBox.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="_endTagTextBox.Error" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;_startTagTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
   </data>
   <data name="btnOk.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;_translateComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="l_Opening.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -783,20 +774,26 @@
   <data name="btnOk.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tableLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;_ruleGroupBox.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
   </data>
+  <data name="_startTagTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;_ruleTypeComboBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label2.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
+  <data name="tableLayoutPanel4.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_segmentationHintComboBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 9</value>
+  </data>
+  <data name="_endTagTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>390, 20</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>509, 306</value>
@@ -804,11 +801,11 @@
   <data name="_ruleTypeComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>110, 3</value>
   </data>
-  <data name="&gt;&gt;_segmentationHintComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
-  <data name="_startTagTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="_translateComboBox.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>503, 50</value>
@@ -819,23 +816,23 @@
   <data name="groupBox2.Error" xml:space="preserve">
     <value />
   </data>
-  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Advanced Tag Properties</value>
   </data>
   <data name="&gt;&gt;_errorProvider.Name" xml:space="preserve">
     <value>_errorProvider</value>
   </data>
-  <data name="&gt;&gt;_translateComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="_endTagTextBox.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="_ruleTypeComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>396, 21</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>422, 49</value>
   </data>
-  <data name="label2.Error" xml:space="preserve">
-    <value />
+  <data name="label2.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -843,19 +840,22 @@
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
-  <data name="_endTagTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 30</value>
+  <data name="label1.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel4.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;_startTagTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;_translateComboBox.Name" xml:space="preserve">
+    <value>_translateComboBox</value>
   </data>
   <data name="_ruleGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="&gt;&gt;l_Opening.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;_startTagTextBox.Parent" xml:space="preserve">
     <value>tableLayoutPanel3</value>
   </data>
   <data name="groupBox2.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
@@ -864,8 +864,8 @@
   <data name="&gt;&gt;tableLayoutPanel3.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>503, 81</value>
+  <data name="&gt;&gt;_endTagTextBox.Name" xml:space="preserve">
+    <value>_endTagTextBox</value>
   </data>
   <data name="l_Closing.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleRight</value>
@@ -879,8 +879,8 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Tag properties</value>
   </data>
-  <data name="_endTagTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>390, 20</value>
+  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;_ruleGroupBox.Name" xml:space="preserve">
     <value>_ruleGroupBox</value>
@@ -894,17 +894,14 @@
   <data name="tableLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 16</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="_segmentationHintComboBox.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;_startTagTextBox.Parent" xml:space="preserve">
-    <value>tableLayoutPanel3</value>
+  <data name="tableLayoutPanel4.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <metadata name="_errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>de</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

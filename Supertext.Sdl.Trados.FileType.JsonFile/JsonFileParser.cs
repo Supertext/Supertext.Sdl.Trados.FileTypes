@@ -50,6 +50,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
             _embeddedContentRegexSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
+            _parsingSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
         }
 
         protected override void BeforeParsing()
