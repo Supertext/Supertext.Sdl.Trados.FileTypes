@@ -24,5 +24,10 @@ namespace Supertext.Sdl.Trados.FileType.Utils.FileHandling
         {
             return File.ReadLines(path).Count();
         }
+
+        public void WriteAllText(string path, string content)
+        {
+            File.WriteAllText(path, content);
+        }
     }
 }

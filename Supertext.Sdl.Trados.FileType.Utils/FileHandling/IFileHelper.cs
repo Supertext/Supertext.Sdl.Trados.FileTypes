@@ -9,5 +9,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.FileHandling
         IStreamWriter GetStreamWriter(string path);
 
         int GetNumberOfLines(string originalFilePath);
+
+        void WriteAllText(string path, string content);
     }
 }

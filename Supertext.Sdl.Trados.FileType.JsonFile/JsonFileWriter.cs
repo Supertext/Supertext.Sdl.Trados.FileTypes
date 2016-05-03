@@ -3,17 +3,27 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
+using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
+using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
     public class JsonFileWriter : AbstractNativeFileWriter, INativeContentCycleAware
     {
+        private readonly IJsonFactory _jsonFactory;
+        private readonly IFileHelper _fileHelper;
         private IPersistentFileConversionProperties _conversionProperties;
-        private string _currentPath;
-        private StringBuilder _currentPropertyValueBuilder;
-
+       
         //State during writing
-        private JToken _rootToken;
+        private IJToken _rootToken;
+        private StringBuilder _currentPropertyValueBuilder;
+        private string _currentPath;
+
+        public JsonFileWriter(IJsonFactory jsonFactory, IFileHelper fileHelper)
+        {
+            _jsonFactory = jsonFactory;
+            _fileHelper = fileHelper;
+        }
 
         public void SetFileProperties(IFileProperties properties)
         {
@@ -22,14 +32,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public void StartOfInput()
         {
-            var input = File.ReadAllText(_conversionProperties.OriginalFilePath);
-            _rootToken = JToken.Parse(input);
+            _rootToken = _jsonFactory.GetRootToken(_conversionProperties.OriginalFilePath);
             _currentPropertyValueBuilder = new StringBuilder();
         }
 
         public void EndOfInput()
         {
-            File.WriteAllText(OutputProperties.OutputFilePath, _rootToken.ToString());
+            _fileHelper.WriteAllText(OutputProperties.OutputFilePath, _rootToken.ToString());
             _rootToken = null;
         }
 
@@ -54,9 +63,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                     return;
                 }
 
-                var property = (JProperty)selectedToken.Parent;
+                var property = selectedToken.Parent;
 
-                property.Replace(new JProperty(property.Name, _currentPropertyValueBuilder.ToString()));
+                property.Replace(property.Name, _currentPropertyValueBuilder.ToString());
             }
 
             _currentPath = null;

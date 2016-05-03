@@ -8,10 +8,10 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
         private readonly TextReader _file;
         private readonly JsonTextReader _jsonTextReader;
 
-        public JsonTextReaderWrapper(TextReader file)
+        public JsonTextReaderWrapper(TextReader file, JsonTextReader jsonTextReader)
         {
             _file = file;
-            _jsonTextReader = new JsonTextReader(file);
+            _jsonTextReader = jsonTextReader;
         }
 
         public bool Read()

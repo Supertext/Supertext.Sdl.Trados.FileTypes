@@ -14,6 +14,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
         object Value { get; }
 
         JsonToken TokenType { get; }
+
         void Close();
     }
 }

@@ -76,8 +76,11 @@
     <Compile Include="JsonFileWriter.cs" />
     <Compile Include="Parsing\IJsonFactory.cs" />
     <Compile Include="Parsing\IJsonTextReader.cs" />
+    <Compile Include="Parsing\IJToken.cs" />
+    <Compile Include="Parsing\JPropertyWrapper.cs" />
     <Compile Include="Parsing\JsonFactory.cs" />
     <Compile Include="Parsing\JsonTextReaderWrapper.cs" />
+    <Compile Include="Parsing\JTokenWrapper.cs" />
     <Compile Include="Resources\JsonFileTypeResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
