@@ -1,36 +1,56 @@
-﻿using Sdl.FileTypeSupport.Framework.Core.Settings;
+﻿using System;
+using System.Windows.Forms;
+using Sdl.FileTypeSupport.Framework.Core.Settings;
+using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {
-    [FileTypeSettingsPage(Id = "PoFile_Segment_Settings", Name = "Segment_Settings_Name", Description = "Segment_Settings_Description")]
-    public class SegmentSettingsControl : AbstractFileTypeSettingsPage<SegmentSettingsUI, SegmentSettings>
+    public partial class SegmentSettingsControl : UserControl, IFileTypeSettingsAware<SegmentSettings>
     {
-        /// <summary>
-        /// Triggered, when the user clicks the button Reset to Defaults button in 
-        /// SDL Trados Studio. Restores the default check box state, which should
-        /// be Checked (i.e. product code strings should be locked).
-        /// </summary>
-        #region "ResetToDefaults"
-        public override void ResetToDefaults()
-        {
-            base.ResetToDefaults();
-            Control.UpdateControl();
-        }
-        #endregion
+        private const string SourceExample = "Example";
+        private const string TargetExample = "Beispiel";
 
-        /// <summary>
-        /// Triggered when the user raises the plug-in UI, whose controls (in this case the check box
-        /// for locking product code strings) will then be set according to the values stored in 
-        /// the settings bundle.
-        /// </summary>
-        /// <param name="settingsBundle"></param>
-        #region "Refresh"
-        public override void Refresh()
+        private SegmentSettings _segmentSettings;
+
+        public SegmentSettings Settings
         {
-            base.Refresh();
-            Control.UpdateControl();
+            get { return _segmentSettings; }
+            set
+            {
+                _segmentSettings = value;
+                UpdateUi();
+            }
         }
-        #endregion
+
+        public SegmentSettingsControl()
+        {
+            InitializeComponent();
+        }
+        
+        public void UpdateUi()
+        {
+            var isMessageStringSource = _segmentSettings.SourceLineType == LineType.MessageString;
+            cb_MessageStringAsSource.Checked = isMessageStringSource;
+            cb_TargetTextNeeded.Checked = _segmentSettings.IsTargetTextNeeded;
+            tb_sourceSegment.Text = isMessageStringSource ? TargetExample : SourceExample;
+            tb_targetSegment.Text = _segmentSettings.IsTargetTextNeeded ? TargetExample : string.Empty;
+        }
+
+        private void cb_MessageStringAsSource_CheckedChanged(object sender, EventArgs e)
+        {
+            tb_sourceSegment.Text = cb_MessageStringAsSource.Checked ? TargetExample : SourceExample;
+
+            _segmentSettings.SourceLineType = cb_MessageStringAsSource.Checked
+                ? LineType.MessageString
+                : LineType.MessageId;
+        }
+
+        private void cb_TargetTextNeeded_CheckedChanged(object sender, EventArgs e)
+        {
+            tb_targetSegment.Text = cb_TargetTextNeeded.Checked ? TargetExample : string.Empty;
+
+            _segmentSettings.IsTargetTextNeeded = cb_TargetTextNeeded.Checked;
+        }
     }
 }

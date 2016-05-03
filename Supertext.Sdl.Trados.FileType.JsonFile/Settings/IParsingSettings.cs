@@ -8,7 +8,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
     {
         bool IsPathFilteringEnabled { get; }
 
-        ObservableList<string> PathPatterns { get; }
+        List<string> PathPatterns { get; }
 
         void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId);
     }

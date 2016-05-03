@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 {
-    partial class SegmentSettingsUI
+    partial class SegmentSettingsControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -38,7 +38,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SegmentSettingsUI));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SegmentSettingsControl));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cb_MessageStringAsSource = new System.Windows.Forms.CheckBox();
             this.cb_TargetTextNeeded = new System.Windows.Forms.CheckBox();
@@ -110,12 +110,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
             this.tb_example.Name = "tb_example";
             this.tb_example.ReadOnly = true;
             // 
-            // SegmentSettingsUI
+            // SegmentSettingsControl
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
-            this.Name = "SegmentSettingsUI";
+            this.Name = "SegmentSettingsControl";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

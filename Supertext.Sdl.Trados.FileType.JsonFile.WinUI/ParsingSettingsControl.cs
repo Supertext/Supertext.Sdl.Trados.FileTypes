@@ -40,9 +40,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
         public void UpdateUi()
         {
             _enablePathFilter.Checked = Settings.IsPathFilteringEnabled;
-
             _rulesListView.Items.Clear();
-
             foreach (var pathPattern in Settings.PathPatterns)
             {
                 _rulesListView.Items.Add(new ListViewItem(pathPattern));

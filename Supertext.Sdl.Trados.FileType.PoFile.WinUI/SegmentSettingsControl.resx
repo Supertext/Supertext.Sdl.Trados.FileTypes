@@ -143,7 +143,7 @@
     <value>tb_sourceSegment</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SegmentSettingsUI</value>
+    <value>SegmentSettingsControl</value>
   </data>
   <data name="cb_MessageStringAsSource.Text" xml:space="preserve">
     <value>Show PO target text as source</value>
