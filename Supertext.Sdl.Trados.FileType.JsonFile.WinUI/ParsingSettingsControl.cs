@@ -18,10 +18,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 
         public ParsingSettings Settings
         {
-            get
-            {
-                return _settings;
-            }
+            get { return _settings; }
             set
             {
                 _settings = value;
@@ -33,17 +30,18 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
         {
             Settings.IsPathFilteringEnabled = _enablePathFilter.Checked;
 
-            Settings.PathPatterns.Clear();
-            Settings.PathPatterns.AddRange(GetPathPatterns());
+            Settings.PathRules.Clear();
+            Settings.PathRules.AddRange(GetPathRules());
         }
 
         public void UpdateUi()
         {
             _enablePathFilter.Checked = Settings.IsPathFilteringEnabled;
             _rulesListView.Items.Clear();
-            foreach (var pathPattern in Settings.PathPatterns)
+
+            foreach (var pathRule in Settings.PathRules)
             {
-                _rulesListView.Items.Add(new ListViewItem(pathPattern));
+                _rulesListView.Items.Add(new PathRuleListViewItem(pathRule));
             }
 
             UpdateEnabledState();
@@ -60,9 +58,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
             _removeAllButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
         }
 
-        private IEnumerable<string> GetPathPatterns()
+        private IEnumerable<PathRule> GetPathRules()
         {
-            return _rulesListView.Items.Cast<ListViewItem>().Select(ruleListViewItem => ruleListViewItem.Text).ToList();
+            return
+                _rulesListView.Items.Cast<PathRuleListViewItem>()
+                    .Select(pathRuleListViewItem => pathRuleListViewItem.PathRule)
+                    .ToList();
         }
 
         private void _rulesListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,14 +83,16 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 
         private void _addRuleButton_Click(object sender, EventArgs e)
         {
-            using (var pathRuleForm = new PathRuleForm(string.Empty))
+            var pathRule = new PathRule();
+
+            using (var pathRuleForm = new PathRuleForm(pathRule))
             {
                 if (pathRuleForm.ShowDialog(this) != DialogResult.OK)
                 {
                     return;
                 }
 
-                _rulesListView.Items.Add(new ListViewItem(pathRuleForm.PathPattern));
+                _rulesListView.Items.Add(new PathRuleListViewItem(pathRule));
 
                 UpdateEnabledState();
             }
@@ -102,20 +105,20 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
                 return;
             }
 
-            var ruleListViewItem = _rulesListView.SelectedItems[0];
+            var ruleListViewItem = _rulesListView.SelectedItems[0] as PathRuleListViewItem;
 
             if (ruleListViewItem == null)
             {
                 return;
             }
 
-            var rule = ruleListViewItem.Text;
+            var pathRule = ruleListViewItem.PathRule;
 
-            using (var pathRuleForm = new PathRuleForm(rule))
+            using (var pathRuleForm = new PathRuleForm(pathRule))
             {
                 if (pathRuleForm.ShowDialog(this) == DialogResult.OK)
                 {
-                    ruleListViewItem.Text = pathRuleForm.PathPattern;
+                    ruleListViewItem.PathRule = pathRule;
                 }
             }
         }
@@ -144,6 +147,31 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
             _rulesListView.Items.Clear();
 
             UpdateEnabledState();
+        }
+    }
+
+    internal class PathRuleListViewItem : ListViewItem
+    {
+        private PathRule _pathRule;
+
+        public PathRuleListViewItem(PathRule pathRule)
+        {
+            PathRule = pathRule;
+        }
+
+        public PathRule PathRule
+        {
+            get { return _pathRule; }
+            set
+            {
+                _pathRule = value;
+                OnPathRuleChanged();
+            }
+        }
+
+        private void OnPathRuleChanged()
+        {
+            Text = _pathRule.PathPattern;
         }
     }
 }

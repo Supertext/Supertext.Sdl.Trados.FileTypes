@@ -1,32 +1,35 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
+using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 {
     public partial class PathRuleForm : Form
     {
-        private readonly string _originalPathPattern;
+        private readonly PathRule _pathRule;
 
-        public PathRuleForm(string pathPattern)
+        public PathRuleForm(PathRule pathRule)
         {
-            InitializeComponent();
+            _pathRule = pathRule;
 
-            _originalPathPattern = pathPattern;
-            _pathPatternTextBox.Text = pathPattern;
-            PathPattern = pathPattern;
+            InitializeComponent();
         }
 
-        public string PathPattern { get; private set; }
+        protected override void OnLoad(EventArgs e)
+        {
+            _pathPatternTextBox.Text = _pathRule.PathPattern;
+        }
+
 
         protected override void OnClosing(CancelEventArgs e)
         {
             if (DialogResult != DialogResult.OK)
             {
-                PathPattern = _originalPathPattern;
                 return;
             }
 
-            PathPattern = _pathPatternTextBox.Text;
+            _pathRule.PathPattern = _pathPatternTextBox.Text;
         }
     }
 }

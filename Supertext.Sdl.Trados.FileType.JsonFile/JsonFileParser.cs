@@ -85,7 +85,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private bool CheckIsPathToProcess(string path)
         {
-            return !_parsingSettings.IsPathFilteringEnabled || _parsingSettings.PathPatterns.Select(pathPattern => new Regex(pathPattern).Match(path)).Any(match => match.Success);
+            return !_parsingSettings.IsPathFilteringEnabled || _parsingSettings.PathRules.Select(pathRule => new Regex(pathRule.PathPattern).Match(path)).Any(match => match.Success);
         }
 
         protected override void AfterParsing()

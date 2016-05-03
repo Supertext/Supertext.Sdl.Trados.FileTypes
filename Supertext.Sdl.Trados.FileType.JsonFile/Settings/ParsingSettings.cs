@@ -7,12 +7,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
     public class ParsingSettings : FileTypeSettingsBase, IParsingSettings
     {
         private const string IsPathFilteringEnabledSetting = "IsPathFilteringEnabled";
-        private const string PathPatternsSetting = "PathPatterns";
+        private const string PathRulesSetting = "PathRules";
         private const bool DefaultIsPathFilteringEnabled = false;
-        private static readonly List<string> DefaultPathPatterns = new List<string>();
+        private static readonly ComplexObservableList<PathRule> DefaultPathRules = new ComplexObservableList<PathRule>();
 
         private bool _isPathFilteringEnabled;
-        private List<string> _pathPatterns;
+        private ComplexObservableList<PathRule> _pathRules;
 
         public ParsingSettings()
         {
@@ -29,34 +29,39 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             }
         }
 
-        public List<string> PathPatterns
+        public ComplexObservableList<PathRule> PathRules
         {
-            get { return _pathPatterns; }
+            get { return _pathRules; }
             set
             {
-                _pathPatterns = value;
-                OnPropertyChanged("PathPatterns");
+                _pathRules = value;
+                OnPropertyChanged("PathRules");
             }
         }
 
         public sealed override void ResetToDefaults()
         {
             IsPathFilteringEnabled = DefaultIsPathFilteringEnabled;
-            PathPatterns = DefaultPathPatterns;
+            PathRules = DefaultPathRules;
         }
 
         public override void PopulateFromSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
             IsPathFilteringEnabled = GetSettingFromSettingsGroup(settingsGroup, IsPathFilteringEnabledSetting, DefaultIsPathFilteringEnabled);
-            PathPatterns = GetSettingFromSettingsGroup(settingsGroup, PathPatternsSetting, DefaultPathPatterns);
+
+            if (settingsGroup.ContainsSetting(PathRulesSetting))
+            {
+                _pathRules.Clear();
+                _pathRules.PopulateFromSettingsGroup(settingsGroup, PathRulesSetting);
+            }
         }
 
         public override void SaveToSettingsBundle(ISettingsBundle settingsBundle, string fileTypeConfigurationId)
         {
             var settingsGroup = settingsBundle.GetSettingsGroup(fileTypeConfigurationId);
             UpdateSettingInSettingsGroup(settingsGroup, IsPathFilteringEnabledSetting, IsPathFilteringEnabled, DefaultIsPathFilteringEnabled);
-            UpdateSettingInSettingsGroup(settingsGroup, PathPatternsSetting, PathPatterns, DefaultPathPatterns);
+            _pathRules.SaveToSettingsGroup(settingsGroup, PathRulesSetting);
         }
     }
 }

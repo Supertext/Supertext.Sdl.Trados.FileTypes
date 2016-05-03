@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
-using FluentAssertions.Events;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -12,8 +11,6 @@ using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
-using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
-
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
 {
@@ -39,7 +36,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             _contextInfoPathMock = A.Fake<IContextInfo>();
             _parsingSettingsMock = A.Fake<IParsingSettings>();
             A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(true);
-            A.CallTo(() => _parsingSettingsMock.PathPatterns).Returns(new List<string> { "^process$" });
+            A.CallTo(() => _parsingSettingsMock.PathRules).Returns(new ComplexObservableList<PathRule>
+            {
+                new PathRule
+                {
+                    PathPattern = "^process$"
+                }
+            });
         }
 
         [Test]
@@ -54,6 +57,24 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
 
             // Assert
             testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 0);
+        }
+
+        [Test]
+        public void ParseNext_WhenLastCalled_ShouldCloseAndDisposeReader()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            // Act
+            testee.ParseNext();
+            testee.ParseNext();
+            testee.ParseNext();
+            testee.ParseNext();
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _jsonTextReaderMock.Close()).MustHaveHappened();
+            A.CallTo(() => _jsonTextReaderMock.Dispose()).MustHaveHappened();
         }
 
         [Test]
@@ -78,21 +99,19 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
-        public void ParseNext_WhenLastCalled_ShouldCloseAndDisposeReader()
+        public void ParseNext_WhenPathFilteringDisabledAndPathNotToProcess_ShouldProcessPath()
         {
             // Arrange
             var testee = CreateTestee();
 
+            A.CallTo(() => _jsonTextReaderMock.Path).Returns("not.process");
+            A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(false);
+
             // Act
-            testee.ParseNext();
-            testee.ParseNext();
-            testee.ParseNext();
-            testee.ParseNext();
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _jsonTextReaderMock.Close()).MustHaveHappened();
-            A.CallTo(() => _jsonTextReaderMock.Dispose()).MustHaveHappened();
+            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(A<ITextProperties>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -111,27 +130,11 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
-        public void ParseNext_WhenPathFilteringDisabledAndPathNotToProcess_ShouldProcessPath()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            A.CallTo(() => _jsonTextReaderMock.Path).Returns("not.process");
-            A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(false);
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(A<ITextProperties>.Ignored)).MustHaveHappened();
-        }
-
-        [Test]
         public void ParseNext_WhenPathToProcess_ShouldAddText()
         {
             // Arrange
             var testee = CreateTestee();
-            
+
             // Act
             testee.ParseNext();
 
@@ -176,8 +179,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var lineCounter = 0;
             var texts = new[] {"A", "B", "C", "D"};
             A.CallTo(() => _jsonTextReaderMock.LineNumber).ReturnsLazily(() => ++lineCounter);
-            A.CallTo(() => _jsonTextReaderMock.Value).ReturnsLazily(() => texts[lineCounter-1 % 4]);
-           
+            A.CallTo(() => _jsonTextReaderMock.Value).ReturnsLazily(() => texts[lineCounter - 1%4]);
+
             A.CallTo(() => _jsonTextReaderMock.Path).Returns("process");
 
             var fileHelperMock = A.Fake<IFileHelper>();
@@ -186,14 +189,16 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var embeddedContentRegexSettingsMock = A.Fake<IEmbeddedContentRegexSettings>();
             var filePropertiesMock = A.Fake<IFileProperties>();
             var propertiesFactoryMock = A.Fake<IPropertiesFactory>();
-        
+
             A.CallTo(() => propertiesFactoryMock.CreateContextProperties()).Returns(_contextPropertiesMock);
-            A.CallTo(() => propertiesFactoryMock.CreateContextInfo(StandardContextTypes.Field)).Returns(_contextInfoFieldMock);
+            A.CallTo(() => propertiesFactoryMock.CreateContextInfo(StandardContextTypes.Field))
+                .Returns(_contextInfoFieldMock);
             A.CallTo(() => propertiesFactoryMock.CreateContextInfo(ContextKeys.ValuePath)).Returns(_contextInfoPathMock);
             A.CallTo(() => propertiesFactoryMock.CreateTextProperties("A")).Returns(_textPropertiesMock);
             A.CallTo(() => _contextPropertiesMock.Contexts).Returns(new List<IContextInfo>());
 
-            var testee = new JsonFileParser(jsonFactoryMock, fileHelperMock, embeddedContentRegexSettingsMock, _parsingSettingsMock);
+            var testee = new JsonFileParser(jsonFactoryMock, fileHelperMock, embeddedContentRegexSettingsMock,
+                _parsingSettingsMock);
             testee.SetFileProperties(filePropertiesMock);
             testee.PropertiesFactory = propertiesFactoryMock;
             testee.Output = _nativeExtractionContentHandlerMock;
