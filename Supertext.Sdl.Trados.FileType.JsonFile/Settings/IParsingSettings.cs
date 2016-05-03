@@ -4,11 +4,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
 {
     public interface IParsingSettings
     {
-        IEnumerable<string> PathPatterns { get; }
-    }
+        bool IsPathFilteringEnabled { get; }
 
-    public class ParsingSettings : IParsingSettings
-    {
-        public IEnumerable<string> PathPatterns { get; }
+        IList<string> PathPatterns { get; }
     }
 }

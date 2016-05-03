@@ -118,13 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Plugin_Name" xml:space="preserve">
-    <value>JSON File Filter Settings</value>
-  </data>
-  <data name="Segment_Settings_Description" xml:space="preserve">
-    <value>Segment Settings</value>
-  </data>
-  <data name="Segment_Settings_Name" xml:space="preserve">
-    <value>Segment Settings</value>
+    <value>JSON file filter settings</value>
   </data>
   <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
     <value>Embedded Content</value>
@@ -133,13 +127,13 @@
     <value>Embedded Content</value>
   </data>
   <data name="Not_Translatable" xml:space="preserve">
-    <value>Not_Translatable</value>
+    <value>Not translatable</value>
   </data>
   <data name="Placeholder" xml:space="preserve">
     <value>Placeholder</value>
   </data>
   <data name="Tag_Pair" xml:space="preserve">
-    <value>Tag Pair</value>
+    <value>Tag pair</value>
   </data>
   <data name="Translatable" xml:space="preserve">
     <value>Translatable</value>
@@ -154,7 +148,7 @@
     <value>Include with text</value>
   </data>
   <data name="May_Exclude" xml:space="preserve">
-    <value>May Exclude</value>
+    <value>May exclude</value>
   </data>
   <data name="Undefined" xml:space="preserve">
     <value>Undefined</value>

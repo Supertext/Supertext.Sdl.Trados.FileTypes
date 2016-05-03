@@ -117,7 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugin_Name" xml:space="preserve">
-    <value>PO file filter plugin</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_enableProcessingCheckbox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>235, 17</value>
+  </data>
+  <data name="_enableProcessingCheckbox.Text" xml:space="preserve">
+    <value>Verarbeitung eingebetteter Inhalte aktivieren</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>528, 26</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Einstellungen für die Verarbeitung eingebetteter Inhalte (z.B. HTML eingebettete in XML) mittels regulären Ausdrücke.</value>
+  </data>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>Start-Tag Ausdruck</value>
+  </data>
+  <data name="columnHeader2.Text" xml:space="preserve">
+    <value>End-Tag Ausdruck</value>
+  </data>
+  <data name="columnHeader3.Text" xml:space="preserve">
+    <value>Tag-Typ</value>
+  </data>
+  <data name="columnHeader4.Text" xml:space="preserve">
+    <value>Übersetzen</value>
+  </data>
+  <data name="_addRuleButton.Text" xml:space="preserve">
+    <value>Hinzu...</value>
+  </data>
+  <data name="_removeAllButton.Text" xml:space="preserve">
+    <value>Alle entfernen</value>
+  </data>
+  <data name="_removeRuleButton.Text" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="_editRuleButton.Text" xml:space="preserve">
+    <value>Bearbeiten...</value>
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Tag-Definitionsregeln</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Eingebettete Inhalte</value>
   </data>
 </root>

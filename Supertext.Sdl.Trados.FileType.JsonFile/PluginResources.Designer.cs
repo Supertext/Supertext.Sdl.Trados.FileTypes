@@ -61,7 +61,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to JSON File Filter Plugin.
+        ///   Looks up a localized string similar to JSON file filter plugin.
         /// </summary>
         internal static string Plugin_Name {
             get {

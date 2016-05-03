@@ -1,8 +1,7 @@
 ﻿using Sdl.FileTypeSupport.Framework.Core.Settings;
-using Supertext.Sdl.Trados.FileType.JsonFile.WinUI;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Sdl.Community.EmbeddedContentProcessor.UI
+namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 {
     [FileTypeSettingsPage(Id = "Community_Embeddded_Content_Processor_Settings", Name = "Community_Embedded_Content_Processor_Settings_Name",
        Description = "Community_Embedded_Content_Processor_Settings_Description", HelpTopic = "Embedded_Regex_Content")]

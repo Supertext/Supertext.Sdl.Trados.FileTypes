@@ -106,7 +106,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to May Exclude.
+        ///   Looks up a localized string similar to May exclude.
         /// </summary>
         internal static string May_Exclude {
             get {
@@ -115,7 +115,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not_Translatable.
+        ///   Looks up a localized string similar to Not translatable.
         /// </summary>
         internal static string Not_Translatable {
             get {
@@ -133,7 +133,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to JSON File Filter Settings.
+        ///   Looks up a localized string similar to JSON file filter settings.
         /// </summary>
         internal static string Plugin_Name {
             get {
@@ -142,25 +142,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Segment Settings.
-        /// </summary>
-        internal static string Segment_Settings_Description {
-            get {
-                return ResourceManager.GetString("Segment_Settings_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Segment Settings.
-        /// </summary>
-        internal static string Segment_Settings_Name {
-            get {
-                return ResourceManager.GetString("Segment_Settings_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tag Pair.
+        ///   Looks up a localized string similar to Tag pair.
         /// </summary>
         internal static string Tag_Pair {
             get {
