@@ -117,46 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugin_Name" xml:space="preserve">
-    <value>PO File Filter Settings</value>
-  </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
-    <value>Eingebettete Inhalte</value>
-  </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Name" xml:space="preserve">
-    <value>Eingebettete Inhalte</value>
-  </data>
-  <data name="Not_Translatable" xml:space="preserve">
-    <value>Nicht übersetzbar</value>
-  </data>
-  <data name="Placeholder" xml:space="preserve">
-    <value>Platzhalter</value>
-  </data>
-  <data name="Tag_Pair" xml:space="preserve">
-    <value>Tag-Paar</value>
-  </data>
-  <data name="Translatable" xml:space="preserve">
-    <value>Übersetzbar</value>
-  </data>
-  <data name="Exclude" xml:space="preserve">
-    <value>Ausschliessen</value>
-  </data>
-  <data name="Include" xml:space="preserve">
-    <value>Muss innerhalb von Segmenten stehen</value>
-  </data>
-  <data name="Include_with_text" xml:space="preserve">
-    <value>Innerhalb von Segmenten mit Text</value>
-  </data>
-  <data name="May_Exclude" xml:space="preserve">
-    <value>Kann ausserhalb von Segmenten stehen</value>
-  </data>
-  <data name="Undefined" xml:space="preserve">
-    <value>Unbestimmt</value>
-  </data>
-  <data name="Parsing_Settings_Description" xml:space="preserve">
-    <value>Parsereinstellungen</value>
-  </data>
-  <data name="Parsing_Settings_Name" xml:space="preserve">
-    <value>Parsereinstellungen</value>
-  </data>
 </root>

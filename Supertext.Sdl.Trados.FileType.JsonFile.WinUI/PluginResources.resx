@@ -153,4 +153,10 @@
   <data name="Undefined" xml:space="preserve">
     <value>Undefined</value>
   </data>
+  <data name="Parsing_Settings_Description" xml:space="preserve">
+    <value>Parsing settings</value>
+  </data>
+  <data name="Parsing_Settings_Name" xml:space="preserve">
+    <value>Parsing settings</value>
+  </data>
 </root>

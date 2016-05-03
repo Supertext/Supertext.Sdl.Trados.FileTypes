@@ -35,6 +35,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
             info.WinFormSettingsPageIds = new[]
             {
+                "JsonFile_Parsing_Settings",
                 "Community_Embeddded_Content_Processor_Settings"
             };
 

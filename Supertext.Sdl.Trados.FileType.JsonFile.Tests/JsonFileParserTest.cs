@@ -5,6 +5,7 @@ using FluentAssertions.Events;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
+using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
@@ -38,7 +39,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             _contextInfoPathMock = A.Fake<IContextInfo>();
             _parsingSettingsMock = A.Fake<IParsingSettings>();
             A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(true);
-            A.CallTo(() => _parsingSettingsMock.PathPatterns).Returns(new List<string> { "^process$" });
+            A.CallTo(() => _parsingSettingsMock.PathPatterns).Returns(new ObservableList<string> { "^process$" });
         }
 
         [Test]

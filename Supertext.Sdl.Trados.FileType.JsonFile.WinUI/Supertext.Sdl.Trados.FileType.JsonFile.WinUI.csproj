@@ -72,6 +72,13 @@
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedContentSettingsPage.cs" />
+    <Compile Include="ParsingSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ParsingSettingsControl.Designer.cs">
+      <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ParsingSettingsPage.cs" />
     <Compile Include="PluginResources.de.Designer.cs">
       <DependentUpon>PluginResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -100,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ParsingSettingsControl.resx">
+      <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>

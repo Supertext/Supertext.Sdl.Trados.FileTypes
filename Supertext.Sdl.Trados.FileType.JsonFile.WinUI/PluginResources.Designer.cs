@@ -124,6 +124,24 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parsing settings.
+        /// </summary>
+        internal static string Parsing_Settings_Description {
+            get {
+                return ResourceManager.GetString("Parsing_Settings_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parsing settings.
+        /// </summary>
+        internal static string Parsing_Settings_Name {
+            get {
+                return ResourceManager.GetString("Parsing_Settings_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Placeholder.
         /// </summary>
         internal static string Placeholder {

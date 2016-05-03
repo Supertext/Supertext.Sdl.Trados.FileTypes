@@ -9,10 +9,10 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
         private const string IsPathFilteringEnabledSetting = "IsPathFilteringEnabled";
         private const string PathPatternsSetting = "PathPatterns";
         private const bool DefaultIsPathFilteringEnabled = false;
-        private static readonly IList<string> DefaultPathPatterns = new List<string>();
+        private static readonly ObservableList<string> DefaultPathPatterns = new ObservableList<string>();
 
         private bool _isPathFilteringEnabled;
-        private IList<string> _pathPatterns;
+        private ObservableList<string> _pathPatterns;
 
         public ParsingSettings()
         {
@@ -29,7 +29,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             }
         }
 
-        public IList<string> PathPatterns
+        public ObservableList<string> PathPatterns
         {
             get { return _pathPatterns; }
             set

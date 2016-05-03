@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sdl.FileTypeSupport.Framework.Core.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
 {
@@ -6,6 +7,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
     {
         bool IsPathFilteringEnabled { get; }
 
-        IList<string> PathPatterns { get; }
+        ObservableList<string> PathPatterns { get; }
     }
 }
