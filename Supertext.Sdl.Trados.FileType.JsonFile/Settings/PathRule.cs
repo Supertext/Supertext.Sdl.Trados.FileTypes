@@ -7,9 +7,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
     public class PathRule : ISerializableListItem, INotifyPropertyChanged
     {
         private const string PathPatternSetting = "PathPattern";
+        private const string IgnoreCaseSetting = "IgnoreCasePattern";
 
+        private const bool DefaultIgnoreCase = false;
         private static readonly string DefaultPathPattern = string.Empty;
+
         private string _pathPattern;
+        private bool _ignoreCase;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -17,7 +21,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
         {
             ResetToDefaults();
         }
-
 
         public string PathPattern
         {
@@ -29,9 +32,20 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             }
         }
 
+        public bool IgnoreCase
+        {
+            get { return _ignoreCase; }
+            set
+            {
+                _ignoreCase = value;
+                OnPropertyChanged("IgnoreCase");
+            }
+        }
+
         public void ResetToDefaults()
         {
             PathPattern = DefaultPathPattern;
+            IgnoreCase = DefaultIgnoreCase;
         }
 
         public void ClearListItemSettings(ISettingsGroup settingsGroup, string listItemSetting)
@@ -42,11 +56,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
         public void PopulateFromSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
         {
             PathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, DefaultPathPattern);
+            IgnoreCase = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, DefaultIgnoreCase);
         }
 
         public void SaveToSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
         {
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, PathPattern, DefaultPathPattern);
+            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, IgnoreCase, DefaultIgnoreCase);
         }
 
         public void OnPropertyChanged(string propertyName)

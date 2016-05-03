@@ -130,6 +130,30 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
+        public void ParseNext_WhenPathFilteringEnabledAndIgnoreCaseEnabled_ShouldIgnoreCasing()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            A.CallTo(() => _jsonTextReaderMock.Path).Returns("PROCESS");
+
+            A.CallTo(() => _parsingSettingsMock.PathRules).Returns(new ComplexObservableList<PathRule>
+            {
+                new PathRule
+                {
+                    PathPattern = "^process$",
+                    IgnoreCase = true
+                }
+            });
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(A<ITextProperties>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
         public void ParseNext_WhenPathToProcess_ShouldAddText()
         {
             // Arrange

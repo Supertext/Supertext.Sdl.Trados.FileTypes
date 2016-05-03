@@ -16,17 +16,18 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
     public class JsonFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IJsonFactory _jsonFactory;
-        private readonly IFileHelper _fielHelper;
-        private readonly IParsingSettings _parsingSettings;
         private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
+        private readonly IFileHelper _fielHelper;
+        private readonly IJsonFactory _jsonFactory;
+        private readonly IParsingSettings _parsingSettings;
 
         //State during parsing
         private IPersistentFileConversionProperties _fileConversionProperties;
         private IJsonTextReader _reader;
         private int _totalNumberOfLines;
 
-        public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings)
+        public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper,
+            IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings)
         {
             _fielHelper = fielHelper;
             _jsonFactory = jsonFactory;
@@ -85,7 +86,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private bool CheckIsPathToProcess(string path)
         {
-            return !_parsingSettings.IsPathFilteringEnabled || _parsingSettings.PathRules.Select(pathRule => new Regex(pathRule.PathPattern).Match(path)).Any(match => match.Success);
+            return !_parsingSettings.IsPathFilteringEnabled
+                   ||
+                   _parsingSettings.PathRules.Select(
+                       pathRule =>
+                           new Regex(pathRule.PathPattern,
+                               pathRule.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None).Match(path))
+                       .Any(match => match.Success);
         }
 
         protected override void AfterParsing()
