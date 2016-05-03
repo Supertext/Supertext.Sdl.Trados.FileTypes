@@ -84,7 +84,7 @@
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RegexRuleListItem.cs" />
-    <Compile Include="SegmentSettingsPage.cs" />
+    <Compile Include="SegmentSettingsControl.cs" />
     <Compile Include="PluginResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
