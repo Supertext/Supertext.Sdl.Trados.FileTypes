@@ -4,6 +4,8 @@ using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Resources;
+using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
@@ -52,7 +54,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public IFileExtractor BuildFileExtractor(string name)
         {
-            var parser = new JsonFileParser(new TextProcessor(), new EmbeddedContentRegexSettings(), new JsonFactory());
+            var parser = new JsonFileParser(new JsonFactory(), new FileHelper(), new EmbeddedContentRegexSettings(),
+                new ParsingSettings());
             var fileExtractor = FileTypeManager.BuildFileExtractor(FileTypeManager.BuildNativeExtractor(parser), this);
 
             var processor = new RegexEmbeddedBilingualProcessor(
@@ -70,7 +73,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             var writer = new JsonFileWriter();
             var generator = FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(writer));
             return generator;
-
         }
 
         public IAdditionalGeneratorsInfo BuildAdditionalGeneratorsInfo(string name)

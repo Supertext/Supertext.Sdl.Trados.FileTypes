@@ -43,6 +43,10 @@
       <HintPath>..\packages\FluentAssertions.4.4.0\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.core, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnitTestAdapter.1.2\lib\nunit.core.dll</HintPath>
       <Private>False</Private>
@@ -89,12 +93,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonFileParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Supertext.Sdl.Trados.FileType.JsonFile\Supertext.Sdl.Trados.FileType.JsonFile.csproj">
-      <Project>{C0BBD9DC-300A-4CE2-88BC-5889C5AD0523}</Project>
+      <Project>{d9c8c4ad-5c74-4d0f-b74e-f38d6200b2bd}</Project>
       <Name>Supertext.Sdl.Trados.FileType.JsonFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Supertext.Sdl.Trados.FileType.Utils\Supertext.Sdl.Trados.FileType.Utils.csproj">
+      <Project>{2CF1EF9B-B87A-4A85-8EC5-A675BF36F140}</Project>
+      <Name>Supertext.Sdl.Trados.FileType.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

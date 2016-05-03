@@ -1,3 +1,6 @@
+using System.IO;
+using System.Linq;
+
 namespace Supertext.Sdl.Trados.FileType.Utils.FileHandling
 {
     public class FileHelper : IFileHelper
@@ -15,6 +18,11 @@ namespace Supertext.Sdl.Trados.FileType.Utils.FileHandling
         public IStreamWriter GetStreamWriter(string path)
         {
             return new StreamWriterWrapper(path);
+        }
+
+        public int GetNumberOfLines(string path)
+        {
+            return File.ReadLines(path).Count();
         }
     }
 }

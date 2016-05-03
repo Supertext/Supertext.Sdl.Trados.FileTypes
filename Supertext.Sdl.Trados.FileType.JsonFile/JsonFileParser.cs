@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Sdl.Core.Settings;
@@ -10,15 +9,15 @@ using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Resources;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
-using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
     public class JsonFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
     {
         private readonly IJsonFactory _jsonFactory;
-        private readonly ITextProcessor _textProcessor;
+        private readonly IFileHelper _fielHelper;
         private readonly IParsingSettings _parsingSettings;
         private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
 
@@ -27,9 +26,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         private IJsonTextReader _reader;
         private int _totalNumberOfLines;
 
-        public JsonFileParser(IJsonFactory jsonFactory, ITextProcessor textProcessor, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings)
+        public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings)
         {
-            _textProcessor = textProcessor;
+            _fielHelper = fielHelper;
             _jsonFactory = jsonFactory;
             _embeddedContentRegexSettings = embeddedContentRegexSettings;
             _parsingSettings = parsingSettings;
@@ -51,14 +50,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
         {
             _embeddedContentRegexSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
-            _textProcessor.InitializeWith(_embeddedContentRegexSettings.MatchRules);
         }
 
         protected override void BeforeParsing()
         {
             OnProgress(0);
 
-            _totalNumberOfLines = File.ReadLines(_fileConversionProperties.OriginalFilePath).Count();
+            _totalNumberOfLines = _fielHelper.GetNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _reader = _jsonFactory.CreateJsonTextReader(_fileConversionProperties.OriginalFilePath);
         }
 

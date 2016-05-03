@@ -7,5 +7,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.FileHandling
         IExtendedStreamReader GetExtendedStreamReader(string path);
 
         IStreamWriter GetStreamWriter(string path);
+
+        int GetNumberOfLines(string originalFilePath);
     }
 }

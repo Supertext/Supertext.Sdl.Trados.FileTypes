@@ -175,10 +175,8 @@ msgid ""message id""
 msgstr ""message string""";
 
             var testee = CreateTestee(testString);
+            testee.MonitorEvents();
             testee.StartOfInput();
-
-            var handler = A.Fake<EventHandler<ProgressEventArgs>>();
-            testee.Progress += handler;
 
             // Act
             while (testee.ParseNext())
@@ -186,26 +184,16 @@ msgstr ""message string""";
             }
 
             //Assert
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 10)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 20)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 30)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 40)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 50)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 60)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 70)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 80)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 90)))
-                .MustHaveHappened();
-            A.CallTo(() => handler.Invoke(testee, A<ProgressEventArgs>.That.Matches(args => args.ProgressValue == 100)))
-                .MustHaveHappened();
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 10);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 20);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 30);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 40);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 50);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 60);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 70);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 80);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 90);
+            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 100);
         }
 
         [Test]
