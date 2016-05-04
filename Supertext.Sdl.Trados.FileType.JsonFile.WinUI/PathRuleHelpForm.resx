@@ -167,7 +167,7 @@ Path of "html" property of the first object: [0].content.html
 Path of "title" property of the second object: [1].content.title
 Path of "html" property of the second object: [1].content.html
 
-Example expressions for the "html" property:
+Example expressions for the filtering of "html" property:
 
 - specific (only "html" properties of the "content" objects): \[\d+\]\.content\.html$
 
