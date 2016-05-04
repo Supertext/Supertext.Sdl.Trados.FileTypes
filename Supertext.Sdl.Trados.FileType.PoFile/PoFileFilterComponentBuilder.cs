@@ -27,7 +27,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             var info = FileTypeManager.BuildFileTypeInformation();
 
             info.FileTypeDefinitionId = new FileTypeDefinitionId("PO File Filter 1.0.0.0");
-            info.FileTypeName = new LocalizableString("PO file");
+            info.FileTypeName = new LocalizableString(PoFileTypeResources.Po_File);
             info.FileTypeDocumentName = new LocalizableString(PoFileTypeResources.Po_File);
             info.FileTypeDocumentsName = new LocalizableString(PoFileTypeResources.Po_Files);
             info.Description = new LocalizableString(PoFileTypeResources.Po_File_Filter_Description);
