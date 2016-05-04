@@ -34,7 +34,6 @@
             this.btnOk = new System.Windows.Forms.Button();
             this._ruleGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
             this._pathPatternTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this._ignoreCaseCheckBox = new System.Windows.Forms.CheckBox();
@@ -46,9 +45,9 @@
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.btnCancel, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnOk, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this._ruleGroupBox, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnCancel, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnOk, 0, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // btnCancel
@@ -67,25 +66,19 @@
             // 
             // _ruleGroupBox
             // 
+            resources.ApplyResources(this._ruleGroupBox, "_ruleGroupBox");
             this.tableLayoutPanel1.SetColumnSpan(this._ruleGroupBox, 2);
             this._ruleGroupBox.Controls.Add(this.tableLayoutPanel3);
-            resources.ApplyResources(this._ruleGroupBox, "_ruleGroupBox");
             this._ruleGroupBox.Name = "_ruleGroupBox";
             this._ruleGroupBox.TabStop = false;
             // 
             // tableLayoutPanel3
             // 
             resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
-            this.tableLayoutPanel3.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this._pathPatternTextBox, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this._ignoreCaseCheckBox, 1, 1);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
             // 
             // _pathPatternTextBox
             // 
@@ -127,7 +120,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TextBox _pathPatternTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox _ignoreCaseCheckBox;
     }
 }

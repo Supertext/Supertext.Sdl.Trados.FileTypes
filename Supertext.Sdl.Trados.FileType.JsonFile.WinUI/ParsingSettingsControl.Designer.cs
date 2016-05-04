@@ -50,8 +50,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -77,8 +77,8 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this._tagDefinitionLayoutPanel);
             resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this._tagDefinitionLayoutPanel);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
@@ -95,9 +95,9 @@
             // 
             // _rulesListView
             // 
+            resources.ApplyResources(this._rulesListView, "_rulesListView");
             this._rulesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            resources.ApplyResources(this._rulesListView, "_rulesListView");
             this._rulesListView.FullRowSelect = true;
             this._rulesListView.HideSelection = false;
             this._rulesListView.MultiSelect = false;

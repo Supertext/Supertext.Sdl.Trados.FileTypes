@@ -134,9 +134,9 @@
     <value>Invalid JSON</value>
   </data>
   <data name="Json_Could_Not_Be_Validated" xml:space="preserve">
-    <value>Json could not be validated</value>
+    <value>JSON could not be validated</value>
   </data>
   <data name="Value_Path" xml:space="preserve">
-    <value>Value path</value>
+    <value>Path</value>
   </data>
 </root>

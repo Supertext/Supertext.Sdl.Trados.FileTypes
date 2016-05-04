@@ -70,7 +70,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Json could not be validated.
+        ///   Looks up a localized string similar to JSON could not be validated.
         /// </summary>
         internal static string Json_Could_Not_Be_Validated {
             get {
@@ -116,7 +116,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value path.
+        ///   Looks up a localized string similar to Path.
         /// </summary>
         internal static string Value_Path {
             get {

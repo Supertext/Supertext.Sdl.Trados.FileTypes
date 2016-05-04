@@ -117,47 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Tag-Definitionsregel hinzufügen/bearbeiten</value>
+  <data name="Json_File" xml:space="preserve">
+    <value>JSON Datei</value>
   </data>
-  <data name="btnCancel.Text" xml:space="preserve">
-    <value>Abbrechen</value>
+  <data name="Json_Files" xml:space="preserve">
+    <value>JSON Dateien</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Tag-Typ:</value>
+  <data name="Json_File_Filter_Description" xml:space="preserve">
+    <value>This Supertext file type handles JSON (JavaScript Object Notation) files.</value>
   </data>
-  <data name="l_Opening.Text" xml:space="preserve">
-    <value>Start-Tag:</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="JsonFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>JsonFileIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="l_Closing.Text" xml:space="preserve">
-    <value>End-Tag:</value>
+  <data name="Invalid_Json_Format" xml:space="preserve">
+    <value>Ungültiges JSON</value>
   </data>
-  <data name="_ignoreCaseCheckBox.Text" xml:space="preserve">
-    <value>Groß-/Kleinschreibung ignorieren</value>
+  <data name="Json_Could_Not_Be_Validated" xml:space="preserve">
+    <value>JSON konnte nicht überprüft werden</value>
   </data>
-  <data name="_ruleGroupBox.Text" xml:space="preserve">
-    <value>Regulärer Ausdruck</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Übersetzen:</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Tag-Eigenschaften</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="_segmentationHintComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 5</value>
-  </data>
-  <data name="_segmentationHintComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>367, 21</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 13</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Segmentierungshinweis</value>
-  </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Erweiterte Tag-Eigenschaften</value>
+  <data name="Value_Path" xml:space="preserve">
+    <value>Pfad</value>
   </data>
 </root>

@@ -122,8 +122,14 @@
     <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ParsingSettingsControl.de.resx">
+      <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ParsingSettingsControl.resx">
       <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleForm.de.resx">
+      <DependentUpon>PathRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PathRuleForm.resx">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
