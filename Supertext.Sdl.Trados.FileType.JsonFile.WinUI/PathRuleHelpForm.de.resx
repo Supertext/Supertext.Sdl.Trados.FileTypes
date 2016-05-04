@@ -117,41 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="_enablePathFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 17</value>
-  </data>
-  <data name="_enablePathFilter.Text" xml:space="preserve">
-    <value>Pfadfilter aktivieren</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 26</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Mit Hilfe des Pfadfilters können übersetzbare JSON-Objekteigenschaften gefiltert werden. Die Filterregeln werden mittels regulären Ausdrücke festgelegt und gelten für die JSON-Pfade der Objekteigenschaften.</value>
-  </data>
-  <data name="columnHeader1.Text" xml:space="preserve">
-    <value>Ausdruck</value>
-  </data>
-  <data name="_addRuleButton.Text" xml:space="preserve">
-    <value>Hinzu...</value>
-  </data>
-  <data name="_removeAllButton.Text" xml:space="preserve">
-    <value>Alle entfernen</value>
-  </data>
-  <data name="_removeRuleButton.Text" xml:space="preserve">
-    <value>Entfernen</value>
-  </data>
-  <data name="_editRuleButton.Text" xml:space="preserve">
-    <value>Bearbeiten...</value>
-  </data>
-  <data name="_helpButton.Text" xml:space="preserve">
-    <value>Hilfe</value>
-  </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Pfadfilter-Regeln</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Parsereinstellungen</value>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>Die Feld-Struktur-Information (F) der einzelnen Segmente enthält Pfad-Informationen.
+
+Beispiel: 
+[
+    {
+      "x": 20,
+      "y": 120,
+      "content":
+           {
+                 "title": "Lorem ipsum"
+                 "html": "&lt;p&gt;&lt;span&gt;At vero eos et accusam et justo duo dolores et ea rebum.&lt;/span&gt;&lt;/p&gt;"
+           }
+    },
+	{
+      "x": 20,
+      "y": 540,
+      "content":
+           {
+                 "title": "Sit amet"
+                 "html": "&lt;p&gt;&lt;span&gt;Stet clita kasd gubergren.&lt;/span&gt;&lt;/p&gt;"
+           }
+    },...
+]
+Pfad der "title" Eigenschaft des ersten Objekts: [0].content.title
+Pfad der "html" Eigenschaft des ersten Objekts: [0].content.html
+Pfad der "title" Eigenschaft des zweiten Objekts: [1].content.title
+Pfad der "html" Eigenschaft des zweiten Objekts: [1].content. html
+
+Beispiel-Ausdruck für die "html" Eigenschaft:
+
+- spezifisch (nur "html" Eigenschaften der "content"-Objekte): \[\d+\]\.content\.html$
+
+- generell (alle exsitierende "html" Eigenschaften): .*\.html$</value>
   </data>
 </root>

@@ -139,7 +139,7 @@
     <value>0</value>
   </data>
   <data name="textBox1.Text" xml:space="preserve">
-    <value>Path information can be found in the field (F) structure information of the segments.
+    <value>Path information can be found in the field structure information (F) of the segments.
 
 Example: 
 [
@@ -162,18 +162,16 @@ Example:
            }
     },...
 ]
-Path of title for first object: [0].content.title
-Path of html for first object: [0].content.html
-Path of title for second object: [1].content.title
-Path of html for second object: [1].content.html
+Path of "title" property of the first object: [0].content.title
+Path of "html" property of the first object: [0].content.html
+Path of "title" property of the second object: [1].content.title
+Path of "html" property of the second object: [1].content.html
 
 Example expressions for the "html" property:
 
--more specific: \[\d+\]\.content\.html$
-filters only "html" properties of objects that are referenced as "content" in a parent object which in turn must be in an array
+- specific (only "html" properties of the "content" objects): \[\d+\]\.content\.html$
 
--more general: .*\.html$
-filters all existing "html" properties regardless of which objects</value>
+- general (all existing "html" properties): .*\.html$</value>
   </data>
   <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
     <value>textBox1</value>

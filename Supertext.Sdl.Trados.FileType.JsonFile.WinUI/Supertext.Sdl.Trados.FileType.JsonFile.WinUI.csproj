@@ -134,6 +134,9 @@
     <EmbeddedResource Include="PathRuleForm.resx">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleHelpForm.de.resx">
+      <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PathRuleHelpForm.resx">
       <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
     </EmbeddedResource>
