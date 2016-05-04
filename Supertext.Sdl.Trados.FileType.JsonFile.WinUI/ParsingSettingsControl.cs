@@ -148,5 +148,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 
             UpdateEnabledState();
         }
+
+        private void _helpButton_Click(object sender, EventArgs e)
+        {
+            using (var pathRuleHelpForm = new PathRuleHelpForm())
+            {
+                pathRuleHelpForm.ShowDialog(this);
+            }
+        }
     }
 }

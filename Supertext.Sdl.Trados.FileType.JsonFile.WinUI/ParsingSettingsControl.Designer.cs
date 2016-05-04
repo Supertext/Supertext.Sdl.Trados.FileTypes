@@ -41,6 +41,7 @@
             this._removeAllButton = new System.Windows.Forms.Button();
             this._removeRuleButton = new System.Windows.Forms.Button();
             this._editRuleButton = new System.Windows.Forms.Button();
+            this._helpButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -89,6 +90,7 @@
             this._tagDefinitionLayoutPanel.Controls.Add(this._removeAllButton, 1, 3);
             this._tagDefinitionLayoutPanel.Controls.Add(this._removeRuleButton, 1, 2);
             this._tagDefinitionLayoutPanel.Controls.Add(this._editRuleButton, 1, 1);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._helpButton, 1, 4);
             this._tagDefinitionLayoutPanel.Name = "_tagDefinitionLayoutPanel";
             // 
             // _rulesListView
@@ -137,6 +139,13 @@
             this._editRuleButton.UseVisualStyleBackColor = true;
             this._editRuleButton.Click += new System.EventHandler(this._editRuleButton_Click);
             // 
+            // _helpButton
+            // 
+            resources.ApplyResources(this._helpButton, "_helpButton");
+            this._helpButton.Name = "_helpButton";
+            this._helpButton.UseVisualStyleBackColor = true;
+            this._helpButton.Click += new System.EventHandler(this._helpButton_Click);
+            // 
             // ParsingSettingsControl
             // 
             resources.ApplyResources(this, "$this");
@@ -166,5 +175,6 @@
         private System.Windows.Forms.Button _removeAllButton;
         private System.Windows.Forms.Button _removeRuleButton;
         private System.Windows.Forms.Button _editRuleButton;
+        private System.Windows.Forms.Button _helpButton;
     }
 }

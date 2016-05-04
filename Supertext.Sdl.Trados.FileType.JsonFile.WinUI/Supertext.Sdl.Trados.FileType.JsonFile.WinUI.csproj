@@ -85,6 +85,12 @@
     <Compile Include="PathRuleForm.Designer.cs">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PathRuleHelpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PathRuleHelpForm.Designer.cs">
+      <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PathRuleListViewItem.cs" />
     <Compile Include="PluginResources.de.Designer.cs">
       <DependentUpon>PluginResources.de.resx</DependentUpon>
@@ -121,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PathRuleForm.resx">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleHelpForm.resx">
+      <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>
