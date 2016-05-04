@@ -86,8 +86,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resources\JsonFileTypeResources .de.Designer.cs">
-      <DependentUpon>JsonFileTypeResources .de.resx</DependentUpon>
+    <Compile Include="Resources\JsonFileTypeResources.de.Designer.cs">
+      <DependentUpon>JsonFileTypeResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -122,9 +122,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PluginResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\JsonFileTypeResources .de.resx">
+    <EmbeddedResource Include="Resources\JsonFileTypeResources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>JsonFileTypeResources .de.Designer.cs</LastGenOutput>
+      <LastGenOutput>JsonFileTypeResources.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\JsonFileTypeResources.resx">

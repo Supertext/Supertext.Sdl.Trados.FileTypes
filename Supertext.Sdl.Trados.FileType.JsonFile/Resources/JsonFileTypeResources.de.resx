@@ -124,7 +124,7 @@
     <value>JSON Dateien</value>
   </data>
   <data name="Json_File_Filter_Description" xml:space="preserve">
-    <value>This Supertext file type handles JSON (JavaScript Object Notation) files.</value>
+    <value>Diese Supertext Dateitypdefinition unterstützt die Lokalisierung  von JSON (JavaScript Object Notation) Dateien.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="JsonFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
