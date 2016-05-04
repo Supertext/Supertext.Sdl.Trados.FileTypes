@@ -32,7 +32,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 
             foreach (var matchRule in _matchRules)
             {
-                var startTagRegexMatches = new Regex(matchRule.StartTagRegexValue).Matches(value);
+                var startTagRegexMatches = GetRegexMatches(value, matchRule.StartTagRegexValue, matchRule.IgnoreCase);
 
                 if (matchRule.TagType == MatchRule.TagTypeOption.Placeholder)
                 {
@@ -40,7 +40,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                     continue;
                 }
 
-                var endTagRegexMatches = new Regex(matchRule.EndTagRegexValue).Matches(value);
+                var endTagRegexMatches = GetRegexMatches(value, matchRule.EndTagRegexValue, matchRule.IgnoreCase);
                 var startTagInlineType = InlineType.StartTag;
                 var endTagInlineType = InlineType.EndTag;
 
@@ -59,6 +59,11 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                 AddTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule);
             }
             return tagMatchesPerChar;
+        }
+
+        private static MatchCollection GetRegexMatches(string value, string pattern, bool isIgnoreCaseNeeded)
+        {
+            return new Regex(pattern, isIgnoreCaseNeeded ? RegexOptions.IgnoreCase : RegexOptions.None).Matches(value);
         }
 
         private static IList<IFragment> CreateFragments(string value, IReadOnlyList<TagMatch> tagMatchesPerChar)

@@ -282,7 +282,6 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
                 },
                 new MatchRule
                 {
-                    CanHide = false,
                     TagType = MatchRule.TagTypeOption.TagPair,
                     StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*([^<>\/]|\"".*\"")*>",
                     EndTagRegexValue = @"<\/[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
@@ -426,6 +425,52 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
 
             // Assert
             result[0].IsContentTranslatable.Should().BeTrue();
+        }
+
+        [Test]
+        public void Process_WhenIgnoreCaseIsTrue_ShouldIgnoreCases()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(new List<MatchRule>
+            {
+                new MatchRule
+                {
+                    StartTagRegexValue = "abc",
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    IgnoreCase = true
+                }
+            });
+            var testString = @"ABC";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Placeholder);
+        }
+
+        [Test]
+        public void Process_WhenIgnoreCaseIsFalse_ShouldNotIgnoreCases()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(new List<MatchRule>
+            {
+                new MatchRule
+                {
+                    StartTagRegexValue = "abc",
+                    TagType = MatchRule.TagTypeOption.Placeholder,
+                    IgnoreCase = false
+                }
+            });
+            var testString = @"ABC";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[0].InlineType.Should().Be(InlineType.Text);
         }
     }
 }

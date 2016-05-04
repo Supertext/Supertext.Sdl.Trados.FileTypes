@@ -18,126 +18,108 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
         {
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"\$\[\w+\]",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"%\w+",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"\$\w+",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<area[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<br[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<col[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<embed[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<hr[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<img[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<input[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<keygen[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<link[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<param[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<source[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<track[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<wbr[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*\s*\/>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
             new MatchRule
             {
-                CanHide = false,
                 TagType = MatchRule.TagTypeOption.TagPair,
                 StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*([^<>\/]|\"".*\"")*>",
                 EndTagRegexValue = @"<\/[a-zA-Z][a-zA-Z0-9]*[^<>]*>",

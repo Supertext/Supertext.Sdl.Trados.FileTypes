@@ -28,7 +28,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
             _startTagTextBox.Text = _rule.StartTagRegexValue;
             _endTagTextBox.Text = _rule.EndTagRegexValue;
-            
+            _ignoreCaseCheckBox.Checked = _rule.IgnoreCase;
+
             if (rule.IsContentTranslatable)
             {
                 _translateComboBox.Text = Translatable;
@@ -115,6 +116,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
 
             _rule.StartTagRegexValue = _startTagTextBox.Text;
             _rule.EndTagRegexValue = _endTagTextBox.Text;
+            _rule.IgnoreCase = _ignoreCaseCheckBox.Checked;
 
             _rule.TagType = _ruleTypeComboBox.SelectedItem.ToString() == TagPair ? MatchRule.TagTypeOption.TagPair : MatchRule.TagTypeOption.Placeholder;
 

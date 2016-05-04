@@ -11,6 +11,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
         private const string SettingTagType = "TagType";
         private const string SettingStartTagRegex = "StartTagRegex";
         private const string SettingEndTagRegex = "EndTagRegex";
+        const string SettingIgnoreCase = "IgnoreCase";
         private const string SettingContentTranslatable = "ContentTranslatable";
         private const string SettingWordStop = "WordStop";
         private const string SettingSoftBreak = "SoftBreak";
@@ -19,6 +20,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
         private const string SettingFormatting = "Formatting";
         private const SegmentationHint DefaultSegmentationHint = SegmentationHint.Undefined;
         private const TagTypeOption DefaultTagType = TagTypeOption.Placeholder;
+        const bool DefaultIgnoreCase = false;
         private const bool DefaultContentTranslatable = false;
         private const bool DefaultWordStop = false;
         private const bool DefaultSoftBreak = false;
@@ -28,6 +30,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
         private TagTypeOption _tagType;
         private string _startTagRegex;
         private string _endTagRegex;
+        bool _ignoreCase;
         private bool _isContentTranslatable;
         private bool _isWordStop;
         private bool _isSoftBreak;
@@ -100,6 +103,19 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             {
                 _endTagRegex = value;
                 OnPropertyChanged("EndTagRegexValue");
+            }
+        }
+
+        public bool IgnoreCase
+        {
+            get
+            {
+                return _ignoreCase;
+            }
+            set
+            {
+                _ignoreCase = value;
+                OnPropertyChanged("IgnoreCase");
             }
         }
 
@@ -187,6 +203,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             TagType = DefaultTagType;
             StartTagRegexValue = _defaultStartTagRegex;
             EndTagRegexValue = _defaultEndTagRegex;
+            IgnoreCase = DefaultIgnoreCase;
             IsContentTranslatable = DefaultContentTranslatable;
             IsWordStop = DefaultWordStop;
             IsSoftBreak = DefaultSoftBreak;
@@ -203,6 +220,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             settingsGroup.RemoveSetting(listItemSetting + SettingTagType);
             settingsGroup.RemoveSetting(listItemSetting + SettingStartTagRegex);
             settingsGroup.RemoveSetting(listItemSetting + SettingEndTagRegex);
+            settingsGroup.RemoveSetting(listItemSetting + SettingIgnoreCase);
             settingsGroup.RemoveSetting(listItemSetting + SettingContentTranslatable);
             settingsGroup.RemoveSetting(listItemSetting + SettingWordStop);
             settingsGroup.RemoveSetting(listItemSetting + SettingSoftBreak);
@@ -218,6 +236,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             TagType = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingTagType, DefaultTagType);
             StartTagRegexValue = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingStartTagRegex, _defaultStartTagRegex);
             EndTagRegexValue = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingEndTagRegex, _defaultEndTagRegex);
+            IgnoreCase = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingIgnoreCase, DefaultIgnoreCase);
             IsContentTranslatable = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingContentTranslatable, DefaultContentTranslatable);
             IsWordStop = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingWordStop, DefaultWordStop);
             IsSoftBreak = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SettingSoftBreak, DefaultSoftBreak);
@@ -236,6 +255,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingTagType, TagType, DefaultTagType);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingStartTagRegex, StartTagRegexValue, _defaultStartTagRegex);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingEndTagRegex, EndTagRegexValue, _defaultEndTagRegex);
+            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingIgnoreCase, IgnoreCase, DefaultIgnoreCase);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingContentTranslatable, IsContentTranslatable, DefaultContentTranslatable);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingWordStop, IsWordStop, DefaultWordStop);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SettingSoftBreak, IsSoftBreak, DefaultSoftBreak);
