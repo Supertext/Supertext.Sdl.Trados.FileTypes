@@ -2,7 +2,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 {
-    public class JPropertyWrapper : IJProperty
+    internal class JPropertyWrapper : IJProperty
     {
         private readonly JProperty _property;
 

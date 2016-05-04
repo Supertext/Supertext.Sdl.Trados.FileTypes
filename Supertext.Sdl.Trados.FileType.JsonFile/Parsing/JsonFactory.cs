@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 {
-    public class JsonFactory : IJsonFactory
+    internal class JsonFactory : IJsonFactory
     {
         public IJsonTextReader CreateJsonTextReader(string path)
         {

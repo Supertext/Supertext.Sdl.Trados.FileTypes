@@ -130,7 +130,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="_enablePathFilter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 29</value>
+    <value>3, 42</value>
   </data>
   <data name="_enablePathFilter.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 17</value>
@@ -163,13 +163,14 @@
     <value>3, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 26</value>
+    <value>512, 39</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>The path filter can be used to filter JSON object properties for translation. The rules are defined with regular expression and are matched with the property paths.</value>
+    <value>The path filter can be used to filter JSON object properties for translation. The rules are defined with regular expression and are matched with the property paths.
+Example: page.html$ (for all "html" properties of objects referenced as "page")</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -199,7 +200,7 @@
     <value>3, 3</value>
   </data>
   <data name="_rulesListView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>439, 426</value>
+    <value>439, 413</value>
   </data>
   <data name="_rulesListView.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -334,7 +335,7 @@
     <value>5</value>
   </data>
   <data name="_tagDefinitionLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>552, 432</value>
+    <value>552, 419</value>
   </data>
   <data name="_tagDefinitionLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -358,10 +359,10 @@
     <value>Fill</value>
   </data>
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 52</value>
+    <value>3, 65</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>558, 451</value>
+    <value>558, 438</value>
   </data>
   <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>

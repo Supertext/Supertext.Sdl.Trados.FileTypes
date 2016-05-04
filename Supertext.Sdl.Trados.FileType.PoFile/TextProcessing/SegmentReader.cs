@@ -4,7 +4,7 @@ using Sdl.FileTypeSupport.Framework.BilingualApi;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
 {
-    public class SegmentReader : ISegmentReader, IMarkupDataVisitor
+    internal class SegmentReader : ISegmentReader, IMarkupDataVisitor
     {
         private StringBuilder _textStringBuilder;
 

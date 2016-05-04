@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 {
-    public class JsonTextReaderWrapper : IJsonTextReader
+    internal class JsonTextReaderWrapper : IJsonTextReader
     {
         private readonly TextReader _file;
         private readonly JsonTextReader _jsonTextReader;

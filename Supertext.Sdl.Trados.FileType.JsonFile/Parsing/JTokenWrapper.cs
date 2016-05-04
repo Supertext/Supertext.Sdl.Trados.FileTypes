@@ -2,7 +2,7 @@
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 {
-    public class JTokenWrapper : IJToken
+    internal class JTokenWrapper : IJToken
     {
         private readonly JToken _token;
 

@@ -3,7 +3,7 @@ using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 {
-    public class RegexRuleListItem : ListViewItem
+    internal class RegexRuleListItem : ListViewItem
     {
         private MatchRule _matchRule;
 

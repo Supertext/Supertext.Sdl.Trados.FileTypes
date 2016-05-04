@@ -85,6 +85,7 @@
     <Compile Include="PathRuleForm.Designer.cs">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PathRuleListViewItem.cs" />
     <Compile Include="PluginResources.de.Designer.cs">
       <DependentUpon>PluginResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
