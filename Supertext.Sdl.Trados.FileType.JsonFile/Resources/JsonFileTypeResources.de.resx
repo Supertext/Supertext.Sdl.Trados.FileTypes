@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Json_File" xml:space="preserve">
-    <value>JSON Datei</value>
+    <value>JSON-Datei</value>
   </data>
   <data name="Json_Files" xml:space="preserve">
-    <value>JSON Dateien</value>
+    <value>JSON-Dateien</value>
   </data>
   <data name="Json_File_Filter_Description" xml:space="preserve">
     <value>Diese Supertext Dateitypdefinition unterstützt die Lokalisierung  von JSON (JavaScript Object Notation) Dateien.</value>
