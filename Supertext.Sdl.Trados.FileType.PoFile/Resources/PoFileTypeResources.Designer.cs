@@ -70,7 +70,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry located at {0}-{1}.
+        ///   Looks up a localized string similar to Entry located at lines {0}-{1}.
         /// </summary>
         internal static string Entry_With_Location {
             get {
@@ -97,7 +97,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This Supertext file type handles GNU gettext PO files. It provides a setting to define which message is used as source and if the target should be displayed or not..
+        ///   Looks up a localized string similar to This Supertext file type definition supports the localization of GNU gettext Portable Object (PO) files. Regular expressions can be used in the settings to denote embedded content. It is often not possible to use the PO source text as a basis for translations, as this only serves as a reference in the application source code. It is therefore also possible to specify in the settings whether the PO target text should be shown in Trados as the source text..
         /// </summary>
         internal static string Po_File_Filter_Description {
             get {
