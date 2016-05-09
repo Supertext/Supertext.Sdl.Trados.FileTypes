@@ -30,13 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PathRuleForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOk = new System.Windows.Forms.Button();
             this._ruleGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this._pathPatternTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this._ignoreCaseCheckBox = new System.Windows.Forms.CheckBox();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this._ruleGroupBox.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -50,25 +50,11 @@
             this.tableLayoutPanel1.Controls.Add(this.btnOk, 0, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
-            // btnCancel
-            // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // btnOk
-            // 
-            resources.ApplyResources(this.btnOk, "btnOk");
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Name = "btnOk";
-            this.btnOk.UseVisualStyleBackColor = true;
-            // 
             // _ruleGroupBox
             // 
-            resources.ApplyResources(this._ruleGroupBox, "_ruleGroupBox");
             this.tableLayoutPanel1.SetColumnSpan(this._ruleGroupBox, 2);
             this._ruleGroupBox.Controls.Add(this.tableLayoutPanel3);
+            resources.ApplyResources(this._ruleGroupBox, "_ruleGroupBox");
             this._ruleGroupBox.Name = "_ruleGroupBox";
             this._ruleGroupBox.TabStop = false;
             // 
@@ -95,6 +81,20 @@
             resources.ApplyResources(this._ignoreCaseCheckBox, "_ignoreCaseCheckBox");
             this._ignoreCaseCheckBox.Name = "_ignoreCaseCheckBox";
             this._ignoreCaseCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // btnCancel
+            // 
+            resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // btnOk
+            // 
+            resources.ApplyResources(this.btnOk, "btnOk");
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.Name = "btnOk";
+            this.btnOk.UseVisualStyleBackColor = true;
             // 
             // PathRuleForm
             // 

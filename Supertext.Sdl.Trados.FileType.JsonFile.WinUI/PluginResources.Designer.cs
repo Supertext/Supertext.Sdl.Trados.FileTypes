@@ -151,7 +151,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to JSON file filter settings.
+        ///   Looks up a localized string similar to JSON file type user interface.
         /// </summary>
         internal static string Plugin_Name {
             get {

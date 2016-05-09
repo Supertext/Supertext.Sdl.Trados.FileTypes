@@ -61,7 +61,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PO file filter plugin.
+        ///   Looks up a localized string similar to PO file type (ext).
         /// </summary>
         internal static string Plugin_Name {
             get {

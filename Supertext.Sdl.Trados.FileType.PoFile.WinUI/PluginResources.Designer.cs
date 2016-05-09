@@ -133,7 +133,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PO file filter settings.
+        ///   Looks up a localized string similar to PO file type user interface (ext).
         /// </summary>
         internal static string Plugin_Name {
             get {

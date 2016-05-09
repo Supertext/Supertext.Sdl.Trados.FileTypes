@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Plugin_Name" xml:space="preserve">
-    <value>PO File Filter Settings</value>
+    <value>PO-Dateityp-Benutzeroberfläche (ext)</value>
   </data>
   <data name="Segment_Settings_Description" xml:space="preserve">
     <value>Segmenteinstellungen</value>

@@ -4,7 +4,7 @@
   <Version>1.0</Version>
   <Description>Supertext.Sdl.Trados.FileType.PoFile</Description>
   <Author></Author>
-  <RequiredProduct name="SDLTradosStudio" minversion="9.1" />
+  <RequiredProduct name="SDLTradosStudio" minversion="11.0" />
   <Include>
     <File>Supertext.Sdl.Trados.FileType.Utils.dll</File>
   </Include>
