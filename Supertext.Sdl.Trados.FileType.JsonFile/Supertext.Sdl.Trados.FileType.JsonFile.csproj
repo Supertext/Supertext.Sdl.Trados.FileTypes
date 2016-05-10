@@ -75,6 +75,7 @@
     <Compile Include="JsonFileParser.cs" />
     <Compile Include="JsonFileSniffer.cs" />
     <Compile Include="JsonFileWriter.cs" />
+    <Compile Include="JsonPathPatternExtractor.cs" />
     <Compile Include="Parsing\IJsonFactory.cs" />
     <Compile Include="Parsing\IJsonTextReader.cs" />
     <Compile Include="Parsing\IJToken.cs" />
