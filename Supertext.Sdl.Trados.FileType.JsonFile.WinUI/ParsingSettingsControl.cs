@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
@@ -57,7 +58,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
             _extractButton.Enabled = enabled;
             _editRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
-            _removeAllButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
+            _removeAllButton.Enabled = _rulesListView.Items.Count > 0 && enabled;
         }
 
         private IEnumerable<PathRule> GetPathRules()
@@ -182,24 +183,17 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
         {
             var jsonPathPatternExtractor = new JsonPathPatternExtractor(new JsonFactory());
 
-            var existingPathRules = _rulesListView.Items.Cast<PathRuleListViewItem>()
-                .Select(pathRuleListViewItem => pathRuleListViewItem.PathRule).ToList();
-
-            var pathPatterns = existingPathRules.Select(pathRule => pathRule.PathPattern).ToList();
-
             foreach (var file in files)
             {
-                pathPatterns = jsonPathPatternExtractor.ExtractPathPatterns(file, pathPatterns).ToList();
-            }
+                var existingPathPatterns = _rulesListView.Items.Cast<PathRuleListViewItem>()
+                .Select(pathRuleListViewItem => pathRuleListViewItem.PathRule.PathPattern).ToList();
 
-            foreach (var pathPattern in pathPatterns)
-            {
-                if (existingPathRules.Any(pathRule => pathRule.PathPattern == pathPattern))
+                var extractedPathPatterns = jsonPathPatternExtractor.ExtractPathPatterns(file);
+
+                foreach (var pathPattern in extractedPathPatterns.Except(existingPathPatterns))
                 {
-                    return;
+                    _rulesListView.Items.Add(new PathRuleListViewItem(new PathRule { PathPattern = pathPattern }));
                 }
-
-                _rulesListView.Items.Add(new PathRuleListViewItem(new PathRule {PathPattern = pathPattern}));
             }
         }
     }
