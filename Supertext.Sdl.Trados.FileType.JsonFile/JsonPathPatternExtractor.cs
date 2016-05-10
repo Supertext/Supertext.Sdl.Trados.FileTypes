@@ -19,23 +19,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         public IEnumerable<string> ExtractPathPatterns(string file)
         {
             var pathPatterns = new HashSet<string>();
-            return Extract(file, pathPatterns);
-        }
-
-        public IEnumerable<string> ExtractPathPatterns(string file, IEnumerable<string> existingPathPatterns)
-        {
-            var pathPatterns = new HashSet<string>();
-
-            foreach (var existingPathPattern in existingPathPatterns)
-            {
-                pathPatterns.Add(existingPathPattern);
-            }
-
-            return Extract(file, pathPatterns);
-        }
-
-        private IEnumerable<string> Extract(string file, HashSet<string> pathPatterns)
-        {
             try
             {
                 using (var reader = _jsonFactory.CreateJsonTextReader(file))

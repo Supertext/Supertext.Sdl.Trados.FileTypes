@@ -85,22 +85,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
-        public void ExtractPathPatterns_WhenPassExistingPathPatterns_ShouldMergePathPatternsWithExistingOnes()
-        {
-            // Arrange
-            var testee = CreateTestee(new[] { "path1", "path2" });
-
-            // Act
-            var result = testee.ExtractPathPatterns(Testfile, new List<string> {"path1", "path3"}).ToList();
-
-            // Assert
-            result.Count.Should().Be(3);
-            result.Should().Contain("path1");
-            result.Should().Contain("path2");
-            result.Should().Contain("path3");
-        }
-
-        [Test]
         public void ExtractPathPatterns_WhenExceptionThrown_ShouldJustReturnEmptyList()
         {
             // Arrange
