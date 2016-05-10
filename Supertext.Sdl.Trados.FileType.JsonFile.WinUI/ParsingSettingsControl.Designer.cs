@@ -37,11 +37,12 @@
             this._tagDefinitionLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this._rulesListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._addRuleButton = new System.Windows.Forms.Button();
             this._removeAllButton = new System.Windows.Forms.Button();
+            this._addRuleButton = new System.Windows.Forms.Button();
             this._removeRuleButton = new System.Windows.Forms.Button();
             this._editRuleButton = new System.Windows.Forms.Button();
             this._helpButton = new System.Windows.Forms.Button();
+            this._extractButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -86,11 +87,12 @@
             // 
             resources.ApplyResources(this._tagDefinitionLayoutPanel, "_tagDefinitionLayoutPanel");
             this._tagDefinitionLayoutPanel.Controls.Add(this._rulesListView, 0, 0);
-            this._tagDefinitionLayoutPanel.Controls.Add(this._addRuleButton, 1, 0);
             this._tagDefinitionLayoutPanel.Controls.Add(this._removeAllButton, 1, 3);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._addRuleButton, 1, 0);
             this._tagDefinitionLayoutPanel.Controls.Add(this._removeRuleButton, 1, 2);
             this._tagDefinitionLayoutPanel.Controls.Add(this._editRuleButton, 1, 1);
-            this._tagDefinitionLayoutPanel.Controls.Add(this._helpButton, 1, 4);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._helpButton, 1, 5);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._extractButton, 1, 4);
             this._tagDefinitionLayoutPanel.Name = "_tagDefinitionLayoutPanel";
             // 
             // _rulesListView
@@ -102,7 +104,7 @@
             this._rulesListView.HideSelection = false;
             this._rulesListView.MultiSelect = false;
             this._rulesListView.Name = "_rulesListView";
-            this._tagDefinitionLayoutPanel.SetRowSpan(this._rulesListView, 5);
+            this._tagDefinitionLayoutPanel.SetRowSpan(this._rulesListView, 6);
             this._rulesListView.UseCompatibleStateImageBehavior = false;
             this._rulesListView.View = System.Windows.Forms.View.Details;
             this._rulesListView.SelectedIndexChanged += new System.EventHandler(this._rulesListView_SelectedIndexChanged);
@@ -111,19 +113,19 @@
             // 
             resources.ApplyResources(this.columnHeader1, "columnHeader1");
             // 
-            // _addRuleButton
-            // 
-            resources.ApplyResources(this._addRuleButton, "_addRuleButton");
-            this._addRuleButton.Name = "_addRuleButton";
-            this._addRuleButton.UseVisualStyleBackColor = true;
-            this._addRuleButton.Click += new System.EventHandler(this._addRuleButton_Click);
-            // 
             // _removeAllButton
             // 
             resources.ApplyResources(this._removeAllButton, "_removeAllButton");
             this._removeAllButton.Name = "_removeAllButton";
             this._removeAllButton.UseVisualStyleBackColor = true;
             this._removeAllButton.Click += new System.EventHandler(this._removeAllButton_Click);
+            // 
+            // _addRuleButton
+            // 
+            resources.ApplyResources(this._addRuleButton, "_addRuleButton");
+            this._addRuleButton.Name = "_addRuleButton";
+            this._addRuleButton.UseVisualStyleBackColor = true;
+            this._addRuleButton.Click += new System.EventHandler(this._addRuleButton_Click);
             // 
             // _removeRuleButton
             // 
@@ -145,6 +147,13 @@
             this._helpButton.Name = "_helpButton";
             this._helpButton.UseVisualStyleBackColor = true;
             this._helpButton.Click += new System.EventHandler(this._helpButton_Click);
+            // 
+            // _extractButton
+            // 
+            resources.ApplyResources(this._extractButton, "_extractButton");
+            this._extractButton.Name = "_extractButton";
+            this._extractButton.UseVisualStyleBackColor = true;
+            this._extractButton.Click += new System.EventHandler(this._extractButton_Click);
             // 
             // ParsingSettingsControl
             // 
@@ -176,5 +185,6 @@
         private System.Windows.Forms.Button _removeRuleButton;
         private System.Windows.Forms.Button _editRuleButton;
         private System.Windows.Forms.Button _helpButton;
+        private System.Windows.Forms.Button _extractButton;
     }
 }

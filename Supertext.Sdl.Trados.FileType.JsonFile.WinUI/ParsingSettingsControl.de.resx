@@ -133,11 +133,11 @@
   <data name="columnHeader1.Text" xml:space="preserve">
     <value>Ausdruck</value>
   </data>
-  <data name="_addRuleButton.Text" xml:space="preserve">
-    <value>Hinzu...</value>
-  </data>
   <data name="_removeAllButton.Text" xml:space="preserve">
     <value>Alle entfernen</value>
+  </data>
+  <data name="_addRuleButton.Text" xml:space="preserve">
+    <value>Hinzu...</value>
   </data>
   <data name="_removeRuleButton.Text" xml:space="preserve">
     <value>Entfernen</value>
@@ -147,6 +147,9 @@
   </data>
   <data name="_helpButton.Text" xml:space="preserve">
     <value>Hilfe</value>
+  </data>
+  <data name="_extractButton.Text" xml:space="preserve">
+    <value>Extrahieren...</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Pfadfilter-Regeln</value>

@@ -159,4 +159,7 @@
   <data name="Parsing_Settings_Name" xml:space="preserve">
     <value>Parsing settings</value>
   </data>
+  <data name="FileTypeFilter" xml:space="preserve">
+    <value>JSON file|*.json;</value>
+  </data>
 </root>

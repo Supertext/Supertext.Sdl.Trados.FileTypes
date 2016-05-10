@@ -88,6 +88,15 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to JSON file|*.json;.
+        /// </summary>
+        internal static string FileTypeFilter {
+            get {
+                return ResourceManager.GetString("FileTypeFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include.
         /// </summary>
         internal static string Include {

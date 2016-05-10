@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
+using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
@@ -53,6 +54,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
 
             _rulesListView.Enabled = enabled;
             _addRuleButton.Enabled = enabled;
+            _extractButton.Enabled = enabled;
             _editRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeAllButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
@@ -154,6 +156,50 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.WinUI
             using (var pathRuleHelpForm = new PathRuleHelpForm())
             {
                 pathRuleHelpForm.ShowDialog(this);
+            }
+        }
+
+        private void _extractButton_Click(object sender, EventArgs e)
+        {
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.Filter = PluginResources.FileTypeFilter;
+                openFileDialog.Multiselect = true;
+
+                var dialogResult = openFileDialog.ShowDialog();
+
+                if (dialogResult != DialogResult.OK)
+                {
+                    return;
+                }
+
+                ExtractFiles(openFileDialog.FileNames);
+            }
+        }
+
+        private void ExtractFiles(string[] files)
+        {
+            var jsonPathPatternExtractor = new JsonPathPatternExtractor(new JsonFactory());
+
+            var existingPathRules = _rulesListView.Items.Cast<PathRuleListViewItem>()
+                .Select(pathRuleListViewItem => pathRuleListViewItem.PathRule).ToList();
+
+            var pathPatterns = existingPathRules.Select(pathRule => pathRule.PathPattern).ToList();
+
+            foreach (var file in files)
+            {
+                pathPatterns = jsonPathPatternExtractor.ExtractPathPatterns(file, pathPatterns).ToList();
+            }
+
+            foreach (var pathPattern in pathPatterns)
+            {
+                if (existingPathRules.Any(pathRule => pathRule.PathPattern == pathPattern))
+                {
+                    return;
+                }
+
+                _rulesListView.Items.Add(new PathRuleListViewItem(new PathRule {PathPattern = pathPattern}));
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
@@ -35,19 +36,26 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private IEnumerable<string> Extract(string file, HashSet<string> pathPatterns)
         {
-            using (var reader = _jsonFactory.CreateJsonTextReader(file))
+            try
             {
-                while (reader.Read())
+                using (var reader = _jsonFactory.CreateJsonTextReader(file))
                 {
-                    if (reader.TokenType != JsonToken.String)
+                    while (reader.Read())
                     {
-                        continue;
-                    }
+                        if (reader.TokenType != JsonToken.String)
+                        {
+                            continue;
+                        }
 
-                    var patternedPath = reader.Path.Replace(".", @"\.");
-                    patternedPath = Regex.Replace(patternedPath, @"\[\d+\]", @"\[\d+\]");
-                    pathPatterns.Add(patternedPath);
+                        var patternedPath = reader.Path.Replace(".", @"\.");
+                        patternedPath = Regex.Replace(patternedPath, @"\[\d+\]", @"\[\d+\]");
+                        pathPatterns.Add(patternedPath);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                return new List<string>();
             }
 
             return pathPatterns.ToList();

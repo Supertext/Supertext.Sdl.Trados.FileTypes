@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
@@ -11,6 +12,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
     [TestFixture]
     public class JsonPathPatternExtractorTest
     {
+        private static IJsonFactory _jsonFactoryMock;
         private const string Testfile = "testfile";
 
         [Test]
@@ -98,6 +100,20 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             result.Should().Contain("path3");
         }
 
+        [Test]
+        public void ExtractPathPatterns_WhenExceptionThrown_ShouldJustReturnEmptyList()
+        {
+            // Arrange
+            var testee = CreateTestee(new[] { "path1", "path2" });
+            A.CallTo(() => _jsonFactoryMock.CreateJsonTextReader(A<string>.Ignored)).Throws<FileNotFoundException>();
+
+            // Act
+            var result = testee.ExtractPathPatterns(Testfile);
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
         private static JsonPathPatternExtractor CreateTestee(string[] paths, JsonToken tokenType = JsonToken.String, string value = "some value")
         {
             var jsonTextReaderMock = A.Fake<IJsonTextReader>();
@@ -110,11 +126,10 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             A.CallTo(() => jsonTextReaderMock.Read()).ReturnsNextFromSequence(readReturns.ToArray());
             A.CallTo(() => jsonTextReaderMock.Path).ReturnsNextFromSequence(paths);
 
-            var jsonFactoryMock = A.Fake<IJsonFactory>();
-            A.CallTo(() => jsonFactoryMock.CreateJsonTextReader(A<string>.Ignored)).Returns(jsonTextReaderMock);
+            _jsonFactoryMock = A.Fake<IJsonFactory>();
+            A.CallTo(() => _jsonFactoryMock.CreateJsonTextReader(A<string>.Ignored)).Returns(jsonTextReaderMock);
 
-            var testee = new JsonPathPatternExtractor(jsonFactoryMock);
-            return testee;
+            return new JsonPathPatternExtractor(_jsonFactoryMock);
         }
     }
 }
