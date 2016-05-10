@@ -87,6 +87,32 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
         }
 
         [Test]
+        public void VisitText_WhenTextIsPlaceholderInlineType_ShouldAddPlaceholderProperties()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
+            {
+                new Fragment(InlineType.Placeholder, "{0}", SegmentationHint.IncludeWithText, false)
+            });
+
+            var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreatePlaceholderTagProperties("{0}")).Returns(placeholderTagPropertiesMock);
+
+            var newPlactholderMock = A.Fake<IPlaceholderTag>();
+            A.CallTo(() => _itemFactoryMock.CreatePlaceholderTag(placeholderTagPropertiesMock)).Returns(newPlactholderMock);
+
+            // Act
+            testee.VisitText(_textMock);
+
+            // Assert
+            placeholderTagPropertiesMock.TagContent.Should().Be("{0}");
+            placeholderTagPropertiesMock.DisplayText.Should().Be("{0}");
+            placeholderTagPropertiesMock.SegmentationHint.Should().Be(SegmentationHint.IncludeWithText);
+        }
+
+        [Test]
         public void VisitText_WhenTextHasTags_ShouldAddTagPair()
         {
             // Arrange
@@ -112,6 +138,36 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
 
             // Assert
             A.CallTo(() => _sourceParagraphMock.Add(tagPairMock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void VisitText_WhenTextHasTags_ShouldAddTagPairProperties()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            A.CallTo(() => _textProcessorMock.Process(TexBeforeProcessing)).Returns(new List<IFragment>
+            {
+                new Fragment(InlineType.StartTag, "start", SegmentationHint.IncludeWithText, true),
+                new Fragment(InlineType.EndTag, "end", SegmentationHint.IncludeWithText, true)
+            });
+
+            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateStartTagProperties("start")).Returns(startTagPropertiesMock);
+
+            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateEndTagProperties("end")).Returns(endTagPropertiesMock);
+
+            var tagPairMock = A.Fake<ITagPair>();
+            A.CallTo(() => _itemFactoryMock.CreateTagPair(startTagPropertiesMock, endTagPropertiesMock)).Returns(tagPairMock);
+
+            // Act
+            testee.VisitText(_textMock);
+
+            // Assert
+            startTagPropertiesMock.DisplayText.Should().Be("start");
+            startTagPropertiesMock.SegmentationHint.Should().Be(SegmentationHint.IncludeWithText);
+            endTagPropertiesMock.DisplayText.Should().Be("end");
         }
 
         [Test]

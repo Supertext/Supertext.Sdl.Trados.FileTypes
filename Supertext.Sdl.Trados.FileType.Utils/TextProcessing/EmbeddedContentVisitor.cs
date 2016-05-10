@@ -119,7 +119,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                         _currentContainer.Add(CreateText(fragment.Content));
                         break;
                     case InlineType.Placeholder:
-                        _currentContainer.Add(CreatePlaceholder(fragment.Content));
+                        _currentContainer.Add(CreatePlaceholder(fragment.Content, fragment.SegmentationHint));
                         break;
                     case InlineType.StartTag:
                         _currentContainer.Add(CreateTags(fragment, fragments));
@@ -155,11 +155,12 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
             return _itemFactory.CreateText(textProperties);
         }
 
-        private IPlaceholderTag CreatePlaceholder(string content)
+        private IPlaceholderTag CreatePlaceholder(string content, SegmentationHint segmentationHint)
         {
             var placeholderProperties = _propertiesFactory.CreatePlaceholderTagProperties(content);
             placeholderProperties.TagContent = content;
             placeholderProperties.DisplayText = content;
+            placeholderProperties.SegmentationHint = segmentationHint;
 
             return _itemFactory.CreatePlaceholderTag(placeholderProperties);
         }
@@ -182,7 +183,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                         enclosedContent.Add(CreateText(fragment.Content));
                         break;
                     case InlineType.Placeholder:
-                        enclosedContent.Add(CreatePlaceholder(fragment.Content));
+                        enclosedContent.Add(CreatePlaceholder(fragment.Content, fragment.SegmentationHint));
                         break;
                     case InlineType.StartTag:
                         enclosedContent.Add(CreateTags(fragment, fragments));
@@ -214,7 +215,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
         {
             var properties = _propertiesFactory.CreateLockedContentProperties(LockTypeFlags.Manual);
             var lockedContent = _itemFactory.CreateLockedContent(properties);
-
+            
             foreach (var enclosedData in enclosedContent)
             {
                 lockedContent.Content.Add(enclosedData);
