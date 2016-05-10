@@ -29,7 +29,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             info.FileTypeDocumentName = new LocalizableString(JsonFileTypeResources.Json_File);
             info.FileTypeDocumentsName = new LocalizableString(JsonFileTypeResources.Json_Files);
             info.Description = new LocalizableString(JsonFileTypeResources.Json_File_Filter_Description);
-            info.FileDialogWildcardExpression = "*.json;*.instapage";
+            info.FileDialogWildcardExpression = "*.json";
             info.DefaultFileExtension = "json";
             info.Icon = new IconDescriptor(JsonFileTypeResources.JsonFileIcon);
 
