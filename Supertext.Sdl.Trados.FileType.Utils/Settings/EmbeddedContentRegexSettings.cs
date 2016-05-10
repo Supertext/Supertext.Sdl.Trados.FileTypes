@@ -37,6 +37,12 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             new MatchRule
             {
                 TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = @"{?{\d+}}?",
+                SegmentationHint = SegmentationHint.IncludeWithText
+            },
+            new MatchRule
+            {
+                TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<area[^<>]*>",
                 SegmentationHint = SegmentationHint.IncludeWithText
             },
