@@ -131,7 +131,7 @@ Beispiel:
                  "html": "&lt;p&gt;&lt;span&gt;At vero eos et accusam et justo duo dolores et ea rebum.&lt;/span&gt;&lt;/p&gt;"
            }
     },
-	{
+    {
       "x": 20,
       "y": 540,
       "content":
@@ -148,8 +148,8 @@ Pfad der "html" Eigenschaft des zweiten Objekts: [1].content. html
 
 Beispiel-Ausdruck für die Filterung der "html" Eigenschaft:
 
-- spezifisch (nur "html" Eigenschaften der "content"-Objekte): \[\d+\]\.content\.html$
+- spezifisch (nur "html" Eigenschaften der "content"-Objekte): \.content\.html$
 
-- generell (alle exsitierende "html" Eigenschaften): .*\.html$</value>
+- generell (alle exsitierende "html" Eigenschaften): \.html$</value>
   </data>
 </root>

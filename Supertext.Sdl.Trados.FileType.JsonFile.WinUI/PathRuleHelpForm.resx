@@ -152,7 +152,7 @@ Example:
                  "html": "&lt;p&gt;&lt;span&gt;At vero eos et accusam et justo duo dolores et ea rebum.&lt;/span&gt;&lt;/p&gt;"
            }
     },
-	{
+    {
       "x": 20,
       "y": 540,
       "content":
@@ -169,9 +169,9 @@ Path of "html" property of the second object: [1].content.html
 
 Example expressions for the filtering of "html" property:
 
-- specific (only "html" properties of the "content" objects): \[\d+\]\.content\.html$
+- specific (only "html" properties of the "content" objects): \.content\.html$
 
-- general (all existing "html" properties): .*\.html$</value>
+- general (all existing "html" properties): \.html$</value>
   </data>
   <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
     <value>textBox1</value>
