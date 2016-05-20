@@ -9,43 +9,72 @@ using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Resources;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
+using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
-    public class JsonFileParser : AbstractNativeFileParser, INativeContentCycleAware, ISettingsAware
+    public class JsonFileParser : AbstractBilingualParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
         private readonly IFileHelper _fielHelper;
         private readonly IJsonFactory _jsonFactory;
+        private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
         private readonly IParsingSettings _parsingSettings;
+        private readonly IParagraphUnitFactory _paragraphUnitFactory;
 
         //State during parsing
         private IPersistentFileConversionProperties _fileConversionProperties;
         private IJsonTextReader _reader;
         private int _totalNumberOfLines;
+        private byte _progressInPercent;
 
         public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper,
-            IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings)
+            IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings, IParagraphUnitFactory paragraphUnitFactory)
         {
             _fielHelper = fielHelper;
             _jsonFactory = jsonFactory;
             _embeddedContentRegexSettings = embeddedContentRegexSettings;
             _parsingSettings = parsingSettings;
+            _paragraphUnitFactory = paragraphUnitFactory;
+        }
+
+        public byte ProgressInPercent
+        {
+            get { return _progressInPercent; }
+            set
+            {
+                _progressInPercent = value;
+                OnProgress(_progressInPercent);
+            }
         }
 
         public void SetFileProperties(IFileProperties properties)
         {
+            Output.Initialize(DocumentProperties);
+
+            var fileProperties = ItemFactory.CreateFileProperties();
+            fileProperties.FileConversionProperties = properties.FileConversionProperties;
+            Output.SetFileProperties(fileProperties);
+
+            _paragraphUnitFactory.ItemFactory = ItemFactory;
+            _paragraphUnitFactory.PropertiesFactory = PropertiesFactory;
+
             _fileConversionProperties = properties.FileConversionProperties;
         }
 
         public void StartOfInput()
         {
+            _totalNumberOfLines = _fielHelper.GetNumberOfLines(_fileConversionProperties.OriginalFilePath);
+            _reader = _jsonFactory.CreateJsonTextReader(_fileConversionProperties.OriginalFilePath);
+
+            ProgressInPercent = 0;
         }
 
         public void EndOfInput()
         {
+            _reader.Close();
+            _reader.Dispose();
         }
 
         public void InitializeSettings(ISettingsBundle settingsBundle, string configurationId)
@@ -54,19 +83,11 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _parsingSettings.PopulateFromSettingsBundle(settingsBundle, configurationId);
         }
 
-        protected override void BeforeParsing()
-        {
-            OnProgress(0);
-
-            _totalNumberOfLines = _fielHelper.GetNumberOfLines(_fileConversionProperties.OriginalFilePath);
-            _reader = _jsonFactory.CreateJsonTextReader(_fileConversionProperties.OriginalFilePath);
-        }
-
-        protected override bool DuringParsing()
+        public override bool ParseNext()
         {
             while (_reader.Read())
             {
-                OnProgress((byte) (_reader.LineNumber*100/_totalNumberOfLines));
+                OnProgress((byte)(_reader.LineNumber * 100 / _totalNumberOfLines));
 
                 var isPathToProcess = CheckIsPathToProcess(_reader.Path);
 
@@ -75,8 +96,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                     continue;
                 }
 
-                WriteContext(_reader.Path);
-                WriteText(_reader.Value.ToString());
+                var paragraphUnit = _paragraphUnitFactory.Create(_reader);
+
+                Output.ProcessParagraphUnit(paragraphUnit);
 
                 return true;
             }
@@ -93,45 +115,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                            new Regex(pathRule.PathPattern,
                                pathRule.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None).Match(path))
                        .Any(match => match.Success);
-        }
-
-        protected override void AfterParsing()
-        {
-            _reader.Close();
-            _reader.Dispose();
-        }
-
-        private void WriteText(string value)
-        {
-            Output.Text(PropertiesFactory.CreateTextProperties(value));
-        }
-
-        private void WriteContext(string path)
-        {
-            var contextProperties = PropertiesFactory.CreateContextProperties();
-
-            contextProperties.Contexts.Add(CreateFieldContextInfo(path));
-            contextProperties.Contexts.Add(CreateLocationContextInfo(path));
-
-            Output.ChangeContext(contextProperties);
-        }
-
-        private IContextInfo CreateFieldContextInfo(string path)
-        {
-            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Field);
-            contextInfo.Purpose = ContextPurpose.Match;
-            contextInfo.Description = path;
-            return contextInfo;
-        }
-
-        private IContextInfo CreateLocationContextInfo(string path)
-        {
-            var contextInfo = PropertiesFactory.CreateContextInfo(ContextKeys.ValuePath);
-            contextInfo.Purpose = ContextPurpose.Location;
-            contextInfo.DisplayName = JsonFileTypeResources.Value_Path;
-            contextInfo.Description = JsonFileTypeResources.Value_Path;
-            contextInfo.SetMetaData(ContextKeys.ValuePath, path);
-            return contextInfo;
         }
     }
 }

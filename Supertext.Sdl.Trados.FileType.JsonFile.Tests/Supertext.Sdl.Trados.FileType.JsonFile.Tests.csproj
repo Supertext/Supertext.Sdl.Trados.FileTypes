@@ -96,6 +96,7 @@
     <Compile Include="JsonFileParserTest.cs" />
     <Compile Include="JsonFileWriterTest.cs" />
     <Compile Include="JsonPathPatternExtractorTest.cs" />
+    <Compile Include="ParagraphUnitFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

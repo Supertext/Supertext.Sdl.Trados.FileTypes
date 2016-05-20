@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
-using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
+using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
@@ -18,23 +18,27 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
     public class JsonFileParserTest
     {
         private IJsonTextReader _jsonTextReaderMock;
-        private INativeExtractionContentHandler _nativeExtractionContentHandlerMock;
-        private ITextProperties _textPropertiesMock;
-        private IContextInfo _contextInfoFieldMock;
-        private IContextInfo _contextInfoPathMock;
-        private IContextProperties _contextPropertiesMock;
+        private IBilingualContentHandler _bilingualContentHandlerMock;
+        private IEmbeddedContentRegexSettings _embeddedContentRegexSettingsMock;
         private IParsingSettings _parsingSettingsMock;
+        private IParagraphUnitFactory _paragraphUnitFactoryMock;
+        private IParagraphUnit _paragraphUnitMock;
+        private IDocumentItemFactory _itemFactoryMock;
+        private IPropertiesFactory _propertiesFactoryMock;
 
         [SetUp]
         public void SetUp()
         {
             _jsonTextReaderMock = A.Fake<IJsonTextReader>();
-            _nativeExtractionContentHandlerMock = A.Fake<INativeExtractionContentHandler>();
-            _textPropertiesMock = A.Fake<ITextProperties>();
-            _contextPropertiesMock = A.Fake<IContextProperties>();
-            _contextInfoFieldMock = A.Fake<IContextInfo>();
-            _contextInfoPathMock = A.Fake<IContextInfo>();
+            _bilingualContentHandlerMock = A.Fake<IBilingualContentHandler>();
+            _embeddedContentRegexSettingsMock = A.Fake<IEmbeddedContentRegexSettings>();
             _parsingSettingsMock = A.Fake<IParsingSettings>();
+            _paragraphUnitFactoryMock = A.Fake<IParagraphUnitFactory>();
+            _paragraphUnitMock = A.Fake<IParagraphUnit>();
+            _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
+            _itemFactoryMock = A.Fake<IDocumentItemFactory>();
+            A.CallTo(() => _itemFactoryMock.PropertiesFactory).Returns(_propertiesFactoryMock);
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(_jsonTextReaderMock)).Returns(_paragraphUnitMock);
             A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(true);
             A.CallTo(() => _parsingSettingsMock.PathRules).Returns(new ComplexObservableList<PathRule>
             {
@@ -46,35 +50,99 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
-        public void ParseNext_WhenFirstCalled_ShouldSetTheProgressToZero()
+        public void SetFileProperties_ShouldInitializeContentHandler()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var filePropertiesMock = A.Fake<IFileProperties>();
+
+            // Act
+            testee.SetFileProperties(filePropertiesMock);
+
+            // Assert
+            A.CallTo(() => _bilingualContentHandlerMock.Initialize(A<IDocumentProperties>.Ignored)).MustHaveHappened();
+        }
+
+        [Test]
+        public void SetFileProperties_ShouldSetParagraphUnitFactoryDependencies()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var filePropertiesMock = A.Fake<IFileProperties>();
+
+            // Act
+            testee.SetFileProperties(filePropertiesMock);
+
+            // Assert
+            _paragraphUnitFactoryMock.ItemFactory.Should().Be(_itemFactoryMock);
+            _paragraphUnitFactoryMock.PropertiesFactory.Should().Be(_propertiesFactoryMock);
+        }
+
+        [Test]
+        public void StartOfInput_ShouldSetTheProgressToZero()
         {
             // Arrange
             var testee = CreateTestee();
             testee.MonitorEvents();
 
             // Act
-            testee.ParseNext();
+            testee.StartOfInput();
 
             // Assert
             testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 0);
         }
 
         [Test]
-        public void ParseNext_WhenLastCalled_ShouldCloseAndDisposeReader()
+        public void EndOfInput_ShouldCloseAndDisposeReader()
         {
             // Arrange
             var testee = CreateTestee();
+            testee.StartOfInput();
+
+            // Act
+            testee.EndOfInput();
+
+            // Assert
+            A.CallTo(() => _jsonTextReaderMock.Close()).MustHaveHappened();
+            A.CallTo(() => _jsonTextReaderMock.Dispose()).MustHaveHappened();
+        }
+
+        [Test]
+        public void InitializeSettings_ShouldSetSettingsByPopulatingFromSettingsBundle()
+        {
+            // Arrange
+            const string configurationId = "testId";
+            var settingsBundleMock = A.Fake<ISettingsBundle>();
+            var testee = CreateTestee();
+
+            // Act
+            testee.InitializeSettings(settingsBundleMock, configurationId);
+
+            // Assert
+            A.CallTo(() => _embeddedContentRegexSettingsMock.PopulateFromSettingsBundle(settingsBundleMock, configurationId))
+                .MustHaveHappened();
+            A.CallTo(() => _parsingSettingsMock.PopulateFromSettingsBundle(settingsBundleMock, configurationId))
+                .MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenLastCalled_ShouldReturnFalse()
+        {
+            // Arrange
+            var testee = CreateTestee();
+            testee.StartOfInput();
 
             // Act
             testee.ParseNext();
             testee.ParseNext();
             testee.ParseNext();
             testee.ParseNext();
-            testee.ParseNext();
+            var result = testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _jsonTextReaderMock.Close()).MustHaveHappened();
-            A.CallTo(() => _jsonTextReaderMock.Dispose()).MustHaveHappened();
+            result.Should().BeFalse();
         }
 
         [Test]
@@ -83,6 +151,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             // Arrange
             var testee = CreateTestee();
             testee.MonitorEvents();
+            testee.StartOfInput();
 
             // Act
             testee.ParseNext();
@@ -103,6 +172,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         {
             // Arrange
             var testee = CreateTestee();
+            testee.StartOfInput();
 
             A.CallTo(() => _jsonTextReaderMock.Path).Returns("not.process");
             A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(false);
@@ -111,7 +181,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(A<ITextProperties>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -119,6 +189,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         {
             // Arrange
             var testee = CreateTestee();
+            testee.StartOfInput();
 
             A.CallTo(() => _jsonTextReaderMock.Path).Returns("not.process");
 
@@ -126,7 +197,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(A<ITextProperties>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustNotHaveHappened();
         }
 
         [Test]
@@ -134,6 +205,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         {
             // Arrange
             var testee = CreateTestee();
+            testee.StartOfInput();
 
             A.CallTo(() => _jsonTextReaderMock.Path).Returns("PROCESS");
 
@@ -150,7 +222,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(A<ITextProperties>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustHaveHappened();
         }
 
         [Test]
@@ -158,40 +230,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         {
             // Arrange
             var testee = CreateTestee();
+            testee.StartOfInput();
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _nativeExtractionContentHandlerMock.Text(_textPropertiesMock)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenPathToProcess_ShouldSetFieldContextWithPathAsDescription()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            _contextInfoFieldMock.Description.Should().Be("process");
-            _contextPropertiesMock.Contexts.Should().Contain(_contextInfoFieldMock);
-        }
-
-        [Test]
-        public void ParseNext_WhenPathToProcess_ShouldSetLocationContext()
-        {
-            // Arrange
-            var testee = CreateTestee();
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _contextInfoPathMock.SetMetaData(ContextKeys.ValuePath, "process")).MustHaveHappened();
-            _contextPropertiesMock.Contexts.Should().Contain(_contextInfoPathMock);
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(_paragraphUnitMock)).MustHaveHappened();
         }
 
         private JsonFileParser CreateTestee()
@@ -210,22 +255,17 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var fileHelperMock = A.Fake<IFileHelper>();
             A.CallTo(() => fileHelperMock.GetNumberOfLines(A<string>.Ignored)).Returns(4);
 
-            var embeddedContentRegexSettingsMock = A.Fake<IEmbeddedContentRegexSettings>();
             var filePropertiesMock = A.Fake<IFileProperties>();
-            var propertiesFactoryMock = A.Fake<IPropertiesFactory>();
 
-            A.CallTo(() => propertiesFactoryMock.CreateContextProperties()).Returns(_contextPropertiesMock);
-            A.CallTo(() => propertiesFactoryMock.CreateContextInfo(StandardContextTypes.Field))
-                .Returns(_contextInfoFieldMock);
-            A.CallTo(() => propertiesFactoryMock.CreateContextInfo(ContextKeys.ValuePath)).Returns(_contextInfoPathMock);
-            A.CallTo(() => propertiesFactoryMock.CreateTextProperties("A")).Returns(_textPropertiesMock);
-            A.CallTo(() => _contextPropertiesMock.Contexts).Returns(new List<IContextInfo>());
+            var testee = new JsonFileParser(jsonFactoryMock, fileHelperMock, _embeddedContentRegexSettingsMock,
+                _parsingSettingsMock, _paragraphUnitFactoryMock)
+            {
+                ItemFactory = _itemFactoryMock,
+                Output = _bilingualContentHandlerMock
+            };
 
-            var testee = new JsonFileParser(jsonFactoryMock, fileHelperMock, embeddedContentRegexSettingsMock,
-                _parsingSettingsMock);
             testee.SetFileProperties(filePropertiesMock);
-            testee.PropertiesFactory = propertiesFactoryMock;
-            testee.Output = _nativeExtractionContentHandlerMock;
+
             return testee;
         }
     }

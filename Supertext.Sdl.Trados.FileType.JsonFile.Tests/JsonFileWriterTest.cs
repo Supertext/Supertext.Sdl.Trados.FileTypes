@@ -267,7 +267,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             A.CallTo(() => paragraphUnitPropertiesMock.Contexts).Returns(contextPropertiesMock);
             A.CallTo(() => contextPropertiesMock.Contexts[0]).Returns(contextInfoFieldMock);
             A.CallTo(() => contextPropertiesMock.Contexts[1]).Returns(contextInfoPathMock);
-            A.CallTo(() => contextInfoPathMock.GetMetaData(ContextKeys.ValuePath)).Returns(ThePath);
+            A.CallTo(() => contextInfoPathMock.GetMetaData(ContextKeys.SourcePath)).Returns(ThePath);
 
             var selectedToken = A.Fake<IJToken>();
             

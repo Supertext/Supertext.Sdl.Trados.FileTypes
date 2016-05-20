@@ -113,6 +113,8 @@
     <Compile Include="Settings\IParsingSettings.cs" />
     <Compile Include="Settings\PathRule.cs" />
     <Compile Include="Settings\ParsingSettings.cs" />
+    <Compile Include="TextProcessing\IParagraphUnitFactory.cs" />
+    <Compile Include="TextProcessing\ParagraphUnitFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PluginResources.de.resx">

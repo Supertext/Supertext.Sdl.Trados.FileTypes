@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json.Linq;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -49,7 +48,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 return;
             }
 
-            _currentPath = properties.Contexts.Contexts[1].GetMetaData(ContextKeys.ValuePath);
+            _currentPath = properties.Contexts.Contexts[1].GetMetaData(ContextKeys.SourcePath);
         }
 
         public override void ParagraphUnitEnd()
