@@ -8,6 +8,7 @@ using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.PoFile.Parsing;
 using Supertext.Sdl.Trados.FileType.PoFile.TextProcessing;
+using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 {

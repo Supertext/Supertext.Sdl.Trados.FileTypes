@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Text;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.TextProcessing
+namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 {
-    internal class SegmentReader : ISegmentReader, IMarkupDataVisitor
+    public class SegmentReader : ISegmentReader, IMarkupDataVisitor
     {
         private StringBuilder _textStringBuilder;
 

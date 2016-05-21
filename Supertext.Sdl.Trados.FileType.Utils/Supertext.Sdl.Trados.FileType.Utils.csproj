@@ -79,8 +79,10 @@
     <Compile Include="TextProcessing\IEmbeddedContentVisitorFactory.cs" />
     <Compile Include="TextProcessing\IFragment.cs" />
     <Compile Include="TextProcessing\InlineType.cs" />
+    <Compile Include="TextProcessing\ISegmentReader.cs" />
     <Compile Include="TextProcessing\ITextProcessor.cs" />
     <Compile Include="TextProcessing\RegexEmbeddedBilingualProcessor.cs" />
+    <Compile Include="TextProcessing\SegmentReader.cs" />
     <Compile Include="TextProcessing\TextProcessor.cs" />
   </ItemGroup>
   <ItemGroup>

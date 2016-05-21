@@ -77,9 +77,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public IFileGenerator BuildFileGenerator(string name)
         {
-            var writer = new JsonFileWriter(new JsonFactory(), new FileHelper());
-            var generator = FileTypeManager.BuildFileGenerator(FileTypeManager.BuildNativeGenerator(writer));
-            return generator;
+            var writer = new JsonFileWriter(new JsonFactory(), new FileHelper(), new SegmentReader());
+            return FileTypeManager.BuildFileGenerator(writer);
         }
 
         public IAdditionalGeneratorsInfo BuildAdditionalGeneratorsInfo(string name)

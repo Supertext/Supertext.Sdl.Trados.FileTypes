@@ -10,275 +10,138 @@ using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
+using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
 {
     [TestFixture]
     public class JsonFileWriterTest
     {
-        private const string ThePath = "the.path";
+        private const string TheSourcePath = "the.source.path";
+        private const string TheTargetPath = "the.target.path";
+        private const string TheTargetText = "the target text";
+        private IFileHelper _fileHelperMock;
         private IJToken _rootTokenMock;
-        private IJProperty _parentProperty;
+        private IJProperty _targetParentPropertyMock;
+        private IJProperty _sourceParentPropertyMock;
+        private IParagraphUnit _paragraphUnitMock;
 
         [SetUp]
         public void SetUp()
         {
+            _fileHelperMock = A.Fake<IFileHelper>();
             _rootTokenMock = A.Fake<IJToken>();
-            _parentProperty = A.Fake<IJProperty>();
-            A.CallTo(() => _parentProperty.Name).Returns("parentproperty");
+            _paragraphUnitMock = A.Fake<IParagraphUnit>();
+            _sourceParentPropertyMock = A.Fake<IJProperty>();
+            A.CallTo(() => _sourceParentPropertyMock.Name).Returns("sourceParentProperty");
+            _targetParentPropertyMock = A.Fake<IJProperty>();
+            A.CallTo(() => _targetParentPropertyMock.Name).Returns("targetParentProperty");
         }
 
         [Test]
-        public void ParagraphUnitEnd_WhenIsStringToken_ShouldReplaceCorrespondingPropertyWithNewStringContent()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            
-            // Act
-            testee.ParagraphUnitEnd();
-
-            // Assert
-            A.CallTo(() => _parentProperty.Replace(_parentProperty.Name, A<string>.Ignored)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParagraphUnitEnd_WhenIsNotStringToken_ShouldDoNothing()
+        public void ProcessParagraphUnit_WhenTargetPathIsStringToken_ShouldReplaceCorrespondingPropertyWithTargetText()
         {
             // Arrange
             var testee = CreateTestee();
 
-            var selectedToken = A.Fake<IJToken>();
-
-            A.CallTo(() => _rootTokenMock.SelectToken(ThePath)).Returns(selectedToken);
-            A.CallTo(() => selectedToken.Type).Returns(JTokenType.Property);
-
             // Act
-            testee.ParagraphUnitEnd();
+            testee.ProcessParagraphUnit(_paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _targetParentPropertyMock.Replace(_targetParentPropertyMock.Name, TheTargetText)).MustHaveHappened();
+
         }
 
         [Test]
-        public void ParagraphUnitEnd_WhenTextHasBeenCalled_ShouldReplacePropertyWithNewText()
+        public void ProcessParagraphUnit_WhenTargetPathIsNotStringToken_ShouldNotReplaceCorrespondingPropertyWithTargetText()
         {
             // Arrange
-            const string testText = "test text";
             var testee = CreateTestee();
 
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => textPropertiesMock.Text).Returns(testText);
-
-            testee.Text(textPropertiesMock);
+            var targetTokenMock = A.Fake<IJToken>();
+            A.CallTo(() => _rootTokenMock.SelectToken(TheTargetPath)).Returns(targetTokenMock);
 
             // Act
-            testee.ParagraphUnitEnd();
+            testee.ProcessParagraphUnit(_paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText)).MustHaveHappened();
+            A.CallTo(() => _targetParentPropertyMock.Replace(_targetParentPropertyMock.Name, TheTargetText)).MustNotHaveHappened();
+
         }
 
         [Test]
-        public void ParagraphUnitEnd_WhenTextHasBeenSuccessivelyCalled_ShouldReplacePropertyWithNewText()
+        public void ProcessParagraphUnit_WhenTargetPathIsEmpty_ShouldTakeSourcePathAsTargetPath()
         {
             // Arrange
-            const string testText = "test text";
-            var testee = CreateTestee();
-
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => textPropertiesMock.Text).Returns(testText);
-
-            testee.Text(textPropertiesMock);
-            testee.Text(textPropertiesMock);
+            var testee = CreateTestee(TheSourcePath, null);
 
             // Act
-            testee.ParagraphUnitEnd();
+            testee.ProcessParagraphUnit(_paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText+testText)).MustHaveHappened();
+            A.CallTo(() => _sourceParentPropertyMock.Replace(_sourceParentPropertyMock.Name, TheTargetText)).MustHaveHappened();
         }
 
         [Test]
-        public void ParagraphUnitEnd_WhenInlinePlaceholderTagHasBeenCalled_ShouldReplacePropertyWithNewText()
+        public void FileComplete_ShouldWriteJsonToOutputFile()
         {
             // Arrange
-            const string testText = "test placeholder";
+            const string theOutputPath = "the output path";
+            const string theContent = "The content";
             var testee = CreateTestee();
 
-            var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
-            A.CallTo(() => placeholderTagPropertiesMock.TagContent).Returns(testText);
+            var outputFilePropertiesMock = A.Fake<INativeOutputFileProperties>();
+            A.CallTo(() => outputFilePropertiesMock.OutputFilePath).Returns(theOutputPath);
+            testee.SetOutputProperties(outputFilePropertiesMock);
 
-            testee.InlinePlaceholderTag(placeholderTagPropertiesMock);
-
-            // Act
-            testee.ParagraphUnitEnd();
-
-            // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParagraphUnitEnd_WhenInlinePlaceholderTagHasSuccessivelyBeenCalled_ShouldReplacePropertyWithNewText()
-        {
-            // Arrange
-            const string testText = "test placeholder";
-            var testee = CreateTestee();
-
-            var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
-            A.CallTo(() => placeholderTagPropertiesMock.TagContent).Returns(testText);
-
-            testee.InlinePlaceholderTag(placeholderTagPropertiesMock);
-            testee.InlinePlaceholderTag(placeholderTagPropertiesMock);
+            A.CallTo(() => _rootTokenMock.ToString()).Returns(theContent);
 
             // Act
-            testee.ParagraphUnitEnd();
+            testee.FileComplete();
 
             // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText+testText)).MustHaveHappened();
+            A.CallTo(() => _fileHelperMock.WriteAllText(theOutputPath, theContent)).MustHaveHappened();
+
         }
 
-        [Test]
-        public void ParagraphUnitEnd_WhenInlineStartTagHasBeenCalled_ShouldReplacePropertyWithNewText()
-        {
-            // Arrange
-            const string testText = "test start tag";
-            var testee = CreateTestee();
-
-            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => startTagPropertiesMock.TagContent).Returns(testText);
-
-            testee.InlineStartTag(startTagPropertiesMock);
-
-            // Act
-            testee.ParagraphUnitEnd();
-
-            // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParagraphUnitEnd_WhenInlineStartTagHasSuccessivelyBeenCalled_ShouldReplacePropertyWithNewText()
-        {
-            // Arrange
-            const string testText = "test start tag";
-            var testee = CreateTestee();
-
-            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => startTagPropertiesMock.TagContent).Returns(testText);
-
-            testee.InlineStartTag(startTagPropertiesMock);
-            testee.InlineStartTag(startTagPropertiesMock);
-
-            // Act
-            testee.ParagraphUnitEnd();
-
-            // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText + testText)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParagraphUnitEnd_WhenInlineEndTagHasBeenCalled_ShouldReplacePropertyWithNewText()
-        {
-            // Arrange
-            const string testText = "test end tag";
-            var testee = CreateTestee();
-
-            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => endTagPropertiesMock.TagContent).Returns(testText);
-
-            testee.InlineEndTag(endTagPropertiesMock);
-
-            // Act
-            testee.ParagraphUnitEnd();
-
-            // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParagraphUnitEnd_WhenInlineEndTagHasSuccessivelyBeenCalled_ShouldReplacePropertyWithNewText()
-        {
-            // Arrange
-            const string testText = "test end tag";
-            var testee = CreateTestee();
-
-            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => endTagPropertiesMock.TagContent).Returns(testText);
-
-            testee.InlineEndTag(endTagPropertiesMock);
-            testee.InlineEndTag(endTagPropertiesMock);
-
-            // Act
-            testee.ParagraphUnitEnd();
-
-            // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText + testText)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParagraphUnitEnd_WhenMultipleTextAndTagsHaveBeenAdded_ShouldReplacePropertyWithNewText()
-        {
-            // Arrange
-            const string testText = "test text";
-            const string testPlaceholderTagText = "test placeholder text";
-            const string testStartTagText = "test start tag";
-            const string testEndTagText = "test end tag";
-            var testee = CreateTestee();
-
-            var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => textPropertiesMock.Text).Returns(testText);
-
-            var placeholderTagPropertiesMock = A.Fake<IPlaceholderTagProperties>();
-            A.CallTo(() => placeholderTagPropertiesMock.TagContent).Returns(testPlaceholderTagText);
-
-            var startTagPropertiesMock = A.Fake<IStartTagProperties>();
-            A.CallTo(() => startTagPropertiesMock.TagContent).Returns(testStartTagText);
-
-            var endTagPropertiesMock = A.Fake<IEndTagProperties>();
-            A.CallTo(() => endTagPropertiesMock.TagContent).Returns(testEndTagText);
-
-            testee.Text(textPropertiesMock);
-            testee.InlinePlaceholderTag(placeholderTagPropertiesMock);
-            testee.InlineStartTag(startTagPropertiesMock);
-            testee.InlineEndTag(endTagPropertiesMock);
-
-            // Act
-            testee.ParagraphUnitEnd();
-
-            // Assert
-            A.CallTo(() => _parentProperty.Replace(A<string>.Ignored, testText + testPlaceholderTagText + testStartTagText + testEndTagText)).MustHaveHappened();
-        }
-
-        private JsonFileWriter CreateTestee()
+        private JsonFileWriter CreateTestee(string sourcePath = TheSourcePath, string targetPath= TheTargetPath)
         {
             var jsonFactoryMock = A.Fake<IJsonFactory>();
            
             A.CallTo(() => jsonFactoryMock.GetRootToken(A<string>.Ignored)).Returns(_rootTokenMock);
 
-            var fileHelperMock = A.Fake<IFileHelper>();
             var filePropertiesMock = A.Fake<IFileProperties>();
             var fileConversionPropertiesMock = A.Fake<IPersistentFileConversionProperties>();
-            A.CallTo(() => filePropertiesMock.FileConversionProperties).Returns(fileConversionPropertiesMock);
+            var proposedFileInfoMock = A.Fake<IOutputFileInfo>();
 
             var paragraphUnitPropertiesMock = A.Fake<IParagraphUnitProperties>();
             var contextPropertiesMock = A.Fake<IContextProperties>();
-            var contextInfoFieldMock = A.Fake<IContextInfo>();
-            var contextInfoPathMock = A.Fake<IContextInfo>();
+            var fieldContextInfoMock = A.Fake<IContextInfo>();
+            var locationContextInfoMock = A.Fake<IContextInfo>();
             A.CallTo(() => paragraphUnitPropertiesMock.Contexts).Returns(contextPropertiesMock);
-            A.CallTo(() => contextPropertiesMock.Contexts[0]).Returns(contextInfoFieldMock);
-            A.CallTo(() => contextPropertiesMock.Contexts[1]).Returns(contextInfoPathMock);
-            A.CallTo(() => contextInfoPathMock.GetMetaData(ContextKeys.SourcePath)).Returns(ThePath);
+            A.CallTo(() => contextPropertiesMock.Contexts[0]).Returns(fieldContextInfoMock);
+            A.CallTo(() => contextPropertiesMock.Contexts[1]).Returns(locationContextInfoMock);
+            A.CallTo(() => locationContextInfoMock.GetMetaData(ContextKeys.TargetPath)).Returns(targetPath);
+            A.CallTo(() => locationContextInfoMock.GetMetaData(ContextKeys.SourcePath)).Returns(sourcePath);
+            A.CallTo(() => _paragraphUnitMock.Properties).Returns(paragraphUnitPropertiesMock);
 
-            var selectedToken = A.Fake<IJToken>();
-            
-            A.CallTo(() => _rootTokenMock.SelectToken(ThePath)).Returns(selectedToken);
-            A.CallTo(() => selectedToken.Type).Returns(JTokenType.String);
-            A.CallTo(() => selectedToken.Parent).Returns(_parentProperty);
+            var sourceTokenMock = A.Fake<IJToken>();
+            A.CallTo(() => _rootTokenMock.SelectToken(sourcePath)).Returns(sourceTokenMock);
+            A.CallTo(() => sourceTokenMock.Type).Returns(JTokenType.String);
+            A.CallTo(() => sourceTokenMock.Parent).Returns(_sourceParentPropertyMock);
 
-            var testee = new JsonFileWriter(jsonFactoryMock, fileHelperMock);
+            var targetTokenMock = A.Fake<IJToken>();
+            A.CallTo(() => _rootTokenMock.SelectToken(targetPath)).Returns(targetTokenMock);
+            A.CallTo(() => targetTokenMock.Type).Returns(JTokenType.String);
+            A.CallTo(() => targetTokenMock.Parent).Returns(_targetParentPropertyMock);
+
+            var segmentReaderMock = A.Fake<ISegmentReader>();
+            A.CallTo(() => segmentReaderMock.GetTargetText(_paragraphUnitMock.SegmentPairs)).Returns(TheTargetText);
+
+            var testee = new JsonFileWriter(jsonFactoryMock, _fileHelperMock, segmentReaderMock);
+            testee.GetProposedOutputFileInfo(fileConversionPropertiesMock, proposedFileInfoMock);
             testee.SetFileProperties(filePropertiesMock);
-            testee.StartOfInput();
-            testee.ParagraphUnitStart(paragraphUnitPropertiesMock);
+            
             return testee;
         }
     }

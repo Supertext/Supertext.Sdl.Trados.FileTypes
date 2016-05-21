@@ -108,8 +108,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TextProcessing\ISegmentReader.cs" />
-    <Compile Include="TextProcessing\SegmentReader.cs" />
     <Compile Include="Settings\ISegmentSettings.cs" />
     <Compile Include="Settings\SegmentSettings.cs" />
     <Compile Include="Parsing\LineType.cs" />
