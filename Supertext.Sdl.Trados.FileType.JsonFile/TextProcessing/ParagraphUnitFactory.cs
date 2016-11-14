@@ -1,4 +1,5 @@
-﻿using Sdl.Core.Globalization;
+﻿using System.Text.RegularExpressions;
+using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -20,7 +21,16 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
 
             AddSegmentPair(paragraphUnit, reader.Value.ToString());
 
-            paragraphUnit.Properties.Contexts = CreateContextProperties(reader.Path);
+            // TODO remove this quick fix once json.NET library has fixed issue
+            // Escape quotes in path
+            var path = reader.Path;
+            var mathes = Regex.Matches(path, @"\['[^[]*'\]");
+            foreach (Match match in mathes)
+            {
+                path = path.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
+            }
+
+            paragraphUnit.Properties.Contexts = CreateContextProperties(path);
 
             return paragraphUnit;
         }
