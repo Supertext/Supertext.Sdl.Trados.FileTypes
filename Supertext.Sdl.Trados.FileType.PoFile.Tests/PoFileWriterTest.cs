@@ -144,25 +144,19 @@ entryComplete
             var paragraphUnitMock1 = CreateParagraphUnitMock(3);
             var paragraphUnitMock2 = CreateParagraphUnitMock(7);
 
-            using (var scope = Fake.CreateScope())
-            {
-                // Act
-                testee.ProcessParagraphUnit(paragraphUnitMock1);
-                testee.ProcessParagraphUnit(paragraphUnitMock2);
+            // Act
+            testee.ProcessParagraphUnit(paragraphUnitMock1);
+            testee.ProcessParagraphUnit(paragraphUnitMock2);
 
-                // Assert
-                using (scope.OrderedAssertions())
-                {
-                    A.CallTo(() => _streamWriterMock.WriteLine("line 1")).MustHaveHappened();
-                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id""")).MustHaveHappened();
-                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened();
-                    A.CallTo(() => _streamWriterMock.WriteLine("entryComplete")).MustHaveHappened();
-                    A.CallTo(() => _streamWriterMock.WriteLine("line 5")).MustHaveHappened();
-                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id2""")).MustHaveHappened();
-                    A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened();
-                    A.CallTo(() => _streamWriterMock.WriteLine("entryComplete")).MustHaveHappened();
-                }
-            }
+            // Assert
+            A.CallTo(() => _streamWriterMock.WriteLine("line 1")).MustHaveHappened()
+            .Then(A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id""")).MustHaveHappened())
+            .Then(A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened())
+            .Then(A.CallTo(() => _streamWriterMock.WriteLine("entryComplete")).MustHaveHappened())
+            .Then(A.CallTo(() => _streamWriterMock.WriteLine("line 5")).MustHaveHappened())
+            .Then(A.CallTo(() => _streamWriterMock.WriteLine(@"msgid ""message id2""")).MustHaveHappened())
+            .Then(A.CallTo(() => _streamWriterMock.WriteLine(@"msgstr ""message string""")).MustHaveHappened())
+            .Then(A.CallTo(() => _streamWriterMock.WriteLine("entryComplete")).MustHaveHappened());
         }
 
         [Test]
