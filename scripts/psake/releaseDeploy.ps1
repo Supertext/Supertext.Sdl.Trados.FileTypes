@@ -40,14 +40,14 @@ task Deploy -depends Clean {
   }
 	
   Write-Host "copying " $pluginPath1 "to" $publishDir
-  Copy-Item $pluginPath1 $publishDir
+  Copy-Item -Force $pluginPath1 $publishDir
   Write-Host "copying " $pluginPath2 "to" $publishDir
-  Copy-Item $pluginPath2 $publishDir
+  Copy-Item -Force $pluginPath2 $publishDir
 	
   Write-Host "copying " $pluginPath1 "to" $deployDir
-  Copy-Item $pluginPath1 $deployDir
+  Copy-Item -Force $pluginPath1 $deployDir
   Write-Host "copying " $pluginPath2 "to" $deployDir
-  Copy-Item $pluginPath2 $deployDir
+  Copy-Item -Force $pluginPath2 $deployDir
 }
 
 task Clean { 
