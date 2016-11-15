@@ -117,49 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
-    <value>Embedded Content</value>
-  </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Name" xml:space="preserve">
-    <value>Embedded Content</value>
-  </data>
-  <data name="Exclude" xml:space="preserve">
-    <value>Exclude</value>
-  </data>
-  <data name="FileTypeFilter" xml:space="preserve">
-    <value>JSON file|*.json;</value>
-  </data>
-  <data name="Include" xml:space="preserve">
-    <value>Include</value>
-  </data>
-  <data name="Include_with_text" xml:space="preserve">
-    <value>Include with text</value>
-  </data>
-  <data name="May_Exclude" xml:space="preserve">
-    <value>May exclude</value>
-  </data>
-  <data name="Not_Translatable" xml:space="preserve">
-    <value>Not translatable</value>
-  </data>
-  <data name="Parsing_Settings_Description" xml:space="preserve">
-    <value>Parsing settings</value>
-  </data>
-  <data name="Parsing_Settings_Name" xml:space="preserve">
-    <value>Parsing settings</value>
-  </data>
-  <data name="Placeholder" xml:space="preserve">
-    <value>Placeholder</value>
-  </data>
-  <data name="Plugin_Name" xml:space="preserve">
-    <value>JSON file type</value>
-  </data>
-  <data name="Tag_Pair" xml:space="preserve">
-    <value>Tag pair</value>
-  </data>
-  <data name="Translatable" xml:space="preserve">
-    <value>Translatable</value>
-  </data>
-  <data name="Undefined" xml:space="preserve">
-    <value>Undefined</value>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>Die Feld-Struktur-Information (F) der einzelnen Segmente enthält Pfad-Informationen.
+
+Beispiel: 
+[
+    {
+      "x": 20,
+      "y": 120,
+      "content":
+           {
+                 "title": "Lorem ipsum"
+                 "html": "&lt;p&gt;&lt;span&gt;At vero eos et accusam et justo duo dolores et ea rebum.&lt;/span&gt;&lt;/p&gt;"
+           }
+    },
+    {
+      "x": 20,
+      "y": 540,
+      "content":
+           {
+                 "title": "Sit amet"
+                 "html": "&lt;p&gt;&lt;span&gt;Stet clita kasd gubergren.&lt;/span&gt;&lt;/p&gt;"
+           }
+    },...
+]
+Pfad der "title" Eigenschaft des ersten Objekts: [0].content.title
+Pfad der "html" Eigenschaft des ersten Objekts: [0].content.html
+Pfad der "title" Eigenschaft des zweiten Objekts: [1].content.title
+Pfad der "html" Eigenschaft des zweiten Objekts: [1].content. html
+
+Beispiel-Ausdruck für die Filterung der "html" Eigenschaft:
+
+- spezifisch (nur "html" Eigenschaften der "content"-Objekte): \.content\.html$
+
+- generell (alle exsitierende "html" Eigenschaften): \.html$</value>
   </data>
 </root>

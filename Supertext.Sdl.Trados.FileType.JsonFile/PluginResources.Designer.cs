@@ -61,11 +61,137 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Embedded Content.
+        /// </summary>
+        internal static string Community_Embedded_Content_Processor_Settings_Description {
+            get {
+                return ResourceManager.GetString("Community_Embedded_Content_Processor_Settings_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Embedded Content.
+        /// </summary>
+        internal static string Community_Embedded_Content_Processor_Settings_Name {
+            get {
+                return ResourceManager.GetString("Community_Embedded_Content_Processor_Settings_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude.
+        /// </summary>
+        internal static string Exclude {
+            get {
+                return ResourceManager.GetString("Exclude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JSON file|*.json;.
+        /// </summary>
+        internal static string FileTypeFilter {
+            get {
+                return ResourceManager.GetString("FileTypeFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include.
+        /// </summary>
+        internal static string Include {
+            get {
+                return ResourceManager.GetString("Include", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include with text.
+        /// </summary>
+        internal static string Include_with_text {
+            get {
+                return ResourceManager.GetString("Include_with_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to May exclude.
+        /// </summary>
+        internal static string May_Exclude {
+            get {
+                return ResourceManager.GetString("May_Exclude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not translatable.
+        /// </summary>
+        internal static string Not_Translatable {
+            get {
+                return ResourceManager.GetString("Not_Translatable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parsing settings.
+        /// </summary>
+        internal static string Parsing_Settings_Description {
+            get {
+                return ResourceManager.GetString("Parsing_Settings_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parsing settings.
+        /// </summary>
+        internal static string Parsing_Settings_Name {
+            get {
+                return ResourceManager.GetString("Parsing_Settings_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Placeholder.
+        /// </summary>
+        internal static string Placeholder {
+            get {
+                return ResourceManager.GetString("Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JSON file type.
         /// </summary>
         internal static string Plugin_Name {
             get {
                 return ResourceManager.GetString("Plugin_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag pair.
+        /// </summary>
+        internal static string Tag_Pair {
+            get {
+                return ResourceManager.GetString("Tag_Pair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translatable.
+        /// </summary>
+        internal static string Translatable {
+            get {
+                return ResourceManager.GetString("Translatable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undefined.
+        /// </summary>
+        internal static string Undefined {
+            get {
+                return ResourceManager.GetString("Undefined", resourceCulture);
             }
         }
     }

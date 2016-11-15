@@ -62,8 +62,10 @@
       <HintPath>..\libs\Sdl.FileTypeSupport.Framework.Core.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,10 +74,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContextKeys.cs" />
+    <Compile Include="EmbeddedContentSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EmbeddedContentSettingsControl.Designer.cs">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmbeddedContentSettingsPage.cs" />
     <Compile Include="JsonFileParser.cs" />
     <Compile Include="JsonFileSniffer.cs" />
     <Compile Include="JsonFileWriter.cs" />
     <Compile Include="JsonPathPatternExtractor.cs" />
+    <Compile Include="ParsingSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ParsingSettingsControl.Designer.cs">
+      <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ParsingSettingsPage.cs" />
     <Compile Include="Parsing\IJsonFactory.cs" />
     <Compile Include="Parsing\IJsonTextReader.cs" />
     <Compile Include="Parsing\IJToken.cs" />
@@ -83,11 +99,31 @@
     <Compile Include="Parsing\JsonFactory.cs" />
     <Compile Include="Parsing\JsonTextReaderWrapper.cs" />
     <Compile Include="Parsing\JTokenWrapper.cs" />
+    <Compile Include="PathRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PathRuleForm.Designer.cs">
+      <DependentUpon>PathRuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PathRuleHelpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PathRuleHelpForm.Designer.cs">
+      <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PathRuleListViewItem.cs" />
     <Compile Include="PluginResources.de.Designer.cs">
       <DependentUpon>PluginResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="RegexRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegexRuleForm.Designer.cs">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegexRuleListItem.cs" />
     <Compile Include="Resources\JsonFileTypeResources.de.Designer.cs">
       <DependentUpon>JsonFileTypeResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -117,6 +153,30 @@
     <Compile Include="TextProcessing\ParagraphUnitFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EmbeddedContentSettingsControl.de.resx">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
+      <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ParsingSettingsControl.de.resx">
+      <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ParsingSettingsControl.resx">
+      <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleForm.de.resx">
+      <DependentUpon>PathRuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleForm.resx">
+      <DependentUpon>PathRuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleHelpForm.de.resx">
+      <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathRuleHelpForm.resx">
+      <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PluginResources.de.Designer.cs</LastGenOutput>
@@ -125,6 +185,13 @@
     <EmbeddedResource Include="PluginResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PluginResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegexRuleForm.de.resx">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegexRuleForm.resx">
+      <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\JsonFileTypeResources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>

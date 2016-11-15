@@ -117,49 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Community_Embedded_Content_Processor_Settings_Description" xml:space="preserve">
-    <value>Embedded Content</value>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Pfad:</value>
   </data>
-  <data name="Community_Embedded_Content_Processor_Settings_Name" xml:space="preserve">
-    <value>Embedded Content</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_ignoreCaseCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 32</value>
   </data>
-  <data name="Exclude" xml:space="preserve">
-    <value>Exclude</value>
+  <data name="_ignoreCaseCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 17</value>
   </data>
-  <data name="FileTypeFilter" xml:space="preserve">
-    <value>JSON file|*.json;</value>
+  <data name="_ignoreCaseCheckBox.Text" xml:space="preserve">
+    <value> Groß-/Kleinschreibung ignorieren</value>
   </data>
-  <data name="Include" xml:space="preserve">
-    <value>Include</value>
+  <data name="_ruleGroupBox.Text" xml:space="preserve">
+    <value>Regulärer Ausdruck</value>
   </data>
-  <data name="Include_with_text" xml:space="preserve">
-    <value>Include with text</value>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Abbrechen</value>
   </data>
-  <data name="May_Exclude" xml:space="preserve">
-    <value>May exclude</value>
-  </data>
-  <data name="Not_Translatable" xml:space="preserve">
-    <value>Not translatable</value>
-  </data>
-  <data name="Parsing_Settings_Description" xml:space="preserve">
-    <value>Parsing settings</value>
-  </data>
-  <data name="Parsing_Settings_Name" xml:space="preserve">
-    <value>Parsing settings</value>
-  </data>
-  <data name="Placeholder" xml:space="preserve">
-    <value>Placeholder</value>
-  </data>
-  <data name="Plugin_Name" xml:space="preserve">
-    <value>JSON file type</value>
-  </data>
-  <data name="Tag_Pair" xml:space="preserve">
-    <value>Tag pair</value>
-  </data>
-  <data name="Translatable" xml:space="preserve">
-    <value>Translatable</value>
-  </data>
-  <data name="Undefined" xml:space="preserve">
-    <value>Undefined</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Pfadregel hinzufügen/bearbeiten</value>
   </data>
 </root>
