@@ -31,7 +31,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                         }
 
                         var patternedPath = reader.Path.Replace(".", @"\.");
-                        patternedPath = Regex.Replace(patternedPath, @"\[\d+\]", @"\[\d+\]");
+                        patternedPath = patternedPath.Replace("[", @"\[");
+                        patternedPath = patternedPath.Replace("]", @"\]");
+                        patternedPath = Regex.Replace(patternedPath, @"\\\[\d+\\\]", @"\[\d+\]");
                         pathPatterns.Add(patternedPath);
                     }
                 }

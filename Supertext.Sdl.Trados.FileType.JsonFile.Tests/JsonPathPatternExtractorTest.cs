@@ -59,6 +59,19 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
+        public void ExtractPathPatterns_WhenPathContainsBrackets_ShouldReplaceBracketsWithPattern()
+        {
+            // Arrange
+            var testee = CreateTestee(new[] { "theObject['with spaces in property name']" });
+
+            // Act
+            var result = testee.ExtractPathPatterns(Testfile);
+
+            // Assert
+            result.Should().Contain(@"theObject\['with spaces in property name'\]");
+        }
+
+        [Test]
         public void ExtractPathPatterns_WhenPathContainsArrayIndexer_ShouldReplaceIndexerWithPattern()
         {
             // Arrange
