@@ -8,15 +8,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 
         JTokenType Type { get; }
 
-        IJProperty Parent { get; }
+        IJValue Value { get; }
 
         string ToString();
-    }
-
-    public interface IJProperty
-    {
-        string Name { get; }
-
-        void Replace(string name, string value);
     }
 }

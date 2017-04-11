@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FakeItEasy;
+﻿using FakeItEasy;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -22,8 +17,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         private const string TheTargetText = "the target text";
         private IFileHelper _fileHelperMock;
         private IJToken _rootTokenMock;
-        private IJProperty _targetParentPropertyMock;
-        private IJProperty _sourceParentPropertyMock;
+        private IJValue _targetValueMock;
+        private IJValue _sourceValueMock;
         private IParagraphUnit _paragraphUnitMock;
 
         [SetUp]
@@ -32,14 +27,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             _fileHelperMock = A.Fake<IFileHelper>();
             _rootTokenMock = A.Fake<IJToken>();
             _paragraphUnitMock = A.Fake<IParagraphUnit>();
-            _sourceParentPropertyMock = A.Fake<IJProperty>();
-            A.CallTo(() => _sourceParentPropertyMock.Name).Returns("sourceParentProperty");
-            _targetParentPropertyMock = A.Fake<IJProperty>();
-            A.CallTo(() => _targetParentPropertyMock.Name).Returns("targetParentProperty");
+            _sourceValueMock = A.Fake<IJValue>();
+            _targetValueMock = A.Fake<IJValue>();
         }
 
         [Test]
-        public void ProcessParagraphUnit_WhenTargetPathIsStringToken_ShouldReplaceCorrespondingPropertyWithTargetText()
+        public void ProcessParagraphUnit_WhenTargetPathIsStringToken_ShouldReplaceValueWithTargetText()
         {
             // Arrange
             var testee = CreateTestee();
@@ -48,12 +41,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.ProcessParagraphUnit(_paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _targetParentPropertyMock.Replace(_targetParentPropertyMock.Name, TheTargetText)).MustHaveHappened();
+            A.CallToSet(() => _targetValueMock.Value).To(TheTargetText).MustHaveHappened();
 
         }
 
         [Test]
-        public void ProcessParagraphUnit_WhenTargetPathIsNotStringToken_ShouldNotReplaceCorrespondingPropertyWithTargetText()
+        public void ProcessParagraphUnit_WhenTargetPathIsNotStringToken_ShouldNotReplaceValueWithTargetText()
         {
             // Arrange
             var testee = CreateTestee();
@@ -65,7 +58,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.ProcessParagraphUnit(_paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _targetParentPropertyMock.Replace(_targetParentPropertyMock.Name, TheTargetText)).MustNotHaveHappened();
+            A.CallToSet(() => _targetValueMock.Value).To(TheTargetText).MustNotHaveHappened();
 
         }
 
@@ -79,7 +72,24 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.ProcessParagraphUnit(_paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _sourceParentPropertyMock.Replace(_sourceParentPropertyMock.Name, TheTargetText)).MustHaveHappened();
+            A.CallToSet(() => _sourceValueMock.Value).To(TheTargetText).MustHaveHappened();
+        }
+
+        [Test]
+        public void ProcessParagraphUnit_WhenValueIsNull_ShouldDoNothing()
+        {
+            // Arrange
+            var testee = CreateTestee(TheSourcePath, null);
+            var targetTokenMock = A.Fake<IJToken>();
+            A.CallTo(() => _rootTokenMock.SelectToken(TheTargetPath)).Returns(targetTokenMock);
+            A.CallTo(() => targetTokenMock.Type).Returns(JTokenType.String);
+            A.CallTo(() => targetTokenMock.Value).Returns(null);
+
+            // Act
+            testee.ProcessParagraphUnit(_paragraphUnitMock);
+
+            // Assert
+            A.CallToSet(() => _targetValueMock.Value).To(TheTargetText).MustNotHaveHappened();
         }
 
         [Test]
@@ -128,12 +138,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var sourceTokenMock = A.Fake<IJToken>();
             A.CallTo(() => _rootTokenMock.SelectToken(sourcePath)).Returns(sourceTokenMock);
             A.CallTo(() => sourceTokenMock.Type).Returns(JTokenType.String);
-            A.CallTo(() => sourceTokenMock.Parent).Returns(_sourceParentPropertyMock);
+            A.CallTo(() => sourceTokenMock.Value).Returns(_sourceValueMock);
 
             var targetTokenMock = A.Fake<IJToken>();
             A.CallTo(() => _rootTokenMock.SelectToken(targetPath)).Returns(targetTokenMock);
             A.CallTo(() => targetTokenMock.Type).Returns(JTokenType.String);
-            A.CallTo(() => targetTokenMock.Parent).Returns(_targetParentPropertyMock);
+            A.CallTo(() => targetTokenMock.Value).Returns(_targetValueMock);
 
             var segmentReaderMock = A.Fake<ISegmentReader>();
             A.CallTo(() => segmentReaderMock.GetTargetText(_paragraphUnitMock.SegmentPairs)).Returns(TheTargetText);

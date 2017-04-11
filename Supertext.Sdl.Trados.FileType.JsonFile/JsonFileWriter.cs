@@ -75,9 +75,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
             var targetText = _segmentReader.GetTargetText(paragraphUnit.SegmentPairs);
 
-            var property = targetToken.Parent;
+            var value = targetToken.Value;
 
-            property.Replace(property.Name, targetText);
+            if (value == null)
+            {
+                return;
+            }
+
+            value.Value = targetText;
         }
 
         public void Dispose()
