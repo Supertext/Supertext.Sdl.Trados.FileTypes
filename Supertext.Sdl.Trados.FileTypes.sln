@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.PoFile", "Supertext.Sdl.Trados.FileType.PoFile\Supertext.Sdl.Trados.FileType.PoFile.csproj", "{C0BBD9DC-300A-4CE2-88BC-5889C5AD0523}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.PoFile.Tests", "Supertext.Sdl.Trados.FileType.PoFile.Tests\Supertext.Sdl.Trados.FileType.PoFile.Tests.csproj", "{6355837B-C611-4F20-B0D2-81ABB04C7ABA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.PoFile.WinUI", "Supertext.Sdl.Trados.FileType.PoFile.WinUI\Supertext.Sdl.Trados.FileType.PoFile.WinUI.csproj", "{69A1B57A-393C-4909-AD05-2418AFF3D6FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.Utils", "Supertext.Sdl.Trados.FileType.Utils\Supertext.Sdl.Trados.FileType.Utils.csproj", "{2CF1EF9B-B87A-4A85-8EC5-A675BF36F140}"
 EndProject
@@ -31,10 +29,6 @@ Global
 		{6355837B-C611-4F20-B0D2-81ABB04C7ABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6355837B-C611-4F20-B0D2-81ABB04C7ABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6355837B-C611-4F20-B0D2-81ABB04C7ABA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69A1B57A-393C-4909-AD05-2418AFF3D6FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69A1B57A-393C-4909-AD05-2418AFF3D6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69A1B57A-393C-4909-AD05-2418AFF3D6FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69A1B57A-393C-4909-AD05-2418AFF3D6FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CF1EF9B-B87A-4A85-8EC5-A675BF36F140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CF1EF9B-B87A-4A85-8EC5-A675BF36F140}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CF1EF9B-B87A-4A85-8EC5-A675BF36F140}.Release|Any CPU.ActiveCfg = Release|Any CPU

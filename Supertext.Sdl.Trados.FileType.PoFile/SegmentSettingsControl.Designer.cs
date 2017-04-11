@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
+namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     partial class SegmentSettingsControl
     {

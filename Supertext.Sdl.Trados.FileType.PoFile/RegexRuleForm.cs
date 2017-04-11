@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
+namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     public partial class RegexRuleForm : Form
     {

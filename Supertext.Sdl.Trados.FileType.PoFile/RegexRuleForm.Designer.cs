@@ -1,4 +1,4 @@
-﻿namespace Supertext.Sdl.Trados.FileType.PoFile.WinUI
+﻿namespace Supertext.Sdl.Trados.FileType.PoFile
 {
     partial class RegexRuleForm
     {
