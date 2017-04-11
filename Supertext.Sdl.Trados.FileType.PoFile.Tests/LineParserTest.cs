@@ -65,7 +65,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
-        public void IsValid_WhenStartIsFollowedByCommentAndThenByEnd_ShouldReturnFalse()
+        public void IsValid_WhenStartIsFollowedByCommentAndThenByEnd_ShouldReturnTrue()
         {
             // Arrange
             var testee = new LineParser();
@@ -76,7 +76,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             var result = lineValidationSession.IsValid(MarkerLines.EndOfFile);
 
             // Assert
-            result.Should().BeFalse();
+            result.Should().BeTrue();
         }
 
         [Test]
@@ -793,6 +793,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Act
             var result = lineValidationSession.IsValid(string.Empty);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsValid_WhenCommentIsFollowedByEndOfLine_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"#: a comment");
+
+            // Act
+            var result = lineValidationSession.IsValid(MarkerLines.EndOfFile);
 
             // Assert
             result.Should().BeTrue();

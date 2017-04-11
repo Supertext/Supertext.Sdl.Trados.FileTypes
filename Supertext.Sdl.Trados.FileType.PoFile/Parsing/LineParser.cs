@@ -68,7 +68,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
                 .CanBeFollowedBy(comment)
                 .CanBeFollowedBy(msgctxt)
                 .CanBeFollowedBy(msgid)
-                .CanBeFollowedBy(emptyLine);
+                .CanBeFollowedBy(emptyLine)
+                .CanBeFollowedBy(endOfFile);
 
             emptyLine
                 .CanBeIgnored();
