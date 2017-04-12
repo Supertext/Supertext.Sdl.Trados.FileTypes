@@ -45,11 +45,11 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                 var endTagInlineType = InlineType.EndTag;
 
                 var startTagMatches =
-                    GetTagMatches(tagMatchesPerChar, startTagRegexMatches, startTagInlineType, matchRule).Count();
+                    GetTagMatches(tagMatchesPerChar, startTagRegexMatches, startTagInlineType, matchRule);
                 var endTagMatches =
-                    GetTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule).Count();
+                    GetTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule);
 
-                if (startTagMatches != endTagMatches)
+                if (!IsInvalidOrder(startTagMatches, endTagMatches))
                 {
                     startTagInlineType = InlineType.Placeholder;
                     endTagInlineType = InlineType.Placeholder;
@@ -59,6 +59,27 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
                 AddTagMatches(tagMatchesPerChar, endTagRegexMatches, endTagInlineType, matchRule);
             }
             return tagMatchesPerChar;
+        }
+
+        private static bool IsInvalidOrder(IEnumerable<TagMatch> startTagMatches, IEnumerable<TagMatch> endTagMatches)
+        {
+            var orderedStartTagMatches = startTagMatches.OrderBy(tagMatch => tagMatch.Start).ToList();
+            var orderedEndTagMatches = endTagMatches.OrderBy(tagMatch => tagMatch.Start).ToList();
+
+            if (orderedStartTagMatches.Count != orderedEndTagMatches.Count)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < orderedStartTagMatches.Count; ++i)
+            {
+                if (orderedStartTagMatches[i].Start > orderedEndTagMatches[i].Start)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static MatchCollection GetRegexMatches(string value, string pattern, bool isIgnoreCaseNeeded)

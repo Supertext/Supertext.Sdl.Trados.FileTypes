@@ -472,5 +472,20 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
             // Assert
             result[0].InlineType.Should().Be(InlineType.Text);
         }
+
+        [Test]
+        public void Process_WhenStringContainsDoubleBackslash_ShouldRecognizeAllAsText()
+        {
+            // Arrange
+            var testee = new TextProcessor();
+            testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
+            var testString = @"Copier l\\'URL</li><li>Coller l\\'URL dans ce champ";
+
+            // Act
+            var result = testee.Process(testString);
+
+            // Assert
+            result[1].InlineType.Should().Be(InlineType.Placeholder);
+        }
     }
 }
