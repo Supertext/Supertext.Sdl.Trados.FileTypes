@@ -91,7 +91,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
                 var isPathToProcess = CheckIsPathToProcess(_reader.Path);
 
-                if (_reader.Value == null || _reader.TokenType != JsonToken.String || !isPathToProcess)
+                if (_reader.Value == null || _reader.TokenType != JsonToken.String || !isPathToProcess || _reader.Value.ToString() == string.Empty)
                 {
                     continue;
                 }
