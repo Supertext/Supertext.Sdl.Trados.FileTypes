@@ -31,15 +31,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PathRuleForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this._ruleGroupBox = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this._pathPatternTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this._pathRulesTable = new System.Windows.Forms.TableLayoutPanel();
+            this._sourcePathPatternTextBox = new System.Windows.Forms.TextBox();
+            this._sourcePathLabel = new System.Windows.Forms.Label();
             this._ignoreCaseCheckBox = new System.Windows.Forms.CheckBox();
+            this._targetPathPatternTextBox = new System.Windows.Forms.TextBox();
+            this._targetPathLabel = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this._ruleGroupBox.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
+            this._pathRulesTable.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -53,34 +55,46 @@
             // _ruleGroupBox
             // 
             this.tableLayoutPanel1.SetColumnSpan(this._ruleGroupBox, 2);
-            this._ruleGroupBox.Controls.Add(this.tableLayoutPanel3);
+            this._ruleGroupBox.Controls.Add(this._pathRulesTable);
             resources.ApplyResources(this._ruleGroupBox, "_ruleGroupBox");
             this._ruleGroupBox.Name = "_ruleGroupBox";
             this._ruleGroupBox.TabStop = false;
             // 
-            // tableLayoutPanel3
+            // _pathRulesTable
             // 
-            resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
-            this.tableLayoutPanel3.Controls.Add(this._pathPatternTextBox, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this._ignoreCaseCheckBox, 1, 1);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            resources.ApplyResources(this._pathRulesTable, "_pathRulesTable");
+            this._pathRulesTable.Controls.Add(this._sourcePathPatternTextBox, 1, 1);
+            this._pathRulesTable.Controls.Add(this._sourcePathLabel, 0, 1);
+            this._pathRulesTable.Controls.Add(this._ignoreCaseCheckBox, 1, 3);
+            this._pathRulesTable.Controls.Add(this._targetPathPatternTextBox, 1, 2);
+            this._pathRulesTable.Controls.Add(this._targetPathLabel, 0, 2);
+            this._pathRulesTable.Name = "_pathRulesTable";
             // 
-            // _pathPatternTextBox
+            // _sourcePathPatternTextBox
             // 
-            resources.ApplyResources(this._pathPatternTextBox, "_pathPatternTextBox");
-            this._pathPatternTextBox.Name = "_pathPatternTextBox";
+            resources.ApplyResources(this._sourcePathPatternTextBox, "_sourcePathPatternTextBox");
+            this._sourcePathPatternTextBox.Name = "_sourcePathPatternTextBox";
             // 
-            // label1
+            // _sourcePathLabel
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            resources.ApplyResources(this._sourcePathLabel, "_sourcePathLabel");
+            this._sourcePathLabel.Name = "_sourcePathLabel";
             // 
             // _ignoreCaseCheckBox
             // 
             resources.ApplyResources(this._ignoreCaseCheckBox, "_ignoreCaseCheckBox");
             this._ignoreCaseCheckBox.Name = "_ignoreCaseCheckBox";
             this._ignoreCaseCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // _targetPathPatternTextBox
+            // 
+            resources.ApplyResources(this._targetPathPatternTextBox, "_targetPathPatternTextBox");
+            this._targetPathPatternTextBox.Name = "_targetPathPatternTextBox";
+            // 
+            // _targetPathLabel
+            // 
+            resources.ApplyResources(this._targetPathLabel, "_targetPathLabel");
+            this._targetPathLabel.Name = "_targetPathLabel";
             // 
             // btnCancel
             // 
@@ -105,8 +119,8 @@
             this.ShowIcon = false;
             this.tableLayoutPanel1.ResumeLayout(false);
             this._ruleGroupBox.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
+            this._pathRulesTable.ResumeLayout(false);
+            this._pathRulesTable.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -117,9 +131,11 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.GroupBox _ruleGroupBox;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.TextBox _pathPatternTextBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TableLayoutPanel _pathRulesTable;
+        private System.Windows.Forms.TextBox _sourcePathPatternTextBox;
+        private System.Windows.Forms.Label _sourcePathLabel;
         private System.Windows.Forms.CheckBox _ignoreCaseCheckBox;
+        private System.Windows.Forms.TextBox _targetPathPatternTextBox;
+        private System.Windows.Forms.Label _targetPathLabel;
     }
 }

@@ -44,7 +44,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             {
                 new PathRule
                 {
-                    PathPattern = "^process$"
+                    SourcePathPattern = "^process$"
                 }
             });
         }
@@ -213,7 +213,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             {
                 new PathRule
                 {
-                    PathPattern = "^process$",
+                    SourcePathPattern = "^process$",
                     IgnoreCase = true
                 }
             });

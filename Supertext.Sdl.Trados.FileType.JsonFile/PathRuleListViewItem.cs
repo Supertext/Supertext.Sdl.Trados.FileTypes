@@ -24,7 +24,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private void OnPathRuleChanged()
         {
-            Text = _pathRule.PathPattern;
+            Text = _pathRule.SourcePathPattern;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
         private const bool DefaultIgnoreCase = false;
         private static readonly string DefaultPathPattern = string.Empty;
 
-        private string _pathPattern;
+        private string _sourcePathPattern;
         private bool _ignoreCase;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -22,13 +22,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             ResetToDefaults();
         }
 
-        public string PathPattern
+        public string SourcePathPattern
         {
-            get { return _pathPattern; }
+            get { return _sourcePathPattern; }
             set
             {
-                _pathPattern = value;
-                OnPropertyChanged("PathPattern");
+                _sourcePathPattern = value;
+                OnPropertyChanged("SourcePathPattern");
             }
         }
 
@@ -44,7 +44,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
 
         public void ResetToDefaults()
         {
-            PathPattern = DefaultPathPattern;
+            SourcePathPattern = DefaultPathPattern;
             IgnoreCase = DefaultIgnoreCase;
         }
 
@@ -55,13 +55,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
 
         public void PopulateFromSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
         {
-            PathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, DefaultPathPattern);
+            SourcePathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, DefaultPathPattern);
             IgnoreCase = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, DefaultIgnoreCase);
         }
 
         public void SaveToSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
         {
-            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, PathPattern, DefaultPathPattern);
+            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, SourcePathPattern, DefaultPathPattern);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, IgnoreCase, DefaultIgnoreCase);
         }
 

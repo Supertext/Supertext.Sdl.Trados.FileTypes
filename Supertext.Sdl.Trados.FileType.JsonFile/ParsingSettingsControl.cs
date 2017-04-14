@@ -186,13 +186,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             foreach (var file in files)
             {
                 var existingPathPatterns = _rulesListView.Items.Cast<PathRuleListViewItem>()
-                .Select(pathRuleListViewItem => pathRuleListViewItem.PathRule.PathPattern).ToList();
+                .Select(pathRuleListViewItem => pathRuleListViewItem.PathRule.SourcePathPattern).ToList();
 
                 var extractedPathPatterns = jsonPathPatternExtractor.ExtractPathPatterns(file);
 
                 foreach (var pathPattern in extractedPathPatterns.Except(existingPathPatterns))
                 {
-                    _rulesListView.Items.Add(new PathRuleListViewItem(new PathRule { PathPattern = pathPattern }));
+                    _rulesListView.Items.Add(new PathRuleListViewItem(new PathRule { SourcePathPattern = pathPattern }));
                 }
             }
         }

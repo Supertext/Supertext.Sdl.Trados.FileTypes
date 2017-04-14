@@ -112,7 +112,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                    ||
                    _parsingSettings.PathRules.Select(
                        pathRule =>
-                           new Regex(pathRule.PathPattern,
+                           new Regex(pathRule.SourcePathPattern,
                                pathRule.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None).Match(path))
                        .Any(match => match.Success);
         }
