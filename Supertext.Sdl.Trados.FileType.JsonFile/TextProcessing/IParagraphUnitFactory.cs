@@ -1,6 +1,5 @@
 ﻿using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
 {
@@ -10,6 +9,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
 
         IPropertiesFactory PropertiesFactory { get; set; }
 
-        IParagraphUnit Create(IJsonTextReader reader);
+        IParagraphUnit Create(string sourcePath, string sourceValue, string targetPath, string targetValue);
     }
 }

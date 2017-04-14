@@ -89,14 +89,23 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             {
                 OnProgress((byte)(_reader.LineNumber * 100 / _totalNumberOfLines));
 
-                var isPathToProcess = CheckIsPathToProcess(_reader.Path);
+                var sourcePath = _reader.Path;
+                var isPathToProcess = CheckIsPathToProcess(sourcePath);
 
                 if (_reader.Value == null || _reader.TokenType != JsonToken.String || !isPathToProcess || _reader.Value.ToString() == string.Empty)
                 {
                     continue;
                 }
 
-                var paragraphUnit = _paragraphUnitFactory.Create(_reader);
+                // TODO remove this quick fix once json.NET library has fixed issue
+                // Escape quotes in path
+                var mathes = Regex.Matches(sourcePath, @"\['[^[]*'\]");
+                foreach (Match match in mathes)
+                {
+                    sourcePath = sourcePath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
+                }
+
+                var paragraphUnit = _paragraphUnitFactory.Create(sourcePath, _reader.Value.ToString(), sourcePath, string.Empty);
 
                 Output.ProcessParagraphUnit(paragraphUnit);
 

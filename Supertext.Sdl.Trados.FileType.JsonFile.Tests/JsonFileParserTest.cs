@@ -17,6 +17,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
     [TestFixture]
     public class JsonFileParserTest
     {
+        private const string SourcePath = "process";
+
         private IJsonTextReader _jsonTextReaderMock;
         private IBilingualContentHandler _bilingualContentHandlerMock;
         private IEmbeddedContentRegexSettings _embeddedContentRegexSettingsMock;
@@ -38,13 +40,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
             _itemFactoryMock = A.Fake<IDocumentItemFactory>();
             A.CallTo(() => _itemFactoryMock.PropertiesFactory).Returns(_propertiesFactoryMock);
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(_jsonTextReaderMock)).Returns(_paragraphUnitMock);
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(SourcePath, A<string>.Ignored, SourcePath, A<string>.Ignored)).Returns(_paragraphUnitMock);
             A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(true);
             A.CallTo(() => _parsingSettingsMock.PathRules).Returns(new ComplexObservableList<PathRule>
             {
                 new PathRule
                 {
-                    SourcePathPattern = "^process$"
+                    SourcePathPattern = $"^{SourcePath}$"
                 }
             });
         }
@@ -250,7 +252,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             A.CallTo(() => _jsonTextReaderMock.LineNumber).ReturnsLazily(() => ++lineCounter);
             A.CallTo(() => _jsonTextReaderMock.Value).ReturnsLazily(() => texts[lineCounter - 1%4]);
 
-            A.CallTo(() => _jsonTextReaderMock.Path).Returns("process");
+            A.CallTo(() => _jsonTextReaderMock.Path).Returns(SourcePath);
 
             var fileHelperMock = A.Fake<IFileHelper>();
             A.CallTo(() => fileHelperMock.GetNumberOfLines(A<string>.Ignored)).Returns(4);

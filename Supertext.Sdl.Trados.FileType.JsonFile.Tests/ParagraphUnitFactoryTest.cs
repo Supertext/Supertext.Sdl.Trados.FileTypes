@@ -4,7 +4,6 @@ using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
@@ -12,12 +11,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
     [TestFixture]
     public class ParagraphUnitFactoryTest
     {
-        private const string TheTestPath = "the.test.path";
-        private const string TheTestValue = "The test value";
+        private const string TheSourcePath = "the.source.path";
+        private const string TheTargetPath = "the.target.path";
+        private const string TheSourceValue = "The source value";
+        private const string TheTargetValue = "The target value";
         private IDocumentItemFactory _itemFactoryMock;
         private IPropertiesFactory _propertiesFactoryMock;
         private IParagraphUnit _paragraphUnitMock;
-        private IJsonTextReader _defaultReader;
 
         [SetUp]
         public void SetUp()
@@ -26,9 +26,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
             _paragraphUnitMock = A.Fake<IParagraphUnit>();
             A.CallTo(() => _itemFactoryMock.CreateParagraphUnit(A<LockTypeFlags>.Ignored)).Returns(_paragraphUnitMock);
-            _defaultReader = A.Fake<IJsonTextReader>();
-            A.CallTo(() => _defaultReader.Value).Returns(TheTestValue);
-            A.CallTo(() => _defaultReader.Path).Returns(TheTestPath);
         }
 
         [Test]
@@ -45,10 +42,10 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 .Returns(fieldContextInfoMock);
 
             // Act
-            testee.Create(_defaultReader);
+            testee.Create(TheSourcePath, TheSourceValue, TheTargetPath, TheTargetValue);
 
             // Assert
-            fieldContextInfoMock.Description.Should().Be(TheTestPath);
+            fieldContextInfoMock.Description.Should().Be(TheSourcePath);
             A.CallTo(() => contextPropertiesMock.Contexts.Add(fieldContextInfoMock)).MustHaveHappened();
         }
 
@@ -66,11 +63,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 .Returns(locationContextInfoMock);
 
             // Act
-            testee.Create(_defaultReader);
+            testee.Create(TheSourcePath, TheSourceValue, TheTargetPath, TheTargetValue);
 
             // Assert
-            A.CallTo(() => locationContextInfoMock.SetMetaData(ContextKeys.SourcePath, TheTestPath)).MustHaveHappened();
-            A.CallTo(() => locationContextInfoMock.SetMetaData(ContextKeys.TargetPath, TheTestPath)).MustHaveHappened();
+            A.CallTo(() => locationContextInfoMock.SetMetaData(ContextKeys.SourcePath, TheSourcePath)).MustHaveHappened();
+            A.CallTo(() => locationContextInfoMock.SetMetaData(ContextKeys.TargetPath, TheTargetPath)).MustHaveHappened();
+            A.CallTo(() => contextPropertiesMock.Contexts.Add(locationContextInfoMock)).MustHaveHappened();
         }
 
         [Test]
@@ -80,20 +78,44 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var testee = CreateTestee();
 
             var sourceSegmentMock = A.Fake<ISegment>();
-            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).Returns(sourceSegmentMock);
+            var targetSegmentMock = A.Fake<ISegment>();
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
 
             var textPropertiesMock = A.Fake<ITextProperties>();
-            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(TheTestValue)).Returns(textPropertiesMock);
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(TheSourceValue)).Returns(textPropertiesMock);
 
             var textMock = A.Fake<IText>();
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
 
             // Act
-            testee.Create(_defaultReader);
+            testee.Create(TheSourcePath, TheSourceValue, TheTargetPath, TheTargetValue);
 
             // Assert
             A.CallTo(() => sourceSegmentMock.Add(textMock)).MustHaveHappened();
             A.CallTo(() => _paragraphUnitMock.Source.Add(sourceSegmentMock)).MustHaveHappened();
+        }
+
+        public void Create_ShouldAddTargetSegmentToParagraphUnit()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var sourceSegmentMock = A.Fake<ISegment>();
+            var targetSegmentMock = A.Fake<ISegment>();
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
+
+            var textPropertiesMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(TheSourceValue)).Returns(textPropertiesMock);
+
+            var textMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
+
+            // Act
+            testee.Create(TheSourcePath, TheSourceValue, TheTargetPath, TheTargetValue);
+
+            // Assert
+            A.CallTo(() => targetSegmentMock.Add(textMock)).MustHaveHappened();
+            A.CallTo(() => _paragraphUnitMock.Target.Add(targetSegmentMock)).MustHaveHappened();
         }
 
         private ParagraphUnitFactory CreateTestee()
