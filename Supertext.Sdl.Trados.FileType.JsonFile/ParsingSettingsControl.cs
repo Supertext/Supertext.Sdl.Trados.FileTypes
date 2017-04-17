@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
@@ -58,7 +57,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _extractButton.Enabled = enabled;
             _editRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
-            _removeAllButton.Enabled = _rulesListView.Items.Count > 0 && enabled;
+            _removeAllButton.Enabled = enabled;
         }
 
         private IEnumerable<PathRule> GetPathRules()
@@ -103,44 +102,36 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private void _editRuleButton_Click(object sender, EventArgs e)
         {
-            if (_rulesListView.SelectedItems.Count <= 0)
+            foreach (PathRuleListViewItem ruleListViewItem in _rulesListView.SelectedItems)
             {
-                return;
-            }
-
-            var ruleListViewItem = _rulesListView.SelectedItems[0] as PathRuleListViewItem;
-
-            if (ruleListViewItem == null)
-            {
-                return;
-            }
-
-            var pathRule = ruleListViewItem.PathRule;
-
-            using (var pathRuleForm = new PathRuleForm(pathRule))
-            {
-                if (pathRuleForm.ShowDialog(this) == DialogResult.OK)
+                if (ruleListViewItem == null)
                 {
-                    ruleListViewItem.PathRule = pathRule;
+                    continue;
+                }
+
+                var pathRule = ruleListViewItem.PathRule;
+
+                using (var pathRuleForm = new PathRuleForm(pathRule))
+                {
+                    if (pathRuleForm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        ruleListViewItem.PathRule = pathRule;
+                    }
                 }
             }
         }
 
         private void _removeRuleButton_Click(object sender, EventArgs e)
         {
-            if (_rulesListView.SelectedItems.Count <= 0)
+            foreach (ListViewItem item in _rulesListView.SelectedItems)
             {
-                return;
+                if (item == null)
+                {
+                    continue;
+                }
+
+                _rulesListView.Items.Remove(item);
             }
-
-            var item = _rulesListView.SelectedItems[0];
-
-            if (item == null)
-            {
-                return;
-            }
-
-            _rulesListView.Items.Remove(item);
 
             UpdateEnabledState();
         }

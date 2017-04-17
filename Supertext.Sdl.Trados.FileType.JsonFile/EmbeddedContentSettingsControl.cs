@@ -64,11 +64,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private void _editRuleButton_Click(object sender, EventArgs e)
         {
-            if (_rulesListView.SelectedItems.Count > 0)
+            foreach (RegexRuleListItem regexItem in _rulesListView.SelectedItems)
             {
-                var regexItem = _rulesListView.SelectedItems[0] as RegexRuleListItem;
+                if (regexItem == null)
+                {
+                    continue;
+                }
 
-                if (regexItem == null) return;
                 var rule = regexItem.GetRule();
 
                 using (var regexForm = new RegexRuleForm(rule))
@@ -83,13 +85,16 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private void _removeRuleButton_Click(object sender, EventArgs e)
         {
-            if (_rulesListView.SelectedItems.Count <= 0) return;
-            var item = _rulesListView.SelectedItems[0];
+            foreach (ListViewItem item in _rulesListView.SelectedItems)
+            {
+                if (item == null)
+                {
+                    continue;
+                }
+                _rulesListView.Items.Remove(item);
 
-            if (item == null) return;
-            _rulesListView.Items.Remove(item);
-
-            UpdateEnabledState();
+                UpdateEnabledState();
+            }
         }
 
         private void _removeAllButton_Click(object sender, EventArgs e)
@@ -121,7 +126,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _addRuleButton.Enabled = enabled;
             _editRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
-            _removeAllButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
+            _removeAllButton.Enabled = enabled;
         }
 
         public EmbeddedContentRegexSettings Settings

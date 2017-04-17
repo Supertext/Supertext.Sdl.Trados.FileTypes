@@ -101,8 +101,6 @@
             this._rulesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this._rulesListView.FullRowSelect = true;
-            this._rulesListView.HideSelection = false;
-            this._rulesListView.MultiSelect = false;
             this._rulesListView.Name = "_rulesListView";
             this._tagDefinitionLayoutPanel.SetRowSpan(this._rulesListView, 6);
             this._rulesListView.UseCompatibleStateImageBehavior = false;

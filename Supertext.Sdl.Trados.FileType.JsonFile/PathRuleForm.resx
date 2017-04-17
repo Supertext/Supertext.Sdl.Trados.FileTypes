@@ -130,13 +130,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="_sourcePathPatternTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>169, 7</value>
-  </data>
-  <data name="_sourcePathPatternTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>77, 3</value>
   </data>
   <data name="_sourcePathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>984, 35</value>
+    <value>417, 20</value>
   </data>
   <data name="_sourcePathPatternTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -163,13 +160,10 @@
     <value>NoControl</value>
   </data>
   <data name="_sourcePathLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 10</value>
-  </data>
-  <data name="_sourcePathLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 0, 7, 0</value>
+    <value>3, 6</value>
   </data>
   <data name="_sourcePathLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 29</value>
+    <value>68, 13</value>
   </data>
   <data name="_sourcePathLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -196,13 +190,10 @@
     <value>True</value>
   </data>
   <data name="_ignoreCaseCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>169, 105</value>
-  </data>
-  <data name="_ignoreCaseCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>77, 58</value>
   </data>
   <data name="_ignoreCaseCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>984, 33</value>
+    <value>417, 17</value>
   </data>
   <data name="_ignoreCaseCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -226,13 +217,10 @@
     <value>Left, Right</value>
   </data>
   <data name="_targetPathPatternTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>169, 56</value>
-  </data>
-  <data name="_targetPathPatternTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>77, 29</value>
   </data>
   <data name="_targetPathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>984, 35</value>
+    <value>417, 20</value>
   </data>
   <data name="_targetPathPatternTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -259,13 +247,10 @@
     <value>NoControl</value>
   </data>
   <data name="_targetPathLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 59</value>
-  </data>
-  <data name="_targetPathLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 0, 7, 0</value>
+    <value>3, 32</value>
   </data>
   <data name="_targetPathLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 29</value>
+    <value>68, 13</value>
   </data>
   <data name="_targetPathLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -289,16 +274,13 @@
     <value>Fill</value>
   </data>
   <data name="_pathRulesTable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 35</value>
-  </data>
-  <data name="_pathRulesTable.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>3, 16</value>
   </data>
   <data name="_pathRulesTable.RowCount" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="_pathRulesTable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1160, 144</value>
+    <value>497, 81</value>
   </data>
   <data name="_pathRulesTable.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -322,16 +304,10 @@
     <value>Fill</value>
   </data>
   <data name="_ruleGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 7</value>
-  </data>
-  <data name="_ruleGroupBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
-  </data>
-  <data name="_ruleGroupBox.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>3, 3</value>
   </data>
   <data name="_ruleGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1174, 186</value>
+    <value>503, 100</value>
   </data>
   <data name="_ruleGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -358,13 +334,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1006, 207</value>
-  </data>
-  <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>431, 109</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 51</value>
+    <value>75, 23</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -391,13 +364,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>817, 207</value>
-  </data>
-  <data name="btnOk.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>350, 109</value>
   </data>
   <data name="btnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 51</value>
+    <value>75, 23</value>
   </data>
   <data name="btnOk.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -423,14 +393,11 @@
   <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
-  </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1188, 265</value>
+    <value>509, 135</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -454,13 +421,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>14, 29</value>
+    <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1188, 265</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 7, 7, 7</value>
+    <value>509, 135</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
