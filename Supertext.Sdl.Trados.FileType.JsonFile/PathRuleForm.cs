@@ -19,6 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         protected override void OnLoad(EventArgs e)
         {
             _sourcePathPatternTextBox.Text = _pathRule.SourcePathPattern;
+            _targetPathPatternTextBox.Text = _pathRule.TargetPathPattern;
             _ignoreCaseCheckBox.Checked = _pathRule.IgnoreCase;
         }
 
@@ -31,6 +32,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             }
 
             _pathRule.SourcePathPattern = _sourcePathPatternTextBox.Text;
+            _pathRule.TargetPathPattern = _targetPathPatternTextBox.Text;
             _pathRule.IgnoreCase = _ignoreCaseCheckBox.Checked;
         }
 
