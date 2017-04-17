@@ -6,13 +6,16 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
 {
     public class PathRule : ISerializableListItem, INotifyPropertyChanged
     {
-        private const string PathPatternSetting = "PathPattern";
+        private const string SourcePathPatternSetting = "SourcePathPattern";
+        private const string TargetPathPatternSetting = "TargetPathPattern";
         private const string IgnoreCaseSetting = "IgnoreCasePattern";
 
         private const bool DefaultIgnoreCase = false;
-        private static readonly string DefaultPathPattern = string.Empty;
+        private static readonly string DefaultSourcePathPattern = string.Empty;
+        private static readonly string DefaultTargetPathPattern = string.Empty;
 
         private string _sourcePathPattern;
+        private string _targetPathPattern;
         private bool _ignoreCase;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,6 +35,16 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             }
         }
 
+        public string TargetPathPattern
+        {
+            get { return _targetPathPattern; }
+            set
+            {
+                _targetPathPattern = value;
+                OnPropertyChanged("SourcePathPattern");
+            }
+        }
+
         public bool IgnoreCase
         {
             get { return _ignoreCase; }
@@ -44,24 +57,28 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
 
         public void ResetToDefaults()
         {
-            SourcePathPattern = DefaultPathPattern;
+            SourcePathPattern = DefaultSourcePathPattern;
+            TargetPathPattern = DefaultTargetPathPattern;
             IgnoreCase = DefaultIgnoreCase;
         }
 
         public void ClearListItemSettings(ISettingsGroup settingsGroup, string listItemSetting)
         {
-            settingsGroup.RemoveSetting(listItemSetting + PathPatternSetting);
+            settingsGroup.RemoveSetting(listItemSetting + SourcePathPatternSetting);
+            settingsGroup.RemoveSetting(listItemSetting + TargetPathPatternSetting);
         }
 
         public void PopulateFromSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
         {
-            SourcePathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, DefaultPathPattern);
+            SourcePathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SourcePathPatternSetting, DefaultSourcePathPattern);
+            TargetPathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + TargetPathPatternSetting, DefaultTargetPathPattern);
             IgnoreCase = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, DefaultIgnoreCase);
         }
 
         public void SaveToSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
         {
-            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + PathPatternSetting, SourcePathPattern, DefaultPathPattern);
+            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SourcePathPatternSetting, SourcePathPattern, DefaultSourcePathPattern);
+            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + TargetPathPatternSetting, TargetPathPattern, DefaultTargetPathPattern);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, IgnoreCase, DefaultIgnoreCase);
         }
 
