@@ -58,7 +58,11 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _editRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeAllButton.Enabled = enabled;
-            _pairButton.Enabled = _rulesListView.SelectedItems.Count == 2 && enabled;
+            _pairButton.Enabled = 
+                _rulesListView.SelectedItems.Count == 2 &&
+                !((PathRuleListViewItem) _rulesListView.SelectedItems[0]).PathRule.IsBilingual &&
+                !((PathRuleListViewItem) _rulesListView.SelectedItems[1]).PathRule.IsBilingual &&
+                enabled;
         }
 
         private IEnumerable<PathRule> GetPathRules()
