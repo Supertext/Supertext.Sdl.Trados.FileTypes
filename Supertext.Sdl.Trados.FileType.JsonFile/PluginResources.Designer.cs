@@ -169,6 +169,15 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Same as source.
+        /// </summary>
+        internal static string SameAsSource {
+            get {
+                return ResourceManager.GetString("SameAsSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tag pair.
         /// </summary>
         internal static string Tag_Pair {

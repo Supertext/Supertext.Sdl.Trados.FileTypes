@@ -58,6 +58,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _editRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeRuleButton.Enabled = _rulesListView.SelectedItems.Count > 0 && enabled;
             _removeAllButton.Enabled = enabled;
+            _pairButton.Enabled = _rulesListView.SelectedItems.Count == 2 && enabled;
         }
 
         private IEnumerable<PathRule> GetPathRules()
@@ -143,12 +144,20 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             UpdateEnabledState();
         }
 
-        private void _helpButton_Click(object sender, EventArgs e)
+        private void _pairButton_Click(object sender, EventArgs e)
         {
-            using (var pathRuleHelpForm = new PathRuleHelpForm())
+            if (_rulesListView.SelectedItems.Count != 2)
             {
-                pathRuleHelpForm.ShowDialog(this);
+                return;
             }
+
+            var firstPathRuleListViewItem = (PathRuleListViewItem) _rulesListView.SelectedItems[0];
+            var firstPathRule = firstPathRuleListViewItem.PathRule;
+            var secondPathRuleListViewItem = (PathRuleListViewItem) _rulesListView.SelectedItems[1];
+            firstPathRule.IsBilingual = true;
+            firstPathRule.TargetPathPattern = secondPathRuleListViewItem.PathRule.SourcePathPattern;
+            firstPathRuleListViewItem.PathRule = firstPathRule;
+            _rulesListView.Items.Remove(secondPathRuleListViewItem);
         }
 
         private void _extractButton_Click(object sender, EventArgs e)
@@ -167,6 +176,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 }
 
                 ExtractFiles(openFileDialog.FileNames);
+            }
+        }
+
+        private void _helpButton_Click(object sender, EventArgs e)
+        {
+            using (var pathRuleHelpForm = new PathRuleHelpForm())
+            {
+                pathRuleHelpForm.ShowDialog(this);
             }
         }
 

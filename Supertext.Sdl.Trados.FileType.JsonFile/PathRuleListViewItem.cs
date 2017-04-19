@@ -24,7 +24,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         private void OnPathRuleChanged()
         {
-            Text = _pathRule.SourcePathPattern + "->" + _pathRule.TargetPathPattern;
+            SubItems.Clear();
+            Text = PathRule.SourcePathPattern;
+            SubItems.Add(PathRule.IsBilingual ? PathRule.TargetPathPattern : PluginResources.SameAsSource);
         }
     }
 }

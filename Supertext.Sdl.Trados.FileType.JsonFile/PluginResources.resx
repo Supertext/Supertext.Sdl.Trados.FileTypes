@@ -153,6 +153,9 @@
   <data name="Plugin_Name" xml:space="preserve">
     <value>JSON file type</value>
   </data>
+  <data name="SameAsSource" xml:space="preserve">
+    <value>Same as source</value>
+  </data>
   <data name="Tag_Pair" xml:space="preserve">
     <value>Tag pair</value>
   </data>

@@ -50,7 +50,15 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         private void UpdateTargetInputState()
         {
             _targetPathPatternTextBox.Enabled = _isBilingualCheckBox.Checked;
-            _swapButton.Enabled = _isBilingualCheckBox.Checked;
+
+            if (_isBilingualCheckBox.Checked)
+            {
+                _swapButton.Show();
+            }
+            else
+            {
+                _swapButton.Hide();
+            }
         }
 
         private void OnSwapButtonClick(object sender, EventArgs e)

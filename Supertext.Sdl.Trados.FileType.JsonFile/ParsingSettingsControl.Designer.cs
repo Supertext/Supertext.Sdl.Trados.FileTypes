@@ -37,12 +37,14 @@
             this._tagDefinitionLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this._rulesListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._removeAllButton = new System.Windows.Forms.Button();
             this._addRuleButton = new System.Windows.Forms.Button();
             this._removeRuleButton = new System.Windows.Forms.Button();
             this._editRuleButton = new System.Windows.Forms.Button();
             this._helpButton = new System.Windows.Forms.Button();
             this._extractButton = new System.Windows.Forms.Button();
+            this._pairButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -51,8 +53,8 @@
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -78,8 +80,8 @@
             // 
             // groupBox3
             // 
-            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Controls.Add(this._tagDefinitionLayoutPanel);
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
@@ -87,22 +89,24 @@
             // 
             resources.ApplyResources(this._tagDefinitionLayoutPanel, "_tagDefinitionLayoutPanel");
             this._tagDefinitionLayoutPanel.Controls.Add(this._rulesListView, 0, 0);
-            this._tagDefinitionLayoutPanel.Controls.Add(this._removeAllButton, 1, 3);
             this._tagDefinitionLayoutPanel.Controls.Add(this._addRuleButton, 1, 0);
-            this._tagDefinitionLayoutPanel.Controls.Add(this._removeRuleButton, 1, 2);
             this._tagDefinitionLayoutPanel.Controls.Add(this._editRuleButton, 1, 1);
-            this._tagDefinitionLayoutPanel.Controls.Add(this._helpButton, 1, 5);
-            this._tagDefinitionLayoutPanel.Controls.Add(this._extractButton, 1, 4);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._helpButton, 1, 6);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._extractButton, 1, 5);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._removeRuleButton, 1, 2);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._removeAllButton, 1, 3);
+            this._tagDefinitionLayoutPanel.Controls.Add(this._pairButton, 1, 4);
             this._tagDefinitionLayoutPanel.Name = "_tagDefinitionLayoutPanel";
             // 
             // _rulesListView
             // 
-            resources.ApplyResources(this._rulesListView, "_rulesListView");
             this._rulesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
+            this.columnHeader1,
+            this.columnHeader2});
+            resources.ApplyResources(this._rulesListView, "_rulesListView");
             this._rulesListView.FullRowSelect = true;
             this._rulesListView.Name = "_rulesListView";
-            this._tagDefinitionLayoutPanel.SetRowSpan(this._rulesListView, 6);
+            this._tagDefinitionLayoutPanel.SetRowSpan(this._rulesListView, 7);
             this._rulesListView.UseCompatibleStateImageBehavior = false;
             this._rulesListView.View = System.Windows.Forms.View.Details;
             this._rulesListView.SelectedIndexChanged += new System.EventHandler(this._rulesListView_SelectedIndexChanged);
@@ -110,6 +114,10 @@
             // columnHeader1
             // 
             resources.ApplyResources(this.columnHeader1, "columnHeader1");
+            // 
+            // columnHeader2
+            // 
+            resources.ApplyResources(this.columnHeader2, "columnHeader2");
             // 
             // _removeAllButton
             // 
@@ -153,6 +161,13 @@
             this._extractButton.UseVisualStyleBackColor = true;
             this._extractButton.Click += new System.EventHandler(this._extractButton_Click);
             // 
+            // _pairButton
+            // 
+            resources.ApplyResources(this._pairButton, "_pairButton");
+            this._pairButton.Name = "_pairButton";
+            this._pairButton.UseVisualStyleBackColor = true;
+            this._pairButton.Click += new System.EventHandler(this._pairButton_Click);
+            // 
             // ParsingSettingsControl
             // 
             resources.ApplyResources(this, "$this");
@@ -184,5 +199,7 @@
         private System.Windows.Forms.Button _editRuleButton;
         private System.Windows.Forms.Button _helpButton;
         private System.Windows.Forms.Button _extractButton;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Button _pairButton;
     }
 }
