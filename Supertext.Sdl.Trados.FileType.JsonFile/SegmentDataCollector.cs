@@ -5,13 +5,6 @@ using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
-    public interface ISegmentDataCollector
-    {
-        SegmentData CompleteSegmentData { get; set; }
-
-        void Add(string path, string value);
-    }
-
     public class SegmentDataCollector : ISegmentDataCollector
     {
         private static readonly Regex IndexerRegex = new Regex(@"\[\d\]");
@@ -122,16 +115,5 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 TargetValue = targetValue
             };
         }
-    }
-
-    public class SegmentData
-    {
-        public string SourcePath { get; set; }
-
-        public string SourceValue { get; set; }
-
-        public string TargetPath { get; set; }
-
-        public string TargetValue { get; set; }
     }
 }

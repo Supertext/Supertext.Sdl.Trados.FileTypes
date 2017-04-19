@@ -81,6 +81,7 @@
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedContentSettingsPage.cs" />
+    <Compile Include="ISegmentDataCollector.cs" />
     <Compile Include="JsonFileParser.cs" />
     <Compile Include="JsonFileSniffer.cs" />
     <Compile Include="JsonFileWriter.cs" />
@@ -152,6 +153,7 @@
     </Compile>
     <Compile Include="JsonFileFilterComponentBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SegmentData.cs" />
     <Compile Include="SegmentDataCollector.cs" />
     <Compile Include="Settings\IParsingSettings.cs" />
     <Compile Include="Settings\PathRule.cs" />
