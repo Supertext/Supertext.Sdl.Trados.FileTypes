@@ -56,12 +56,15 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public IFileExtractor BuildFileExtractor(string name)
         {
+            var parsingSettings = new ParsingSettings();
+
             var parser = new JsonFileParser(
                 new JsonFactory(),
                 new FileHelper(),
                 new EmbeddedContentRegexSettings(),
-                new ParsingSettings(),
-                new ParagraphUnitFactory());
+                parsingSettings,
+                new ParagraphUnitFactory(),
+                new SegmentDataCollector(parsingSettings));
 
             var fileExtractor = FileTypeManager.BuildFileExtractor(parser, this);
 

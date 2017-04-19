@@ -229,8 +229,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="pluginpackage.manifest.xml" />
-    <None Include="Resources\Swap.png" />
-    <None Include="Resources\Swap.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Supertext.Sdl.Trados.FileType.Utils\Supertext.Sdl.Trados.FileType.Utils.csproj">

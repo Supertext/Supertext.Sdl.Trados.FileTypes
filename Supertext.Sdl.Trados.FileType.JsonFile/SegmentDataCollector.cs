@@ -5,7 +5,14 @@ using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
-    public class SegmentDataCollector
+    public interface ISegmentDataCollector
+    {
+        SegmentData CompleteSegmentData { get; set; }
+
+        void Add(string path, string value);
+    }
+
+    public class SegmentDataCollector : ISegmentDataCollector
     {
         private static readonly Regex IndexerRegex = new Regex(@"\[\d\]");
 
@@ -45,6 +52,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
                 if (regex.IsMatch(path))
                 {
+                    if (!pathRule.IsBilingual)
+                    {
+                        SetCompleteSegmentData(path, value, path, value);
+                        return;
+                    }
+
                     var key = GetKey(pathRule, path);
 
                     if (_tempTargets.ContainsKey(key))
@@ -109,6 +122,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public string TargetPath { get; set; }
 
-        public object TargetValue { get; set; }
+        public string TargetValue { get; set; }
     }
 }

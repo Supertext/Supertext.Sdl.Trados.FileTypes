@@ -21,6 +21,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _sourcePathPatternTextBox.Text = _pathRule.SourcePathPattern;
             _targetPathPatternTextBox.Text = _pathRule.TargetPathPattern;
             _ignoreCaseCheckBox.Checked = _pathRule.IgnoreCase;
+            _isBilingualCheckBox.Checked = _pathRule.IsBilingual;
+
+            UpdateTargetInputState();
         }
 
 
@@ -34,19 +37,27 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _pathRule.SourcePathPattern = _sourcePathPatternTextBox.Text;
             _pathRule.TargetPathPattern = _targetPathPatternTextBox.Text;
             _pathRule.IgnoreCase = _ignoreCaseCheckBox.Checked;
+            _pathRule.IsBilingual = _isBilingualCheckBox.Checked;
         }
 
-        private void OnButtonSwap_Click(object sender, EventArgs e)
+        private void OnIsBilingualCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            var sourcePathLabelCellPosition = _pathRulesTable.GetCellPosition(_sourcePathLabel);
-            var targetPathLabelCellPosition = _pathRulesTable.GetCellPosition(_targetPathLabel);
-            var sourcePathPatternTextBoxCellPosition = _pathRulesTable.GetCellPosition(_sourcePathPatternTextBox);
-            var targetPathPatternCellPosition = _pathRulesTable.GetCellPosition(_targetPathPatternTextBox);
+            _pathRule.IsBilingual = _isBilingualCheckBox.Checked;
 
-            _pathRulesTable.SetCellPosition(_sourcePathLabel, targetPathLabelCellPosition);
-            _pathRulesTable.SetCellPosition(_targetPathLabel, sourcePathLabelCellPosition);
-            _pathRulesTable.SetCellPosition(_sourcePathPatternTextBox, targetPathPatternCellPosition);
-            _pathRulesTable.SetCellPosition(_targetPathPatternTextBox, sourcePathPatternTextBoxCellPosition);
+            UpdateTargetInputState();
+        }
+
+        private void UpdateTargetInputState()
+        {
+            _targetPathPatternTextBox.Enabled = _isBilingualCheckBox.Checked;
+            _swapButton.Enabled = _isBilingualCheckBox.Checked;
+        }
+
+        private void OnSwapButtonClick(object sender, EventArgs e)
+        {
+            var sourceValue = _sourcePathPatternTextBox.Text;
+            _sourcePathPatternTextBox.Text = _targetPathPatternTextBox.Text;
+            _targetPathPatternTextBox.Text = sourceValue;
         }
     }
 }

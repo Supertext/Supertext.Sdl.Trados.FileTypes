@@ -19,6 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath",
                         TargetPathPattern = "TheTargetPath"
                     }
@@ -51,6 +52,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath",
                         TargetPathPattern = "TheTargetPath"
                     }
@@ -76,11 +78,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath1",
                         TargetPathPattern = "TheTargetPath1"
                     },
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath2",
                         TargetPathPattern = "TheTargetPath2"
                     }
@@ -130,11 +134,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath1",
                         TargetPathPattern = "TheTargetPath1"
                     },
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath2",
                         TargetPathPattern = "TheTargetPath2"
                     }
@@ -184,6 +190,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath1",
                         TargetPathPattern = "TheTargetPath1"
                     }
@@ -217,11 +224,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = @"TheBasePath.Array1Property\[\d\].Source",
                         TargetPathPattern = @"TheBasePath.Array1Property\[\d\].Target"
                     },
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = @"TheBasePath.Array2Property\[\d\].Source",
                         TargetPathPattern = @"TheBasePath.Array2Property\[\d\].Target"
                     }
@@ -273,6 +282,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = @"Source",
                         TargetPathPattern = @"Target"
                     }
@@ -324,6 +334,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath",
                         TargetPathPattern = "TheTargetPath",
                         IgnoreCase = false
@@ -350,6 +361,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 {
                     new PathRule
                     {
+                        IsBilingual = true,
                         SourcePathPattern = "TheSourcePath",
                         TargetPathPattern = "TheTargetPath",
                         IgnoreCase = true
@@ -372,6 +384,65 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourceValue = "The source value",
                             TargetPath = "TheTargetPath",
                             TargetValue = "The target value"
+                        }
+                    }
+                }
+            },
+            new TestCase
+            {
+                Name = "TestCase10",
+                PathRules = new ComplexObservableList<PathRule>
+                {
+                    new PathRule
+                    {
+                        SourcePathPattern = "ThePath"
+                    }
+                },
+                AddChecks = new List<AddCheck>
+                {
+                    new AddCheck
+                    {
+                        Path = "ThePath",
+                        Value = "The value",
+                        ExpectedSegmentData = new SegmentData
+                        {
+                            SourcePath = "ThePath",
+                            SourceValue = "The value",
+                            TargetPath = "ThePath",
+                            TargetValue = "The value"
+                        }
+                    }
+                }
+            },
+            new TestCase
+            {
+                Name = "TestCase11",
+                PathRules = new ComplexObservableList<PathRule>
+                {
+                    new PathRule
+                    {
+                        IsBilingual = true,
+                        SourcePathPattern = @"Translations\[\d+\]\.Source",
+                        TargetPathPattern = @"Translations\[\d+\]\.Target"
+                    }
+                },
+                AddChecks = new List<AddCheck>
+                {
+                    new AddCheck
+                    {
+                        Path = "Translations[0].Source",
+                        Value = "The source text1"
+                    },
+                    new AddCheck
+                    {
+                        Path = "Translations[0].Target",
+                        Value = "The target text1",
+                        ExpectedSegmentData = new SegmentData
+                        {
+                            SourcePath = "Translations[0].Source",
+                            SourceValue = "The source text1",
+                            TargetPath = "Translations[0].Target",
+                            TargetValue = "The target text1"
                         }
                     }
                 }

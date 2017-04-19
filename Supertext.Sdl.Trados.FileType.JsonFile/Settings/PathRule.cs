@@ -9,14 +9,17 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
         private const string SourcePathPatternSetting = "SourcePathPattern";
         private const string TargetPathPatternSetting = "TargetPathPattern";
         private const string IgnoreCaseSetting = "IgnoreCasePattern";
+        private const string IsBilingualSetting = "IsBilingual";
 
         private const bool DefaultIgnoreCase = false;
+        private const bool DefaultIsBilingual = false;
         private static readonly string DefaultSourcePathPattern = string.Empty;
         private static readonly string DefaultTargetPathPattern = string.Empty;
 
         private string _sourcePathPattern;
         private string _targetPathPattern;
         private bool _ignoreCase;
+        private bool _isBilingual;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -41,7 +44,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             set
             {
                 _targetPathPattern = value;
-                OnPropertyChanged("SourcePathPattern");
+                OnPropertyChanged("TargetPathPattern");
             }
         }
 
@@ -55,17 +58,29 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             }
         }
 
+        public bool IsBilingual {
+            get { return _isBilingual; }
+            set
+            {
+                _isBilingual = value;
+                OnPropertyChanged("IsBilingual");
+            }
+        }
+
         public void ResetToDefaults()
         {
             SourcePathPattern = DefaultSourcePathPattern;
             TargetPathPattern = DefaultTargetPathPattern;
             IgnoreCase = DefaultIgnoreCase;
+            IsBilingual = DefaultIsBilingual;
         }
 
         public void ClearListItemSettings(ISettingsGroup settingsGroup, string listItemSetting)
         {
             settingsGroup.RemoveSetting(listItemSetting + SourcePathPatternSetting);
             settingsGroup.RemoveSetting(listItemSetting + TargetPathPatternSetting);
+            settingsGroup.RemoveSetting(listItemSetting + IgnoreCaseSetting);
+            settingsGroup.RemoveSetting(listItemSetting + IsBilingualSetting);
         }
 
         public void PopulateFromSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
@@ -73,6 +88,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             SourcePathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + SourcePathPatternSetting, DefaultSourcePathPattern);
             TargetPathPattern = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + TargetPathPatternSetting, DefaultTargetPathPattern);
             IgnoreCase = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, DefaultIgnoreCase);
+            IsBilingual = GetSettingFromSettingsGroup(settingsGroup, listItemSetting + IsBilingualSetting, DefaultIsBilingual);
         }
 
         public void SaveToSettingsGroup(ISettingsGroup settingsGroup, string listItemSetting)
@@ -80,6 +96,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + SourcePathPatternSetting, SourcePathPattern, DefaultSourcePathPattern);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + TargetPathPatternSetting, TargetPathPattern, DefaultTargetPathPattern);
             UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + IgnoreCaseSetting, IgnoreCase, DefaultIgnoreCase);
+            UpdateSettingInSettingsGroup(settingsGroup, listItemSetting + IsBilingualSetting, IsBilingual, DefaultIsBilingual);
         }
 
         public void OnPropertyChanged(string propertyName)

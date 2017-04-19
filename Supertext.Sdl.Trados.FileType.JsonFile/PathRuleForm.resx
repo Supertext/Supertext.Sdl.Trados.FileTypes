@@ -122,78 +122,24 @@
     <value>2</value>
   </data>
   <data name="_pathRulesTable.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="_sourcePathPatternTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="_sourcePathPatternTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 3</value>
-  </data>
-  <data name="_sourcePathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>417, 20</value>
-  </data>
-  <data name="_sourcePathPatternTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathPatternTextBox.Name" xml:space="preserve">
-    <value>_sourcePathPatternTextBox</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathPatternTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathPatternTextBox.Parent" xml:space="preserve">
-    <value>_pathRulesTable</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathPatternTextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="_sourcePathLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <data name="_sourcePathLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="_sourcePathLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="_sourcePathLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 6</value>
-  </data>
-  <data name="_sourcePathLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
-  </data>
-  <data name="_sourcePathLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="_sourcePathLabel.Text" xml:space="preserve">
-    <value>Source path:</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathLabel.Name" xml:space="preserve">
-    <value>_sourcePathLabel</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathLabel.Parent" xml:space="preserve">
-    <value>_pathRulesTable</value>
-  </data>
-  <data name="&gt;&gt;_sourcePathLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="_ignoreCaseCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
   <data name="_ignoreCaseCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="_ignoreCaseCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="_ignoreCaseCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 58</value>
+    <value>77, 82</value>
   </data>
   <data name="_ignoreCaseCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>417, 17</value>
+    <value>373, 17</value>
   </data>
   <data name="_ignoreCaseCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -211,16 +157,16 @@
     <value>_pathRulesTable</value>
   </data>
   <data name="&gt;&gt;_ignoreCaseCheckBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="_targetPathPatternTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
   <data name="_targetPathPatternTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 29</value>
+    <value>77, 53</value>
   </data>
   <data name="_targetPathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>417, 20</value>
+    <value>373, 20</value>
   </data>
   <data name="_targetPathPatternTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -235,7 +181,31 @@
     <value>_pathRulesTable</value>
   </data>
   <data name="&gt;&gt;_targetPathPatternTextBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
+  </data>
+  <data name="_sourcePathPatternTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="_sourcePathPatternTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>77, 28</value>
+  </data>
+  <data name="_sourcePathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>373, 20</value>
+  </data>
+  <data name="_sourcePathPatternTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathPatternTextBox.Name" xml:space="preserve">
+    <value>_sourcePathPatternTextBox</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathPatternTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathPatternTextBox.Parent" xml:space="preserve">
+    <value>_pathRulesTable</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathPatternTextBox.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="_targetPathLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -247,7 +217,7 @@
     <value>NoControl</value>
   </data>
   <data name="_targetPathLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 32</value>
+    <value>3, 56</value>
   </data>
   <data name="_targetPathLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 13</value>
@@ -268,7 +238,110 @@
     <value>_pathRulesTable</value>
   </data>
   <data name="&gt;&gt;_targetPathLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="_sourcePathLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="_sourcePathLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_sourcePathLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="_sourcePathLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 31</value>
+  </data>
+  <data name="_sourcePathLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 13</value>
+  </data>
+  <data name="_sourcePathLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="_sourcePathLabel.Text" xml:space="preserve">
+    <value>Source path:</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathLabel.Name" xml:space="preserve">
+    <value>_sourcePathLabel</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathLabel.Parent" xml:space="preserve">
+    <value>_pathRulesTable</value>
+  </data>
+  <data name="&gt;&gt;_sourcePathLabel.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="_isBilingualCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="_isBilingualCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="_isBilingualCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 17</value>
+  </data>
+  <data name="_isBilingualCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="_isBilingualCheckBox.Text" xml:space="preserve">
+    <value>Bilignual</value>
+  </data>
+  <data name="&gt;&gt;_isBilingualCheckBox.Name" xml:space="preserve">
+    <value>_isBilingualCheckBox</value>
+  </data>
+  <data name="&gt;&gt;_isBilingualCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_isBilingualCheckBox.Parent" xml:space="preserve">
+    <value>_pathRulesTable</value>
+  </data>
+  <data name="&gt;&gt;_isBilingualCheckBox.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="_swapButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xNKpnztkAAAIzSURBVFhHxZXJ
+        igIxEIbnBTx4Ew+K+66444obqAf1qIK44LP4Cr6AVwUPvl9N/kh6eqmR1oHM4cOqv5LuP9VJ/CKif4UV
+        dcKKOmFFnbCiTlhRJ6yoE1Y04/F4aLPZiJCvv6JWq9HpdBIhXwesqLjdbhQKhSiVSomUH/MbwWCQstks
+        xWIx6vV6QuLHsaLifr9LA/l8XqT8GI7hcEiZTIZKpRIVi0VKJpO02+1EyTnWIZj5xEA0GqV0Ok2FQkEa
+        qFarcn4ikaBmsymGWMdbEjvvGphMJrLlaD1ydGE6ncrY7/fL2mq1krnC8gA77xjAPsELBoOBSJ9aPB6n
+        8Xhs5I1GQ46pVCqGZjyAw62BxWIhHxwIBET6o6Pto9HIoqET4XCYlsul1I0Ch1sD2GSdTkeEVh0GzB1R
+        tNttwudCbCnY+WQTmoGBfr8vQr4OWFHxVwPoTLfbFSFfB0bg9XppPp+L8Kf4yoDP53N8Xzs4jtynMWME
+        OL+RSIRms5lInxpn4Hw+y82GTXc8Hg2dA8fRtQFcu/hmMKJMPB4PaQCXihqHl0M7HA6G9hswjg1n1804
+        BJxddAIXxuVykSvF+YVBvBz1/X4vhlrnccB4q9USIV8HDkF1AhcLrlHc5fjN5XKuV67AXO76NcOKACtF
+        C8vlsrzTYcrtyhWY+7GB6/Uq24024pO8s3IF5tbrdRHydcCKZvC/vt1uRcjXX7Fer92fgv+CFXXCijph
+        RZ2wok5YUSesqA/6+gbW8zFn/oLHAQAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="_swapButton.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="_swapButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>456, 31</value>
+  </data>
+  <data name="_swapButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 6, 3, 3</value>
+  </data>
+  <data name="_swapButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 38</value>
+  </data>
+  <data name="_swapButton.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;_swapButton.Name" xml:space="preserve">
+    <value>_swapButton</value>
+  </data>
+  <data name="&gt;&gt;_swapButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;_swapButton.Parent" xml:space="preserve">
+    <value>_pathRulesTable</value>
+  </data>
+  <data name="&gt;&gt;_swapButton.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="_pathRulesTable.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -280,7 +353,7 @@
     <value>4</value>
   </data>
   <data name="_pathRulesTable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>497, 81</value>
+    <value>497, 106</value>
   </data>
   <data name="_pathRulesTable.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -298,7 +371,7 @@
     <value>0</value>
   </data>
   <data name="_pathRulesTable.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_sourcePathPatternTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_sourcePathLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_ignoreCaseCheckBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_targetPathPatternTextBox" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_targetPathLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="_ignoreCaseCheckBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_targetPathPatternTextBox" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_sourcePathPatternTextBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="_targetPathLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_sourcePathLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_isBilingualCheckBox" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="_swapButton" Row="1" RowSpan="2" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="Absolute,25,Absolute,25,Absolute,25,Absolute,25" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="_ruleGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -307,7 +380,7 @@
     <value>3, 3</value>
   </data>
   <data name="_ruleGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>503, 100</value>
+    <value>503, 125</value>
   </data>
   <data name="_ruleGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -334,7 +407,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>431, 109</value>
+    <value>431, 135</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -364,7 +437,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>350, 109</value>
+    <value>350, 135</value>
   </data>
   <data name="btnOk.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -397,7 +470,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>509, 135</value>
+    <value>509, 161</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -424,7 +497,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>509, 135</value>
+    <value>509, 161</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

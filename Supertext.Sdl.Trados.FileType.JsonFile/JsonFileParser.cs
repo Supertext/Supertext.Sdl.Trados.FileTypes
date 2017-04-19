@@ -1,13 +1,9 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
-using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
-using Supertext.Sdl.Trados.FileType.JsonFile.Resources;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
@@ -22,6 +18,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
         private readonly IParsingSettings _parsingSettings;
         private readonly IParagraphUnitFactory _paragraphUnitFactory;
+        private readonly ISegmentDataCollector _segmentDataCollector;
 
         //State during parsing
         private IPersistentFileConversionProperties _fileConversionProperties;
@@ -29,14 +26,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         private int _totalNumberOfLines;
         private byte _progressInPercent;
 
-        public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper,
-            IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings, IParagraphUnitFactory paragraphUnitFactory)
+        public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings, IParagraphUnitFactory paragraphUnitFactory, ISegmentDataCollector segmentDataCollector)
         {
             _fielHelper = fielHelper;
             _jsonFactory = jsonFactory;
             _embeddedContentRegexSettings = embeddedContentRegexSettings;
             _parsingSettings = parsingSettings;
             _paragraphUnitFactory = paragraphUnitFactory;
+            _segmentDataCollector = segmentDataCollector;
         }
 
         public byte ProgressInPercent
@@ -89,23 +86,27 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             {
                 OnProgress((byte)(_reader.LineNumber * 100 / _totalNumberOfLines));
 
-                var sourcePath = _reader.Path;
-                var isPathToProcess = CheckIsPathToProcess(sourcePath);
+                var path = _reader.Path;
+                var value = _reader.Value?.ToString();
 
-                if (_reader.Value == null || _reader.TokenType != JsonToken.String || !isPathToProcess || _reader.Value.ToString() == string.Empty)
+                if (_reader.TokenType != JsonToken.String || string.IsNullOrEmpty(value))
                 {
                     continue;
                 }
 
-                // TODO remove this quick fix once json.NET library has fixed issue
-                // Escape quotes in path
-                var mathes = Regex.Matches(sourcePath, @"\['[^[]*'\]");
-                foreach (Match match in mathes)
+                _segmentDataCollector.Add(path, value);
+                var completeSegmentData = _segmentDataCollector.CompleteSegmentData;
+
+                if (completeSegmentData == null)
                 {
-                    sourcePath = sourcePath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
+                    continue;
                 }
 
-                var paragraphUnit = _paragraphUnitFactory.Create(sourcePath, _reader.Value.ToString(), sourcePath, string.Empty);
+                var paragraphUnit = _paragraphUnitFactory.Create(
+                    completeSegmentData.SourcePath,
+                    completeSegmentData.SourceValue,
+                    completeSegmentData.TargetPath,
+                    completeSegmentData.TargetValue);
 
                 Output.ProcessParagraphUnit(paragraphUnit);
 
@@ -113,17 +114,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             }
 
             return false;
-        }
-
-        private bool CheckIsPathToProcess(string path)
-        {
-            return !_parsingSettings.IsPathFilteringEnabled
-                   ||
-                   _parsingSettings.PathRules.Select(
-                       pathRule =>
-                           new Regex(pathRule.SourcePathPattern,
-                               pathRule.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None).Match(path))
-                       .Any(match => match.Success);
         }
     }
 }

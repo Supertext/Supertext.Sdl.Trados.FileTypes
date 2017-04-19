@@ -1,4 +1,7 @@
-﻿using Sdl.Core.Globalization;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -16,6 +19,19 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
         public IParagraphUnit Create(string sourcePath, string sourceValue, string targetPath, string targetValue)
         {
             var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
+
+            // TODO remove this quick fix once json.NET library has fixed issue
+            // Escape quotes in path
+            var mathes = Regex.Matches(sourcePath, @"\['[^[]*'\]");
+            foreach (Match match in mathes)
+            {
+                sourcePath = sourcePath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
+            }
+            mathes = Regex.Matches(targetPath, @"\['[^[]*'\]");
+            foreach (Match match in mathes)
+            {
+                targetPath = targetPath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
+            }
 
             AddSegmentPair(paragraphUnit, sourceValue, targetValue);
 

@@ -32,11 +32,13 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this._ruleGroupBox = new System.Windows.Forms.GroupBox();
             this._pathRulesTable = new System.Windows.Forms.TableLayoutPanel();
-            this._sourcePathPatternTextBox = new System.Windows.Forms.TextBox();
-            this._sourcePathLabel = new System.Windows.Forms.Label();
             this._ignoreCaseCheckBox = new System.Windows.Forms.CheckBox();
             this._targetPathPatternTextBox = new System.Windows.Forms.TextBox();
+            this._sourcePathPatternTextBox = new System.Windows.Forms.TextBox();
             this._targetPathLabel = new System.Windows.Forms.Label();
+            this._sourcePathLabel = new System.Windows.Forms.Label();
+            this._isBilingualCheckBox = new System.Windows.Forms.CheckBox();
+            this._swapButton = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
@@ -63,22 +65,14 @@
             // _pathRulesTable
             // 
             resources.ApplyResources(this._pathRulesTable, "_pathRulesTable");
-            this._pathRulesTable.Controls.Add(this._sourcePathPatternTextBox, 1, 1);
-            this._pathRulesTable.Controls.Add(this._sourcePathLabel, 0, 1);
             this._pathRulesTable.Controls.Add(this._ignoreCaseCheckBox, 1, 3);
             this._pathRulesTable.Controls.Add(this._targetPathPatternTextBox, 1, 2);
+            this._pathRulesTable.Controls.Add(this._sourcePathPatternTextBox, 1, 1);
             this._pathRulesTable.Controls.Add(this._targetPathLabel, 0, 2);
+            this._pathRulesTable.Controls.Add(this._sourcePathLabel, 0, 1);
+            this._pathRulesTable.Controls.Add(this._isBilingualCheckBox, 0, 0);
+            this._pathRulesTable.Controls.Add(this._swapButton, 2, 1);
             this._pathRulesTable.Name = "_pathRulesTable";
-            // 
-            // _sourcePathPatternTextBox
-            // 
-            resources.ApplyResources(this._sourcePathPatternTextBox, "_sourcePathPatternTextBox");
-            this._sourcePathPatternTextBox.Name = "_sourcePathPatternTextBox";
-            // 
-            // _sourcePathLabel
-            // 
-            resources.ApplyResources(this._sourcePathLabel, "_sourcePathLabel");
-            this._sourcePathLabel.Name = "_sourcePathLabel";
             // 
             // _ignoreCaseCheckBox
             // 
@@ -91,10 +85,36 @@
             resources.ApplyResources(this._targetPathPatternTextBox, "_targetPathPatternTextBox");
             this._targetPathPatternTextBox.Name = "_targetPathPatternTextBox";
             // 
+            // _sourcePathPatternTextBox
+            // 
+            resources.ApplyResources(this._sourcePathPatternTextBox, "_sourcePathPatternTextBox");
+            this._sourcePathPatternTextBox.Name = "_sourcePathPatternTextBox";
+            // 
             // _targetPathLabel
             // 
             resources.ApplyResources(this._targetPathLabel, "_targetPathLabel");
             this._targetPathLabel.Name = "_targetPathLabel";
+            // 
+            // _sourcePathLabel
+            // 
+            resources.ApplyResources(this._sourcePathLabel, "_sourcePathLabel");
+            this._sourcePathLabel.Name = "_sourcePathLabel";
+            // 
+            // _isBilingualCheckBox
+            // 
+            resources.ApplyResources(this._isBilingualCheckBox, "_isBilingualCheckBox");
+            this._pathRulesTable.SetColumnSpan(this._isBilingualCheckBox, 2);
+            this._isBilingualCheckBox.Name = "_isBilingualCheckBox";
+            this._isBilingualCheckBox.UseVisualStyleBackColor = true;
+            this._isBilingualCheckBox.CheckedChanged += new System.EventHandler(this.OnIsBilingualCheckBoxCheckedChanged);
+            // 
+            // _swapButton
+            // 
+            resources.ApplyResources(this._swapButton, "_swapButton");
+            this._swapButton.Name = "_swapButton";
+            this._pathRulesTable.SetRowSpan(this._swapButton, 2);
+            this._swapButton.UseVisualStyleBackColor = true;
+            this._swapButton.Click += new System.EventHandler(this.OnSwapButtonClick);
             // 
             // btnCancel
             // 
@@ -134,8 +154,10 @@
         private System.Windows.Forms.TableLayoutPanel _pathRulesTable;
         private System.Windows.Forms.TextBox _sourcePathPatternTextBox;
         private System.Windows.Forms.Label _sourcePathLabel;
-        private System.Windows.Forms.CheckBox _ignoreCaseCheckBox;
         private System.Windows.Forms.TextBox _targetPathPatternTextBox;
         private System.Windows.Forms.Label _targetPathLabel;
+        private System.Windows.Forms.CheckBox _ignoreCaseCheckBox;
+        private System.Windows.Forms.CheckBox _isBilingualCheckBox;
+        private System.Windows.Forms.Button _swapButton;
     }
 }

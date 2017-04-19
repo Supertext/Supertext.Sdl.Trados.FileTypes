@@ -24,9 +24,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         private IEmbeddedContentRegexSettings _embeddedContentRegexSettingsMock;
         private IParsingSettings _parsingSettingsMock;
         private IParagraphUnitFactory _paragraphUnitFactoryMock;
-        private IParagraphUnit _paragraphUnitMock;
         private IDocumentItemFactory _itemFactoryMock;
         private IPropertiesFactory _propertiesFactoryMock;
+        private ISegmentDataCollector _segmendDataCollectorMock;
 
         [SetUp]
         public void SetUp()
@@ -36,19 +36,10 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             _embeddedContentRegexSettingsMock = A.Fake<IEmbeddedContentRegexSettings>();
             _parsingSettingsMock = A.Fake<IParsingSettings>();
             _paragraphUnitFactoryMock = A.Fake<IParagraphUnitFactory>();
-            _paragraphUnitMock = A.Fake<IParagraphUnit>();
             _propertiesFactoryMock = A.Fake<IPropertiesFactory>();
+            _segmendDataCollectorMock = A.Fake<ISegmentDataCollector>();
             _itemFactoryMock = A.Fake<IDocumentItemFactory>();
             A.CallTo(() => _itemFactoryMock.PropertiesFactory).Returns(_propertiesFactoryMock);
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(SourcePath, A<string>.Ignored, SourcePath, A<string>.Ignored)).Returns(_paragraphUnitMock);
-            A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(true);
-            A.CallTo(() => _parsingSettingsMock.PathRules).Returns(new ComplexObservableList<PathRule>
-            {
-                new PathRule
-                {
-                    SourcePathPattern = $"^{SourcePath}$"
-                }
-            });
         }
 
         [Test]
@@ -170,75 +161,120 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
-        public void ParseNext_WhenPathFilteringDisabledAndPathNotToProcess_ShouldProcessPath()
+        public void ParseNext_WhenValueIsNull_ShouldNotProcessPath()
         {
             // Arrange
             var testee = CreateTestee();
             testee.StartOfInput();
 
-            A.CallTo(() => _jsonTextReaderMock.Path).Returns("not.process");
-            A.CallTo(() => _parsingSettingsMock.IsPathFilteringEnabled).Returns(false);
+            A.CallTo(() => _jsonTextReaderMock.Value).Returns(null);
 
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _segmendDataCollectorMock.Add(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenPathFilteringEnabledAndPathNotToProcess_ShouldLeavePathOut()
+        public void ParseNext_WhenValueIsEmpty_ShouldNotProcessPath()
         {
             // Arrange
             var testee = CreateTestee();
             testee.StartOfInput();
 
-            A.CallTo(() => _jsonTextReaderMock.Path).Returns("not.process");
+            A.CallTo(() => _jsonTextReaderMock.Value).Returns(string.Empty);
 
             // Act
             testee.ParseNext();
 
             // Assert
+            A.CallTo(() => _segmendDataCollectorMock.Add(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenTokenTypeIsNotString_ShouldNotProcessPath()
+        {
+            // Arrange
+            var testee = CreateTestee();
+            testee.StartOfInput();
+
+            A.CallTo(() => _jsonTextReaderMock.TokenType).Returns(JsonToken.Integer);
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _segmendDataCollectorMock.Add(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_ShouldPassAllStringValuesToSegmentDataCollector()
+        {
+            // Arrange
+            var testee = CreateTestee();
+            testee.StartOfInput();
+
+            // Act
+            testee.ParseNext();
+            testee.ParseNext();
+            testee.ParseNext();
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _segmendDataCollectorMock.Add(SourcePath, "A")).MustHaveHappened();
+            A.CallTo(() => _segmendDataCollectorMock.Add(SourcePath, "B")).MustHaveHappened();
+            A.CallTo(() => _segmendDataCollectorMock.Add(SourcePath, "C")).MustHaveHappened();
+            A.CallTo(() => _segmendDataCollectorMock.Add(SourcePath, "D")).MustHaveHappened();
+        }
+
+        [Test]
+        public void ParseNext_WhenCompleteSegmentDataIsNull_ShouldNotProcessParagraphUnit()
+        {
+            // Arrange
+            var testee = CreateTestee();
+            testee.StartOfInput();
+
+            A.CallTo(() => _segmendDataCollectorMock.CompleteSegmentData).Returns(null);
+
+            // Act
+            testee.ParseNext();
+
+            // Assert
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
             A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustNotHaveHappened();
         }
 
         [Test]
-        public void ParseNext_WhenPathFilteringEnabledAndIgnoreCaseEnabled_ShouldIgnoreCasing()
+        public void ParseNext_WhenCompleteSegmentDataIsNotNull_ShouldProcessParagraphUnit()
         {
             // Arrange
-            var testee = CreateTestee();
-            testee.StartOfInput();
-
-            A.CallTo(() => _jsonTextReaderMock.Path).Returns("PROCESS");
-
-            A.CallTo(() => _parsingSettingsMock.PathRules).Returns(new ComplexObservableList<PathRule>
+            var testSegmentData = new SegmentData
             {
-                new PathRule
-                {
-                    SourcePathPattern = "^process$",
-                    IgnoreCase = true
-                }
-            });
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored)).MustHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenPathToProcess_ShouldAddText()
-        {
-            // Arrange
+                SourcePath = "SourcePath",
+                SourceValue = "SourceValue",
+                TargetPath = "TargetPath",
+                TargetValue = "TargetValue"
+            };
+            var paragraphUnitMock = A.Fake<IParagraphUnit>(); ;
             var testee = CreateTestee();
             testee.StartOfInput();
 
+            A.CallTo(() => _segmendDataCollectorMock.CompleteSegmentData).Returns(testSegmentData);
+            A.CallTo(() => _paragraphUnitFactoryMock.Create(
+                testSegmentData.SourcePath,
+                testSegmentData.SourceValue,
+                testSegmentData.TargetPath,
+                testSegmentData.TargetValue)).Returns(paragraphUnitMock);
+
             // Act
             testee.ParseNext();
 
             // Assert
-            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(_paragraphUnitMock)).MustHaveHappened();
+            A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(paragraphUnitMock)).MustHaveHappened();
         }
 
         private JsonFileParser CreateTestee()
@@ -259,8 +295,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
 
             var filePropertiesMock = A.Fake<IFileProperties>();
 
-            var testee = new JsonFileParser(jsonFactoryMock, fileHelperMock, _embeddedContentRegexSettingsMock,
-                _parsingSettingsMock, _paragraphUnitFactoryMock)
+            var testee = new JsonFileParser(
+                jsonFactoryMock,
+                fileHelperMock,
+                _embeddedContentRegexSettingsMock,
+                _parsingSettingsMock,
+                _paragraphUnitFactoryMock,
+                _segmendDataCollectorMock)
             {
                 ItemFactory = _itemFactoryMock,
                 Output = _bilingualContentHandlerMock
