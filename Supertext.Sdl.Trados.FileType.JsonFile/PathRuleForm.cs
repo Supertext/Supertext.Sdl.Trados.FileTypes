@@ -22,6 +22,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _targetPathPatternTextBox.Text = _pathRule.TargetPathPattern;
             _ignoreCaseCheckBox.Checked = _pathRule.IgnoreCase;
             _isBilingualCheckBox.Checked = _pathRule.IsBilingual;
+            _isTargetValueNeededCheckBox.Checked = _pathRule.IsTargetValueNeeded;
 
             UpdateTargetInputState();
         }
@@ -38,6 +39,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             _pathRule.TargetPathPattern = _targetPathPatternTextBox.Text;
             _pathRule.IgnoreCase = _ignoreCaseCheckBox.Checked;
             _pathRule.IsBilingual = _isBilingualCheckBox.Checked;
+            _pathRule.IsTargetValueNeeded = _isTargetValueNeededCheckBox.Checked;
         }
 
         private void OnIsBilingualCheckBoxCheckedChanged(object sender, EventArgs e)
@@ -54,10 +56,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             if (_isBilingualCheckBox.Checked)
             {
                 _swapButton.Show();
+                _isTargetValueNeededCheckBox.Show();
             }
             else
             {
                 _swapButton.Hide();
+                _isTargetValueNeededCheckBox.Hide();
             }
         }
 

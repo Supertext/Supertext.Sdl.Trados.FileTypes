@@ -41,6 +41,7 @@
             this._swapButton = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
+            this._isTargetValueNeededCheckBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this._ruleGroupBox.SuspendLayout();
             this._pathRulesTable.SuspendLayout();
@@ -71,7 +72,8 @@
             this._pathRulesTable.Controls.Add(this._targetPathLabel, 0, 2);
             this._pathRulesTable.Controls.Add(this._sourcePathLabel, 0, 1);
             this._pathRulesTable.Controls.Add(this._isBilingualCheckBox, 0, 0);
-            this._pathRulesTable.Controls.Add(this._swapButton, 2, 1);
+            this._pathRulesTable.Controls.Add(this._swapButton, 3, 1);
+            this._pathRulesTable.Controls.Add(this._isTargetValueNeededCheckBox, 2, 3);
             this._pathRulesTable.Name = "_pathRulesTable";
             // 
             // _ignoreCaseCheckBox
@@ -83,11 +85,13 @@
             // _targetPathPatternTextBox
             // 
             resources.ApplyResources(this._targetPathPatternTextBox, "_targetPathPatternTextBox");
+            this._pathRulesTable.SetColumnSpan(this._targetPathPatternTextBox, 2);
             this._targetPathPatternTextBox.Name = "_targetPathPatternTextBox";
             // 
             // _sourcePathPatternTextBox
             // 
             resources.ApplyResources(this._sourcePathPatternTextBox, "_sourcePathPatternTextBox");
+            this._pathRulesTable.SetColumnSpan(this._sourcePathPatternTextBox, 2);
             this._sourcePathPatternTextBox.Name = "_sourcePathPatternTextBox";
             // 
             // _targetPathLabel
@@ -130,6 +134,12 @@
             this.btnOk.Name = "btnOk";
             this.btnOk.UseVisualStyleBackColor = true;
             // 
+            // _isTargetValueNeededCheckBox
+            // 
+            resources.ApplyResources(this._isTargetValueNeededCheckBox, "_isTargetValueNeededCheckBox");
+            this._isTargetValueNeededCheckBox.Name = "_isTargetValueNeededCheckBox";
+            this._isTargetValueNeededCheckBox.UseVisualStyleBackColor = true;
+            // 
             // PathRuleForm
             // 
             resources.ApplyResources(this, "$this");
@@ -159,5 +169,6 @@
         private System.Windows.Forms.CheckBox _ignoreCaseCheckBox;
         private System.Windows.Forms.CheckBox _isBilingualCheckBox;
         private System.Windows.Forms.Button _swapButton;
+        private System.Windows.Forms.CheckBox _isTargetValueNeededCheckBox;
     }
 }

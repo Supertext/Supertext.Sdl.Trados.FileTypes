@@ -35,12 +35,19 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
             if (!_parsingSettings.IsPathFilteringEnabled)
             {
-                SetCompleteSegmentData(path, value, path, value);
+                SetCompleteSegmentData(path, value, path, string.Empty);
 
                 return;
             }
             
             CollectByPathRules(path, value);
+        }
+
+        private static string GetKey(PathRule pathRule, string path)
+        {
+            var key = pathRule.GetHashCode().ToString();
+
+            return IndexerRegex.Matches(path).Cast<Match>().Aggregate(key, (current, match) => current + match.Value);
         }
 
         private void CollectByPathRules(string path, string value)
@@ -52,24 +59,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
                 if (regex.IsMatch(path))
                 {
-                    if (!pathRule.IsBilingual)
-                    {
-                        SetCompleteSegmentData(path, value, path, value);
-                        return;
-                    }
-
-                    var key = GetKey(pathRule, path);
-
-                    if (_tempTargets.ContainsKey(key))
-                    {
-                        var target = _tempTargets[key];
-
-                        SetCompleteSegmentData(path, value, target.Key, target.Value);
-
-                        return;
-                    }
-
-                    _tempSources.Add(key, new KeyValuePair<string, string>(path, value));
+                    ProcessAsSource(pathRule, path, value);
                     return;
                 }
 
@@ -78,21 +68,48 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
                 if (regex.IsMatch(path))
                 {
-                    var key = GetKey(pathRule, path);
-
-                    if (_tempSources.ContainsKey(key))
-                    {
-                        var source = _tempSources[key];
-
-                        SetCompleteSegmentData(source.Key, source.Value, path, value);
-
-                        return;
-                    }
-
-                    _tempTargets.Add(key, new KeyValuePair<string, string>(path, value));
+                    ProcessAsTarget(pathRule, path, value);
                     return;
                 }
             }
+        }
+
+        private void ProcessAsSource(PathRule pathRule, string path, string value)
+        {
+            if (!pathRule.IsBilingual)
+            {
+                SetCompleteSegmentData(path, value, path, string.Empty);
+                return;
+            }
+
+            var key = GetKey(pathRule, path);
+
+            if (_tempTargets.ContainsKey(key))
+            {
+                var target = _tempTargets[key];
+
+                SetCompleteSegmentData(path, value, target.Key, pathRule.IsTargetValueNeeded ? target.Value : string.Empty);
+
+                return;
+            }
+
+            _tempSources.Add(key, new KeyValuePair<string, string>(path, value));
+        }
+
+        private void ProcessAsTarget(PathRule pathRule, string path, string value)
+        {
+            var key = GetKey(pathRule, path);
+
+            if (_tempSources.ContainsKey(key))
+            {
+                var source = _tempSources[key];
+
+                SetCompleteSegmentData(source.Key, source.Value, path, pathRule.IsTargetValueNeeded ? value : string.Empty);
+
+                return;
+            }
+
+            _tempTargets.Add(key, new KeyValuePair<string, string>(path, value));
         }
 
         private void SetCompleteSegmentData(string sourcePath, string sourceValue, string targetPath, string targetValue)
@@ -104,13 +121,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 TargetPath = targetPath,
                 TargetValue = targetValue
             };
-        }
-
-        private static string GetKey(PathRule pathRule, string path)
-        {
-            var key = pathRule.GetHashCode().ToString();
-
-            return IndexerRegex.Matches(path).Cast<Match>().Aggregate(key, (current, match) => current + match.Value);
         }
     }
 

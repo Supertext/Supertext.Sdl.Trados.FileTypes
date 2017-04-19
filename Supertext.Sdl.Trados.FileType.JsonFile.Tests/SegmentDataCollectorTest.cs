@@ -40,7 +40,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                           SourcePath = "TheSourcePath",
                           SourceValue = "The source value",
                           TargetPath = "TheTargetPath",
-                          TargetValue = "The target value"
+                          TargetValue = string.Empty
                       }
                   }
                 }
@@ -105,7 +105,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheSourcePath1",
                             SourceValue = "The 1. source value",
                             TargetPath = "TheTargetPath1",
-                            TargetValue = "The 1. target value"
+                            TargetValue = string.Empty
                         }
                     },
                     new AddCheck
@@ -122,7 +122,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheSourcePath2",
                             SourceValue = "The 2. source value",
                             TargetPath = "TheTargetPath2",
-                            TargetValue = "The 2. target value"
+                            TargetValue = string.Empty
                         }
                     }
                 }
@@ -166,7 +166,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheSourcePath1",
                             SourceValue = "The 1. source value",
                             TargetPath = "TheTargetPath1",
-                            TargetValue = "The 1. target value"
+                            TargetValue = string.Empty
                         }
                     },
                     new AddCheck
@@ -178,7 +178,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheSourcePath2",
                             SourceValue = "The 2. source value",
                             TargetPath = "TheTargetPath2",
-                            TargetValue = "The 2. target value"
+                            TargetValue = string.Empty
                         }
                     }
                 }
@@ -212,7 +212,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheSourcePath1",
                             SourceValue = "The 1. source value",
                             TargetPath = "TheTargetPath1",
-                            TargetValue = "The 1. target value"
+                            TargetValue = string.Empty
                         }
                     }
                 }
@@ -258,7 +258,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheBasePath.Array1Property[0].Source",
                             SourceValue = "The source value of first array first item",
                             TargetPath = "TheBasePath.Array1Property[0].Target",
-                            TargetValue = "The target value of first array first item"
+                            TargetValue = string.Empty
                         }
                     },
                     new AddCheck
@@ -270,7 +270,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheBasePath.Array1Property[1].Source",
                             SourceValue = "The source value of first array second item",
                             TargetPath = "TheBasePath.Array1Property[1].Target",
-                            TargetValue = "The target value of first array second item"
+                            TargetValue = string.Empty
                         }
                     }
                 }
@@ -309,7 +309,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheBasePath.Array1Property[1].Source",
                             SourceValue = "The source value of first array second item",
                             TargetPath = "TheBasePath.Array1Property[1].Target",
-                            TargetValue = "The target value of first array second item"
+                            TargetValue = string.Empty
                         }
                     },
                     new AddCheck
@@ -321,7 +321,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "TheBasePath.Array1Property[0].Source",
                             SourceValue = "The source value of first array first item",
                             TargetPath = "TheBasePath.Array1Property[0].Target",
-                            TargetValue = "The target value of first array first item"
+                            TargetValue = string.Empty
                         }
                     },
                     
@@ -383,7 +383,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "thesourcepath",
                             SourceValue = "The source value",
                             TargetPath = "TheTargetPath",
-                            TargetValue = "The target value"
+                            TargetValue = string.Empty
                         }
                     }
                 }
@@ -409,7 +409,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourcePath = "ThePath",
                             SourceValue = "The value",
                             TargetPath = "ThePath",
-                            TargetValue = "The value"
+                            TargetValue = string.Empty
                         }
                     }
                 }
@@ -424,6 +424,40 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                         IsBilingual = true,
                         SourcePathPattern = @"Translations\[\d+\]\.Source",
                         TargetPathPattern = @"Translations\[\d+\]\.Target"
+                    }
+                },
+                AddChecks = new List<AddCheck>
+                {
+                    new AddCheck
+                    {
+                        Path = "Translations[0].Source",
+                        Value = "The source text1"
+                    },
+                    new AddCheck
+                    {
+                        Path = "Translations[0].Target",
+                        Value = "The target text1",
+                        ExpectedSegmentData = new SegmentData
+                        {
+                            SourcePath = "Translations[0].Source",
+                            SourceValue = "The source text1",
+                            TargetPath = "Translations[0].Target",
+                            TargetValue = string.Empty
+                        }
+                    }
+                }
+            },
+            new TestCase
+            {
+                Name = "TestCase12",
+                PathRules = new ComplexObservableList<PathRule>
+                {
+                    new PathRule
+                    {
+                        IsBilingual = true,
+                        SourcePathPattern = @"Translations\[\d+\]\.Source",
+                        TargetPathPattern = @"Translations\[\d+\]\.Target",
+                        IsTargetValueNeeded = true
                     }
                 },
                 AddChecks = new List<AddCheck>
@@ -507,7 +541,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.CompleteSegmentData.SourcePath.Should().Be("The test path");
             testee.CompleteSegmentData.SourceValue.Should().Be("The test value");
             testee.CompleteSegmentData.TargetPath.Should().Be("The test path");
-            testee.CompleteSegmentData.TargetValue.Should().Be("The test value");
+            testee.CompleteSegmentData.TargetValue.Should().Be(string.Empty);
         }
     }
 
