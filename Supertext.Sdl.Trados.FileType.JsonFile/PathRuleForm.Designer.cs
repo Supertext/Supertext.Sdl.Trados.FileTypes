@@ -39,9 +39,9 @@
             this._sourcePathLabel = new System.Windows.Forms.Label();
             this._isBilingualCheckBox = new System.Windows.Forms.CheckBox();
             this._swapButton = new System.Windows.Forms.Button();
+            this._isTargetValueNeededCheckBox = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
-            this._isTargetValueNeededCheckBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this._ruleGroupBox.SuspendLayout();
             this._pathRulesTable.SuspendLayout();
@@ -120,6 +120,12 @@
             this._swapButton.UseVisualStyleBackColor = true;
             this._swapButton.Click += new System.EventHandler(this.OnSwapButtonClick);
             // 
+            // _isTargetValueNeededCheckBox
+            // 
+            resources.ApplyResources(this._isTargetValueNeededCheckBox, "_isTargetValueNeededCheckBox");
+            this._isTargetValueNeededCheckBox.Name = "_isTargetValueNeededCheckBox";
+            this._isTargetValueNeededCheckBox.UseVisualStyleBackColor = true;
+            // 
             // btnCancel
             // 
             resources.ApplyResources(this.btnCancel, "btnCancel");
@@ -133,12 +139,6 @@
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOk.Name = "btnOk";
             this.btnOk.UseVisualStyleBackColor = true;
-            // 
-            // _isTargetValueNeededCheckBox
-            // 
-            resources.ApplyResources(this._isTargetValueNeededCheckBox, "_isTargetValueNeededCheckBox");
-            this._isTargetValueNeededCheckBox.Name = "_isTargetValueNeededCheckBox";
-            this._isTargetValueNeededCheckBox.UseVisualStyleBackColor = true;
             // 
             // PathRuleForm
             // 

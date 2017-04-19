@@ -19,7 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         protected override void OnLoad(EventArgs e)
         {
             _sourcePathPatternTextBox.Text = _pathRule.SourcePathPattern;
-            _targetPathPatternTextBox.Text = _pathRule.TargetPathPattern;
+            _targetPathPatternTextBox.Text = _pathRule.IsBilingual ? _pathRule.TargetPathPattern : PluginResources.SameAsSource;
             _ignoreCaseCheckBox.Checked = _pathRule.IgnoreCase;
             _isBilingualCheckBox.Checked = _pathRule.IsBilingual;
             _isTargetValueNeededCheckBox.Checked = _pathRule.IsTargetValueNeeded;
@@ -36,7 +36,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             }
 
             _pathRule.SourcePathPattern = _sourcePathPatternTextBox.Text;
-            _pathRule.TargetPathPattern = _targetPathPatternTextBox.Text;
+
+            if (_isBilingualCheckBox.Checked)
+            {
+                _pathRule.TargetPathPattern = _targetPathPatternTextBox.Text;
+            }
+            
             _pathRule.IgnoreCase = _ignoreCaseCheckBox.Checked;
             _pathRule.IsBilingual = _isBilingualCheckBox.Checked;
             _pathRule.IsTargetValueNeeded = _isTargetValueNeededCheckBox.Checked;
@@ -57,11 +62,13 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             {
                 _swapButton.Show();
                 _isTargetValueNeededCheckBox.Show();
+                _targetPathPatternTextBox.Text = _pathRule.TargetPathPattern;
             }
             else
             {
                 _swapButton.Hide();
                 _isTargetValueNeededCheckBox.Hide();
+                _targetPathPatternTextBox.Text = PluginResources.SameAsSource;
             }
         }
 
