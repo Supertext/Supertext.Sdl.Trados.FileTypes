@@ -187,13 +187,13 @@
     <value>2</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
-    <value>Source expression</value>
+    <value>Source path expression</value>
   </data>
   <data name="columnHeader1.Width" type="System.Int32, mscorlib">
     <value>200</value>
   </data>
   <data name="columnHeader2.Text" xml:space="preserve">
-    <value>Target expression</value>
+    <value>Target path expression</value>
   </data>
   <data name="columnHeader2.Width" type="System.Int32, mscorlib">
     <value>200</value>
