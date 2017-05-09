@@ -69,13 +69,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmbeddedContentSettingsControl.cs">
+    <Compile Include="Views\EmbeddedContentSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EmbeddedContentSettingsControl.Designer.cs">
+    <Compile Include="Views\EmbeddedContentSettingsControl.Designer.cs">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="EmbeddedContentSettingsPage.cs" />
+    <Compile Include="Views\EmbeddedContentSettingsPage.cs" />
     <Compile Include="PluginResources.de.Designer.cs">
       <DependentUpon>PluginResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -86,26 +86,26 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RegexRuleForm.cs">
+    <Compile Include="Views\RegexRuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegexRuleForm.Designer.cs">
+    <Compile Include="Views\RegexRuleForm.Designer.cs">
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegexRuleListItem.cs" />
+    <Compile Include="Views\RegexRuleListItem.cs" />
     <Compile Include="Resources\PoFileTypeResources.de.Designer.cs">
       <DependentUpon>PoFileTypeResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Parsing\IEntryBuilder.cs" />
-    <Compile Include="SegmentSettingsControl.cs">
+    <Compile Include="Views\SegmentSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SegmentSettingsControl.Designer.cs">
+    <Compile Include="Views\SegmentSettingsControl.Designer.cs">
       <DependentUpon>SegmentSettingsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="SegmentSettingsPage.cs" />
+    <Compile Include="Views\SegmentSettingsPage.cs" />
     <Compile Include="TextProcessing\ContextKeys.cs" />
     <Compile Include="Parsing\Entry.cs" />
     <Compile Include="Parsing\EntryBuilder.cs" />
@@ -142,10 +142,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedContentSettingsControl.de.resx">
+    <EmbeddedResource Include="Views\EmbeddedContentSettingsControl.de.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
+    <EmbeddedResource Include="Views\EmbeddedContentSettingsControl.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.de.resx">
@@ -161,10 +161,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegexRuleForm.de.resx">
+    <EmbeddedResource Include="Views\RegexRuleForm.de.resx">
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegexRuleForm.resx">
+    <EmbeddedResource Include="Views\RegexRuleForm.resx">
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\PoFileTypeResources.de.resx">
@@ -181,10 +181,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SegmentSettingsControl.de.resx">
+    <EmbeddedResource Include="Views\SegmentSettingsControl.de.resx">
       <DependentUpon>SegmentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SegmentSettingsControl.resx">
+    <EmbeddedResource Include="Views\SegmentSettingsControl.resx">
       <DependentUpon>SegmentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

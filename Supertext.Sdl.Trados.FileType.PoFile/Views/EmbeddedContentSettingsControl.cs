@@ -6,7 +6,7 @@ using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Views
 {
     public partial class EmbeddedContentSettingsControl : UserControl, IFileTypeSettingsAware<EmbeddedContentRegexSettings>
     {

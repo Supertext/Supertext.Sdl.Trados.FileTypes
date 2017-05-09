@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.PoFile
+namespace Supertext.Sdl.Trados.FileType.PoFile.Views
 {
     internal class RegexRuleListItem : ListViewItem
     {
