@@ -32,14 +32,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
             return paragraphUnit;
         }
 
-        private static string EscapePath(string sourcePath)
+        private static string EscapePath(string path)
         {
-            var mathes = Regex.Matches(sourcePath, @"\['[^[]*'\]");
+            var mathes = Regex.Matches(path, @"\['[^[]*'\]");
             foreach (Match match in mathes)
             {
-                sourcePath = sourcePath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
+                path = path.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
             }
-            return sourcePath;
+            return path;
         }
 
         private void AddSegmentPair(IParagraphUnit paragraphUnit, string sourceValue, string targetValue)
