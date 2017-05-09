@@ -22,22 +22,24 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
 
             // TODO remove this quick fix once json.NET library has fixed issue
             // Escape quotes in path
-            var mathes = Regex.Matches(sourcePath, @"\['[^[]*'\]");
-            foreach (Match match in mathes)
-            {
-                sourcePath = sourcePath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
-            }
-            mathes = Regex.Matches(targetPath, @"\['[^[]*'\]");
-            foreach (Match match in mathes)
-            {
-                targetPath = targetPath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
-            }
+            sourcePath = EscapePath(sourcePath);
+            targetPath = EscapePath(targetPath);
 
             AddSegmentPair(paragraphUnit, sourceValue, targetValue);
 
             paragraphUnit.Properties.Contexts = CreateContextProperties(sourcePath, targetPath);
 
             return paragraphUnit;
+        }
+
+        private static string EscapePath(string sourcePath)
+        {
+            var mathes = Regex.Matches(sourcePath, @"\['[^[]*'\]");
+            foreach (Match match in mathes)
+            {
+                sourcePath = sourcePath.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
+            }
+            return sourcePath;
         }
 
         private void AddSegmentPair(IParagraphUnit paragraphUnit, string sourceValue, string targetValue)
