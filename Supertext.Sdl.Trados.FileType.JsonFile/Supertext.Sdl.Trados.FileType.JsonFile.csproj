@@ -73,26 +73,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextKeys.cs" />
-    <Compile Include="EmbeddedContentSettingsControl.cs">
+    <Compile Include="TextProcessing\ContextKeys.cs" />
+    <Compile Include="Views\EmbeddedContentSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EmbeddedContentSettingsControl.Designer.cs">
+    <Compile Include="Views\EmbeddedContentSettingsControl.Designer.cs">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="EmbeddedContentSettingsPage.cs" />
+    <Compile Include="Views\EmbeddedContentSettingsPage.cs" />
     <Compile Include="ISegmentDataCollector.cs" />
     <Compile Include="JsonFileParser.cs" />
     <Compile Include="JsonFileSniffer.cs" />
     <Compile Include="JsonFileWriter.cs" />
     <Compile Include="JsonPathPatternExtractor.cs" />
-    <Compile Include="ParsingSettingsControl.cs">
+    <Compile Include="Views\ParsingSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ParsingSettingsControl.Designer.cs">
+    <Compile Include="Views\ParsingSettingsControl.Designer.cs">
       <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ParsingSettingsPage.cs" />
+    <Compile Include="Views\ParsingSettingsPage.cs" />
     <Compile Include="Parsing\IJsonFactory.cs" />
     <Compile Include="Parsing\IJsonTextReader.cs" />
     <Compile Include="Parsing\IJToken.cs" />
@@ -101,19 +101,19 @@
     <Compile Include="Parsing\JsonTextReaderWrapper.cs" />
     <Compile Include="Parsing\JTokenWrapper.cs" />
     <Compile Include="Parsing\JValueWrapper.cs" />
-    <Compile Include="PathRuleForm.cs">
+    <Compile Include="Views\PathRuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PathRuleForm.Designer.cs">
+    <Compile Include="Views\PathRuleForm.Designer.cs">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PathRuleHelpForm.cs">
+    <Compile Include="Views\PathRuleHelpForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PathRuleHelpForm.Designer.cs">
+    <Compile Include="Views\PathRuleHelpForm.Designer.cs">
       <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PathRuleListViewItem.cs" />
+    <Compile Include="Views\PathRuleListViewItem.cs" />
     <Compile Include="PluginResources.de.Designer.cs">
       <DependentUpon>PluginResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -124,13 +124,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RegexRuleForm.cs">
+    <Compile Include="Views\RegexRuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegexRuleForm.Designer.cs">
+    <Compile Include="Views\RegexRuleForm.Designer.cs">
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegexRuleListItem.cs" />
+    <Compile Include="Views\RegexRuleListItem.cs" />
     <Compile Include="Resources\JsonFileTypeResources.de.Designer.cs">
       <DependentUpon>JsonFileTypeResources.de.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -162,28 +162,29 @@
     <Compile Include="TextProcessing\ParagraphUnitFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedContentSettingsControl.de.resx">
+    <EmbeddedResource Include="Views\EmbeddedContentSettingsControl.de.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EmbeddedContentSettingsControl.resx">
+    <EmbeddedResource Include="Views\EmbeddedContentSettingsControl.resx">
       <DependentUpon>EmbeddedContentSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ParsingSettingsControl.de.resx">
+    <EmbeddedResource Include="Views\ParsingSettingsControl.de.resx">
       <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ParsingSettingsControl.resx">
+    <EmbeddedResource Include="Views\ParsingSettingsControl.resx">
       <DependentUpon>ParsingSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PathRuleForm.de.resx">
+    <EmbeddedResource Include="Views\PathRuleForm.de.resx">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PathRuleForm.resx">
+    <EmbeddedResource Include="Views\PathRuleForm.resx">
       <DependentUpon>PathRuleForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PathRuleHelpForm.de.resx">
+    <EmbeddedResource Include="Views\PathRuleHelpForm.de.resx">
       <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PathRuleHelpForm.resx">
+    <EmbeddedResource Include="Views\PathRuleHelpForm.resx">
       <DependentUpon>PathRuleHelpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PluginResources.de.resx">
@@ -201,10 +202,10 @@
       <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegexRuleForm.de.resx">
+    <EmbeddedResource Include="Views\RegexRuleForm.de.resx">
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegexRuleForm.resx">
+    <EmbeddedResource Include="Views\RegexRuleForm.resx">
       <DependentUpon>RegexRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\JsonFileTypeResources.de.resx">
@@ -238,9 +239,7 @@
       <Name>Supertext.Sdl.Trados.FileType.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

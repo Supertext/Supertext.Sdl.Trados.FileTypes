@@ -6,7 +6,7 @@ using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile
+namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
 {
     public partial class EmbeddedContentSettingsControl : UserControl, IFileTypeSettingsAware<EmbeddedContentRegexSettings>
     {

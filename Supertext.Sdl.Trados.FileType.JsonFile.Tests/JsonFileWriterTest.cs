@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
+using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 

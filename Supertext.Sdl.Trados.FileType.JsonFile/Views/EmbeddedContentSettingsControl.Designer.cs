@@ -1,4 +1,4 @@
-﻿namespace Supertext.Sdl.Trados.FileType.JsonFile
+﻿namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
 {
     partial class EmbeddedContentSettingsControl
     {

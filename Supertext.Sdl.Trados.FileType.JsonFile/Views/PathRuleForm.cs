@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile
+namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
 {
     public partial class PathRuleForm : Form
     {

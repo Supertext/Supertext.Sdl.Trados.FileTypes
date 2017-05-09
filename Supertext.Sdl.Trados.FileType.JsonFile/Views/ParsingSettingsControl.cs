@@ -6,7 +6,7 @@ using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
 using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile
+namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
 {
     public partial class ParsingSettingsControl : UserControl, IFileTypeSettingsAware<ParsingSettings>
     {
