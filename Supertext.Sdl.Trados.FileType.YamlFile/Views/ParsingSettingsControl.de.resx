@@ -125,22 +125,19 @@
     <value>Pfadfilter aktivieren</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 26</value>
+    <value>542, 26</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Mit Hilfe des Pfadfilters können übersetzbare YAML-Objekteigenschaften gefiltert werden. Die Filterregeln werden mittels regulären Ausdrücke festgelegt und gelten für die YAML-Pfade der Objekteigenschaften.</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
-    <value>Ausdruck</value>
+    <value>Ausgangspfad</value>
   </data>
-  <data name="_removeAllButton.Text" xml:space="preserve">
-    <value>Alle entfernen</value>
+  <data name="columnHeader2.Text" xml:space="preserve">
+    <value>Zielpfad</value>
   </data>
   <data name="_addRuleButton.Text" xml:space="preserve">
     <value>Hinzu...</value>
-  </data>
-  <data name="_removeRuleButton.Text" xml:space="preserve">
-    <value>Entfernen</value>
   </data>
   <data name="_editRuleButton.Text" xml:space="preserve">
     <value>Bearbeiten...</value>
@@ -150,6 +147,15 @@
   </data>
   <data name="_extractButton.Text" xml:space="preserve">
     <value>Extrahieren...</value>
+  </data>
+  <data name="_removeRuleButton.Text" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="_removeAllButton.Text" xml:space="preserve">
+    <value>Alle entfernen</value>
+  </data>
+  <data name="_pairButton.Text" xml:space="preserve">
+    <value>Zusammenführen</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Pfadfilter-Regeln</value>

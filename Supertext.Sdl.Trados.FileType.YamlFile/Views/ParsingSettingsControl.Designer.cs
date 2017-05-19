@@ -38,12 +38,12 @@
             this._rulesListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._removeAllButton = new System.Windows.Forms.Button();
             this._addRuleButton = new System.Windows.Forms.Button();
-            this._removeRuleButton = new System.Windows.Forms.Button();
             this._editRuleButton = new System.Windows.Forms.Button();
             this._helpButton = new System.Windows.Forms.Button();
             this._extractButton = new System.Windows.Forms.Button();
+            this._removeRuleButton = new System.Windows.Forms.Button();
+            this._removeAllButton = new System.Windows.Forms.Button();
             this._pairButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -119,26 +119,12 @@
             // 
             resources.ApplyResources(this.columnHeader2, "columnHeader2");
             // 
-            // _removeAllButton
-            // 
-            resources.ApplyResources(this._removeAllButton, "_removeAllButton");
-            this._removeAllButton.Name = "_removeAllButton";
-            this._removeAllButton.UseVisualStyleBackColor = true;
-            this._removeAllButton.Click += new System.EventHandler(this._removeAllButton_Click);
-            // 
             // _addRuleButton
             // 
             resources.ApplyResources(this._addRuleButton, "_addRuleButton");
             this._addRuleButton.Name = "_addRuleButton";
             this._addRuleButton.UseVisualStyleBackColor = true;
             this._addRuleButton.Click += new System.EventHandler(this._addRuleButton_Click);
-            // 
-            // _removeRuleButton
-            // 
-            resources.ApplyResources(this._removeRuleButton, "_removeRuleButton");
-            this._removeRuleButton.Name = "_removeRuleButton";
-            this._removeRuleButton.UseVisualStyleBackColor = true;
-            this._removeRuleButton.Click += new System.EventHandler(this._removeRuleButton_Click);
             // 
             // _editRuleButton
             // 
@@ -160,6 +146,20 @@
             this._extractButton.Name = "_extractButton";
             this._extractButton.UseVisualStyleBackColor = true;
             this._extractButton.Click += new System.EventHandler(this._extractButton_Click);
+            // 
+            // _removeRuleButton
+            // 
+            resources.ApplyResources(this._removeRuleButton, "_removeRuleButton");
+            this._removeRuleButton.Name = "_removeRuleButton";
+            this._removeRuleButton.UseVisualStyleBackColor = true;
+            this._removeRuleButton.Click += new System.EventHandler(this._removeRuleButton_Click);
+            // 
+            // _removeAllButton
+            // 
+            resources.ApplyResources(this._removeAllButton, "_removeAllButton");
+            this._removeAllButton.Name = "_removeAllButton";
+            this._removeAllButton.UseVisualStyleBackColor = true;
+            this._removeAllButton.Click += new System.EventHandler(this._removeAllButton_Click);
             // 
             // _pairButton
             // 
