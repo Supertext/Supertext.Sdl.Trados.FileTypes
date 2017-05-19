@@ -2,16 +2,16 @@
 using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
+using Supertext.Sdl.Trados.FileType.YamlFile.Parsing;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
+
+namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
 {
     [TestFixture]
-    public class JsonPathPatternExtractorTest
+    public class YamlPathPatternExtractorTest
     {
-        private static IJsonFactory _jsonFactoryMock;
+        private static IYamlFactory _jsonFactoryMock;
         private const string Testfile = "testfile";
 
         [Test]
@@ -84,24 +84,11 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
-        public void ExtractPathPatterns_WhenTokenTypeIsNotString_ShouldNotAddPath()
-        {
-            // Arrange
-            var testee = CreateTestee(new[] { "som path" }, JsonToken.Integer);
-
-            // Act
-            var result = testee.ExtractPathPatterns(Testfile);
-
-            // Assert
-            result.Should().BeEmpty();
-        }
-
-        [Test]
         public void ExtractPathPatterns_WhenExceptionThrown_ShouldJustReturnEmptyList()
         {
             // Arrange
             var testee = CreateTestee(new[] { "path1", "path2" });
-            A.CallTo(() => _jsonFactoryMock.CreateJsonTextReader(A<string>.Ignored)).Throws<FileNotFoundException>();
+            A.CallTo(() => _jsonFactoryMock.CreateYamlTextReader(A<string>.Ignored)).Throws<FileNotFoundException>();
 
             // Act
             var result = testee.ExtractPathPatterns(Testfile);
@@ -110,10 +97,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             result.Should().BeEmpty();
         }
 
-        private static JsonPathPatternExtractor CreateTestee(string[] paths, JsonToken tokenType = JsonToken.String, string value = "some value")
+        private static YamlPathPatternExtractor CreateTestee(string[] paths, string value = "some value")
         {
-            var jsonTextReaderMock = A.Fake<IJsonTextReader>();
-            A.CallTo(() => jsonTextReaderMock.TokenType).Returns(tokenType);
+            var jsonTextReaderMock = A.Fake<IYamlTextReader>();
             A.CallTo(() => jsonTextReaderMock.Value).Returns(value);
 
             var readReturns = paths.Select(path => true).ToList();
@@ -122,10 +108,10 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             A.CallTo(() => jsonTextReaderMock.Read()).ReturnsNextFromSequence(readReturns.ToArray());
             A.CallTo(() => jsonTextReaderMock.Path).ReturnsNextFromSequence(paths);
 
-            _jsonFactoryMock = A.Fake<IJsonFactory>();
-            A.CallTo(() => _jsonFactoryMock.CreateJsonTextReader(A<string>.Ignored)).Returns(jsonTextReaderMock);
+            _jsonFactoryMock = A.Fake<IYamlFactory>();
+            A.CallTo(() => _jsonFactoryMock.CreateYamlTextReader(A<string>.Ignored)).Returns(jsonTextReaderMock);
 
-            return new JsonPathPatternExtractor(_jsonFactoryMock);
+            return new YamlPathPatternExtractor(_jsonFactoryMock);
         }
     }
 }

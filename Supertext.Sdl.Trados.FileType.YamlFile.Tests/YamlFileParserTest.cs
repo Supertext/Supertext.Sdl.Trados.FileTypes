@@ -1,24 +1,22 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
-using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
+using Supertext.Sdl.Trados.FileType.YamlFile.Parsing;
+using Supertext.Sdl.Trados.FileType.YamlFile.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
+namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
 {
     [TestFixture]
-    public class JsonFileParserTest
+    public class YamlFileParserTest
     {
-        private const string SourcePath = "process";
-
-        private IJsonTextReader _jsonTextReaderMock;
+        private const string SourcePath = "The.Source.Path";
+        private IYamlTextReader _yamlTextReaderMock;
         private IBilingualContentHandler _bilingualContentHandlerMock;
         private IEmbeddedContentRegexSettings _embeddedContentRegexSettingsMock;
         private IParsingSettings _parsingSettingsMock;
@@ -30,7 +28,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         [SetUp]
         public void SetUp()
         {
-            _jsonTextReaderMock = A.Fake<IJsonTextReader>();
+            _yamlTextReaderMock = A.Fake<IYamlTextReader>();
             _bilingualContentHandlerMock = A.Fake<IBilingualContentHandler>();
             _embeddedContentRegexSettingsMock = A.Fake<IEmbeddedContentRegexSettings>();
             _parsingSettingsMock = A.Fake<IParsingSettings>();
@@ -97,8 +95,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             testee.EndOfInput();
 
             // Assert
-            A.CallTo(() => _jsonTextReaderMock.Close()).MustHaveHappened();
-            A.CallTo(() => _jsonTextReaderMock.Dispose()).MustHaveHappened();
+            A.CallTo(() => _yamlTextReaderMock.Close()).MustHaveHappened();
+            A.CallTo(() => _yamlTextReaderMock.Dispose()).MustHaveHappened();
         }
 
         [Test]
@@ -166,7 +164,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var testee = CreateTestee();
             testee.StartOfInput();
 
-            A.CallTo(() => _jsonTextReaderMock.Value).Returns(null);
+            A.CallTo(() => _yamlTextReaderMock.Value).Returns(null);
 
             // Act
             testee.ParseNext();
@@ -183,24 +181,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var testee = CreateTestee();
             testee.StartOfInput();
 
-            A.CallTo(() => _jsonTextReaderMock.Value).Returns(string.Empty);
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _segmendDataCollectorMock.Add(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenTokenTypeIsNotString_ShouldNotProcessPath()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            testee.StartOfInput();
-
-            A.CallTo(() => _jsonTextReaderMock.TokenType).Returns(JsonToken.Integer);
+            A.CallTo(() => _yamlTextReaderMock.Value).Returns(string.Empty);
 
             // Act
             testee.ParseNext();
@@ -258,7 +239,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                 TargetPath = "TargetPath",
                 TargetValue = "TargetValue"
             };
-            var paragraphUnitMock = A.Fake<IParagraphUnit>(); ;
+            var paragraphUnitMock = A.Fake<IParagraphUnit>();
             var testee = CreateTestee();
             testee.StartOfInput();
 
@@ -276,26 +257,25 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(paragraphUnitMock)).MustHaveHappened();
         }
 
-        private JsonFileParser CreateTestee()
+        private YamlFileParser CreateTestee()
         {
-            var jsonFactoryMock = A.Fake<IJsonFactory>();
-            A.CallTo(() => jsonFactoryMock.CreateJsonTextReader(A<string>.Ignored)).Returns(_jsonTextReaderMock);
-            A.CallTo(() => _jsonTextReaderMock.TokenType).Returns(JsonToken.String);
-            A.CallTo(() => _jsonTextReaderMock.Read()).ReturnsNextFromSequence(true, true, true, true, false);
+            var yamlFactory = A.Fake<IYamlFactory>();
+            A.CallTo(() => yamlFactory.CreateYamlTextReader(A<string>.Ignored)).Returns(_yamlTextReaderMock);
+            A.CallTo(() => _yamlTextReaderMock.Read()).ReturnsNextFromSequence(true, true, true, true, false);
             var lineCounter = 0;
-            var texts = new[] {"A", "B", "C", "D"};
-            A.CallTo(() => _jsonTextReaderMock.LineNumber).ReturnsLazily(() => ++lineCounter);
-            A.CallTo(() => _jsonTextReaderMock.Value).ReturnsLazily(() => texts[lineCounter - 1%4]);
+            var texts = new[] { "A", "B", "C", "D" };
+            A.CallTo(() => _yamlTextReaderMock.LineNumber).ReturnsLazily(() => ++lineCounter);
+            A.CallTo(() => _yamlTextReaderMock.Value).ReturnsLazily(() => texts[lineCounter - 1 % 4]);
 
-            A.CallTo(() => _jsonTextReaderMock.Path).Returns(SourcePath);
+            A.CallTo(() => _yamlTextReaderMock.Path).Returns(SourcePath);
 
             var fileHelperMock = A.Fake<IFileHelper>();
             A.CallTo(() => fileHelperMock.GetNumberOfLines(A<string>.Ignored)).Returns(4);
 
             var filePropertiesMock = A.Fake<IFileProperties>();
 
-            var testee = new JsonFileParser(
-                jsonFactoryMock,
+            var testee = new YamlFileParser(
+                yamlFactory,
                 fileHelperMock,
                 _embeddedContentRegexSettingsMock,
                 _parsingSettingsMock,

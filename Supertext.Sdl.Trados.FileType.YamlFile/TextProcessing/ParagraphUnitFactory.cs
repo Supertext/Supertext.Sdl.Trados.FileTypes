@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using Sdl.Core.Globalization;
+﻿using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -20,26 +17,11 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.TextProcessing
         {
             var paragraphUnit = ItemFactory.CreateParagraphUnit(LockTypeFlags.Unlocked);
 
-            // TODO remove this quick fix once yaml.NET library has fixed issue
-            // Escape quotes in path
-            sourcePath = EscapePath(sourcePath);
-            targetPath = EscapePath(targetPath);
-
             AddSegmentPair(paragraphUnit, sourceValue, targetValue);
 
             paragraphUnit.Properties.Contexts = CreateContextProperties(sourcePath, targetPath);
 
             return paragraphUnit;
-        }
-
-        private static string EscapePath(string path)
-        {
-            var mathes = Regex.Matches(path, @"\['[^[]*'\]");
-            foreach (Match match in mathes)
-            {
-                path = path.Replace(match.Value, Regex.Replace(match.Value, @"((?<!\\|\[)'(?!\]))", "\\'"));
-            }
-            return path;
         }
 
         private void AddSegmentPair(IParagraphUnit paragraphUnit, string sourceValue, string targetValue)

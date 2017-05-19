@@ -65,7 +65,6 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
             var targetText = _segmentReader.GetTargetText(paragraphUnit.SegmentPairs);
 
             _yamlTextWriter.Write(targetPath, targetText);
-
         }
 
         public void Dispose()

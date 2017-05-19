@@ -184,16 +184,16 @@ msgstr ""message string""";
             }
 
             //Assert
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 10);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 20);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 30);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 40);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 50);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 60);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 70);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 80);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 90);
-            testee.ShouldRaise("Progress").WithArgs<ProgressEventArgs>(args => args.ProgressValue == 100);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 10);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 20);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 30);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 40);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 50);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 60);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 70);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 80);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 90);
+            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 100);
         }
 
         [Test]
