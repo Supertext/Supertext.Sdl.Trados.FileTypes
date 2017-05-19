@@ -87,6 +87,7 @@
     <Compile Include="EmbeddedContentVisitorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexEmbeddedBilingualProcessorTest.cs" />
+    <Compile Include="SegmentDataCollectorTest.cs" />
     <Compile Include="TextProcessorTest.cs" />
   </ItemGroup>
   <ItemGroup>

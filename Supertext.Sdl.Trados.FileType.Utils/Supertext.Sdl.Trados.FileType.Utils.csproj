@@ -72,16 +72,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\EmbeddedContentRegexSettings.cs" />
     <Compile Include="Settings\IEmbeddedContentRegexSettings.cs" />
+    <Compile Include="Settings\IParsingSettings.cs" />
     <Compile Include="Settings\MatchRule.cs" />
+    <Compile Include="Settings\ParsingSettings.cs" />
+    <Compile Include="Settings\PathRule.cs" />
     <Compile Include="TextProcessing\EmbeddedContentVisitor.cs" />
     <Compile Include="TextProcessing\Fragment.cs" />
     <Compile Include="TextProcessing\IEmbeddedContentVisitor.cs" />
     <Compile Include="TextProcessing\IEmbeddedContentVisitorFactory.cs" />
     <Compile Include="TextProcessing\IFragment.cs" />
     <Compile Include="TextProcessing\InlineType.cs" />
+    <Compile Include="TextProcessing\ISegmentDataCollector.cs" />
     <Compile Include="TextProcessing\ISegmentReader.cs" />
     <Compile Include="TextProcessing\ITextProcessor.cs" />
     <Compile Include="TextProcessing\RegexEmbeddedBilingualProcessor.cs" />
+    <Compile Include="TextProcessing\SegmentData.cs" />
+    <Compile Include="TextProcessing\SegmentDataCollector.cs" />
     <Compile Include="TextProcessing\SegmentReader.cs" />
     <Compile Include="TextProcessing\TextProcessor.cs" />
   </ItemGroup>

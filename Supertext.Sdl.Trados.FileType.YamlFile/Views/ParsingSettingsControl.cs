@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
-using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
+using Supertext.Sdl.Trados.FileType.YamlFile.Parsing;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
+namespace Supertext.Sdl.Trados.FileType.YamlFile.Views
 {
     public partial class ParsingSettingsControl : UserControl, IFileTypeSettingsAware<ParsingSettings>
     {
@@ -193,14 +193,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
 
         private void ExtractFiles(string[] files)
         {
-            var jsonPathPatternExtractor = new JsonPathPatternExtractor(new JsonFactory());
+            var yamlPathPatternExtractor = new YamlPathPatternExtractor(new YamlFactory());
 
             foreach (var file in files)
             {
                 var existingPathPatterns = _rulesListView.Items.Cast<PathRuleListViewItem>()
                 .Select(pathRuleListViewItem => pathRuleListViewItem.PathRule.SourcePathPattern).ToList();
 
-                var extractedPathPatterns = jsonPathPatternExtractor.ExtractPathPatterns(file);
+                var extractedPathPatterns = yamlPathPatternExtractor.ExtractPathPatterns(file);
 
                 foreach (var pathPattern in extractedPathPatterns.Except(existingPathPatterns))
                 {

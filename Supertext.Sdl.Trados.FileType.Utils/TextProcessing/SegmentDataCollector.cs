@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile
+namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 {
     public class SegmentDataCollector : ISegmentDataCollector
     {
@@ -54,6 +54,11 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 {
                     ProcessAsSource(pathRule, path, value);
                     return;
+                }
+
+                if (!pathRule.IsBilingual)
+                {
+                    continue;
                 }
 
                 regex = new Regex(pathRule.TargetPathPattern,

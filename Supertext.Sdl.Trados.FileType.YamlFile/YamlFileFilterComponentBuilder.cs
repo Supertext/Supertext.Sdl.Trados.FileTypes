@@ -2,19 +2,19 @@
 using Sdl.FileTypeSupport.Framework;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
-using Supertext.Sdl.Trados.FileType.JsonFile.Resources;
-using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
+using Supertext.Sdl.Trados.FileType.YamlFile.Parsing;
+using Supertext.Sdl.Trados.FileType.YamlFile.Resources;
+using Supertext.Sdl.Trados.FileType.YamlFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile
+namespace Supertext.Sdl.Trados.FileType.YamlFile
 {
-    [FileTypeComponentBuilder(Id = "JsonFile_FilterComponentBuilderExtension_Id",
-        Name = "JsonFile_FilterComponentBuilderExtension_Name",
-        Description = "JsonFile_FilterComponentBuilderExtension_Description")]
-    public class JsonFileFilterComponentBuilder : IFileTypeComponentBuilder
+    [FileTypeComponentBuilder(Id = "YamlFile_FilterComponentBuilderExtension_Id",
+        Name = "YamlFile_FilterComponentBuilderExtension_Name",
+        Description = "YamlFile_FilterComponentBuilderExtension_Description")]
+    public class YamlFileFilterComponentBuilder : IFileTypeComponentBuilder
     {
         public IFileTypeManager FileTypeManager { get; set; }
 
@@ -24,18 +24,18 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         {
             var info = FileTypeManager.BuildFileTypeInformation();
 
-            info.FileTypeDefinitionId = new FileTypeDefinitionId("JSON file type 1.2.0.0");
-            info.FileTypeName = new LocalizableString(JsonFileTypeResources.Json_File);
-            info.FileTypeDocumentName = new LocalizableString(JsonFileTypeResources.Json_File);
-            info.FileTypeDocumentsName = new LocalizableString(JsonFileTypeResources.Json_Files);
-            info.Description = new LocalizableString(JsonFileTypeResources.Json_File_Filter_Description);
-            info.FileDialogWildcardExpression = "*.json";
-            info.DefaultFileExtension = "json";
-            info.Icon = new IconDescriptor(JsonFileTypeResources.JsonFileIcon);
+            info.FileTypeDefinitionId = new FileTypeDefinitionId("YAML file type 1.0.0.0");
+            info.FileTypeName = new LocalizableString(YamlFileTypeResources.Yaml_File);
+            info.FileTypeDocumentName = new LocalizableString(YamlFileTypeResources.Yaml_File);
+            info.FileTypeDocumentsName = new LocalizableString(YamlFileTypeResources.Yaml_Files);
+            info.Description = new LocalizableString(YamlFileTypeResources.Yaml_File_Filter_Description);
+            info.FileDialogWildcardExpression = "*.yml";
+            info.DefaultFileExtension = "yml";
+            info.Icon = new IconDescriptor(YamlFileTypeResources.YamlFileIcon);
 
             info.WinFormSettingsPageIds = new[]
             {
-                "JsonFile_Parsing_Settings",
+                "YamlFile_Parsing_Settings",
                 "Community_Embeddded_Content_Processor_Settings"
             };
 
@@ -50,15 +50,15 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public INativeFileSniffer BuildFileSniffer(string name)
         {
-            return new JsonFileSniffer();
+            return new YamlFileSniffer(new YamlFactory());
         }
 
         public IFileExtractor BuildFileExtractor(string name)
         {
             var parsingSettings = new ParsingSettings();
 
-            var parser = new JsonFileParser(
-                new JsonFactory(),
+            var parser = new YamlFileParser(
+                new YamlFactory(),
                 new FileHelper(),
                 new EmbeddedContentRegexSettings(),
                 parsingSettings,
@@ -79,7 +79,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public IFileGenerator BuildFileGenerator(string name)
         {
-            var writer = new JsonFileWriter(new JsonFactory(), new FileHelper(), new SegmentReader());
+            var writer = new YamlFileWriter(new YamlFactory(),new SegmentReader());
             return FileTypeManager.BuildFileGenerator(writer);
         }
 

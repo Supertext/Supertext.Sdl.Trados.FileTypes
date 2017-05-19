@@ -3,9 +3,10 @@ using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
-using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
+namespace Supertext.Sdl.Trados.FileType.Utils.Tests
 {
     [TestFixture]
     public class SegmentDataCollectorTest
@@ -477,6 +478,50 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
                             SourceValue = "The source text1",
                             TargetPath = "Translations[0].Target",
                             TargetValue = "The target text1"
+                        }
+                    }
+                }
+            },
+            new TestCase
+            {
+                Name = "TestCase13",
+                PathRules = new ComplexObservableList<PathRule>
+                {
+                    new PathRule
+                    {
+                        SourcePathPattern = "ThePath",
+                        TargetPathPattern = ""
+                    },
+                    new PathRule
+                    {
+                        SourcePathPattern = "TheOtherPath",
+                        TargetPathPattern = ""
+                    }
+                },
+                AddChecks = new List<AddCheck>
+                {
+                    new AddCheck
+                    {
+                        Path = "ThePath",
+                        Value = "The value",
+                        ExpectedSegmentData = new SegmentData
+                        {
+                            SourcePath = "ThePath",
+                            SourceValue = "The value",
+                            TargetPath = "ThePath",
+                            TargetValue = string.Empty
+                        }
+                    },
+                    new AddCheck
+                    {
+                        Path = "TheOtherPath",
+                        Value = "The other value",
+                        ExpectedSegmentData = new SegmentData
+                        {
+                            SourcePath = "TheOtherPath",
+                            SourceValue = "The other value",
+                            TargetPath = "TheOtherPath",
+                            TargetValue = string.Empty
                         }
                     }
                 }

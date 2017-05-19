@@ -4,13 +4,12 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
-using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
-using Supertext.Sdl.Trados.FileType.JsonFile.Settings;
 using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
+using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
 {

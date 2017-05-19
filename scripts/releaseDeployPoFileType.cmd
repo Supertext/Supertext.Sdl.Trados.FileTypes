@@ -1,5 +1,5 @@
 @echo off
 
-call ".\psake\psake.cmd" "releaseDeploy.ps1 -parameters @{\"projectNameParam\"=\"PoFile\"}"
+call ".\psake\psake.cmd" "deploy.ps1 -parameters @{\"projectNameParam\"=\"PoFile\"}"
 
 pause

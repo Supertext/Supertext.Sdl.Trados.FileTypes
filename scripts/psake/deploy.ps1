@@ -10,7 +10,7 @@ properties {
   $sourceDirs = "$baseDir*"
   $publishDir = "$baseDir\plugin"
   $publishDirPlugin1 = "$publishDir\$pluginName1"
-  $pluginPath1 =  "$baseDir\$projectName\bin\$buildConfig\$pluginName1"
+  
   $appDataRoaming = $env:APPDATA
   $appDataLocal = $env:LOCALAPPDATA
   $deployDir = "$appDataLocal\SDL\SDL Trados Studio\14\Plugins\Packages"
@@ -26,6 +26,8 @@ properties {
 task default -depends Deploy
 
 task Deploy -depends Clean {
+  $pluginPath1 =  "$baseDir\$projectName\bin\$buildConfig\$pluginName1"
+	
   if (!(Test-Path -path $publishDir)){ 
 	Write-Host "creating publish dir" $publishDir 
   	New-Item $publishDir -Type Directory | out-null

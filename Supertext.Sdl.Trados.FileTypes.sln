@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.PoFile", "Supertext.Sdl.Trados.FileType.PoFile\Supertext.Sdl.Trados.FileType.PoFile.csproj", "{C0BBD9DC-300A-4CE2-88BC-5889C5AD0523}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.JsonFile", "Supertext.Sdl.Trados.FileType.JsonFile\Supertext.Sdl.Trados.FileType.JsonFile.csproj", "{D9C8C4AD-5C74-4D0F-B74E-F38D6200B2BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.JsonFile.Tests", "Supertext.Sdl.Trados.FileType.JsonFile.Tests\Supertext.Sdl.Trados.FileType.JsonFile.Tests.csproj", "{04B4D76C-357A-4C11-865D-7DB138BD31C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supertext.Sdl.Trados.FileType.YamlFile", "Supertext.Sdl.Trados.FileType.YamlFile\Supertext.Sdl.Trados.FileType.YamlFile.csproj", "{07A1B5B4-D165-44FB-A4AE-8814EBD37ED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{04B4D76C-357A-4C11-865D-7DB138BD31C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04B4D76C-357A-4C11-865D-7DB138BD31C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04B4D76C-357A-4C11-865D-7DB138BD31C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07A1B5B4-D165-44FB-A4AE-8814EBD37ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07A1B5B4-D165-44FB-A4AE-8814EBD37ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07A1B5B4-D165-44FB-A4AE-8814EBD37ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07A1B5B4-D165-44FB-A4AE-8814EBD37ED1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

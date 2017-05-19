@@ -1,10 +1,11 @@
 ﻿using Sdl.FileTypeSupport.Framework.Core.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
+namespace Supertext.Sdl.Trados.FileType.YamlFile.Views
 {
-    [FileTypeSettingsPage(Id = "JsonFile_Parsing_Settings", Name = "Parsing_Settings_Name", Description = "Parsing_Settings_Description")]
-    public class ParsingSettingsPage : AbstractFileTypeSettingsPage<ParsingSettingsControl, ParsingSettings>
+    [FileTypeSettingsPage(Id = "Community_Embeddded_Content_Processor_Settings", Name = "Community_Embedded_Content_Processor_Settings_Name",
+       Description = "Community_Embedded_Content_Processor_Settings_Description", HelpTopic = "Embedded_Regex_Content")]
+    public class EmbeddedContentSettingsPage : AbstractFileTypeSettingsPage<EmbeddedContentSettingsControl, EmbeddedContentRegexSettings>
     {
         public override void ResetToDefaults()
         {

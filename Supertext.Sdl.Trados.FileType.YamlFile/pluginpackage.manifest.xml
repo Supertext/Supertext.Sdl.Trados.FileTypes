@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PluginPackage xmlns="http://www.sdl.com/Plugins/PluginPackage/1.0">
+  <PlugInName>Supertext.Sdl.Trados.FileType.YamlFile</PlugInName>
+  <Version>1.0</Version>
+  <Description>Supertext.Sdl.Trados.FileType.YamlFile</Description>
+  <Author></Author>
+  <RequiredProduct name="SDLTradosStudio" minversion="12.0" />
+  <Include>
+    <File>Supertext.Sdl.Trados.FileType.Utils.dll</File>
+    <File>YamlDotNet.dll</File>
+  </Include>
+</PluginPackage>

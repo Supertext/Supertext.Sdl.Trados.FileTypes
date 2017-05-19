@@ -1,20 +1,19 @@
-﻿using Newtonsoft.Json;
-using Sdl.Core.Settings;
+﻿using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
-using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
-using Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing;
+using Supertext.Sdl.Trados.FileType.YamlFile.Parsing;
+using Supertext.Sdl.Trados.FileType.YamlFile.TextProcessing;
 using Supertext.Sdl.Trados.FileType.Utils.FileHandling;
 using Supertext.Sdl.Trados.FileType.Utils.Settings;
 using Supertext.Sdl.Trados.FileType.Utils.TextProcessing;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile
+namespace Supertext.Sdl.Trados.FileType.YamlFile
 {
-    public class JsonFileParser : AbstractBilingualParser, INativeContentCycleAware, ISettingsAware
+    public class YamlFileParser : AbstractBilingualParser, INativeContentCycleAware, ISettingsAware
     {
         private readonly IFileHelper _fielHelper;
-        private readonly IJsonFactory _jsonFactory;
+        private readonly IYamlFactory _yamlFactory;
         private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
         private readonly IParsingSettings _parsingSettings;
         private readonly IParagraphUnitFactory _paragraphUnitFactory;
@@ -22,14 +21,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         //State during parsing
         private IPersistentFileConversionProperties _fileConversionProperties;
-        private IJsonTextReader _reader;
+        private IYamlTextReader _reader;
         private int _totalNumberOfLines;
         private byte _progressInPercent;
 
-        public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings, IParagraphUnitFactory paragraphUnitFactory, ISegmentDataCollector segmentDataCollector)
+        public YamlFileParser(IYamlFactory yamlFactory, IFileHelper fielHelper, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings, IParagraphUnitFactory paragraphUnitFactory, ISegmentDataCollector segmentDataCollector)
         {
             _fielHelper = fielHelper;
-            _jsonFactory = jsonFactory;
+            _yamlFactory = yamlFactory;
             _embeddedContentRegexSettings = embeddedContentRegexSettings;
             _parsingSettings = parsingSettings;
             _paragraphUnitFactory = paragraphUnitFactory;
@@ -63,7 +62,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         public void StartOfInput()
         {
             _totalNumberOfLines = _fielHelper.GetNumberOfLines(_fileConversionProperties.OriginalFilePath);
-            _reader = _jsonFactory.CreateJsonTextReader(_fileConversionProperties.OriginalFilePath);
+            _reader = _yamlFactory.CreateYamlTextReader(_fileConversionProperties.OriginalFilePath);
 
             ProgressInPercent = 0;
         }
@@ -87,9 +86,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 OnProgress((byte)(_reader.LineNumber * 100 / _totalNumberOfLines));
 
                 var path = _reader.Path;
-                var value = _reader.Value?.ToString();
+                var value = _reader.Value;
 
-                if (_reader.TokenType != JsonToken.String || string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     continue;
                 }

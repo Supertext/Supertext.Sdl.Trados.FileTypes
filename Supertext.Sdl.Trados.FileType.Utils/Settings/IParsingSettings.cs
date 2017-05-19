@@ -2,7 +2,7 @@
 using Sdl.Core.Settings;
 using Sdl.FileTypeSupport.Framework.Core.Settings;
 
-namespace Supertext.Sdl.Trados.FileType.JsonFile.Settings
+namespace Supertext.Sdl.Trados.FileType.Utils.Settings
 {
     public interface IParsingSettings
     {
