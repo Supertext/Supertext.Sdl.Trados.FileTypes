@@ -157,7 +157,7 @@
     <value>JSON-Dateityp-Benutzeroberfläche</value>
   </data>
   <data name="SameAsSource" xml:space="preserve">
-    <value>Gleich wie</value>
+    <value>Gleich wie Ausgangspfad</value>
   </data>
   <data name="Tag_Pair" xml:space="preserve">
     <value>Tag-Paar</value>

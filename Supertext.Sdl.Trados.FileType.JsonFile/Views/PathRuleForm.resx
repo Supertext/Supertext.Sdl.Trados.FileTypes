@@ -362,7 +362,7 @@
     <value>6</value>
   </data>
   <data name="_isTargetValueNeededCheckBox.Text" xml:space="preserve">
-    <value>Add target value to segment</value>
+    <value>Adopt target text</value>
   </data>
   <data name="&gt;&gt;_isTargetValueNeededCheckBox.Name" xml:space="preserve">
     <value>_isTargetValueNeededCheckBox</value>
