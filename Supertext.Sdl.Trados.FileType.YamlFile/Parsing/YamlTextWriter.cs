@@ -23,7 +23,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
         {
             _input = File.OpenText(inputFile);
             _ouput = new StreamWriter(File.OpenWrite(outputFile));
-            _parser = new Parser(new Scanner(_input, true));
+            _parser = new Parser(new Scanner(_input, false));
             _emitter = new Emitter(_ouput);
             _branches = new Stack<IBranch>();
             _currentPath = new Stack<string>();

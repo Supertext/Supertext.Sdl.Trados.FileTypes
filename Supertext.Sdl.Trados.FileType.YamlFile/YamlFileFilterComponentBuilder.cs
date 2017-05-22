@@ -29,8 +29,8 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
             info.FileTypeDocumentName = new LocalizableString(YamlFileTypeResources.Yaml_File);
             info.FileTypeDocumentsName = new LocalizableString(YamlFileTypeResources.Yaml_Files);
             info.Description = new LocalizableString(YamlFileTypeResources.Yaml_File_Filter_Description);
-            info.FileDialogWildcardExpression = "*.yml";
-            info.DefaultFileExtension = "yml";
+            info.FileDialogWildcardExpression = "*.yaml;*.yml";
+            info.DefaultFileExtension = "yaml";
             info.Icon = new IconDescriptor(YamlFileTypeResources.YamlFileIcon);
 
             info.WinFormSettingsPageIds = new[]

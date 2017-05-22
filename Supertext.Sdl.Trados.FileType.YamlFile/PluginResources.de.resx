@@ -127,7 +127,7 @@
     <value>Ausschliessen</value>
   </data>
   <data name="FileTypeFilter" xml:space="preserve">
-    <value>YAML Datei|*.yaml;</value>
+    <value>YAML Datei (*.yaml,*.yml)|*.yaml;*.yml</value>
   </data>
   <data name="Include" xml:space="preserve">
     <value>Muss innerhalb von Segmenten stehen</value>
