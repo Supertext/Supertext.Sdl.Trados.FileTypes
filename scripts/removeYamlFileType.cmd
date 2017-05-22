@@ -1,5 +1,5 @@
 @echo off
 
-call ".\psake\psake.cmd" "removePlugin.ps1 -parameters @{\"projectNameParam\"=\"YamlFile\"}"
+call ".\psake\psake.cmd" "clean.ps1 -parameters @{\"projectNameParam\"=\"YamlFile\"}"
 
 pause

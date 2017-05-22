@@ -1,3 +1,5 @@
+Include ".\utils.ps1"
+
 properties {
   $buildConfig = "Release"
 
@@ -24,17 +26,5 @@ properties {
 task default -depends Clean
 
 task Clean { 
-  if(Test-Path  $publishDirPlugin1){
-    Write-Host "deleting" $publishDirPlugin1 
-    Remove-Item $publishDirPlugin1 -Force -Recurse
-  }
-  
-  $pluginFolders | ForEach-Object{
-    $pluginFolder = $_
-	
-	if(Test-Path  $pluginFolder){
-      Write-Host "deleting" $pluginFolder
-      Remove-Item $pluginFolder -Force -Recurse
-    }
-  }
+  removePlugin $publishDirPlugin1 $pluginFolders
 }
