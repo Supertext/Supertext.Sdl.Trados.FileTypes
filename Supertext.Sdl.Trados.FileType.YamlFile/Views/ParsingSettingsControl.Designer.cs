@@ -105,6 +105,7 @@
             this.columnHeader2});
             resources.ApplyResources(this._rulesListView, "_rulesListView");
             this._rulesListView.FullRowSelect = true;
+            this._rulesListView.HideSelection = false;
             this._rulesListView.Name = "_rulesListView";
             this._tagDefinitionLayoutPanel.SetRowSpan(this._rulesListView, 7);
             this._rulesListView.UseCompatibleStateImageBehavior = false;

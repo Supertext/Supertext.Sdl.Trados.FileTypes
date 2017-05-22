@@ -124,7 +124,7 @@
     <value>YAML files</value>
   </data>
   <data name="Yaml_File_Filter_Description" xml:space="preserve">
-    <value>This Supertext file type handles YAML (JavaScript Object Notation) files.</value>
+    <value>This Supertext file type handles YAML files.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="YamlFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">

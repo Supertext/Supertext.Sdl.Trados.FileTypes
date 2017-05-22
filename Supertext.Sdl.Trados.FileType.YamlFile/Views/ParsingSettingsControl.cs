@@ -191,7 +191,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Views
             }
         }
 
-        private void ExtractFiles(string[] files)
+        private void ExtractFiles(IEnumerable<string> files)
         {
             var yamlPathPatternExtractor = new YamlPathPatternExtractor(new YamlFactory());
 

@@ -127,7 +127,7 @@
     <value>Exclude</value>
   </data>
   <data name="FileTypeFilter" xml:space="preserve">
-    <value>YAML file|*.yml;</value>
+    <value>YAML Datei (*.yaml,*.yml)|*.yaml;*.yml</value>
   </data>
   <data name="Include" xml:space="preserve">
     <value>Include</value>

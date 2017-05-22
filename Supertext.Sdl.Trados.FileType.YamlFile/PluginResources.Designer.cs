@@ -88,7 +88,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to YAML file|*.yml;.
+        ///   Looks up a localized string similar to YAML Datei (*.yaml,*.yml)|*.yaml;*.yml.
         /// </summary>
         internal static string FileTypeFilter {
             get {

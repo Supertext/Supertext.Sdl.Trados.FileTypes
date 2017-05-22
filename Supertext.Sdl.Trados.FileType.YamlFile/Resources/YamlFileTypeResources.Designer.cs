@@ -70,6 +70,15 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string Value_Path {
+            get {
+                return ResourceManager.GetString("Value_Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to YAML could not be validated.
         /// </summary>
         internal static string Yaml_Could_Not_Be_Validated {
@@ -88,7 +97,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This Supertext file type handles YAML (JavaScript Object Notation) files..
+        ///   Looks up a localized string similar to This Supertext file type handles YAML files..
         /// </summary>
         internal static string Yaml_File_Filter_Description {
             get {
@@ -112,15 +121,6 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Resources {
             get {
                 object obj = ResourceManager.GetObject("YamlFileIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Path.
-        /// </summary>
-        internal static string Value_Path {
-            get {
-                return ResourceManager.GetString("Value_Path", resourceCulture);
             }
         }
     }
