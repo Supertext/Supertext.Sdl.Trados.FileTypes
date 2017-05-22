@@ -74,9 +74,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parsing\IBranch.cs" />
     <Compile Include="Parsing\IYamlFactory.cs" />
     <Compile Include="Parsing\IYamlTextReader.cs" />
     <Compile Include="Parsing\IYamlTextWriter.cs" />
+    <Compile Include="Parsing\Map.cs" />
+    <Compile Include="Parsing\Sequence.cs" />
     <Compile Include="Parsing\YamlFactory.cs" />
     <Compile Include="Parsing\YamlTextReader.cs" />
     <Compile Include="Parsing\YamlTextWriter.cs" />

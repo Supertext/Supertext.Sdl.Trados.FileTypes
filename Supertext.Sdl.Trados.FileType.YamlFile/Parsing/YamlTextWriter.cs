@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 
@@ -54,6 +55,8 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
         public void Visit(AnchorAlias e)
         {
             _emitter.Emit(e);
+
+            _branches.Peek().Continue();
         }
 
         public void Visit(StreamStart e)
@@ -80,14 +83,14 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
         {
             var currentBranch = _branches.Peek();
 
-            if (currentBranch.IsKeyNeeded)
+            if (!currentBranch.IsComplete)
             {
                 _emitter.Emit(e);
-                currentBranch.SetKey(e.Value);
+                currentBranch.SetScalar(e.Value);
                 return;
             }
 
-            _currentPath.Push(currentBranch.GetNextSubPath());
+            _currentPath.Push(currentBranch.GetSubPath());
 
             if (GetStringPath(_currentPath) == _pathToWrite)
             {
@@ -101,6 +104,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
             }
 
             _currentPath.Pop();
+            currentBranch.Continue();
         }
 
         public void Visit(SequenceStart e)
@@ -156,7 +160,16 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
 
         private void AddBranch(IBranch newBranch)
         {
-            _currentPath.Push(_branches.Count > 0 ? _branches.Peek().GetNextSubPath() : string.Empty);
+            var subPath = string.Empty;
+
+            if (_branches.Count > 0)
+            {
+                var currentBranch = _branches.Peek();
+                subPath = currentBranch.GetSubPath();
+                currentBranch.Continue();
+            }
+
+            _currentPath.Push(subPath);
 
             _branches.Push(newBranch);
         }

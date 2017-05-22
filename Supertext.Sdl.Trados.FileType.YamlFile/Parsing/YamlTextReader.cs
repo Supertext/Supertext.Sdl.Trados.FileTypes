@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 
@@ -41,6 +42,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
             }
             
             _parser.Current.Accept(this);
+
             LineNumber = _parser.Current.Start.Line;
 
             return true;
@@ -48,6 +50,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
 
         public void Visit(AnchorAlias e)
         {
+            _branches.Peek().Continue();
         }
 
         public void Visit(StreamStart e)
@@ -70,18 +73,26 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
         {
             var currentBranch = _branches.Peek();
 
-            if (currentBranch.IsKeyNeeded)
+            if (!currentBranch.IsComplete)
             {
-                currentBranch.SetKey(e.Value);
+                currentBranch.SetScalar(e.Value);
                 return;
             }
 
-            _currentPath.Push(currentBranch.GetNextSubPath());
+            if (!IsText(e))
+            {
+                currentBranch.Continue();
+                return;
+            }
+
+            _currentPath.Push(currentBranch.GetSubPath());
 
             Path = GetStringPath(_currentPath);
             Value = e.Value;
 
             _currentPath.Pop();
+
+            currentBranch.Continue();
         }
 
         public void Visit(SequenceStart e)
@@ -129,16 +140,30 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Parsing
             }
         }
 
-        private void AddBranch(IBranch newBranch)
-        {
-            _currentPath.Push(_branches.Count > 0 ? _branches.Peek().GetNextSubPath() : string.Empty);
-
-            _branches.Push(newBranch);
-        }
-
         private static string GetStringPath(IEnumerable<string> path)
         {
             return string.Join("", path.Reverse()).TrimStart('.');
+        }
+
+        private static bool IsText(Scalar e)
+        {
+            return Regex.IsMatch(e.Value, "[a-zA-Z]+");
+        }
+
+        private void AddBranch(IBranch newBranch)
+        {
+            var subPath = string.Empty;
+
+            if (_branches.Count > 0)
+            {
+                var currentBranch = _branches.Peek();
+                subPath = currentBranch.GetSubPath();
+                currentBranch.Continue();
+            }
+
+            _currentPath.Push(subPath);
+
+            _branches.Push(newBranch);
         }
     }
 }
