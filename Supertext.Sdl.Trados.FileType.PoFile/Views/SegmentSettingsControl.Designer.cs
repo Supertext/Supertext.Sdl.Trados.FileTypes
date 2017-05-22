@@ -52,11 +52,11 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Views
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.cb_MessageStringAsSource);
             this.groupBox1.Controls.Add(this.cb_TargetTextNeeded);
             this.groupBox1.Controls.Add(this.tb_note);
             this.groupBox1.Controls.Add(this.groupBox2);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -76,17 +76,17 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Views
             // 
             // tb_note
             // 
-            resources.ApplyResources(this.tb_note, "tb_note");
             this.tb_note.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            resources.ApplyResources(this.tb_note, "tb_note");
             this.tb_note.Name = "tb_note";
             this.tb_note.ReadOnly = true;
             // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.tb_targetSegment);
             this.groupBox2.Controls.Add(this.tb_sourceSegment);
             this.groupBox2.Controls.Add(this.tb_example);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
@@ -104,8 +104,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Views
             // 
             // tb_example
             // 
-            resources.ApplyResources(this.tb_example, "tb_example");
             this.tb_example.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            resources.ApplyResources(this.tb_example, "tb_example");
             this.tb_example.Name = "tb_example";
             this.tb_example.ReadOnly = true;
             // 

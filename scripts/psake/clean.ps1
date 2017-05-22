@@ -1,7 +1,6 @@
 Include ".\utils.ps1"
 
 properties {
-  $buildConfig = "Release"
 
   $projectName = "Supertext.Sdl.Trados.FileType.$projectNameParam"
   $pluginName1 = "$projectName.sdlplugin"
@@ -10,7 +9,6 @@ properties {
   $baseDir = Resolve-Path ../..
   $publishDir = "$baseDir\plugin"
   $publishDirPlugin1 = "$publishDir\$pluginName1"
-  $pluginPath1 =  "$baseDir\$projectName\bin\$buildConfig\$pluginName1"
   $appDataRoaming = $env:APPDATA
   $appDataLocal = $env:LOCALAPPDATA
   $deployDir = "$appDataLocal\SDL\SDL Trados Studio\14\Plugins\Packages"

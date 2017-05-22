@@ -125,10 +125,10 @@
     <value>Zieltext der PO-Datei als Ausgangstext anzeigen</value>
   </data>
   <data name="cb_TargetTextNeeded.Size" type="System.Drawing.Size, System.Drawing">
-    <value>239, 17</value>
+    <value>186, 17</value>
   </data>
   <data name="cb_TargetTextNeeded.Text" xml:space="preserve">
-    <value>Zieltext der PO-Datei als Zieltext übernehmen</value>
+    <value>Zieltext der PO-Datei übernehmen</value>
   </data>
   <data name="tb_note.Text" xml:space="preserve">
     <value>Anmerkung:

@@ -117,13 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="_ruleGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>538, 125</value>
+  </data>
   <data name="_ruleGroupBox.Text" xml:space="preserve">
     <value>Regulärer Ausdruck</value>
+  </data>
+  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>466, 135</value>
   </data>
   <data name="btnCancel.Text" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnOk.Location" type="System.Drawing.Point, System.Drawing">
+    <value>385, 135</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>544, 161</value>
+  </data>
+  <data name="_pathRulesTable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>532, 106</value>
+  </data>
   <data name="_ignoreCaseCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>87, 78</value>
   </data>
@@ -137,13 +152,13 @@
     <value>87, 53</value>
   </data>
   <data name="_targetPathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>365, 20</value>
+    <value>400, 20</value>
   </data>
   <data name="_sourcePathPatternTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>87, 28</value>
   </data>
   <data name="_sourcePathPatternTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>365, 20</value>
+    <value>400, 20</value>
   </data>
   <data name="_targetPathLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 13</value>
@@ -173,14 +188,20 @@
         RZ2wok5YUSesqA/6+gbW8zFn/oLHAQAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="_swapButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>493, 31</value>
+  </data>
   <data name="_isTargetValueNeededCheckBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>277, 78</value>
   </data>
   <data name="_isTargetValueNeededCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 25</value>
+    <value>210, 25</value>
   </data>
   <data name="_isTargetValueNeededCheckBox.Text" xml:space="preserve">
-    <value>Zieltext übernehmen</value>
+    <value>Zieltext der YAML-Datei übernehmen</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>544, 161</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Pfadregel hinzufügen/bearbeiten</value>
