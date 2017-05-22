@@ -33,7 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
             catch (YamlException e)
             {
                 messageReporter.ReportMessage(this, nativeFilePath,
-                    ErrorLevel.Error, YamlFileTypeResources.Invalid_Yaml_Format, e.Message);
+                    ErrorLevel.Error, YamlFileTypeResources.Invalid_Yaml_Format + "("+e.Message+")", e.Message);
 
                 return new SniffInfo {IsSupported = false};
             }
