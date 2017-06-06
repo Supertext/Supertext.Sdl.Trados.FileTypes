@@ -362,7 +362,7 @@
     <value>6</value>
   </data>
   <data name="_isTargetValueNeededCheckBox.Text" xml:space="preserve">
-    <value>Adopt target text</value>
+    <value>Apply target text from JSON file</value>
   </data>
   <data name="&gt;&gt;_isTargetValueNeededCheckBox.Name" xml:space="preserve">
     <value>_isTargetValueNeededCheckBox</value>
