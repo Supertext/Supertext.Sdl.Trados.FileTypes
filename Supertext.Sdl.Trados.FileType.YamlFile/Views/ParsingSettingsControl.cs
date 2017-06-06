@@ -183,14 +183,6 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Views
             }
         }
 
-        private void _helpButton_Click(object sender, EventArgs e)
-        {
-            using (var pathRuleHelpForm = new PathRuleHelpForm())
-            {
-                pathRuleHelpForm.ShowDialog(this);
-            }
-        }
-
         private void ExtractFiles(IEnumerable<string> files)
         {
             var yamlPathPatternExtractor = new YamlPathPatternExtractor(new YamlFactory());

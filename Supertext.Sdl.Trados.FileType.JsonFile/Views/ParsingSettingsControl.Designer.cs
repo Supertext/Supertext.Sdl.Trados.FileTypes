@@ -40,7 +40,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._addRuleButton = new System.Windows.Forms.Button();
             this._editRuleButton = new System.Windows.Forms.Button();
-            this._helpButton = new System.Windows.Forms.Button();
             this._extractButton = new System.Windows.Forms.Button();
             this._removeRuleButton = new System.Windows.Forms.Button();
             this._removeAllButton = new System.Windows.Forms.Button();
@@ -91,7 +90,6 @@
             this._tagDefinitionLayoutPanel.Controls.Add(this._rulesListView, 0, 0);
             this._tagDefinitionLayoutPanel.Controls.Add(this._addRuleButton, 1, 0);
             this._tagDefinitionLayoutPanel.Controls.Add(this._editRuleButton, 1, 1);
-            this._tagDefinitionLayoutPanel.Controls.Add(this._helpButton, 1, 6);
             this._tagDefinitionLayoutPanel.Controls.Add(this._extractButton, 1, 5);
             this._tagDefinitionLayoutPanel.Controls.Add(this._removeRuleButton, 1, 2);
             this._tagDefinitionLayoutPanel.Controls.Add(this._removeAllButton, 1, 3);
@@ -132,13 +130,6 @@
             this._editRuleButton.Name = "_editRuleButton";
             this._editRuleButton.UseVisualStyleBackColor = true;
             this._editRuleButton.Click += new System.EventHandler(this._editRuleButton_Click);
-            // 
-            // _helpButton
-            // 
-            resources.ApplyResources(this._helpButton, "_helpButton");
-            this._helpButton.Name = "_helpButton";
-            this._helpButton.UseVisualStyleBackColor = true;
-            this._helpButton.Click += new System.EventHandler(this._helpButton_Click);
             // 
             // _extractButton
             // 
@@ -197,7 +188,6 @@
         private System.Windows.Forms.Button _removeAllButton;
         private System.Windows.Forms.Button _removeRuleButton;
         private System.Windows.Forms.Button _editRuleButton;
-        private System.Windows.Forms.Button _helpButton;
         private System.Windows.Forms.Button _extractButton;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button _pairButton;
