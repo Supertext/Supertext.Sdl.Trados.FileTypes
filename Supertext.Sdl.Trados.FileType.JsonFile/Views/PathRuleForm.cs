@@ -35,15 +35,23 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Views
                 return;
             }
 
+            if (string.IsNullOrEmpty(_sourcePathPatternTextBox.Text))
+            {
+                DialogResult = DialogResult.Ignore;
+                return;
+            }
+
             _pathRule.SourcePathPattern = _sourcePathPatternTextBox.Text;
 
-            if (_isBilingualCheckBox.Checked)
+            var isBilingual = _isBilingualCheckBox.Checked && !string.IsNullOrEmpty(_targetPathPatternTextBox.Text);
+
+            if (isBilingual)
             {
                 _pathRule.TargetPathPattern = _targetPathPatternTextBox.Text;
             }
-            
+
             _pathRule.IgnoreCase = _ignoreCaseCheckBox.Checked;
-            _pathRule.IsBilingual = _isBilingualCheckBox.Checked;
+            _pathRule.IsBilingual = isBilingual;
             _pathRule.IsTargetValueNeeded = _isTargetValueNeededCheckBox.Checked;
         }
 
