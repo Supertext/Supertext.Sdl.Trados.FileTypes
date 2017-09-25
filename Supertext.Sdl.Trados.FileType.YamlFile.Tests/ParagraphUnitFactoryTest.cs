@@ -38,7 +38,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             A.CallTo(() => _propertiesFactoryMock.CreateContextProperties()).Returns(contextPropertiesMock);
 
             var fieldContextInfoMock = A.Fake<IContextInfo>();
-            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(StandardContextTypes.Field))
+            A.CallTo(() => _propertiesFactoryMock.CreateContextInfo(StandardContextTypes.Paragraph))
                 .Returns(fieldContextInfoMock);
 
             // Act
@@ -72,7 +72,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
         }
 
         [Test]
-        public void Create_ShouldAddSourceSegmentToParagraphUnit()
+        public void Create_WhenHasSourceAndTarget_ShouldAddSourceSegmentToParagraphUnit()
         {
             // Arrange
             var testee = CreateTestee();
@@ -95,7 +95,8 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             A.CallTo(() => _paragraphUnitMock.Source.Add(sourceSegmentMock)).MustHaveHappened();
         }
 
-        public void Create_ShouldAddTargetSegmentToParagraphUnit()
+        [Test]
+        public void Create_WhenHasSourceOnly_ShouldAddSourceTextToParagraphUnit()
         {
             // Arrange
             var testee = CreateTestee();
@@ -111,11 +112,57 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
 
             // Act
+            testee.Create(TheSourcePath, TheSourceValue, TheTargetPath, string.Empty);
+
+            // Assert
+            A.CallTo(() => _paragraphUnitMock.Source.Add(textMock)).MustHaveHappened();
+        }
+
+        public void Create_WhenHasSourceAndTarget_ShouldAddTargetSegmentToParagraphUnit()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var sourceSegmentMock = A.Fake<ISegment>();
+            var targetSegmentMock = A.Fake<ISegment>();
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
+
+            var textPropertiesMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(TheTargetValue)).Returns(textPropertiesMock);
+
+            var textMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
+
+            // Act
             testee.Create(TheSourcePath, TheSourceValue, TheTargetPath, TheTargetValue);
 
             // Assert
             A.CallTo(() => targetSegmentMock.Add(textMock)).MustHaveHappened();
             A.CallTo(() => _paragraphUnitMock.Target.Add(targetSegmentMock)).MustHaveHappened();
+        }
+
+        [Test]
+        public void Create_WhenHasSourceOnly_ShouldNotAddTargetTextToParagraphUnit()
+        {
+            // Arrange
+            var testee = CreateTestee();
+
+            var sourceSegmentMock = A.Fake<ISegment>();
+            var targetSegmentMock = A.Fake<ISegment>();
+            A.CallTo(() => _itemFactoryMock.CreateSegment(A<ISegmentPairProperties>.Ignored)).ReturnsNextFromSequence(sourceSegmentMock, targetSegmentMock);
+
+            var textPropertiesMock = A.Fake<ITextProperties>();
+            A.CallTo(() => _propertiesFactoryMock.CreateTextProperties(TheTargetValue)).Returns(textPropertiesMock);
+
+            var textMock = A.Fake<IText>();
+            A.CallTo(() => _itemFactoryMock.CreateText(textPropertiesMock)).Returns(textMock);
+
+            // Act
+            testee.Create(TheSourcePath, TheSourceValue, TheTargetPath, string.Empty);
+
+            // Assert
+            A.CallTo(() => targetSegmentMock.Add(textMock)).MustNotHaveHappened();
+            A.CallTo(() => _paragraphUnitMock.Target.Add(A<IAbstractMarkupData>.Ignored)).MustNotHaveHappened();
         }
 
         private ParagraphUnitFactory CreateTestee()

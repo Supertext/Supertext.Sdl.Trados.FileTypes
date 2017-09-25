@@ -26,15 +26,22 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.TextProcessing
 
         private void AddSegmentPair(IParagraphUnit paragraphUnit, string sourceValue, string targetValue)
         {
-            var segmentPairProperties = CreateSegmentPairProperties();
+            if (string.IsNullOrEmpty(targetValue))
+            {
+                paragraphUnit.Source.Add(CreateText(sourceValue));
+            }
+            else
+            {
+                var segmentPairProperties = CreateSegmentPairProperties();
 
-            var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            sourceSegment.Add(CreateText(sourceValue));
-            paragraphUnit.Source.Add(sourceSegment);
+                var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
+                sourceSegment.Add(CreateText(sourceValue));
+                paragraphUnit.Source.Add(sourceSegment);
 
-            var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            targetSegment.Add(CreateText(targetValue));
-            paragraphUnit.Target.Add(targetSegment);
+                var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
+                targetSegment.Add(CreateText(targetValue));
+                paragraphUnit.Target.Add(targetSegment);
+            }
         }
 
         private ISegmentPairProperties CreateSegmentPairProperties()
@@ -66,7 +73,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.TextProcessing
 
         private IContextInfo CreateFieldContextInfo(string path)
         {
-            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Field);
+            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Paragraph);
             contextInfo.Purpose = ContextPurpose.Match;
             contextInfo.Description = path;
             return contextInfo;

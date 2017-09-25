@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Sdl.Core.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.NativeApi;
@@ -44,15 +42,22 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
 
         private void AddSegmentPair(IParagraphUnit paragraphUnit, string sourceValue, string targetValue)
         {
-            var segmentPairProperties = CreateSegmentPairProperties();
+            if (string.IsNullOrEmpty(targetValue))
+            {
+                paragraphUnit.Source.Add(CreateText(sourceValue));
+            }
+            else
+            {
+                var segmentPairProperties = CreateSegmentPairProperties();
 
-            var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            sourceSegment.Add(CreateText(sourceValue));
-            paragraphUnit.Source.Add(sourceSegment);
+                var sourceSegment = ItemFactory.CreateSegment(segmentPairProperties);
+                sourceSegment.Add(CreateText(sourceValue));
+                paragraphUnit.Source.Add(sourceSegment);
 
-            var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
-            targetSegment.Add(CreateText(targetValue));
-            paragraphUnit.Target.Add(targetSegment);
+                var targetSegment = ItemFactory.CreateSegment(segmentPairProperties);
+                targetSegment.Add(CreateText(targetValue));
+                paragraphUnit.Target.Add(targetSegment);
+            }
         }
 
         private ISegmentPairProperties CreateSegmentPairProperties()
@@ -84,7 +89,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.TextProcessing
 
         private IContextInfo CreateFieldContextInfo(string path)
         {
-            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Field);
+            var contextInfo = PropertiesFactory.CreateContextInfo(StandardContextTypes.Paragraph);
             contextInfo.Purpose = ContextPurpose.Match;
             contextInfo.Description = path;
             return contextInfo;
