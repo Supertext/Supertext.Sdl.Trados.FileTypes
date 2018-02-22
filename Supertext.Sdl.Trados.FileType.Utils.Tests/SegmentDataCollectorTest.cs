@@ -576,6 +576,56 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
                     }
                 }
             },
+            new TestCase
+            {
+                Name = "TestCase14",
+                PathRules = new ComplexObservableList<PathRule>
+                {
+                    new PathRule
+                    {
+                        IsBilingual = true,
+                        SourcePathPattern = "TheSourcePath",
+                        TargetPathPattern = "TheTargetPath"
+                    }
+                },
+                AddChecks = new List<AddCheck>
+                {
+                    new AddCheck
+                    {
+                        Path = "TheSourcePath",
+                        Value = "The source value 1"
+                    },
+                    new AddCheck
+                    {
+                        Path = "TheSourcePath",
+                        Value = "The source value 2"
+                    },
+                    new AddCheck
+                    {
+                        Path = "TheTargetPath",
+                        Value = "The target value 1",
+                        ExpectedSegmentData = new SegmentData
+                        {
+                            SourcePath = "TheSourcePath",
+                            SourceValue = "The source value 1",
+                            TargetPath = "TheTargetPath",
+                            TargetValue = string.Empty
+                        }
+                    },
+                    new AddCheck
+                    {
+                        Path = "TheTargetPath",
+                        Value = "The target value 2",
+                        ExpectedSegmentData = new SegmentData
+                        {
+                            SourcePath = "TheSourcePath",
+                            SourceValue = "The source value 2",
+                            TargetPath = "TheTargetPath",
+                            TargetValue = string.Empty
+                        }
+                    }
+                }
+            },
         };
 
         [Test, TestCaseSource(nameof(TestCases))]

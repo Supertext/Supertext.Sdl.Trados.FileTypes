@@ -24,7 +24,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         {
             var info = FileTypeManager.BuildFileTypeInformation();
 
-            info.FileTypeDefinitionId = new FileTypeDefinitionId("JSON file type 1.4.0.0");
+            info.FileTypeDefinitionId = new FileTypeDefinitionId("JSON file type 1.5.0.0");
             info.FileTypeName = new LocalizableString(JsonFileTypeResources.Json_File);
             info.FileTypeDocumentName = new LocalizableString(JsonFileTypeResources.Json_File);
             info.FileTypeDocumentsName = new LocalizableString(JsonFileTypeResources.Json_Files);

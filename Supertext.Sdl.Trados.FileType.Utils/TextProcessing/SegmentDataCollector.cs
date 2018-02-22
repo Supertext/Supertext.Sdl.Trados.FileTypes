@@ -10,14 +10,14 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
         private static readonly Regex IndexerRegex = new Regex(@"\[\d\]");
 
         private readonly IParsingSettings _parsingSettings;
-        private readonly Dictionary<string, KeyValuePair<string, string>> _tempSources;
-        private readonly Dictionary<string, KeyValuePair<string, string>> _tempTargets;
+        private readonly Dictionary<string, Queue<KeyValuePair<string, string>>> _tempSources;
+        private readonly Dictionary<string, Queue<KeyValuePair<string, string>>> _tempTargets;
 
         public SegmentDataCollector(IParsingSettings parsingSettings)
         {
             _parsingSettings = parsingSettings;
-            _tempSources = new Dictionary<string, KeyValuePair<string, string>>();
-            _tempTargets = new Dictionary<string, KeyValuePair<string, string>>();
+            _tempSources = new Dictionary<string, Queue<KeyValuePair<string, string>>>();
+            _tempTargets = new Dictionary<string, Queue<KeyValuePair<string, string>>>();
         }
 
         public SegmentData CompleteSegmentData { get; set; }
@@ -82,33 +82,42 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 
             var key = GetKey(pathRule, path);
 
-            if (_tempTargets.ContainsKey(key))
+            if (_tempTargets.ContainsKey(key) && _tempTargets[key].Count > 0)
             {
-                var target = _tempTargets[key];
-
+                var target = _tempTargets[key].Dequeue();
+                
                 SetCompleteSegmentData(path, value, target.Key, pathRule.IsTargetValueNeeded ? target.Value : string.Empty);
 
                 return;
             }
 
-            _tempSources.Add(key, new KeyValuePair<string, string>(path, value));
+            if (!_tempSources.ContainsKey(key))
+            {
+                _tempSources.Add(key, new Queue<KeyValuePair<string, string>>());
+            }
+            
+            _tempSources[key].Enqueue(new KeyValuePair<string, string>(path, value));
         }
 
         private void ProcessAsTarget(PathRule pathRule, string path, string value)
         {
             var key = GetKey(pathRule, path);
 
-            if (_tempSources.ContainsKey(key))
+            if (_tempSources.ContainsKey(key) && _tempSources[key].Count > 0)
             {
-                var source = _tempSources[key];
-                _tempSources.Remove(key);
+                var source = _tempSources[key].Dequeue();
 
                 SetCompleteSegmentData(source.Key, source.Value, path, pathRule.IsTargetValueNeeded ? value : string.Empty);
 
                 return;
             }
 
-            _tempTargets.Add(key, new KeyValuePair<string, string>(path, value));
+            if (!_tempTargets.ContainsKey(key))
+            {
+                _tempTargets.Add(key, new Queue<KeyValuePair<string, string>>());
+            }
+
+            _tempTargets[key].Enqueue(new KeyValuePair<string, string>(path, value));
         }
 
         private void SetCompleteSegmentData(string sourcePath, string sourceValue, string targetPath, string targetValue)
