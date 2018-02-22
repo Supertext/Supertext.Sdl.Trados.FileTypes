@@ -101,6 +101,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
             if (_tempSources.ContainsKey(key))
             {
                 var source = _tempSources[key];
+                _tempSources.Remove(key);
 
                 SetCompleteSegmentData(source.Key, source.Value, path, pathRule.IsTargetValueNeeded ? value : string.Empty);
 
