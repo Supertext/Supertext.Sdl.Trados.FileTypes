@@ -87,7 +87,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             A.CallTo(() => _paragraphUnitMock.Properties).Returns(paragraphUnitPropertiesMock);
 
             var segmentReaderMock = A.Fake<ISegmentReader>();
-            A.CallTo(() => segmentReaderMock.GetTargetText(_paragraphUnitMock.SegmentPairs)).Returns(TheTargetText);
+            A.CallTo(() => segmentReaderMock.GetText(_paragraphUnitMock.Target)).Returns(TheTargetText);
 
             var testee = new YamlFileWriter(jsonFactoryMock, segmentReaderMock);
             testee.SetOutputProperties(nativeOutputPropertiesMock);

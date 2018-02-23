@@ -62,7 +62,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
                 targetPath = sourcePath;
             }
 
-            var targetText = _segmentReader.GetTargetText(paragraphUnit.SegmentPairs);
+            var targetText = _segmentReader.GetText(paragraphUnit.Target);
 
             _yamlTextWriter.Write(targetPath, targetText);
         }

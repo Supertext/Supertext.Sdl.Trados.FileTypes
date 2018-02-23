@@ -5,7 +5,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
 {
     public interface ISegmentReader
     {
-        string GetTargetText(IEnumerable<ISegmentPair> segmentPairs);
+        string GetText(IParagraph targetParagraph);
 
         string GetTargetText(ISegmentPair segmentPair);
     }

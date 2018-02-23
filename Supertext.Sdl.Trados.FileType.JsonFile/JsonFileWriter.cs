@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Linq;
+using Newtonsoft.Json.Linq;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.JsonFile.Parsing;
@@ -74,7 +75,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 return;
             }
 
-            var targetText = _segmentReader.GetTargetText(paragraphUnit.SegmentPairs);
+            var targetText = _segmentReader.GetText(paragraphUnit.Target);
 
             var value = targetToken.Value;
 

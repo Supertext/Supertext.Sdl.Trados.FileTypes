@@ -8,13 +8,13 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
     {
         private StringBuilder _textStringBuilder;
 
-        public string GetTargetText(IEnumerable<ISegmentPair> segmentPairs)
+        public string GetText(IParagraph targetParagraph)
         {
             _textStringBuilder = new StringBuilder();
 
-            foreach (var segmentPair in segmentPairs)
+            foreach (var markupData in targetParagraph)
             {
-                VisitChildren(segmentPair.Target);
+                markupData.AcceptVisitor(this);
             }
 
             return _textStringBuilder.ToString();

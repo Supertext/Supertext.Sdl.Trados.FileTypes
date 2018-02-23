@@ -147,7 +147,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             A.CallTo(() => targetTokenMock.Value).Returns(_targetValueMock);
 
             var segmentReaderMock = A.Fake<ISegmentReader>();
-            A.CallTo(() => segmentReaderMock.GetTargetText(_paragraphUnitMock.SegmentPairs)).Returns(TheTargetText);
+            A.CallTo(() => segmentReaderMock.GetText(_paragraphUnitMock.Target)).Returns(TheTargetText);
 
             var testee = new JsonFileWriter(jsonFactoryMock, _fileHelperMock, segmentReaderMock);
             testee.GetProposedOutputFileInfo(fileConversionPropertiesMock, proposedFileInfoMock);
