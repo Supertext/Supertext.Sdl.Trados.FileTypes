@@ -13,7 +13,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 
         public IJToken SelectToken(string path)
         {
-            return new JTokenWrapper(_token.SelectToken(path));
+            var selectedToken = _token.SelectToken(path);
+
+            return selectedToken == null ? null : new JTokenWrapper(selectedToken);
         }
 
         public JTokenType Type

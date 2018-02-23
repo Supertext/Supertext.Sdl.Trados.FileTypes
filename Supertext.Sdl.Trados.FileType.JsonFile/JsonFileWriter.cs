@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
@@ -69,6 +70,11 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             }
 
             var targetToken = _rootToken.SelectToken(targetPath);
+
+            if (targetToken == null)
+            {
+                throw new Exception($"Cannot find token with path {targetPath}");
+            }
 
             if (targetToken.Type != JTokenType.String)
             {
