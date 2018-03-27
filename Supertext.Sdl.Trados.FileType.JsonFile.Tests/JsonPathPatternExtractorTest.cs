@@ -25,9 +25,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
 
             // Assert
             result.Count.Should().Be(3);
-            result.Should().Contain("path1");
-            result.Should().Contain("path2");
-            result.Should().Contain("path3");
+            result.Should().Contain("^path1$");
+            result.Should().Contain("^path2$");
+            result.Should().Contain("^path3$");
         }
 
         [Test]
@@ -40,8 +40,8 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var result = testee.ExtractPathPatterns(Testfile).ToList();
 
             // Assert
-            result.Should().Contain("path1");
-            result.Should().Contain("path5");
+            result.Should().Contain("^path1$");
+            result.Should().Contain("^path5$");
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var result = testee.ExtractPathPatterns(Testfile);
 
             // Assert
-            result.Should().Contain(@"some\.content");
+            result.Should().Contain(@"^some\.content$");
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var result = testee.ExtractPathPatterns(Testfile);
 
             // Assert
-            result.Should().Contain(@"theObject\['with spaces in property name'\]");
+            result.Should().Contain(@"^theObject\['with spaces in property name'\]$");
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             var result = testee.ExtractPathPatterns(Testfile);
 
             // Assert
-            result.Should().Contain(@"someArray\[\d+\]");
+            result.Should().Contain(@"^someArray\[\d+\]$");
         }
 
         [Test]
