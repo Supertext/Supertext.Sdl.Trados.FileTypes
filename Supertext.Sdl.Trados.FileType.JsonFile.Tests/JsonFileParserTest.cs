@@ -160,40 +160,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         }
 
         [Test]
-        public void ParseNext_WhenValueIsNull_ShouldNotProcessPath()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            testee.StartOfInput();
-
-            A.CallTo(() => _jsonTextReaderMock.Value).Returns(null);
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _segmendDataCollectorMock.Add(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
-        }
-
-        [Test]
-        public void ParseNext_WhenValueIsEmpty_ShouldNotProcessPath()
-        {
-            // Arrange
-            var testee = CreateTestee();
-            testee.StartOfInput();
-
-            A.CallTo(() => _jsonTextReaderMock.Value).Returns(string.Empty);
-
-            // Act
-            testee.ParseNext();
-
-            // Assert
-            A.CallTo(() => _segmendDataCollectorMock.Add(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
-            A.CallTo(() => _paragraphUnitFactoryMock.Create(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
-        }
-
-        [Test]
         public void ParseNext_WhenTokenTypeIsNotString_ShouldNotProcessPath()
         {
             // Arrange

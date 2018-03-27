@@ -87,9 +87,9 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 OnProgress((byte)(_reader.LineNumber * 100 / _totalNumberOfLines));
 
                 var path = _reader.Path;
-                var value = _reader.Value?.ToString();
+                var value = _reader.Value?.ToString() ?? string.Empty;
 
-                if (_reader.TokenType != JsonToken.String || string.IsNullOrEmpty(value))
+                if (_reader.TokenType != JsonToken.String)
                 {
                     continue;
                 }
