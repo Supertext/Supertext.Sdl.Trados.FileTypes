@@ -77,13 +77,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         {
             // Arrange
             var testee = CreateTestee();
-            testee.MonitorEvents();
+            using (var monitoredTestee = testee.Monitor())
+            {
+                // Act
+                testee.StartOfInput();
 
-            // Act
-            testee.StartOfInput();
-
-            // Assert
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 0);
+                // Assert
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 0);
+            }
         }
 
         [Test]
@@ -142,21 +143,23 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
         {
             // Arrange
             var testee = CreateTestee();
-            testee.MonitorEvents();
-            testee.StartOfInput();
+            using (var monitoredTestee = testee.Monitor())
+            {
+                testee.StartOfInput();
 
-            // Act
-            testee.ParseNext();
-            testee.ParseNext();
-            testee.ParseNext();
-            testee.ParseNext();
+                // Act
+                testee.ParseNext();
+                testee.ParseNext();
+                testee.ParseNext();
+                testee.ParseNext();
 
-            // Assert
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 0);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 25);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 50);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 75);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 100);
+                // Assert
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 0);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 25);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 50);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 75);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 100);
+            }
         }
 
         [Test]

@@ -19,7 +19,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         private ISegmentReader _segmentReaderMock;
         private ILineParser _lineParserMock;
         private IEntryBuilder _entryBuilderMock;
-        private ILineParsingSession _lineParsingSession;
+        private ILineParsingSession _lineParsingSessionMock;
         private ExtendedStreamReaderFake _extendedStreamReaderMock;
         private const string TestFileInputPath = "sample_input_file_ok";
         private const string TestFileOutputPath = "sample_output_file_ok";
@@ -32,8 +32,8 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             _lineParserMock = A.Fake<ILineParser>();
 
             _entryBuilderMock = A.Fake<IEntryBuilder>();
-            _lineParsingSession = A.Fake<ILineParsingSession>();
-            A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(_lineParsingSession);
+            _lineParsingSessionMock = A.Fake<ILineParsingSession>();
+            A.CallTo(() => _lineParserMock.StartLineParsingSession()).Returns(_lineParsingSessionMock);
 
             MathParseResultWithEntry(null, new ParseResult(LineType.Empty, string.Empty), null);
 
@@ -66,7 +66,14 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
         private void MathParseResultWithEntry(string line, IParseResult parseResult, Entry completeEntry)
         {
-            A.CallTo(() => _lineParsingSession.Parse(line ?? A<string>.Ignored)).Returns(parseResult);
+            if (string.IsNullOrEmpty(line))
+            {
+                A.CallTo(() => _lineParsingSessionMock.Parse(A<string>.Ignored)).Returns(parseResult);
+            }
+            else
+            {
+                A.CallTo(() => _lineParsingSessionMock.Parse(line)).Returns(parseResult);
+            }
 
             A.CallTo(() => _entryBuilderMock.Add(parseResult, A<int>.Ignored)).Invokes(() =>
             {

@@ -233,7 +233,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
 
             // Act, Assert
             testee.Invoking(factory => testee.VisitText(_textMock))
-                .ShouldThrow<ArgumentOutOfRangeException>();
+                .Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
 
             // Act, Assert
             testee.Invoking(factory => testee.VisitText(_textMock))
-                .ShouldThrow<ArgumentOutOfRangeException>();
+                .Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Test]

@@ -78,8 +78,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
         private void MathParseResultWithEntry(string line, IParseResult parseResult, Entry completeEntry)
         {
-            A.CallTo(() => _lineParsingSessionMock.Parse(line ?? A<string>.Ignored)).Returns(parseResult);
-
+            if (string.IsNullOrEmpty(line))
+            {
+                A.CallTo(() => _lineParsingSessionMock.Parse(A<string>.Ignored)).Returns(parseResult);
+            }
+            else
+            {
+                A.CallTo(() => _lineParsingSessionMock.Parse(line)).Returns(parseResult);
+            }
+            
             A.CallTo(() => _entryBuilderMock.Add(parseResult, A<int>.Ignored))
                 .Invokes(() => { A.CallTo(() => _entryBuilderMock.CompleteEntry).Returns(completeEntry); });
         }
@@ -175,25 +182,27 @@ msgid ""message id""
 msgstr ""message string""";
 
             var testee = CreateTestee(testString);
-            testee.MonitorEvents();
-            testee.StartOfInput();
-
-            // Act
-            while (testee.ParseNext())
+            using (var monitoredTestee = testee.Monitor())
             {
-            }
+                testee.StartOfInput();
 
-            //Assert
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 10);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 20);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 30);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 40);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 50);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 60);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 70);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 80);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 90);
-            testee.ShouldRaise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 100);
+                // Act
+                while (testee.ParseNext())
+                {
+                }
+
+                //Assert
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 10);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 20);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 30);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 40);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 50);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 60);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 70);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 80);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 90);
+                monitoredTestee.Should().Raise(nameof(testee.Progress)).WithArgs<ProgressEventArgs>(args => args.ProgressValue == 100);
+            }
         }
 
         [Test]
