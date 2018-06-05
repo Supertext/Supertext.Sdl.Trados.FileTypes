@@ -226,35 +226,32 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Tests
             // Arrange
             var testee = new TextProcessor();
             testee.InitializeWith(EmbeddedContentRegexSettings.DefaultMatchRules.ToList());
-            var testString = @"<p><span><b>TXT</b><span>TXT<br>TXT<br><br><span><b>TXT</b><span>TXT</span></span></span></span></p>";
+            var testString = @"<p><span><span>text: CHF 20.00<br>text<br>text<span><b>text: </b><span>text</span></span></span></span></p>";
 
             // Act
             var result = testee.Process(testString);
 
             // Assert
-            result.Count.Should().Be(22);
+            result.Count.Should().Be(19);
             result[0].InlineType.Should().Be(InlineType.StartTag);
             result[1].InlineType.Should().Be(InlineType.StartTag);
             result[2].InlineType.Should().Be(InlineType.StartTag);
             result[3].InlineType.Should().Be(InlineType.Text);
-            result[4].InlineType.Should().Be(InlineType.EndTag);
-            result[5].InlineType.Should().Be(InlineType.StartTag);
-            result[6].InlineType.Should().Be(InlineType.Text);
-            result[7].InlineType.Should().Be(InlineType.Placeholder);
-            result[8].InlineType.Should().Be(InlineType.Text);
-            result[9].InlineType.Should().Be(InlineType.Placeholder);
-            result[10].InlineType.Should().Be(InlineType.Placeholder);
-            result[11].InlineType.Should().Be(InlineType.StartTag);
+            result[4].InlineType.Should().Be(InlineType.Placeholder);
+            result[5].InlineType.Should().Be(InlineType.Text);
+            result[6].InlineType.Should().Be(InlineType.Placeholder);
+            result[7].InlineType.Should().Be(InlineType.Text);
+            result[8].InlineType.Should().Be(InlineType.StartTag);
+            result[9].InlineType.Should().Be(InlineType.StartTag);
+            result[10].InlineType.Should().Be(InlineType.Text);
+            result[11].InlineType.Should().Be(InlineType.EndTag);
             result[12].InlineType.Should().Be(InlineType.StartTag);
             result[13].InlineType.Should().Be(InlineType.Text);
             result[14].InlineType.Should().Be(InlineType.EndTag);
-            result[15].InlineType.Should().Be(InlineType.StartTag);
-            result[16].InlineType.Should().Be(InlineType.Text);
+            result[15].InlineType.Should().Be(InlineType.EndTag);
+            result[16].InlineType.Should().Be(InlineType.EndTag);
             result[17].InlineType.Should().Be(InlineType.EndTag);
             result[18].InlineType.Should().Be(InlineType.EndTag);
-            result[19].InlineType.Should().Be(InlineType.EndTag);
-            result[20].InlineType.Should().Be(InlineType.EndTag);
-            result[21].InlineType.Should().Be(InlineType.EndTag);
         }
 
         [Test]
