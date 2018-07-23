@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,8 +44,11 @@
     <Reference Include="Sdl.Core.Globalization">
       <HintPath>..\libs\Sdl.Core.Globalization.dll</HintPath>
     </Reference>
-    <Reference Include="Sdl.Core.PluginFramework">
-      <HintPath>..\libs\Sdl.Core.PluginFramework.dll</HintPath>
+    <Reference Include="Sdl.Core.PluginFramework, Version=1.8.0.0, Culture=neutral, PublicKeyToken=c28cdb26c445c888, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdl.Core.PluginFramework.1.8.0\lib\net45\Sdl.Core.PluginFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Sdl.Core.PluginFramework.PackageSupport, Version=1.8.0.0, Culture=neutral, PublicKeyToken=c28cdb26c445c888, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sdl.Core.PluginFramework.1.8.0\lib\net45\Sdl.Core.PluginFramework.PackageSupport.dll</HintPath>
     </Reference>
     <Reference Include="Sdl.Core.Settings">
       <HintPath>..\libs\Sdl.Core.Settings.dll</HintPath>
@@ -190,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="key.snk" />
+    <None Include="packages.config" />
     <None Include="Resources\PoFileIcon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -209,15 +215,22 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="..\buildTargets\Sdl.Core.PluginFramework.Build.targets" />
   <PropertyGroup>
     <CreatePluginPackage>true</CreatePluginPackage>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+    <PluginDeploymentPath>$(AppData)\SDL\SDL Trados Studio\14\Plugins</PluginDeploymentPath>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <CreatePluginManifestTask ProjectDirectory="$(ProjectDir)" AssemblyFilePath="$(TargetPath)" PluginResxFilePath="$(ProjectDir)PluginResources.resx" />
+  </Target>
+  <Import Project="..\packages\Sdl.Core.PluginFramework.Build.15.0.2\Build\net45\Sdl.Core.PluginFramework.Build.targets" Condition="Exists('..\packages\Sdl.Core.PluginFramework.Build.15.0.2\Build\net45\Sdl.Core.PluginFramework.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Sdl.Core.PluginFramework.Build.15.0.2\Build\net45\Sdl.Core.PluginFramework.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Sdl.Core.PluginFramework.Build.15.0.2\Build\net45\Sdl.Core.PluginFramework.Build.targets'))" />
   </Target>
 </Project>
