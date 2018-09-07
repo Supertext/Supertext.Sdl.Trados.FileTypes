@@ -15,12 +15,12 @@ properties {
   
   $appDataRoaming = $env:APPDATA
   $appDataLocal = $env:LOCALAPPDATA
-  $deployDir = "$appDataLocal\SDL\SDL Trados Studio\14\Plugins\Packages"
+  $deployDir = "$appDataLocal\SDL\SDL Trados Studio\15\Plugins\Packages"
   $pluginFolders = @(
-	"$appDataLocal\SDL\SDL Trados Studio\14\Plugins\Packages\$pluginName1",
-	"$appDataLocal\SDL\SDL Trados Studio\14\Plugins\Unpacked\$pluginFolder1",
-    "$appDataRoaming\SDL\SDL Trados Studio\14\Plugins\Packages\$pluginName1",
-    "$appDataRoaming\SDL\SDL Trados Studio\14\Plugins\Unpacked\$pluginFolder1"
+	"$appDataLocal\SDL\SDL Trados Studio\15\Plugins\Packages\$pluginName1",
+	"$appDataLocal\SDL\SDL Trados Studio\15\Plugins\Unpacked\$pluginFolder1",
+    "$appDataRoaming\SDL\SDL Trados Studio\15\Plugins\Packages\$pluginName1",
+    "$appDataRoaming\SDL\SDL Trados Studio\15\Plugins\Unpacked\$pluginFolder1"
   )
 
 }
