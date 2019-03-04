@@ -24,7 +24,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
         {
             var info = FileTypeManager.BuildFileTypeInformation();
 
-            info.FileTypeDefinitionId = new FileTypeDefinitionId("YAML file type 1.4.0.0");
+            info.FileTypeDefinitionId = new FileTypeDefinitionId("YAML file type 1.5.0.0");
             info.FileTypeName = new LocalizableString(YamlFileTypeResources.Yaml_File);
             info.FileTypeDocumentName = new LocalizableString(YamlFileTypeResources.Yaml_File);
             info.FileTypeDocumentsName = new LocalizableString(YamlFileTypeResources.Yaml_Files);
