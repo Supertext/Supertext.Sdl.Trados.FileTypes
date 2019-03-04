@@ -700,6 +700,90 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
             },
             new MatchRule
             {
+                StartTagRegexValue = @"<br[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<area[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<base[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<col[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<embed[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<hr[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<img[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<input[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<link[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<meta[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<param[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<source[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<track[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
+                StartTagRegexValue = @"<wbr[^<>]*\s*\/?>",
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                SegmentationHint = SegmentationHint.MayExclude
+            },
+            new MatchRule
+            {
                 TagType = MatchRule.TagTypeOption.Placeholder,
                 StartTagRegexValue = @"<[a-zA-Z][a-zA-Z0-9]*[^<>]*\s*\/>",
                 SegmentationHint = SegmentationHint.MayExclude
