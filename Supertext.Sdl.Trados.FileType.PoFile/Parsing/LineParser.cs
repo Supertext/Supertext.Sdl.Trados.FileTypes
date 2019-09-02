@@ -31,6 +31,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
                 .CanBeFollowedBy(emptyLine);
 
             msgctxt
+                .CanBeFollowedBy(text)
                 .CanBeFollowedBy(msgid);
 
             msgid
@@ -62,7 +63,9 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
                 .After(msgidplural)
                 .CanBeFollowedBySameAs(msgidplural)
                 .After(msgstrplural)
-                .CanBeFollowedBySameAs(msgstrplural);
+                .CanBeFollowedBySameAs(msgstrplural)
+                .After(msgctxt)
+                .CanBeFollowedBySameAs(msgctxt);
 
             comment
                 .CanBeFollowedBy(comment)

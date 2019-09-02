@@ -111,6 +111,21 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void IsValid_WhenMsgctxtIsFollowedByText_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgctxt """"");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"""The msgid text""");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
         public void IsValid_WhenMsgidIsFollowedByMsgstr_ShouldReturnTrue()
         {
             // Arrange
@@ -723,6 +738,38 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
         }
 
         [Test]
+        public void IsValid_WhenTextAfterMsgctxtIsFollowedByMsgid_ShouldReturnTrue()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgctxt """"");
+            lineValidationSession.IsValid(@"The msgctxt text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgid ""The msgid text""");
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public void IsValid_WhenTextAfterMsgctxtIsFollowedByMsgstr_ShouldReturnFalse()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineValidationSession = testee.StartLineValidationSession();
+            lineValidationSession.IsValid(@"msgctxt """"");
+            lineValidationSession.IsValid(@"The msgctxt text""");
+
+            // Act
+            var result = lineValidationSession.IsValid(@"msgstr ""The msgstr text""");
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Test]
         public void IsValid_WhenTextAfterMsgidpluralIsFollowedByEndOfFile_ShouldReturnFalse()
         {
             // Arrange
@@ -985,6 +1032,22 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
 
             // Assert
             result.LineType.Should().Be(LineType.MessageContext);
+            result.LineContent.Should().Be("The msgctxt text");
+        }
+
+        [Test]
+        public void Parse_WhenMsgctxtLineAndTextLine_ShouldReturnTextTypeAndContent()
+        {
+            // Arrange
+            var testee = new LineParser();
+            var lineParsingSession = testee.StartLineParsingSession();
+            lineParsingSession.Parse(@"msgctxt """"");
+
+            // Act
+            var result = lineParsingSession.Parse(@"""The msgctxt text""");
+
+            // Assert
+            result.LineType.Should().Be(LineType.Text);
             result.LineContent.Should().Be("The msgctxt text");
         }
 
