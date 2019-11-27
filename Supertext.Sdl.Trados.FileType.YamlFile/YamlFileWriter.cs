@@ -1,4 +1,5 @@
-﻿using Sdl.FileTypeSupport.Framework.BilingualApi;
+﻿using System.Linq;
+using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Supertext.Sdl.Trados.FileType.YamlFile.Parsing;
 using Supertext.Sdl.Trados.FileType.YamlFile.TextProcessing;
@@ -32,7 +33,15 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
 
         public void SetFileProperties(IFileProperties properties)
         {
-            _yamlTextWriter = _yamlFactory.CreateYamlTextWriter(_originalFileProperties.OriginalFilePath, _nativeFileProperties.OutputFilePath);
+            try
+            {
+                _yamlTextWriter = _yamlFactory.CreateYamlTextWriter(_originalFileProperties.OriginalFilePath, _nativeFileProperties.OutputFilePath);
+            }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                _yamlTextWriter = _yamlFactory.CreateYamlTextWriter(_originalFileProperties.DependencyFiles.First().CurrentFilePath, 
+                                                                    _nativeFileProperties.OutputFilePath);
+            }
         }
 
         public void FileComplete()
