@@ -39,6 +39,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
             }
             catch (System.IO.DirectoryNotFoundException)
             {
+                //if we can't find the directory, we read from the embedded base64 in the sdlxliff file
                 _yamlTextWriter = _yamlFactory.CreateYamlTextWriter(_originalFileProperties.DependencyFiles.First().CurrentFilePath, 
                                                                     _nativeFileProperties.OutputFilePath);
             }
