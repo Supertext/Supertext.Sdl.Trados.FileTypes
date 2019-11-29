@@ -38,7 +38,15 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public void SetFileProperties(IFileProperties properties)
         {
-            _rootToken = _jsonFactory.GetRootToken(_originalFileProperties.OriginalFilePath);
+            try
+            {
+                _rootToken = _jsonFactory.GetRootToken(_originalFileProperties.OriginalFilePath);
+            }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                //if we can't find the directory, we read from the embedded base64 in the sdlxliff file
+                _rootToken = _jsonFactory.GetRootToken(_originalFileProperties.DependencyFiles.First().CurrentFilePath);
+            }
         }
 
         public void FileComplete()

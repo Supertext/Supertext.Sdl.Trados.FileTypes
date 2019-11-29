@@ -64,6 +64,10 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
             _totalNumberOfLines = _fielHelper.GetNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _reader = _yamlFactory.CreateYamlTextReader(_fileConversionProperties.OriginalFilePath);
 
+            var dependencyFileProperties = PropertiesFactory.CreateDependencyFileProperties(_fileConversionProperties.OriginalFilePath);
+            dependencyFileProperties.PreferredLinkage = DependencyFileLinkOption.Embed;
+            _fileConversionProperties.DependencyFiles.Add(dependencyFileProperties);
+
             ProgressInPercent = 0;
         }
 

@@ -61,7 +61,15 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
 
         public void SetFileProperties(IFileProperties fileInfo)
         {
-            _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_originalFileProperties.OriginalFilePath);
+            try
+            { 
+                _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_originalFileProperties.OriginalFilePath);
+            }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                //if we can't find the directory, we read from the embedded base64 in the sdlxliff file
+                _extendedStreamReader = _fileHelper.GetExtendedStreamReader(_originalFileProperties.DependencyFiles.First().CurrentFilePath);
+            }
             _streamWriter = _fileHelper.GetStreamWriter(_nativeFileProperties.OutputFilePath);
             _lineParsingSession = _lineParser.StartLineParsingSession();
         }

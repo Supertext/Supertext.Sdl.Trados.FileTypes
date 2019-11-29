@@ -20,6 +20,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
         private string _originalFilePath;
 
         //Parsing STATE --- is being changed during parsing 
+        private IPersistentFileConversionProperties _fileConversionProperties;
         private ILineParsingSession _lineParsingSession;
         private IExtendedStreamReader _extendedStreamReader;
         private byte _progressInPercent;
@@ -56,6 +57,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
             _paragraphUnitFactory.PropertiesFactory = PropertiesFactory;
 
             _originalFilePath = properties.FileConversionProperties.OriginalFilePath;
+            _fileConversionProperties = properties.FileConversionProperties;
         }
 
         public void StartOfInput()
@@ -66,6 +68,10 @@ namespace Supertext.Sdl.Trados.FileType.PoFile
                 _fileHelper.GetExtendedStreamReader(_originalFilePath)
                     .GetLinesWithEofLine()
                     .Count();
+
+            var dependencyFileProperties = PropertiesFactory.CreateDependencyFileProperties(_fileConversionProperties.OriginalFilePath);
+            dependencyFileProperties.PreferredLinkage = DependencyFileLinkOption.Embed;
+            _fileConversionProperties.DependencyFiles.Add(dependencyFileProperties);
 
             ProgressInPercent = 0;
         }

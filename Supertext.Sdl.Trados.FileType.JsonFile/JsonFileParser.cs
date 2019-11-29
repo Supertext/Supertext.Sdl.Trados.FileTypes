@@ -13,7 +13,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 {
     public class JsonFileParser : AbstractBilingualParser, INativeContentCycleAware, ISettingsAware
     {
-        private readonly IFileHelper _fielHelper;
+        private readonly IFileHelper _fileHelper;
         private readonly IJsonFactory _jsonFactory;
         private readonly IEmbeddedContentRegexSettings _embeddedContentRegexSettings;
         private readonly IParsingSettings _parsingSettings;
@@ -26,9 +26,14 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
         private int _totalNumberOfLines;
         private byte _progressInPercent;
 
-        public JsonFileParser(IJsonFactory jsonFactory, IFileHelper fielHelper, IEmbeddedContentRegexSettings embeddedContentRegexSettings, IParsingSettings parsingSettings, IParagraphUnitFactory paragraphUnitFactory, ISegmentDataCollector segmentDataCollector)
+        public JsonFileParser(IJsonFactory jsonFactory, 
+                              IFileHelper fileHelper, 
+                              IEmbeddedContentRegexSettings embeddedContentRegexSettings, 
+                              IParsingSettings parsingSettings, 
+                              IParagraphUnitFactory paragraphUnitFactory, 
+                              ISegmentDataCollector segmentDataCollector)
         {
-            _fielHelper = fielHelper;
+            _fileHelper = fileHelper;
             _jsonFactory = jsonFactory;
             _embeddedContentRegexSettings = embeddedContentRegexSettings;
             _parsingSettings = parsingSettings;
@@ -62,8 +67,12 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public void StartOfInput()
         {
-            _totalNumberOfLines = _fielHelper.GetNumberOfLines(_fileConversionProperties.OriginalFilePath);
+            _totalNumberOfLines = _fileHelper.GetNumberOfLines(_fileConversionProperties.OriginalFilePath);
             _reader = _jsonFactory.CreateJsonTextReader(_fileConversionProperties.OriginalFilePath);
+
+            var dependencyFileProperties = PropertiesFactory.CreateDependencyFileProperties(_fileConversionProperties.OriginalFilePath);
+            dependencyFileProperties.PreferredLinkage = DependencyFileLinkOption.Embed;
+            _fileConversionProperties.DependencyFiles.Add(dependencyFileProperties);
 
             ProgressInPercent = 0;
         }
