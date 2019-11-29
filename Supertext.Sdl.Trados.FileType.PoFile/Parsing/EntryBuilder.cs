@@ -50,10 +50,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
 
             _collectText = null;
 
-            if (_finishCollectingText != null)
-            {
-                _finishCollectingText(lineNumber);
-            }
+            _finishCollectingText?.Invoke(lineNumber);
 
             _finishCollectingText = null;
 
@@ -65,10 +62,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
 
             _collectMessageStringPlural = null;
 
-            if (_finishCollectingMessageStringPlural != null)
-            {
-                _finishCollectingMessageStringPlural(lineNumber);
-            }
+            _finishCollectingMessageStringPlural?.Invoke(lineNumber);
 
             _finishCollectingMessageStringPlural = null;
             return false;
@@ -79,7 +73,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
             switch (parseResult.LineType)
             {
                 case LineType.MessageContext:
-                    _entryInCreation.MessageContext = parseResult.LineContent;
+                    CollectMessageContext(parseResult);
                     break;
 
                 case LineType.MessageId:
@@ -98,6 +92,12 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Parsing
                     StartCollectingMessageStringPlural(parseResult, lineNumber);
                     break;
             }
+        }
+
+        private void CollectMessageContext(IParseResult parseResult)
+        {
+            _entryInCreation.MessageContext += parseResult.LineContent;
+            _collectText = lineContent => _entryInCreation.MessageContext += lineContent;
         }
 
         private void CollectMessageId(IParseResult parseResult, int lineNumber)
