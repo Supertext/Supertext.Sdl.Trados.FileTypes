@@ -275,7 +275,7 @@ entryComplete
 
             // Assert
             A.CallTo(() => _bilingualContentHandlerMock.ProcessParagraphUnit(A<IParagraphUnit>.Ignored))
-                .MustHaveHappened(Repeated.Exactly.Twice);
+                .MustHaveHappenedTwiceExactly();
         }
 
         [Test]
