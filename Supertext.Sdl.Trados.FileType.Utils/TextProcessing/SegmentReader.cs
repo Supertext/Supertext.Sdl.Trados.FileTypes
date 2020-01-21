@@ -29,6 +29,15 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
             return _textStringBuilder.ToString();
         }
 
+        public string GetSourceText(ISegmentPair segmentPair)
+        {
+            _textStringBuilder = new StringBuilder();
+
+            VisitChildren(segmentPair.Source);
+
+            return _textStringBuilder.ToString();
+        }
+
         private void VisitChildren(IAbstractMarkupDataContainer container)
         {
             foreach (var segment in container)
