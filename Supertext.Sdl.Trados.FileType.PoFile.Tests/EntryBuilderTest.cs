@@ -103,6 +103,7 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             testee.CompleteEntry.End.Should().Be(4);
         }
 
+        [Test]
         public void Add_WhenEntryStartsWithMsgctxt_ShouldSetCorrectEntryLocation()
         {
             // Arrange
@@ -118,6 +119,24 @@ namespace Supertext.Sdl.Trados.FileType.PoFile.Tests
             // Assert
             testee.CompleteEntry.Start.Should().Be(2);
             testee.CompleteEntry.End.Should().Be(4);
+        }
+
+        [Test]
+        public void Add_WhenMsgctxtIsOnMultipleLines_ShouldTakeAllText()
+        {
+            // Arrange
+            var testee = new EntryBuilder();
+            testee.Add(new ParseResult(LineType.MessageContext, "The msgctxt start"), 1);
+            testee.Add(new ParseResult(LineType.Text, " middle"), 2);
+            testee.Add(new ParseResult(LineType.Text, " end"), 3);
+            testee.Add(new ParseResult(LineType.MessageId, "The msgid text"), 4);
+            testee.Add(new ParseResult(LineType.MessageString, "The msgstr text"), 5);
+
+            // Act
+            testee.Add(new ParseResult(LineType.Empty, string.Empty), 6);
+
+            // Assert
+            testee.CompleteEntry.MessageContext.Should().Be("The msgctxt start middle end");
         }
 
         [Test]

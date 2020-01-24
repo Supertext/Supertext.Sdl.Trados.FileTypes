@@ -336,7 +336,7 @@ msgstrPluralEntryComplete";
             testee.ProcessParagraphUnit(paragraphUnitMock);
 
             // Assert
-            A.CallTo(() => _streamWriterMock.WriteLine(A<string>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
+            A.CallTo(() => _streamWriterMock.WriteLine(A<string>.Ignored)).MustHaveHappenedOnceExactly();
         }
 
         [Test]
