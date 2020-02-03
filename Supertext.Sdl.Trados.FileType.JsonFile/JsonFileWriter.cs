@@ -90,20 +90,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 return;
             }
 
-            var sb = new StringBuilder();
-            foreach (var segmentPair in paragraphUnit.SegmentPairs)
-            {
-                if (segmentPair.Properties.IsLocked && String.IsNullOrEmpty(_segmentReader.GetTargetText(segmentPair)))
-                {
-                    sb.Append(_segmentReader.GetSourceText(segmentPair));
-                }
-                else
-                {
-                    sb.Append(_segmentReader.GetTargetText(segmentPair));
-                }
-            }
-
-            var targetText = sb.ToString();
+            var targetText = _segmentReader.GetTargetText(paragraphUnit.SegmentPairs);
 
             var value = targetToken.Value;
 

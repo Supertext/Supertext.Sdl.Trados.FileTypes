@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
@@ -27,6 +28,24 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
             VisitChildren(segmentPair.Target);
 
             return _textStringBuilder.ToString();
+        }
+
+        public string GetTargetText(IEnumerable<ISegmentPair> segmentPairs)
+        {
+            var textStringBuilder = new StringBuilder();
+            foreach (var segmentPair in segmentPairs)
+            {
+                if (segmentPair.Properties.IsLocked && String.IsNullOrEmpty(GetTargetText(segmentPair)))
+                {
+                    textStringBuilder.Append(GetSourceText(segmentPair));
+                }
+                else
+                {
+                    textStringBuilder.Append(GetTargetText(segmentPair));
+                }
+            }
+
+            return textStringBuilder.ToString();
         }
 
         public string GetSourceText(ISegmentPair segmentPair)
