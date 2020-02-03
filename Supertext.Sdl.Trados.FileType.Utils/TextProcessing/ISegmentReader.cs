@@ -8,5 +8,9 @@ namespace Supertext.Sdl.Trados.FileType.Utils.TextProcessing
         string GetText(IParagraph targetParagraph);
 
         string GetTargetText(ISegmentPair segmentPair);
+
+        string GetTargetText(IEnumerable<ISegmentPair> segmentPair);
+
+        string GetSourceText(ISegmentPair segmentPair);
     }
 }
