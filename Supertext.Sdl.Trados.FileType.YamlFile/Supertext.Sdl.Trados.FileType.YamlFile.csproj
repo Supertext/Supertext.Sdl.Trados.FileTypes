@@ -84,6 +84,7 @@
     <Compile Include="Parsing\YamlFactory.cs" />
     <Compile Include="Parsing\YamlTextReader.cs" />
     <Compile Include="Parsing\YamlTextWriter.cs" />
+    <Compile Include="RegexConstants.cs" />
     <Compile Include="TextProcessing\ContextKeys.cs" />
     <Compile Include="Views\EmbeddedContentSettingsControl.cs">
       <SubType>UserControl</SubType>

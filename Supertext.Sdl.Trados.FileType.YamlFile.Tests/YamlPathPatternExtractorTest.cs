@@ -5,7 +5,6 @@ using FluentAssertions;
 using NUnit.Framework;
 using Supertext.Sdl.Trados.FileType.YamlFile.Parsing;
 
-
 namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
 {
     [TestFixture]
@@ -25,9 +24,9 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
 
             // Assert
             result.Count.Should().Be(3);
-            result.Should().Contain("path1");
-            result.Should().Contain("path2");
-            result.Should().Contain("path3");
+            result.Should().Contain(GetRegexQualifiedString("path1"));
+            result.Should().Contain(GetRegexQualifiedString("path2"));
+            result.Should().Contain(GetRegexQualifiedString("path3"));
         }
 
         [Test]
@@ -40,8 +39,8 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             var result = testee.ExtractPathPatterns(Testfile).ToList();
 
             // Assert
-            result.Should().Contain("path1");
-            result.Should().Contain("path5");
+            result.Should().Contain(GetRegexQualifiedString("path1"));
+            result.Should().Contain(GetRegexQualifiedString("path5"));
         }
 
         [Test]
@@ -54,7 +53,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             var result = testee.ExtractPathPatterns(Testfile);
 
             // Assert
-            result.Should().Contain(@"some\.content");
+            result.Should().Contain(GetRegexQualifiedString(@"some\.content"));
         }
 
         [Test]
@@ -67,7 +66,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             var result = testee.ExtractPathPatterns(Testfile);
 
             // Assert
-            result.Should().Contain(@"theObject\['with spaces in property name'\]");
+            result.Should().Contain(GetRegexQualifiedString(@"theObject\['with spaces in property name'\]"));
         }
 
         [Test]
@@ -80,7 +79,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
             var result = testee.ExtractPathPatterns(Testfile);
 
             // Assert
-            result.Should().Contain(@"someArray\[\d+\]");
+            result.Should().Contain(GetRegexQualifiedString(@"someArray\[\d+\]"));
         }
 
         [Test]
@@ -95,6 +94,11 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile.Tests
 
             // Assert
             result.Should().BeEmpty();
+        }
+
+        private string GetRegexQualifiedString(string path)
+        {
+            return $"{RegexConstants.StartChar}{path}{RegexConstants.EndChar}";
         }
 
         private static YamlPathPatternExtractor CreateTestee(string[] paths, string value = "some value")

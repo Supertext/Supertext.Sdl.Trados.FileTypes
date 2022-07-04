@@ -73,7 +73,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
             var sourcePath = locationContextInfo.GetMetaData(ContextKeys.SourcePath);
             var targetPath = locationContextInfo.GetMetaData(ContextKeys.TargetPath);
 
-            if (string.IsNullOrEmpty(targetPath))
+            if (String.IsNullOrEmpty(targetPath))
             {
                 targetPath = sourcePath;
             }

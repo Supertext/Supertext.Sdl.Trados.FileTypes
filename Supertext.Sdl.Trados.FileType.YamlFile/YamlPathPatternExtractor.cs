@@ -24,7 +24,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
                 {
                     while (reader.Read())
                     {
-                        if (string.IsNullOrEmpty(reader.Value))
+                        if (String.IsNullOrEmpty(reader.Value))
                         {
                             continue;
                         }
@@ -33,7 +33,7 @@ namespace Supertext.Sdl.Trados.FileType.YamlFile
                         patternedPath = patternedPath.Replace("[", @"\[");
                         patternedPath = patternedPath.Replace("]", @"\]");
                         patternedPath = Regex.Replace(patternedPath, @"\\\[\d+\\\]", @"\[\d+\]");
-                        pathPatterns.Add($"^{patternedPath}$");
+                        pathPatterns.Add($"{RegexConstants.StartChar}{patternedPath}{RegexConstants.EndChar}");
                     }
                 }
             }
