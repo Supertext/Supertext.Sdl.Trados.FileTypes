@@ -795,6 +795,12 @@ namespace Supertext.Sdl.Trados.FileType.Utils.Settings
                 EndTagRegexValue = @"<\/[a-zA-Z][a-zA-Z0-9]*[^<>]*>",
                 SegmentationHint = SegmentationHint.MayExclude,
                 IsContentTranslatable = true
+            },
+            new MatchRule
+            {
+                TagType = MatchRule.TagTypeOption.Placeholder,
+                StartTagRegexValue = "&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-fA-F]{1,6});",
+                SegmentationHint = SegmentationHint.IncludeWithText
             }
         };
 
