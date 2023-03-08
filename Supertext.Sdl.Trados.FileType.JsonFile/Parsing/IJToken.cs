@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 {
@@ -10,6 +11,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 
         IJValue Value { get; }
 
-        string ToString();
+        string ToString(Formatting formatting = Formatting.None);
     }
 }

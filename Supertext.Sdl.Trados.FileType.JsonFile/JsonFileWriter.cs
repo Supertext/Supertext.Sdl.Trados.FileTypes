@@ -52,7 +52,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
 
         public void FileComplete()
         {
-            _fileHelper.WriteAllText(_nativeFileProperties.OutputFilePath, _rootToken.ToString());
+            _fileHelper.WriteAllText(_nativeFileProperties.OutputFilePath, _rootToken.ToString(Newtonsoft.Json.Formatting.Indented));
             _rootToken = null;
         }
 
@@ -90,7 +90,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile
                 return;
             }
 
-            var targetText = _segmentReader.GetTargetText(paragraphUnit.SegmentPairs);
+            var targetText = _segmentReader.GetText(paragraphUnit.Target);
 
             var value = targetToken.Value;
 
