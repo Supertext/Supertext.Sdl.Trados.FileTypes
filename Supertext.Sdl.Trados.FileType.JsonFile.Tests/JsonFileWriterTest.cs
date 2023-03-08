@@ -105,7 +105,7 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Tests
             A.CallTo(() => outputFilePropertiesMock.OutputFilePath).Returns(theOutputPath);
             testee.SetOutputProperties(outputFilePropertiesMock);
 
-            A.CallTo(() => _rootTokenMock.ToString()).Returns(theContent);
+            A.CallTo(() => _rootTokenMock.ToString(Newtonsoft.Json.Formatting.Indented)).Returns(theContent);
 
             // Act
             testee.FileComplete();
