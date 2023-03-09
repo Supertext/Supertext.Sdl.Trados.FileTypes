@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
 {
@@ -18,6 +19,11 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
             return selectedToken == null ? null : new JTokenWrapper(selectedToken);
         }
 
+        public string ToString(Formatting formatting = Formatting.None)
+        {
+            return _token.ToString(formatting);
+        }
+
         public JTokenType Type
         {
             get { return _token.Type; }
@@ -30,11 +36,6 @@ namespace Supertext.Sdl.Trados.FileType.JsonFile.Parsing
                 var jValue = _token as JValue;
                 return jValue == null ? null : new JValueWrapper(jValue);
             }
-        }
-
-        public override string ToString()
-        {
-            return _token.ToString();
         }
     }
 }
