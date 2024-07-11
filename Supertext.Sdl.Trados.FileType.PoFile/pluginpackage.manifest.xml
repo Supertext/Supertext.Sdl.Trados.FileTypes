@@ -1,6 +1,6 @@
 
 <PluginPackage xmlns="http://www.sdl.com/Plugins/PluginPackage/1.0">
-  <PlugInName>File Type Definition for PO (Extended)</PlugInName>
+  <PlugInName>File Type Definition for PO (Supertext Extended)</PlugInName>
   <Version>3.1.0.0</Version>
   <Description>This file type definition supports the localization of Portable Object (PO) files.</Description>
   <Author>Supertext AG</Author>
